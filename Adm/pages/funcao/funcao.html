@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Função associado</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    </head>
+    <style type="text/css">
+        body {
+            table-layout: fixed;
+        }
+        th {
+        font-size: 12px;
+        white-space: nowrap;
+        }
+        td {
+        font-size: 11px;
+        }
+        tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+        }
+</style>
+    <body>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="container-fluid" style="padding: 0">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1 style="margin-top: -1px;margin-left: -6px;">
+                    Função <small>Visualização</small> </h1>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-sx-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <form id="listagem" name="listagem" class="form-inline">
+                                    <input type="button" name="btnInserir" id="btnInserir" class="btn btn-primary" value="Inserir" />
+                                </form>
+                            </div>
+                            <div class="box-body">
+                                <table id="tabela_funcao" class="display table table-striped table-hover dt-responsive compact nowrap" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>NOME</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- Modal Edita e Cadastra -->
+        <div class="modal fade" id="ModalEditaFuncao" name="ModalEditaFuncao" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+            <form data-toggle="validator" role="form" name="frmFormularioFuncao" id="frmFormularioFuncao">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: 500px;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">FUNCAO&nbsp<small id="rotulo_associado">Alterando</small></h5>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        <div class="form-group control-group" style="float: right;padding-right: 5px;">
+                            <button type="submit" class="btn btn-primary" id="btnSalvar">
+                                <span class="glyphicon glyphicon-send"></span>
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_codigo_funcao">Código</label>
+                                        <input type="text" class="form-control input-sm" id="C_codigo_funcao" name="C_codigo_funcao" disabled>
+                                        <input type="hidden" class="form-control input-sm" id="C_codigox" name="C_codigox">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_nome_funcao">Nome</label>
+                                        <input type="text" class="form-control input-sm" id="C_nome_funcao" name="C_nome_funcao" style="text-transform:uppercase" maxlength="50" placeholder="Nome"  required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        <input type="hidden" name="operation" id="operation">
+                                        <input type="hidden" name="C_nome_original" id="C_nome_original">
+                                        <input type="hidden" name="tem_cadastro_conta" id="tem_cadastro_conta">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+        <script src="../Adm/pages/funcao/js/script_funcao.js"></script>
+    </body>
+</html>

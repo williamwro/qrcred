@@ -1,0 +1,7 @@
+[02-Dec-2022 11:43:10 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 2:                 FROM sind.divisao WHERE id_divisao = 
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/divisao/divisao_exibe.php:12
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/divisao/divisao_exibe.php(12): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/divisao/divisao_exibe.php on line 12

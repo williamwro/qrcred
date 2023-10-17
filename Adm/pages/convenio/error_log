@@ -1,0 +1,38 @@
+[06-Oct-2022 13:12:21 UTC] PHP Notice:  Undefined index: operation in /home/makecard/public_html/sind/Adm/pages/convenio/convenio_salvar.php on line 35
+[06-Oct-2022 13:12:51 UTC] PHP Notice:  Undefined index: operation in /home/makecard/public_html/sind/Adm/pages/convenio/convenio_salvar.php on line 35
+[06-Oct-2022 13:13:05 UTC] PHP Notice:  Undefined index: operation in /home/makecard/public_html/sind/Adm/pages/convenio/convenio_salvar.php on line 35
+[06-Oct-2022 13:13:17 UTC] PHP Notice:  Undefined index: operation in /home/makecard/public_html/sind/Adm/pages/convenio/convenio_salvar.php on line 35
+[06-Oct-2022 13:14:27 UTC] PHP Notice:  Undefined index: operation in /home/makecard/public_html/sind/Adm/pages/convenio/convenio_salvar.php on line 35
+[06-Oct-2022 13:14:43 UTC] PHP Notice:  Undefined index: operation in /home/makecard/public_html/sind/Adm/pages/convenio/convenio_salvar.php on line 35
+[11-Oct-2022 17:14:07 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/convenio/gerador_pdf_convenios.php on line 8
+[11-Oct-2022 17:14:07 UTC] PHP Fatal error:  Uncaught Exception: FPDF error: Some data has already been output, can't send PDF file (output started at /home/makecard/public_html/sind/Adm/pages/convenio/gerador_pdf_convenios.php:8) in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(1049): FPDF->Error('Some data has a...')
+#1 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(999): FPDF->_checkoutput()
+#2 /home/makecard/public_html/sind/Adm/pages/convenio/gerador_pdf_convenios.php(136): FPDF->Output('I', 'CONVENIOS-SINDS...')
+#3 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php on line 271
+[16-Oct-2022 03:45:46 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/convenio/convenio_categorias_app.php(7): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:22:22 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/convenio/convenio_categorias.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:22:22 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/convenio/convenio_read2.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:27:57 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/convenio/gerador_pdf_convenios.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27

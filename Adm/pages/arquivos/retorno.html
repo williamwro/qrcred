@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+    </style>
+    <title>Retorno</title>
+</head>
+<body>
+    <section class="content-header">
+        <h1 style="margin-top: -1px;margin-left: -6px;">
+            Arquivos <small>retorno do desconto</small> </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-sx-12">
+                <div class="box">
+
+                    <div class="box-header">
+    
+                        <form id="form_retorno" name="form_retorno" enctype="multipart/form-data">
+                            <input type="hidden" name="divisao" id="divisao">
+                            <input type="hidden" name="mes" id="mes">
+                            <input type="hidden" name="path_arquivo" id="path_arquivo">
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="default_file">Enviar arquivo</label>
+                                        <input type="file" id="default_file" class="custom-file-input" accept=".txt">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group" style="padding-top: 13px;">
+                                        <button type="button" id="but_upload" class="btn btn-primary">
+                                            Enviar&nbsp&nbsp<span class="fa fa-cloud-upload"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="loading">
+                                        <div class="loader">
+
+                                            <div class="spinner-border" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group row" hidden id="row_tabela">
+                                <div class="col-md-12">
+                                    <table role="presentation" class="table table-striped">
+                                        <tbody class="files"><tr class="template-upload fade in">
+                                            <td>
+                                                <span class="preview"></span>
+                                            </td>
+                                            <td style="width: 250px">
+
+                                                <a href="" id="link_arquivo" target="_blank"><div id="caminho_arquivo"></div></a>
+
+                                                <strong class="error text-danger">Arquivo tipo txt</strong>
+                                                <div id="total_arquivo"></div>
+                                            </td>
+                                            <td style="width: 450px;">
+                                                <p class="size" id="tamanho_arquivo">0 bytes</p>
+                                                <div class="progress" >
+                                                    <div class="progress-bar progress-bar-success progress-bar-stripedactive" role="progressbar"
+                                                         aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                        0%
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="padding-top: 20px;padding-bottom: 0;padding-left: 100px">
+
+                                                <div class="form-group">
+                                                    <button type="button" id="btnExcluirArquivo" class="btn btn-danger">
+                                                        Deletar&nbsp&nbsp<span class="fa fa-trash"></span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="C_mes">Mês</label>
+                                    <select class="form-control i_bd" id="C_mes" name="C_mes">
+                                    </select>
+                                    <input type="hidden" name="C_mes_hidden" id="C_mes_hidden" value=""/>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="C_empregador">Empregador</label>
+                                    <select class="form-control i_bd" id="C_empregador" name="C_empregador" style>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="C_tipo">Tipo</label>
+                                    <select class="form-control i_bd" id="C_tipo" name="C_tipoconvenio" style>
+                                    </select>
+                                </div>
+                                <div class="col-md-2" style="margin-top: 24px;width: 118px;">
+                                    <button type="button" name="gerararquivo" id="gerararquivo" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                        Processar
+                                    </button>
+                                </div>
+                                <div class="col-md-2" style="margin-top: 24px;text-align: center;">
+                                    <input type="button" name="btnGravar" id="btnGravar" class="btn btn-primary" value="Gravar" />
+                                </div>
+                                <div class="col-md-1" style="margin-top: 24px">
+                                    <input type="button" name="btnExcluirSelecionados" id="btnExcluirSelecionados" class="btn btn-primary" value="Excluir" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="box-body">
+                        <table id="tabela_dados" class="display table-striped table-hover dt-responsive compact">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>MATRICULA</th>
+                                    <th>NOME</th>
+                                    <th>NOME TIPO</th>
+                                    <th>CODIGO TIPO</th>
+                                    <th>GASTOU</th>
+                                    <th>DESCONTOU</th>
+                                    <th>FALTOU</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4">
+                                <table id="tabela_categoria" class="display table table-striped dt-responsive compact nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col" style="text-align: end">Valores</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">Farmacia não descontado</th>
+                                        <td><div id="fargasto" style="text-align: end"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Compras não descontado</th>
+                                        <td><div id="comgasto" style="text-align: end"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Unimed não descontado</th>
+                                        <td><div id="unigasto" style="text-align: end"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total</th>
+                                        <td><div id="totalgasto" style="text-align: end;color: #ee2200"></div></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Modal -->
+    <div class="modal fade" id="ModalCarregando" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100">
+                            carregando...
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal atualiza valor -->
+    <section class="content">
+        <div class="row">
+            <div class="modal fade" id="ModalAtualizaResiduo" name="ModalAtualizaResiduo">
+                <form data-toggle="validator" role="form" name="frmbusca" id="frmbusca">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">ATUALIZANDO&nbsp<small>Resíduo</small></h5>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4">
+                                            <div class="form-group control-group has-feedback">
+                                                <label for="inputValor">Valor</label>
+                                                <div class='input-group'>
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon glyphicon-usd"></i></span>
+                                                    <input type="text" id="inputValor"  name="inputValor" class="form-control" autofocus>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="btnAtualizar" class="btn btn-primary"  data-dismiss="modal">Atualizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script src="../Adm/pages/arquivos/js/upload.js"></script>
+</body>
+</html>

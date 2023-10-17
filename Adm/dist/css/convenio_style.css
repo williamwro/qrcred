@@ -1,0 +1,17 @@
+.form-control{
+    text-transform: uppercase;
+}
+#C_email{
+    text-transform: lowercase;
+}
+#C_email2{
+    text-transform: lowercase;
+}
+.form-condensed .control-group {
+    margin-top: 0;
+    margin-bottom: 0;
+
+}
+.col-md-2{
+}
+label { margin: 3px 0 0 0; }

@@ -1,0 +1,239 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <title>transferencia de valores</title>         
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
+        <meta http-equiv="X-UA-Compatible" content="IE=11"> 
+    </head>
+<style type="text/css">
+.form-inline {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+.alinha_direita {
+    text-align: right;
+}
+th {
+    font-size: 12px;
+    white-space: nowrap;
+}
+td {
+    font-size: 11px;
+}
+.modal-dialog {
+    position: relative;
+    display: table;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: auto;
+    min-width: 300px;
+}
+tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+</style>
+    <body>
+    <div class="modal fade bd-example-modal-lg" id="modal_loading" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" style="width: 48px">
+                <span class="fa fa-spinner fa-spin fa-3x"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Wrapper. Contains page content -->
+        <div class="container-wrapper"> 
+            <!-- Content Header (Page header) -->             
+            <section class="content-header"> 
+                <h1 style="margin-top: -1px;margin-left: -6px;"> 
+            Transferencia <small>entre matrículas</small> </h1> 
+                <ol class="breadcrumb"> 
+                    <li> 
+                        <a href="#"><i class="fa fa-dashboard"></i> Home</a> 
+                    </li>                     
+                    <li> 
+                        <a href="#">Tables</a> 
+                    </li>                     
+                    <li class="active">Data tables</li>                     
+                </ol>                 
+            </section>             
+            <section class="content"> 
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="box"> 
+                            <div class="box-header with-border"> 
+                                <div class="form-group row"> 
+                                    <div class="col-md-6"> 
+                                        <label class="col-sm-2 col-form-label" style="padding-top: 6px">Origem</label>                                         
+                                    </div>                                     
+                                </div>
+                            </div>                             
+                            <!-- /.box-header -->                             
+                            <div class="box-body"> 
+                                <div class="form-group row"> 
+                                    <div class="col-sm-2"> 
+                                        <label class="col-form-label" for="C_matricula_origem" style="padding-top: 6px">Matricula</label>                                         
+                                    </div>                                     
+                                    <div class="col-sm-3"> 
+                                        <input type="text" class="form-control" disabled id="C_matricula_origem" name="C_matricula_destino" onkeypress="return onlynumber();" maxlength="13" placeholder="Matrícula" required>
+                                        <input type="hidden" class="form-control" disabled id="C_id_empregador_origem" name="C_id_empregador_origem">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="submit" class="btn btn-primary" id="btnConsultar">
+                                            buscar</button>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="submit" class="btn btn-primary" id="btnTransferir" >
+                                            <span class="glyphicon glyphicon-arrow-right"></span>
+                                            Transferir
+                                        </button>
+                                    </div>
+                                </div>                                 
+                                <div class="form-group row"> 
+                                    <div class="col-sm-2"> 
+                                        <label class="col-form-label" for="C_nome_origem" style="padding-top: 6px">Associado</label>                                         
+                                    </div>                                     
+                                    <div class="col-sm-10"> 
+                                        <input type="text" class="form-control" disabled id="C_nome_origem" name="C_associado_origem" onkeypress="return onlynumber();" maxlength="13" placeholder="Associado" required>
+                                    </div>                                     
+                                </div>                                 
+                                <div class="form-group row"> 
+                                    <div class="col-sm-2"> 
+                                        <label class="col-form-label" for="C_empregador_origem" style="padding-top: 6px">Empregador</label>                                         
+                                    </div>                                     
+                                    <div class="col-sm-4"> 
+                                        <input type="text" class="form-control" disabled id="C_empregador_origem" name="C_empregador_origem" onkeypress="return onlynumber();" maxlength="13" placeholder="Empregador" required>
+                                    </div>                                     
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <table id="tab_matricula_origem" class="display table table-striped table-hover dt-responsive" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th style="font-size:x-small">REGISTRO</th>
+                                                    <th style="font-size:x-small">VALOR</th>
+                                                    <th style="font-size:x-small">DATA</th>
+                                                    <th style="font-size:x-small">MES</th>
+                                                    <th style="font-size:x-small">PARCELA</th>
+                                                    <th style="font-size:x-small">ABREVIACAO</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>                                 
+                            </div>                             
+                        </div>                         
+                        <!-- /.box -->                         
+                    </div>
+                    <div class="col-md-6">
+                        <div class="box"> 
+                            <div class="box-header with-border"> 
+                                <div class="form-group row"> 
+                                    <label class="col-sm-4 col-form-label" style="padding-top: 6px">Destino</label>
+                                </div>
+                            </div>                             
+                            <!-- /.box-header -->                             
+                            <div class="box-body">
+                                <div class="form-group row">
+                                    <div class="col-sm-2">
+                                        <label class="col-form-label" for="C_matricula_origem" style="padding-top: 6px">Matricula</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" disabled id="C_matricula_destino" name="C_matricula_destino" onkeypress="return onlynumber();" maxlength="13" placeholder="Matrícula" required>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button type="submit" class="btn btn-primary" id="btnConsultarDestino">
+                                            buscar</button>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-2">
+                                        <label class="col-form-label" for="C_nome_destino" style="padding-top: 6px">Associado</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" disabled id="C_nome_destino" name="C_associado_destino" onkeypress="return onlynumber();" maxlength="13" placeholder="Associado" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-2">
+                                        <label class="col-form-label" for="C_empregador_origem" style="padding-top: 6px">Empregador</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" disabled id="C_empregador_destino" name="C_empregador_destino" onkeypress="return onlynumber();" maxlength="13" placeholder="Empregador" required>
+                                        <input type="hidden" class="form-control" disabled id="C_id_empregador_destino" name="C_id_empregador_destino">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <table id="tab_matricula_destino" class="display table table-striped table-hover dt-responsive" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th style="font-size:x-small">REGISTRO</th>
+                                                <th style="font-size:x-small">VALOR</th>
+                                                <th style="font-size:x-small">DATA</th>
+                                                <th style="font-size:x-small">MES</th>
+                                                <th style="font-size:x-small">PARCELA</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box -->                         
+                    </div>                     
+                    <!-- /.box -->                     
+                </div>                 
+            </section>             
+        </div>         
+        <!-- Modal Edita e Cadastra -->         
+        <section class="content"> 
+            <div class="row"> 
+                <div class="modal fade" id="ModalBuscaAssociado" name="ModalBuscaAssociado" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true"> 
+                    <form data-toggle="validator" role="form" name="frmbusca" id="frmbusca"> 
+                        <div class="modal-dialog" role="document"> 
+                            <div class="modal-content"> 
+                                <div class="modal-header"> 
+                                    <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">ASSOCIADO&nbsp<small>Consultando</small></h5> 
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>                                     
+                                    <div class="form-group control-group" style="float: right;padding-right: 5px;"> 
+                                        <button type="submit" class="btn btn-primary" id="btnSalvar"> 
+                                            <span class="glyphicon glyphicon-send"></span> 
+                                            Salvar
+                                        </button>                                         
+                                    </div>                                     
+                                </div>                                 
+                                <div class="modal-body"> 
+                                    <div class="container-fluid"> 
+                                        <div class="row"> 
+                                            <div class="col-sx-12"> 
+                                                <table id="tabela_busca_associado" class="display table table-striped table-hover dt-responsive compact" width="100%"> 
+                                                    <thead> 
+                                                        <tr> 
+                                                            <th>MATRICULA</th> 
+                                                            <th>NOME</th> 
+                                                            <th>ENDEREÇO</th> 
+                                                            <th>NÚMERO</th> 
+                                                            <th>BAIRRO</th> 
+                                                            <th>NASCIMENTO</th> 
+                                                            <th>EMPREGADOR</th> 
+                                                            <th>ABREVIACAO</th> 
+                                                        </tr>                                                         
+                                                    </thead>                                                     
+                                                </table>
+                                            </div>                                             
+                                        </div>                                         
+                                    </div>                                     
+                                </div>                                 
+                            </div>                             
+                        </div>                         
+                    </form>                     
+                </div>                 
+            </div>             
+        </section>         
+        <script src="../Adm/pages/conta/js/transferencia.js"></script>
+    </body>     
+</html>

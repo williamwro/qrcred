@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Manutenção dos cartões</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+<style type="text/css">
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+    #tab_matricula_origem tbody tr td {
+        margin: 0 auto;
+    }
+    div.container {
+        width: 80%;
+    }
+    th {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    td {
+        font-size: 11px;
+    }
+    thead input {
+        width: 100%;
+    }
+</style>
+<body>
+<!-- Content Wrapper. Contains page content -->
+<div class="container-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1 style="margin-top: -1px;margin-left: -6px;">
+            CARTÕES <small>manutenção</small> </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label class="col-sm-6 col-form-label">Dados do cartão do associado</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_matricula_origem" style="padding-top: 6px">Matricula</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" disabled id="C_matricula_origem" name="C_matricula_destino" onkeypress="return onlynumber();" maxlength="13" placeholder="Matrícula" required>
+
+                                <input type="hidden" class="form-control" disabled id="C_id_empregador_origem" name="C_id_empregador_origem">
+                                <input type="hidden" class="form-control" disabled id="limite" name="limite" value="">
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-primary" id="btnConsultar">
+                                    Consultar</button>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_nome_origem" style="padding-top: 6px">Associado</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" disabled id="C_nome_origem" name="C_associado_origem" onkeypress="return onlynumber();" maxlength="13" placeholder="Associado">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_empregador_origem" style="padding-top: 6px">Empregador</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" disabled id="C_empregador_origem" name="C_empregador_origem" onkeypress="return onlynumber();" maxlength="13" placeholder="Empregador">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_cartao" style="padding-top: 6px">Nº Cartão</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" disabled id="C_cartao" name="C_cartao" placeholder="cartão" />
+                                <input type="hidden" name="C_cartao_hidden" id="C_cartao_hidden" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_situacao" style="padding-top: 6px">Situação atual</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input class="form-control" disabled id="C_situacao" name="C_situacao" placeholder="Situação" />
+                                <input type="hidden" name="C_situacao_hidden" id="C_situacao_hidden" value=""/>
+                            </div>
+                        </div>
+                        <p>
+                        <hr style="height:1px; border:none; color:rgba(0,0,0,0.26); background-color:rgba(0,0,0,0.26); margin-top: 0px; margin-bottom: 0px;">
+                        </p>
+                        <form class="form-inline">
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <button type="button" class="btn btn-success" onclick="atualiar_cartao(1)" id="btnLiberar">
+                                        Liberar</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-danger" onclick="atualiar_cartao(2)" id="btnBloquear">
+                                        Bloquear</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-warning" onclick="atualiar_cartao(3)" id="btnCancelar">
+                                        Cancelar</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-info" onclick="atualiar_cartao(7)" id="btnEntregue">
+                                        Entregue</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-dark" onclick="atualiar_cartao(8)" id="btnBloquearMsg">
+                                        Bloquear c/ mensagem</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input class="form-control" type="text" id="obs_cartao" placeholder="Observação">&nbsp;
+                                </div>
+                            </div>
+                        </form>
+                        <p>
+                        <hr style="height:1px; border:none; color:rgba(0,0,0,0.26); background-color:rgba(0,0,0,0.26); margin-top: 0px; margin-bottom: 0px;">
+                        </p>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table id="tabela_origem" class="display" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th style="font-size:x-small">DATA</th>
+                                        <th style="font-size:x-small">HORA</th>
+                                        <th style="font-size:x-small">SITUAÇÃO</th>
+                                        <th style="font-size:x-small">OPERADOR</th>
+                                        <th style="font-size:x-small">OBSERVAÇÃO</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </section>
+</div>
+<!-- Modal Busca Associado -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalBuscaAssociado" name="ModalBuscaAssociado">
+            <form data-toggle="validator" role="form" name="frmbusca" id="frmbusca">
+                <div class="modal-dialog" style="width: 80%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">CARTÕES&nbsp<small>Consultando</small></h5>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sx-12">
+                                        <table id="tabela_busca_associado" class="display table table-striped table-hover dt-responsive" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>MATRICULA</th>
+                                                <th>NOME</th>
+                                                <th>IDEMPREGADOR</th>
+                                                <th>EMPREGADOR</th>
+                                                <th>CARTÃO</th>
+                                                <th>SITUACAO</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script src="../Adm/pages/cartoes/js/cartoes_read_script.js"></script>
+</body>
+</html>

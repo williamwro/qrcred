@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bloquear mes</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Content Header (Page header) -->
+    <style type="text/css">
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+
+<section class="content-header">
+    <h1 style="margin-top: -1px;margin-left: -6px;">
+        Manutenção <small>bloquear mes fechado</small> </h1>
+</section>
+<section class="content">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-12 text-center">
+            <div class="box">
+                <div class="box-body">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="mes_atual" style="padding-top: 6px">Mês atual</label>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" readonly class="form-control" id="mes_atual">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" id="btnBloquear" class="btn btn-primary mb-2">Bloquear</button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="status" style="padding-top: 6px">Status</label>
+                        </div>
+                        <div class="col-md-2">
+                            <span id="status" class="badge badge-success" style="background-color: green">Liberado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="../Adm/pages/manutencao/js/manutencao.js"></script>
+</body>
+</html>

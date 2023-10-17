@@ -1,0 +1,7 @@
+[02-Dec-2022 11:43:10 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 2:                 FROM sind.funcao WHERE id = 
+                                                    ^ in /home/makecard/public_html/sind/Adm/pages/funcao/exibe.php:13
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/funcao/exibe.php(13): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/funcao/exibe.php on line 13

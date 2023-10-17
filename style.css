@@ -1,0 +1,865 @@
+body {
+    margin: 0px;
+
+    /* retirando a margem padrão */
+    padding: 0px;
+
+    /* retirando o padding padrão */
+}
+
+p,
+h1,
+form {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* ----------- My Form ----------- */
+.titulo_convenio {
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    font-size: 20px;
+    font-weight: bolder;
+    color: #006633;
+    width: 740px;
+}
+
+.titulo_endereco {
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bolder;
+    color: #000000;
+    width: 740px;
+}
+
+.titulo_campo {
+    font-family: Calibri;
+    color: #000000;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    height: 35px;
+    width: 130px;
+}
+
+.nome_associado_exibir {
+    border: solid 1px #999999;
+    font-family: Calibri;
+    font-size: 18px;
+    font-weight: bold;
+    width: 600px;
+    height: 18px;
+    padding: 4px;
+    padding-bottom: 7px;
+}
+
+#cartao_exibir {
+    border: solid 1px #999999;
+    font-family: Calibri;
+    font-size: 18px;
+    font-weight: bold;
+    width: 460px;
+    height: 18px;
+    padding: 4px;
+    padding-bottom: 7px;
+}
+
+.campo_comun {
+    border: solid 1px #999999;
+    font-family: "calibri", Trebuchet MS, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    width: 122px;
+    height: 28px;
+    text-align: left;
+    padding-top: 4px;
+    padding-left: 4px;
+}
+.campo_valor_total {
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    color: #000000;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.txtSaldo {
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    color: #000000;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    height: 60px;
+    width: 132px;
+}
+
+/*box login cartao*/
+.myform2 {
+}
+
+/*box da entrada adminstrativa*/
+.myform4 {
+    position: relative;
+    margin: 0 auto;
+    width: 190px;
+    height: 157px;
+    top: 60px;
+    padding: 5px;
+}
+
+/*box alterar senha convenio*/
+.myform5 {
+    position: relative;
+    float: left;
+    left: 50px;
+    width: 190px;
+    top: 60px;
+    padding: 5px;
+}
+
+.myformmenu {
+    position: relative;
+    float: left;
+    text-align: left;
+}
+
+/* ----------- stylized ----------- */
+.conteudo {
+    position: relative;
+    float: left;
+    height: 445px;
+    min-height: 445px;
+    width: 613px;
+    background-color: #F7F7F7;
+}
+
+#conteudo2 {
+    float: left;
+    height: 445px;
+    width: 773px;
+    background-color: #F7F7F7;
+}
+
+#conteudo2 p {
+    font-family: Calibri;
+}
+
+#stylized {
+    float: left;
+    border: solid 2px #999999;
+    position: relative;
+    left: 70px;
+    width: 180px;
+    height: 180px;
+    padding: 10px;
+    top: 100px;
+    margin: 0 auto 0 auto;
+}
+
+#stylized h1 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+#stylized p {
+    font-size: 11px;
+    color: #666666;
+    margin-bottom: 10px;
+    border-bottom: solid 1px #999999;
+    padding-bottom: 5px;
+}
+
+#stylized label {
+    display: block;
+    font-weight: bold;
+    text-align: right;
+    float: left;
+}
+
+#stylized .small {
+    color: #666666;
+    display: block;
+    font-size: 11px;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: normal;
+    text-align: right;
+    width: 65px;
+}
+
+#stylized input {
+    float: left;
+    font-size: 12px;
+    padding-left: 2px;
+    border: solid 1px #999999;
+    width: 80px;
+    margin: 2px 0 15px 10px;
+}
+
+#stylizedmsg label {
+    font-family: Arial, 'Lucida Sans Unicode', Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    display: block;
+    text-align: center;
+    width: 416px;
+}
+
+#stylized2 {
+    float: left;
+    position: relative;
+    border: solid 2px #999999;
+    left: 120px;
+    width: 180px;
+    height: 180px;
+    padding: 10px;
+    top: 100px;
+    margin: 0 auto 0 auto;
+}
+
+#stylized2 h1 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+#stylized2 p {
+    font-size: 11px;
+    color: #666666;
+    margin-bottom: 10px;
+    border-bottom: solid 1px #999999;
+    padding-bottom: 5px;
+}
+
+#stylized2 label {
+    display: block;
+    font-weight: bold;
+    text-align: right;
+    float: left;
+}
+
+#stylized2 .small {
+    color: #666666;
+    display: block;
+    font-size: 11px;
+    font-weight: normal;
+    text-align: right;
+    width: 65px;
+}
+
+#stylized2 input {
+    float: left;
+    font-size: 12px;
+    padding-left: 2px;
+    border: solid 1px #999999;
+    width: 80px;
+    margin: 2px 0 15px 10px;
+}
+
+div.topo {
+    position: relative;
+    width: 775px;
+}
+
+div.backgroundindex {
+    position: relative;
+    width: 773px;
+    height: 50px;
+    background-image: url(pictures_site-sind/fundo_topo.gif);
+    background-repeat: repeat-x;
+}
+
+div.logomakeindex {
+    position: absolute;
+    background: url(pictures_site-sind/makecard.gif) no-repeat;
+    height: 30px;
+    width: 152px;
+    top: 15px;
+    left: 5px;
+}
+
+div.administradoraindex {
+    position: absolute;
+    width: 300px;
+    height: 18px;
+    top: 25px;
+    right: 0px;
+    background: url(pictures_site-sind/administradora.gif) no-repeat;
+}
+
+#caixarodape {
+    width: 775px;
+    height: 33px;
+    float: left;
+}
+
+div.rodape {
+    height: 26px;
+    width: 773px;
+    background-image: url(pictures_site-sind/fundo_topo.gif);
+    background-repeat: repeat-x;
+    text-align: center;
+    padding-top: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    color: #999999;
+    text-align: center;
+}
+
+#Cadastro a {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #666666;
+    text-decoration: none;
+}
+
+#Cadastro a:hover {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #990000;
+}
+
+div.menu {
+    float: left;
+    width: 160px;
+    height: 445px;
+    background-image: url(pictures_site-sind/background_degrade.jpg);
+    background-repeat: repeat-x;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 10px;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#menu4 {
+    width: 163px;
+    text-align: left;
+    font-size: 10px;
+}
+
+#menu4 li a {
+    height: 32px;
+    text-decoration: none;
+}
+
+#menu4 li a:link,
+#menu4 li a:visited {
+    color: #CCC;
+    display: block;
+    background: url(pictures_site-sind/menu4.gif);
+    padding: 8px 0 0 8px;
+}
+
+#menu4 li a:hover {
+    color: #FFF;
+    background: url(pictures_site-sind/menu4.gif) 0 -32px;
+    padding: 8px 0 0 8px;
+}
+
+#menu5 {
+    position: relative;
+    float: left;
+    top: 0px;
+    left: 0px;
+    width: 127px;
+    margin-top: 0px;
+    border-top: 0px;
+    border-style: solid solid none solid;
+    border-color: #000;
+    border-width: 1px;
+    text-align: center;
+    font-size: 10px;
+}
+
+#menu5 li a {
+    height: 32px;
+    height: 24px;
+    text-decoration: none;
+}
+
+#menu5 li a:link,
+#menu5 li a:visited {
+    color: #CCC;
+    display: block;
+    background: url(pictures_site-sind/menu4.gif);
+    padding: 8px 0 0 10px;
+}
+
+#menu5 li a:hover {
+    color: #FFF;
+    background: url(pictures_site-sind/menu4.gif) 0 -32px;
+    padding: 8px 0 0 10px;
+}
+
+.conteudo_login_convenio {
+    float: right;
+    height: 445px;
+    min-height: 445px;
+    width: 270px;
+    background-color: #F7F7F7;
+    border: solid 2px #999999;
+    padding: 10px;
+    top: 100px;
+    margin: 0 auto 0 auto;
+}
+
+.conteudo_login_associado {
+    float: left;
+    height: 445px;
+    min-height: 445px;
+    width: 270px;
+    background-color: #F7F7F7;
+}
+
+#janela_cob {
+    position: relative;
+    width: 633px;
+    height: 300px;
+    padding: 70px;
+    top: 20px;
+}
+
+.geral {
+    width: 775px;
+    height: 534px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+#corpointro {
+    left: 100px;
+    height: 447px;
+    float: left;
+    width: 774px;
+    background-color: #F7F7F7;
+    text-align: center;
+}
+
+#cod_carteira {
+    font-size: 18px;
+    font-family: Calibri;
+    font-weight: bold;
+    padding: 4px;
+    border: solid 1px #999999;
+    width: 120px;
+    height: 18px;
+    float: left;
+}
+
+#cod_carteira_login {
+    font-size: 18px;
+    font-family: Calibri;
+    font-weight: bold;
+    padding: 4px;
+    border: solid 1px #999999;
+    width: 120px;
+    height: 12px;
+    float: left;
+}
+
+#userconv {
+    font-size: 18px;
+    font-family: Calibri;
+    font-weight: bold;
+    padding: 4px;
+    border: solid 1px #999999;
+    width: 120px;
+    height: 12px;
+    float: left;
+}
+
+#passconv {
+    font-size: 18px;
+    font-family: Calibri;
+    font-weight: bold;
+    padding: 4px;
+    border: solid 1px #999999;
+    width: 120px;
+    height: 12px;
+    float: left;
+}
+
+#passasso {
+    font-size: 18px;
+    font-family: Calibri;
+    font-weight: bold;
+    padding: 4px;
+    border: solid 1px #999999;
+    width: 120px;
+    height: 12px;
+    float: left;
+}
+
+#valor_pedido {
+    font-size: 18px;
+    font-family: Calibri;
+    font-weight: bold;
+    padding: 5px;
+    border: solid 1px #999999;
+    width: 116px;
+    height: 17px;
+    float: left;
+}
+
+#valor_parcela {
+    font-size: 18px;
+    font-family: Calibri;
+    font-weight: bold;
+    padding: 5px;
+    border: solid 1px #999999;
+    width: 116px;
+    height: 17px;
+    float: left;
+}
+
+#nparcelas {
+    font-size: 18px;
+    font-family: Calibri;
+    font-weight: bold;
+    padding: 5px;
+    border: solid 1px #999999;
+    width: 116px;
+    height: 17px;
+    float: left;
+}
+
+#confirmar {
+    float: left;
+    height: 28px;
+    width: 140px;
+}
+
+#nparcelas {
+    font-size: 18px;
+    font-family: Calibri;
+    padding: 2px;
+    padding-left: 3px;
+    border: solid 1px #999999;
+    width: 127px;
+    height: 34px;
+    float: left;
+}
+
+#pass {
+    font-size: 12px;
+    padding: 2px;
+    padding-left: 3px;
+    border: solid 1px #999999;
+    width: 120px;
+    height: 22px;
+    float: left;
+}
+
+#corpocadastro {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+}
+
+.conteudotabela {
+    position: absolute;
+    margin: 0px;
+    font-family: Verdana, arial;
+    color: #333333;
+    font-size: 10px;
+    background-color: #F7F7F7;
+    width: 488px;
+    left: -1px;
+}
+
+.conteudotabela input {
+    position: relative;
+    float: left;
+    border: solid 1px #aacfe4;
+    font-family: Verdana, arial;
+    color: #333333;
+    font-size: 10px;
+}
+
+.conteudotabela select {
+    position: relative;
+    float: left;
+    border: solid 1px #aacfe4;
+    font-family: Verdana, arial;
+    color: #333333;
+    font-size: 10px;
+}
+
+.conteudotabela2 {
+    position: absolute;
+    width: 580px;
+    left: 0px;
+    margin: 0px;
+    font-family: Verdana, arial;
+    color: #333333;
+    font-size: 10px;
+    background-color: #F7F7F7;
+}
+
+.conteudotabelasenha {
+    position: relative;
+    float: left;
+    margin: 0px;
+    left: 170px;
+    top: 60px;
+    font-family: Verdana, arial;
+    color: #333333;
+    font-size: 10px;
+    background-color: #F7F7F7;
+}
+
+.conteudorel {
+    position: relative;
+    font-family: Calibri;
+    font-weight: bold;
+    color: #333333;
+    font-size: 11px;
+    background-color: #F7F7F7;
+    width: 1100px;
+}
+
+.cabecalhotabela {
+    border-top: solid 1px #000000;
+    margin: 0px;
+    font-family: Verdana, arial;
+    font-weight: bold;
+    color: #333333;
+    font-size: 10px;
+    background-color: #F7F7F7;
+}
+
+.titulotabela {
+    font-family: Verdana, arial;
+    font-weight: bold;
+    color: #333333;
+    font-size: 10px;
+    background-color: #F7F7F7;
+}
+
+#corpocad {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin: 0 auto;
+    width: 483px;
+}
+
+#corpocad2 {
+    position: absolute;
+    width: 300px;
+    left: 0px;
+    top: 0px;
+    margin: 0 auto;
+}
+
+.ponto {
+    float: left;
+    color: #FF0000;
+}
+
+.voltamenu {
+    position: relative;
+    top: 10px;
+    margin-left: 3px;
+    margin-right: 3px;
+    font-family: Verdana, arial;
+    color: #333333;
+    font-size: 18px;
+}
+
+.voltamenu input {
+    position: relative;
+    font-family: Verdana, arial;
+    font-size: 12px;
+}
+
+.conteudoshowdata {
+    position: relative;
+    left: 0px;
+    width: 520px;
+    margin: 0px;
+    background-color: #F7F7F7;
+}
+
+.corposubmenuintro {
+    position: relative;
+    float: left;
+    left: 0px;
+    width: 774px;
+}
+
+.corpoprincipalintro {
+    float: left;
+    left: 0px;
+    top: 0px;
+    height: 447px;
+    width: 774px;
+}
+
+.progress {
+    display: block;
+    text-align: center;
+    width: 0;
+    height: 3px;
+    background: red;
+    transition: width .3s;
+}
+
+.progress.hide {
+    opacity: 0;
+    transition: opacity 1.3s;
+}
+
+.campo_saldo {
+    width: 100px;
+    font-family: "calibri", Trebuchet MS, Arial, Helvetica, sans-serif;
+}
+.spinner {
+    margin-left: -50px;
+
+    /* half width of the spinner gif */
+    margin-top: -50px;
+
+    /* half height of the spinner gif */
+    text-align: center;
+    z-index: 1234;
+    overflow: auto;
+    width: 100px;
+
+    /* width of the spinner gif */
+    height: 102px;
+
+    /*hight of the spinner gif +2px to fix IE8 issue */
+}
+
+.mask {
+    display: none;
+
+    /*This hides the mask*/
+}
+
+.mask .ajax {
+    display: block;
+    position: relative;
+
+    /*required for z-index*/
+    z-index: 1000;
+
+    /*puts on top of everything*/
+    background-image: url(pictures_site-sind/loading.gif);
+}
+
+#btnLocaliza {
+    width: 150px;
+    height: 27px;
+    background-color: #555555;
+
+    /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#btnEntrar {
+    width: 150px;
+    height: 27px;
+    background-color: #555555;
+
+    /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#btnEntrarAss {
+    width: 150px;
+    height: 27px;
+    background-color: #555555;
+
+    /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#btnconfirmar {
+    width: 150px;
+    height: 27px;
+    background-color: #555555;
+
+    /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#btnCob2 {
+    width: 200px;
+    height: 27px;
+    background-color: #555555;
+
+    /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.btnCob1 {
+    width: 200px;
+    height: 27px;
+    background-color: #555555;
+
+    /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#divLoading {
+    background-color: grey;
+    text-align: center;
+    display: none;
+    width: 99%;
+    height: 99%;
+    border: 0px solid black;
+    position: absolute;
+    padding: 2px;
+    z-index: 100;
+    filter: alpha(opacity=40);
+
+    /* For IE8 and earlier */
+    opacity: .8;
+}
+
+.ajax-loader {
+    position: absolute;
+    left: 45%;
+    top: 40%;
+    display: block;
+}
+
+.linha_btn_entrar {
+    float: left;
+    margin-left: 25%;
+}

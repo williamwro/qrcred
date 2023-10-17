@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Associados</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <style type="text/css">
+        th, td { white-space: nowrap; }
+        div.dataTables_wrapper {
+            margin: 0 auto;
+        }
+
+        div.container {
+            width: 80%;
+        }
+        th {
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        td {
+            font-size: 11px;
+        }
+        .modal-dialog {
+            position: relative;
+            display: table;
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 2px;
+        }
+        thead input {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<section class="content-header">
+    <h1 style="margin-top: -1px;margin-left: -6px;">
+        Produção <small>Visualização</small> </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+        </li>
+        <li>
+            <a href="#">Tables</a>
+        </li>
+        <li class="active">Data tables</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sx-12">
+            <div class="box">
+                <div class="box-header">
+                    <form id="listagem" name="listagem"role="form">
+
+                        <div class="form-group row">
+                            <div class="col-md-8">
+                                <label for="C_nome_convenio">Convenio</label>
+                                <input type="text" class="form-control" disabled id="C_nome_convenio">
+                                <input type="hidden" id="cod_convenio" name="cod_convenio" value="">
+                            </div>
+                            <div class="col-md-2" style="padding-top: 24px;">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="chkTodos">
+                                    <label class="form-check-label" for="chkTodos">Imprimir todos</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2" style="padding-top: 24px;">
+                                <input type="button" name="btnBuscaConvenio" id="btnBuscaConvenio" class="btn btn-primary" value="Consultar" />
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label for="C_mes">Mês</label>
+                                <select class="form-control i_bd" id="C_mes" name="C_mes">
+                                </select>
+                                <input type="hidden" name="C_mes_hidden" id="C_mes_hidden" value=""/>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="C_empregador">Empregador</label>
+                                <select class="form-control i_bd" id="C_empregador" name="C_empregador">
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="C_parcela">Parcela</label>
+                                <select class="form-control i_bd" id="C_parcela" name="C_parcela">
+                                </select>
+                            </div>
+                            <div class="col-md-1" style="padding-top: 24px;">
+                                <input type="button" name="btnExibir" id="btnExibir" class="btn btn-primary" value="Exibir" />
+                            </div>
+                            <div class="col-md-1" style="padding-top: 24px;">
+                                <input type="button" name="gerarpdf" id="gerarpdf" class="btn btn-primary" value="Relatório" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-body">
+                    <table id="tabela_producao" class="display table table-striped table-hover dt-responsive compact nowrap" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>LANÇAMENTO</th>
+                                <th>MATRICULA</th>
+                                <th>VALOR</th>
+                                <th>DATA</th>
+                                <th>ASSOCIADO</th>
+                                <th>CONVENIO</th>
+                                <th>EMPREGADOR</th>
+                                <th>PARCELA</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal Busca Convenio -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalBuscaConvenio" name="ModalBuscaAssociado">
+            <form data-toggle="validator" role="form" name="frmbusca" id="frmbuscaConvenio">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="width: 100px;float: left;font-size: x-large;">CONVENIO&nbsp<small>Consultando&nbsp-&nbsp<span id="mes_rotulo"></span></small></h5>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sx-12">
+                                        <table id="tabela_busca_convenio" class="display table table-striped table-hover dt-responsive compact" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th>CODIGO</th>
+                                                <th>RAZAO SOCIAL</th>
+                                                <th>NOME FANTASIA</th>
+                                                <th>ENDEREÇO</th>
+                                                <th>TELEFONE</th>
+                                                <th>TOTAL</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script src="../Adm/pages/producao/js/producao_read_script.js"></script>
+</body>
+</html>

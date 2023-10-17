@@ -1,0 +1,97 @@
+[17-Jun-2020 19:20:10 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qextrato" does not exist
+LINE 1: ...crescimo,divisao,cod_convenio,email,controle FROM sind.qextr...
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php(17): PDO->query('SELECT nome_con...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php on line 17
+[17-Jun-2020 19:21:55 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qextrato" does not exist
+LINE 1: ...crescimo,divisao,cod_convenio,email,controle FROM sind.qextr...
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php(17): PDO->query('SELECT nome_con...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php on line 17
+[17-Jun-2020 19:27:56 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qextrato" does not exist
+LINE 1: ...crescimo,divisao,cod_convenio,email,controle FROM sind.qextr...
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php(17): PDO->query('SELECT nome_con...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php on line 17
+[17-Jun-2020 19:31:11 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qextrato" does not exist
+LINE 1: ...crescimo,divisao,cod_convenio,email,controle FROM sind.qextr...
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php(17): PDO->query('SELECT nome_con...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php on line 17
+[17-Jun-2020 19:31:36 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qextrato" does not exist
+LINE 1: ...crescimo,divisao,cod_convenio,email,controle FROM sind.qextr...
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php(17): PDO->query('SELECT nome_con...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php on line 17
+[27-Jun-2020 14:19:35 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca_gerador_pdf.php on line 113
+[27-Jun-2020 14:19:35 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca_gerador_pdf.php on line 114
+[27-Jun-2020 11:19:36 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/cobranca/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/extenso.php(35): Extenso::removerFormatacaoNumero('5.571')
+#1 /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca_gerador_pdf.php(133): Extenso::converte('5.571,30', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/extenso.php on line 22
+[27-Jun-2020 14:20:34 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "id" violates not-null constraint
+DETAIL:  Failing row contains (null, 303, 521, 4.38, 3, 15.63, 0, 0, 15.63, f, f, null, JUN/2020, 4). in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php:63
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php(63): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php on line 63
+[29-Jun-2020 13:51:32 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "id" violates not-null constraint
+DETAIL:  Failing row contains (null, 303, 909.29, 4.38, 3, 27.28, 0, 0, 27.28, f, f, null, JUN/2019, 4). in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php:63
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php(63): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php on line 63
+[29-Jun-2020 13:57:53 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "id" violates not-null constraint
+DETAIL:  Failing row contains (null, 303, 521, 4.38, 3, 15.63, 0, 0, 15.63, f, f, null, JUN/2020, 4). in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php:65
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php(65): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php on line 65
+[29-Jun-2020 14:21:46 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[22007]: Invalid datetime format: 7 ERROR:  invalid input syntax for type date: "" in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php:83
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php(83): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php on line 83
+[29-Jun-2020 14:24:32 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[22007]: Invalid datetime format: 7 ERROR:  invalid input syntax for type date: "" in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php:83
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php(83): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php on line 83
+[29-Jun-2020 14:30:11 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[22007]: Invalid datetime format: 7 ERROR:  invalid input syntax for type date: "" in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php:85
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php(85): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php on line 85
+[29-Jun-2020 14:32:57 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  INSERT has more target columns than expressions
+LINE 1: ...iduo,acrescimo,val_cob,enviado,pago,data_pgto,mes,id_categor...
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php:82
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php(82): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php on line 82
+[29-Jun-2020 14:34:17 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "id" violates not-null constraint
+DETAIL:  Failing row contains (null, 303, 521, 4.38, 3, 15.63, 0, 0, 15.63, f, f, null, JUN/2020, 4). in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php:82
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php(82): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/importar_cobranca.php on line 82
+[13-Sep-2022 12:14:28 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[22008]: Datetime field overflow: 7 ERROR:  date/time field value out of range: "2022-82-05"
+LINE 8: ...WHERE cobranca.data_pgto BETWEEN '2022-08-01' AND '2022-82-0...
+                                                             ^
+HINT:  Perhaps you need a different "datestyle" setting. in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php:77
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php(77): PDO->query('SELECT cobranca...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/cobranca.php on line 77

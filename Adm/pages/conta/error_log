@@ -1,0 +1,173 @@
+[30-Jun-2020 22:10:47 UTC] PHP Notice:  Undefined offset: 1 in /home/makecard/public_html/sind/Adm/php/funcoes.php on line 41
+[30-Jun-2020 22:10:48 UTC] PHP Notice:  Undefined offset: 1 in /home/makecard/public_html/sind/Adm/php/funcoes.php on line 41
+[30-Jun-2020 22:10:48 UTC] PHP Notice:  Undefined offset: 1 in /home/makecard/public_html/sind/Adm/php/funcoes.php on line 41
+[30-Jun-2020 22:10:49 UTC] PHP Notice:  Undefined offset: 1 in /home/makecard/public_html/sind/Adm/php/funcoes.php on line 41
+[01-Jul-2020 17:25:58 America/Araguaina] PHP Notice:  Undefined variable: limite in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 250
+[01-Jul-2020 17:27:23 America/Araguaina] PHP Notice:  Undefined variable: limite in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 250
+[03-Jul-2020 16:15:19 America/Araguaina] PHP Notice:  Undefined variable: mes in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 176
+[03-Jul-2020 16:15:19 America/Araguaina] PHP Notice:  Undefined variable: matricula in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 178
+[03-Jul-2020 16:15:19 America/Araguaina] PHP Notice:  Undefined variable: empregador in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 179
+[03-Jul-2020 16:15:19 America/Araguaina] PHP Notice:  Undefined variable: mes in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 194
+[03-Jul-2020 16:15:19 America/Araguaina] PHP Notice:  Undefined variable: query in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 202
+[03-Jul-2020 16:15:19 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php:202
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php(202): PDO->query('')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 202
+[06-Jul-2020 13:42:03 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[22P02]: Invalid text representation: 7 ERROR:  invalid input syntax for type double precision: "15,00" in /home/makecard/public_html/sind/Adm/pages/conta/conta_edit.php:21
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/conta/conta_edit.php(21): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/conta/conta_edit.php on line 21
+[06-Jul-2020 12:13:58 America/Araguaina] PHP Notice:  Undefined variable: mes in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 176
+[06-Jul-2020 12:13:58 America/Araguaina] PHP Notice:  Undefined variable: matricula in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 178
+[06-Jul-2020 12:13:58 America/Araguaina] PHP Notice:  Undefined variable: empregador in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 179
+[06-Jul-2020 12:13:58 America/Araguaina] PHP Notice:  Undefined variable: mes in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 194
+[06-Jul-2020 12:13:58 America/Araguaina] PHP Notice:  Undefined variable: query in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 202
+[06-Jul-2020 12:13:59 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000]: General error in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php:202
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php(202): PDO->query('')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/conta/conta_imprimir_pdf.php on line 202
+[25-Oct-2022 17:24:14 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[25-Oct-2022 17:26:12 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[25-Oct-2022 17:29:18 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:09:09 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:09:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:10:03 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:10:43 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/meses_conta.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:10:43 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/meses_conta.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:10:52 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:11:44 UTC] PHP Notice:  Undefined offset: 1 in /home/makecard/public_html/sind/Adm/php/funcoes.php on line 63
+[03-Nov-2022 16:12:07 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/meses_conta.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:13:40 UTC] PHP Notice:  Undefined offset: 1 in /home/makecard/public_html/sind/Adm/php/funcoes.php on line 63
+[03-Nov-2022 16:13:41 UTC] PHP Notice:  Undefined offset: 1 in /home/makecard/public_html/sind/Adm/php/funcoes.php on line 63
+[03-Nov-2022 16:13:47 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/exibe_todos_associados.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:13:59 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/meses_conta.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:14:11 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:14:41 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:15:12 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:16:42 UTC] PHP Notice:  Undefined offset: 1 in /home/makecard/public_html/sind/Adm/php/funcoes.php on line 63
+[03-Nov-2022 16:20:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/meses_conta.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:20:31 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:23:36 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:24:41 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/meses_conta.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:25:13 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:27:48 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/conta_list_mes.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:29:06 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/exibe_todos_associados.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:30:30 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/conta/exibe_todos_associados.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27

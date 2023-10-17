@@ -1,0 +1,8 @@
+[api]
+port = "9000"
+
+[database]
+host = "34.95.183.208"
+user = "postgres"
+pass = "Abc25149076"
+name = "affe"

@@ -1,0 +1,77 @@
+[06-Sep-2022 13:39:46 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 13:41:54 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 13:42:54 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 13:43:26 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 13:47:28 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 13:47:36 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 13:48:09 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 13:57:33 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 14:14:25 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 14:15:36 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17
+[06-Sep-2022 15:47:30 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 3:            WHERE qusuarios.codigo = 
+                                            ^ in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php:17
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php(17): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/usuarios/usuario_exibe.php on line 17

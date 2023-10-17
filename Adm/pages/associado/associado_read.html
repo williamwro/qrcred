@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Associados</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    </head>
+    <style type="text/css">
+        .modal-dialog {
+            position: relative;
+            display: table;
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 300px;
+        }
+        .red {
+            background-color: #fdd9cf !important;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .green {
+            background-color: #cfffdf !important;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .black {
+            background-color: #aeaeae !important;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        @font-face {
+            font-family: "TomaSans-Regular";
+            src: local(Raleway), url(../../../fonte/TTF/TomaSans-Regular.ttf);
+        }
+        #tabela_producao_assoc{
+            font-family: "calibri", Trebuchet MS, Arial, Helvetica, sans-serif;
+        }
+</style>
+    <body>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="container-fluid" style="padding: 0">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1 style="margin-top: -1px;margin-left: -6px;">
+                Associado <small>Visualização</small> </h1>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-sx-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <form id="listagem" name="listagem" class="form-inline">
+                                    <div class="container">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                                <input type="button" name="btnInserir" id="btnInserir" class="btn btn-primary" value="Inserir" />
+                                            </div>
+                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="RadioTodos" name="RadioSituacao" class="custom-control-input" value="0" checked>
+                                                    <label class="custom-control-label" for="RadioTodos">Todos</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="RadioFiliados" name="RadioSituacao" class="custom-control-input" value="1" >
+                                                    <label class="custom-control-label" for="RadioFiliados">Filiados</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="RadioDesfiliados" name="RadioSituacao" class="custom-control-input" value="2" >
+                                                    <label class="custom-control-label" for="RadioDesfiliados">Desfiliados</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="RadioFalecidos" name="RadioSituacao" class="custom-control-input" value="3" >
+                                                    <label class="custom-control-label" for="RadioFalecidos">Falecidos</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="box-body">
+                                <table id="tabela_producao_assoc" class="table display table-striped table-hover compact" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>MATRIC</th>
+                                            <th>NOME</th>
+                                            <th>ENDEREÇO</th>
+                                            <th>BAIRRO</th>
+                                            <th>DAT.NASC</th>
+                                            <th>EMP</th>
+                                            <th></th>
+                                            <th>ESTADO</th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- Modal Edita e Cadastra -->
+        <div class="modal fade" id="ModalEdita" name="ModalEdita" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+            <form data-toggle="validator" role="form" name="frmassociado" id="frmassociado">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">ASSOCIADO&nbsp<small id="rotulo_associado">Alterando</small></h5>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        <div class="form-group control-group" style="float: right;padding-right: 5px;">
+                            <button type="button" class="btn btn-primary" id="btnSalvar">
+                                <span class="glyphicon glyphicon-send"></span>
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10" style="padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_nome_assoc">Nome</label>
+                                        <input type="text" class="form-control input-sm" id="C_nome_assoc" name="C_nome_assoc" style="text-transform:uppercase" maxlength="50" placeholder="Nome" required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        <input type="hidden" name="operation" id="operation">
+                                        <input type="hidden" name="divisao" id="divisao">
+                                        <input type="hidden" name="tem_cadastro_conta" id="tem_cadastro_conta">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_matricula_assoc">Matrícula</label>
+                                        <input type="text" class="form-control input-sm" id="C_matricula_assoc" name="C_matricula_assoc" maxlength="13" placeholder="Matrícula" required>
+                                        <input type="hidden" class="form-control input-sm" id="C_matricula_original" name="C_matricula_original">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_endereco_assoc">Endereço</label>
+                                        <input type="text" class="form-control input-sm" id="C_endereco_assoc" name="C_endereco_assoc" style="text-transform:uppercase" placeholder="Endereço" data-error="Por favor, informe o endereço." maxlength="50" required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_numero_assoc">Número</label>
+                                        <input type="text" class="form-control input-sm" id="C_numero_assoc" name="C_numero_assoc" maxlength="10" placeholder="Número" required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_datacadastro_assoc">Data Filiação</label>
+                                        <input type="text" class="form-control input-sm" id="C_datacadastro_assoc" name="C_datacadastro_assoc" tabindex="-1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right:2px;padding-right:2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_complemento_assoc">Complemento</label>
+                                        <input type="text" class="form-control input-sm" id="C_complemento_assoc" name="C_complemento_assoc" style="text-transform:uppercase" placeholder="Complemento" maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding-left:2px;padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_bairro_assoc">Bairro</label>
+                                        <input type="text" class="form-control input-sm" id="C_bairro_assoc" name="C_bairro_assoc" style="text-transform:uppercase" placeholder="Bairro" maxlength="30" required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_cpf_assoc">CPF</label>
+                                        <input type="text" class="form-control input-sm" id="C_cpf_assoc" name="C_cpf_assoc" placeholder="CPF" maxlength="13">
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_rg_assoc">RG</label>
+                                        <input type="text" class="form-control input-sm" id="C_rg_assoc" name="C_rg_assoc" placeholder="RG" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_cidade_assoc">Cidade</label>
+                                        <select class="custom-select i_bd browser-default form-control input-sm" id="C_cidade_assoc" name="C_cidade_assoc">
+                                        </select>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_uf_assoc">UF</label>
+                                        <select class="custom-select i_bd form-control input-sm" id="C_uf_assoc" name="C_uf_assoc">
+                                        </select>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_cep_assoc">Cep</label>
+                                        <input type="text" class="form-control input-sm" id="C_cep_assoc" name="C_cep_assoc" placeholder="00.000-000" maxlength="10">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_telres">Tel. Residencial</label>
+                                        <input type="text" class="form-control input-sm" id="C_telres" name="C_telres" placeholder="(00) 0000-0000">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_telcom">Tel. Comercial</label>
+                                        <input type="text" class="form-control input-sm" id="C_telcom" name="C_telcom" placeholder="(00) 0000-0000">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-left: 2px">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_cel_assoc">Celular</label>
+                                        <input type="text" class="form-control input-sm" id="C_cel_assoc" name="C_cel_assoc" maxlength="15" placeholder="(00) 00000-0000">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_nascimento">Data Nascimen</label>
+                                        <input type="text" class="form-control input-sm" id="C_nascimento" value="" name="C_nascimento" placeholder="00/00/0000" required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_salario">Salário</label>
+                                        <input type="text" class="form-control input-sm" id="C_salario" placeholder="Salário" name="C_salario" maxlength="50" required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" id="campo_C_limite" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_limite_assoc">Limite</label>
+                                        <input type="text" class="form-control input-sm" id="C_limite_assoc" placeholder="Limite" name="C_limite_assoc" maxlength="50" required>
+                                        <input type="hidden" name="C_limite_hidden" id="C_limite_hidden">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_situacao_assoc">Situação</label>
+                                        <select class="custom-select i_bd form-control input-sm" id="C_situacao_assoc" name="C_situacao_assoc" required></select>
+                                        <input type="hidden" name="C_situacao_original" id="C_situacao_original" value="">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_tipo_assoc">Tipo</label>
+                                        <select class="form-control i_bd input-sm" id="C_tipo_assoc" name="C_tipo_assoc" required></select>
+                                        <input type="hidden" name="C_tipo_original" id="C_tipo_original" value="">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_secretaria">Secretaria</label>
+                                        <select class="custom-select i_bd form-control input-sm" id="C_secretaria" name="C_secretaria"></select>
+                                        <input type="hidden" name="C_secretaria_original" id="C_secretaria_original" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_empregador_assoc">Empregador</label>
+                                        <select class="form-control i_bd input-sm" id="C_empregador_assoc" name="C_empregador_assoc" required></select>
+                                        <input type="hidden" name="C_empregador_original" id="C_empregador_original" value="">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_funcao">Função</label>
+                                        <select class="form-control i_bd input-sm" id="C_funcao" name="C_funcao" required></select>
+                                        <input type="hidden" name="C_funcao_original" id="C_funcao_original" value="">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_Email_assoc">E-mail</label>
+                                        <input type="email" class="form-control input-sm" id="C_Email_assoc" placeholder="E-mail" name="C_Email_assoc" maxlength="50">
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_local">Local</label>
+                                        <input type="text" class="form-control input-sm" id="C_local" placeholder="Local" name="C_local" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_parcelas_permitidas">Parcelas permitidas</label>
+                                        <input type="number" class="form-control input-sm" id="C_parcelas_permitidas" placeholder="parcelas" name="C_parcelas_permitidas" maxlength="50">
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_ultimo_mes">Ultimo mês contrato</label>
+                                        <select class="form-control i_bd input-sm" id="C_ultimo_mes" name="C_ultimo_mes"></select>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_datadesfiliacao">Data desfiliação</label>
+                                        <input type="text" class="form-control input-sm" id="C_datadesfiliacao" name="C_datadesfiliacao" placeholder="00/00/0000">
+                                    </div>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_obs">Observação</label>
+                                        <input type="text" class="form-control input-sm" id="C_obs" name="C_obs" style="text-transform:uppercase" maxlength="150" placeholder="Observação">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
+                                    <div class="checkbox text-left">
+                                        <label class="control-label">
+                                            <input type="checkbox" id="C_filiado" name="C_filiado" checked="checked" value="">Filiado
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-left">
+                                    <div class="material-switch pull-left" style="margin-top: 12px;">
+                                        <input id="SwitchCelular" name="SwitchCelular" type="checkbox"/>
+                                        <label for="SwitchCelular" class="label-success"></label>
+                                        &nbsp;Celular de WhatsApp
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+        <!-- Modal Edita Senha -->
+        <div class="modal fade" id="ModalSenha" name="ModalSenha" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form class="form-condensed" data-toggle="validator" name="frmSenha_assoc" id="frmSenha_assoc" role="form" method="post" action="#">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="ModalSenhaLabel">Senha do Associado</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
+                                    <span class="badge badge-secondary" id="associado_rotulo"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
+                            </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_Senha_assoc">Senha</label>
+                                        <input type="password" class="form-control input-sm" id="C_Senha_assoc" name="C_Senha_assoc" value="" placeholder="Senha" data-error="Por favor, informe a senha." maxlength="6" required>
+                                        <input type="hidden" name="cod_associado_senha" id="cod_associado_senha">
+                                        <input type="hidden" name="senha_associado" id="senha_associado">
+                                        <input type="hidden" name="id_empregador_senha" id="id_empregador_senha">
+                                        <input type="hidden" name="existe_senha" id="existe_senha">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_Confirma_Senha_assoc">Confirma Senha</label>
+                                        <input type="password" class="form-control input-sm" id="C_Confirma_Senha_assoc" name="C_Confirma_Senha_assoc" placeholder="Confirma Senha" data-error="Por favor, confirme a senha." maxlength="6" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnsalvarsenha">Salvar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <script src="../Adm/pages/associado/js/associado_read_script.js"></script>
+   </body>
+</html>

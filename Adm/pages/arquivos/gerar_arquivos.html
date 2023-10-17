@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <style type="text/css">
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <section class="content-header">
+        <h1 style="margin-top: -1px;margin-left: -6px;">
+            Arquivos <small>desconto em folha</small> </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-sx-12">
+                <div class="box">
+                    <div class="box-header">
+                        <form id="listagem" name="listagem" role="form">
+                            <div class="form-group row">
+                                <div class="col-md-3" style="width: 150px">
+                                    <label for="C_mes">Mês</label>
+                                    <select class="form-control i_bd" id="C_mes" name="C_mes">
+                                    </select>
+                                    <input type="hidden" name="C_mes_hidden" id="C_mes_hidden" value=""/>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="C_empregador">Empregador</label>
+                                    <select class="form-control i_bd" id="C_empregador" name="C_empregador">
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="C_tipo">Tipo</label>
+                                    <select class="form-control i_bd" id="C_tipo" name="C_tipoconvenio" style>
+                                    </select>
+                                </div>
+                                <div class="col-md-2" style="margin-top: 24px">
+                                    <input type="button" name="gerararquivo" id="gerararquivo" class="btn btn-primary" value="Gerar arquivo" />
+                                </div>
+                                <div class="col-md-2" style="margin-top: 24px">
+                                    <input type="button" name="relatoriofinal" id="relatoriofinal" class="btn btn-primary" value="Relatório" />
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    <div class="box-body">
+                        <table id="tabela_dados" class="display table table-striped table-hover dt-responsive compact nowrap" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>MATRICULA</th>
+                                    <th>NOME</th>
+                                    <th>TIPO</th>
+                                    <th>TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr style="border: 0">
+                                    <th>Compras</th>
+                                    <th class="somacompras" style="text-align: left"></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>Farmácia</th>
+                                    <th class="somafarmacia" style="text-align: left"></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>Unimed</th>
+                                    <th class="somaunimed" style="text-align: left"></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            <tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="../Adm/pages/arquivos/js/FileSaver.js"></script>
+    <script src="../Adm/pages/arquivos/js/arquivos_read_script.js"></script>
+</body>
+</html>

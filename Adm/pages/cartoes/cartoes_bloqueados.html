@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Content Header (Page header) -->
+    <style type="text/css">
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<section class="content-header">
+    <h1 style="margin-top: -1px;margin-left: -6px;">
+        Cartões <small>bloqueados</small> </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sx-12">
+            <div class="box">
+                <div class="box-header">
+                    <form id="listagem" name="listagem" class="form-inline" role="form">
+                        <div class="form-group row">
+                            <div class="col-md-2" style="margin-top: 24px;width: 100px">
+                                <input type="button" name="btnRelatorio" id="btnRelatorio" class="btn btn-primary" value="Relatório" />
+                            </div>
+                            <div class="col-md-3" style="width: 150px">
+                                <label for="C_situacaocartao">Filtro</label>
+                                <select class="form-control i_bd" id="C_situacaocartao" name="C_situacaocartao" style="padding-top: 3px;">
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-body">
+                    <table id="tabela_dados" class="table display compact table-striped table-hover dt-responsive" width="100%">
+                        <thead>
+                        <tr>
+                            <th>DATA</th>
+                            <th>CARTÃO</th>
+                            <th>NOME</th>
+                            <th>EMPREGADOR</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="../Adm/pages/cartoes/js/cartoes_bloqueados.js"></script>
+</body>
+</html>

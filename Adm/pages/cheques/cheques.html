@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Cheques</title>
+    <style type="text/css">
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+        #tabela_cheques tbody tr {
+            cursor:pointer;
+        }
+        #tabela_cheques tr:hover td {
+            background-color: cadetblue;
+            cursor: pointer;
+        }
+        .highlight {
+            background-color:yellow;
+        }
+        /*oculta a primeira coluna*/
+        /*th:first-child + th + th,
+        td:first-child + td + td {
+            display:none;
+        }*/
+    </style>
+</head>
+<body>
+
+<section class="content-header">
+    <h1 style="margin-top: -1px;margin-left: -6px;">
+        Cheques <small>Impressão</small> </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <form id="listagem" name="listagem" role="form">
+
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label for="C_mes">Mês</label>
+                                <select class="form-control i_bd" id="C_mes" name="C_mes">
+                                </select>
+                                <input type="hidden" name="C_mes_hidden" id="C_mes_hidden" value=""/>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="C_categoria">Categoria</label>
+                                <select class="form-control i_bd" id="C_categoria" name="C_categoria">
+                                </select>
+                            </div>
+                            <div class="col-md-1" style="margin-top: 24px;">
+                                <input type="button" name="btnExibir" id="btnExibir" class="btn btn-primary" value="Exibir" />
+                            </div>
+                            <div class="col-md-1" style="margin-top: 24px;">
+                                <input type="button" name="excluir" id="excluir" class="btn btn-primary" value="excluir" />
+                            </div>
+                            <div class="col-md-1" style="margin-top: 24px;">
+                                <a class="btn btn-primary" data-toggle="collapse"  name="btnImportar" id="btnImportar" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Importar
+                                </a>
+                            </div>
+                            <div class="collapse" id="collapseExample">
+                                <div class="card card-body">
+                                    <div class="col-md-2 form-group row" style="margin-top: 24px;margin-left: 15px;">
+                                        <select class="form-control i_bd" id="C_mes2" name="C_mes2" style="width: 150px">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1" style="margin-top: 24px;">
+                                        <button type="button" name="btnExecutar" id="btnExecutar" class="spinner-button btn btn-primary mb-2" value="executar">Executar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2" style="margin-top: 24px;">
+                                <input type="button" name="btnMarcarTodos" id="btnMarcarTodos" class="btn btn-primary" value="Marcar todos" />
+                            </div>
+                            <div class="col-md-2" style="margin-top: 24px;">
+                                <a class="btn btn-primary" href = "webrun:C:\Users\Administrador\Documents\cheques_convenios\cheques_novo.exe">Imprimir conv</a>
+                            </div>
+                            <div class="col-md-2" style="margin-top: 24px;">
+                                <a class="btn btn-primary" id="printtx" href = "webrun:C:\Users\Administrador\Documents\cheques_taxas\cheques_taxas.exe">Imprimir tx</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-body">
+                    <div id="container">
+                        <table id="tabela_cheques" class="table display table-striped table-hover dt-responsive compact nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th>RAZAO SOCIAL</th>
+                                    <th>VALOR</th>
+                                    <th>VAL ALICOTA</th>
+                                    <th>ALICOTA %</th>
+                                    <th>LIQUIDO</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal atualiza residuo -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalAtualizaResiduo" name="ModalAtualizaResiduo">
+            <form data-toggle="validator" role="form" name="frmbusca" id="frmbusca">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">ATUALIZANDO&nbsp<small>Resíduo</small></h5>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4">
+                                        <div class="form-group control-group has-feedback">
+                                            <label for="inputValor">Valor</label>
+                                            <div class='input-group'>
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon glyphicon-usd"></i></span>
+                                                <input type="text" id="inputValor"  name="inputValor" class="form-control" autofocus>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="btnAtualizar" class="btn btn-primary"  data-dismiss="modal">Atualizar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script src="../Adm/pages/cheques/js/cheques.js"></script>
+</body>
+</html>

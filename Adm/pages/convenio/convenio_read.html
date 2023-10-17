@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+</head>
+ <style type="text/css">
+       .form-inline
+     {
+         padding-left: 5px;
+         padding-right: 5px;
+         padding-bottom: 5px;
+     }
+     .alinha_direita
+     {
+         text-align: right;
+     }
+     th
+     {
+         font-size: 12px;
+         white-space: nowrap;
+     }
+     td
+     {
+         font-size: 11px;
+     }
+     .modal-dialog
+     {
+         position: relative;
+         display: table;
+         overflow-y: auto;
+         overflow-x: auto;
+         width: auto;
+         min-width: 300px;
+     }
+     .form-group
+     {
+         margin-bottom: 2px;
+     }
+     #tabela_producao > tbody > tr > td {
+         word-break: break-all;
+    }
+       label.checkbox input[type="checkbox"] {display:none;}
+       label.checkbox span {
+           display:inline-block;
+           border:1px solid #BBB;
+           border-radius:7px;
+           width:25px;
+           height:25px;
+           background:#C33;
+           vertical-align:middle;
+           margin-top:0px;
+           margin-bottom:0px;
+           position: absolute;
+           top:-12px;
+           left: 15px;
+           transition:width 0.1s, height 0.1s, margin 0.1s;
+       }
+       label.checkbox :checked + span {
+           background:#6F6;
+           width:27px;
+           height:27px;
+           margin: 0px;
+       }
+       label.checkbox :checked + span:after {
+           content: '\2714';
+           font-size: 20px;
+           position: absolute;
+           top: -2px;
+           left: 5px;
+           color: #99a1a7;
+       }
+ </style>
+ <body>
+ <!-- Content Wrapper. Contains page content -->
+<div class="container-fluid" style="padding: 0">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1 style="margin-top: -1px;margin-left: -6px;">
+            Convenio <small>Visualização</small> </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+
+            <div class="col-sx-12">
+                <div class="box">
+                    <div class="box-header">
+                        <form id="listagem" name="listagem" class="form-inline">
+                            <input type="button" name="btnInserir" id="btnInserir" class="btn btn-primary" value="Inserir" />
+                        </form>
+                    </div>
+                    <div class="box-body">
+                        <table id="tabela_producao" class="display table table-striped table-hover dt-responsive compact">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>CODIGO</th>
+                                    <th>RAZAO SOCIAL</th>
+                                    <th>NOME FANTASIA</th>
+                                    <th>ENDEREÇO</th>
+                                    <th>TELEFONE</th>
+                                    <th>DATA CAD</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>DIV</th>
+                                    <th>DES</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Modal Edita e Cadastra -->
+<div class="modal fade" id="ModalEditaConvemio" name="ModalEditaConvemio" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalEditaLabel" style="width: 400px;float: left;font-size: x-large;">Convenio</h5>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                <div class="form-group control-group" style="float: right;padding-right: 5px;">
+                    <button type="button" class="btn btn-primary" id="btnSalvar">
+                        <span class="glyphicon glyphicon-send"></span>
+                        Salvar
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form class="form-condensed" data-toggle="validator" name="frmconvenio" id="frmconvenio" role="form">
+                        <div class="row">
+                            <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10" style="padding-right: 2px;">
+                                <div class="form-group control-group has-feedback">
+                                    <label class="control-label" for="C_razaosocial">Razão social</label>
+                                    <input type="text" class="form-control input-sm" id="C_razaosocial" name="C_razaosocial" value="" placeholder="Razão social" data-error="Por favor, informe a razação social." maxlength="50" required>
+                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    <input type="hidden" name="operation" id="operation">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_codigo">Código</label>
+                                    <input type="text" class="form-control input-sm" id="C_codigo" name="C_codigo" placeholder="Codigo" readonly="readonly" tabindex="-1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10" style="padding-right: 2px;">
+                                <div class="form-group control-group has-feedback">
+                                    <label class="control-label" for="C_nomefantasia">Nome Fantasia</label>
+                                    <input type="text" class="form-control input-sm" id="C_nomefantasia" name="C_nomefantasia" placeholder="Nome fantasia" data-error="Por favor, informe o nome fantasia." maxlength="50" required>
+                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_datacadastro">Data</label>
+                                    <input type="text" class="form-control input-sm" id="C_datacadastro" name="C_datacadastro" readonly="readonly" tabindex="-1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_endereco">Endereço</label>
+                                    <input type="text" class="form-control input-sm" id="C_endereco" name="C_endereco" placeholder="Endereço" data-error="Por favor, informe o endereço." maxlength="100" required>
+                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;padding-right: 2px;">
+                                <div class="form-group control-group has-feedback">
+                                    <label class="control-label" for="C_numero">Número</label>
+                                    <input type="text" class="form-control input-sm" id="C_numero" name="C_numero" maxlength="10"  placeholder="Número" required>
+                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4" style="padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_bairro">Bairro</label>
+                                    <input type="text" class="form-control input-sm" id="C_bairro" name="C_bairro" placeholder="Bairro" data-error="Por favor, informe o bairro." maxlength="50" required>
+                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;">
+                                <div class="form-group control-group has-feedback">
+                                    <label class="control-label" for="C_cidade">Cidade</label>
+                                    <select class="custom-select i_bd browser-default form-control input-sm" id="C_cidade" name="C_cidade">
+                                    </select>
+                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 2px;padding-right: 2px;">
+                                <div class="form-group control-group has-feedback">
+                                    <label class="control-label" for="C_uf">UF</label>
+                                    <select class="custom-select i_bd form-control input-sm" id="C_uf" name="C_uf">
+                                    </select>
+                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-xs-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_cep">Cep</label>
+                                    <input type="text" class="form-control input-sm" id="C_cep" name="C_cep" placeholder="__.___-___" maxlength="10">
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_tel1">Tel1</label>
+                                    <input type="text" class="form-control input-sm" id="C_tel1" name="C_tel1" placeholder="(__)____-____">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;padding-right: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_tel2">Tel2</label>
+                                    <input type="text" class="form-control input-sm" id="C_tel2" name="C_tel2" placeholder="(__)____-____">
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_tipoempresa">Tipo Empresa</label>
+                                    <select class="form-control i_bd input-sm" id="C_tipoempresa" name="C_tipoempresa">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="row_mostra">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4" style="padding-right: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_cel">Cel</label>
+                                    <input type="text" class="form-control input-sm" id="C_cel" name="C_cel" placeholder="(__)_____-____">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_tipo">Tipo</label>
+                                    <select class="form-control i_bd input-sm" id="C_tipo" name="C_tipo">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-xs-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_contato">Contato</label>
+                                    <input type="text" class="form-control input-sm" id="C_contato" placeholder="Contato" name="C_contato" maxlength="50">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_prolabore">Prolab. 1</label>
+                                    <input type="text" class="form-control input-sm" id="C_prolabore" placeholder="Prolabore" data-error="Por favor, informe o prolabore 1." required name="C_prolabore">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_prolabore2">Prolab. 2</label>
+                                    <input type="text" class="form-control input-sm" id="C_prolabore2" placeholder="Prolabore 2" data-error="Por favor, informe o prolabore 2." required name="C_prolabore2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="row_nao_mostra">
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4" style="padding-right: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_cel">Cel</label>
+                                    <input type="text" class="form-control input-sm" id="C_celn" name="C_celn" placeholder="(__)____-____">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_tipon">Tipo</label>
+                                    <select class="form-control i_bd input-sm" id="C_tipon" name="C_tipon">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4 col-xs-4 col-lg-4" style="padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_contato">Contato</label>
+                                    <input type="text" class="form-control input-sm" id="C_contaton" placeholder="Contato" name="C_contaton" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 col-sm-2 col-xs-2 col-lg-2" style="padding-right: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_cnpj">CNPJ</label>
+                                    <input type="text" class="form-control input-sm" id="C_cnpj" name="C_cnpj" placeholder="__.___.___/____-__">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_cpf">CPF</label>
+                                    <input type="text" class="form-control input-sm" id="C_cpf" name="C_cpf" placeholder="___.___.___-__">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_registro">Registro</label>
+                                    <input type="text" class="form-control input-sm" id="C_registro" placeholder="Registro" name="C_registro" maxlength="20">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_parcelamento">Parcelamento</label>
+                                    <input type="text" class="form-control input-sm" id="C_parcelamento" name="C_parcelamento">
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_Inscestadual">Insc.&nbsp;Est.</label>
+                                    <input type="text" class="form-control input-sm" id="C_Inscestadual" placeholder="Inscriçao estadual" name="C_Inscestadual" maxlength="20">
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_inscmunicipal">Insc Mun</label>
+                                    <input type="text" class="form-control input-sm" id="C_inscmunicipal" placeholder="Inscrição municipal" name="C_inscmunicipal" maxlength="50">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-right: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_email">E-mail</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="btnGroupAddon2">@</span>
+                                        <input type="email" class="form-control input-sm" id="C_email" placeholder="E-mail" name="C_email" maxlength="50" aria-label="Input group example" aria-describedby="btnGroupAddon">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-right: 2px;padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_email2">E-mail2</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="btnGroupAddon">@</span>
+                                        <input type="email" class="form-control input-sm" id="C_email2" placeholder="E-mail 2" name="C_email2" maxlength="50">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-sm-4 col-md-4 col-lg-4" style="padding-left: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_categoria">Categoria</label>
+                                    <select class="form-control i_bd input-sm" id="C_categoria" name="C_categoria">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;">
+                                <div class="form-group control-group">
+                                    <label class="control-label" for="C_categoriarecibo">Categoria Recibo</label>
+                                    <select class="form-control i_bd input-sm" id="C_categoriarecibo" name="C_categoriarecibo">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-right: 2px;padding-left: 30px;">
+                                <div class="form-group control-group">
+                                    <input class="control-label" type="checkbox" checked="checked" id="C_parc_ind" name="C_parc_ind">Parc. individual
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-right: 2px;padding-left: 30px;">
+                                <div class="form-group control-group">
+                                    <input class="control-label" type="checkbox" checked="checked" value="S" id="C_ativo" name="C_ativo">Ativo
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-right: 2px;padding-left: 30px;">
+                                <div class="form-group control-group">
+                                    <input class="control-label" type="checkbox" checked="checked" value="S" id="C_divulga" name="C_divulga">Divulga
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-left: 30px;">
+                                <div class="form-group control-group">
+                                    <input class="control-label" type="checkbox" checked="checked" id="C_cobranca" name="C_cobranca">Cobrança
+                                </div>
+                            </div>
+                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-left: 30px;">
+                                <div class="form-group control-group">
+                                    <input class="control-label" type="checkbox" id="C_desativado" name="C_desativado">Desativado
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- Modal Edita Senha -->
+ <div class="modal fade" id="ModalSenha" name="ModalSenha" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h4 class="modal-title" id="ModalSenhaLabel">Senha do Convenio</h4>
+             </div>
+             <div class="modal-body">
+                 <div class="container-fluid">
+                     <form class="form-condensed" data-toggle="validator" name="frmSenha" id="frmSenha" role="form" method="post" action="#">
+                         <div class="row">
+                             <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
+                                <span class="badge badge-secondary" id="convenio_rotulo"></span>
+                             </div>
+                         </div>
+                         <br/>
+                         <div class="row">
+                             <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
+                                 <div class="form-group control-group">
+                                     <label class="control-label" for="C_Usuario">Usuário</label>
+                                     <input type="text" class="form-control input-sm" id="C_Usuario" name="C_Usuario" placeholder="Usuário" maxlength="50" required>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
+                                 <div class="form-group control-group">
+                                     <label class="control-label" for="C_Senha">Senha</label>
+                                     <input type="text" class="form-control input-sm" id="C_Senha" name="C_Senha" value="" placeholder="Senha" data-error="Por favor, informe a senha." maxlength="50" required>
+                                     <input type="hidden" name="codigo_convenio" id="codigo_convenio">
+                                     <input type="hidden" name="senha_convenio" id="senha_convenio">
+                                     <input type="hidden" name="usuario_convenio" id="usuario_convenio">
+                                     <input type="hidden" name="usuario_texto" id="usuario_texto">
+                                     <input type="hidden" name="existe_senha" id="existe_senha">
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="row">
+                             <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
+                                 <div class="form-group control-group">
+                                     <label class="control-label" for="C_Confirma_Senha">Confirma Senha</label>
+                                     <input type="text" class="form-control input-sm" id="C_Confirma_Senha" name="C_Confirma_Senha" placeholder="Confirma Senha" data-error="Por favor, confirme a senha." maxlength="50" required>
+                                 </div>
+                             </div>
+                         </div>
+                     </form>
+                 </div>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-primary" id="btnsalvarsenha">Salvar</button>
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+             </div>
+         </div>
+     </div>
+ </div>
+ <!-- Modal Edita Banco -->
+ <div class="modal fade" id="ModalBanco" name="ModalBanco" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="ModalBancoLabel">Banco</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form class="form-horizontal" data-toggle="validator" name="frmBanco" id="frmBanco" role="form" method="post" action="#">
+                          <div class="form-group">
+                            <label for="C_Codigo_Convenio" class="control-label col-xs-4">
+                              <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Codigo Convenio</font>
+                              </font>
+                            </label> 
+                            <div class="col-xs-8">
+                                <input id="C_Codigo_Convenio" name="C_Codigo_Convenio"  type="text" readonly class="form-control">
+                            </div>
+                          </div>  
+                          <div class="form-group">
+                            <label for="C_Nome_Convenio" class="control-label col-xs-4">
+                              <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Nome Convenio</font>
+                              </font>
+                            </label> 
+                            <div class="col-xs-8">
+                                <input id="C_Nome_Convenio" name="C_Nome_Convenio"  type="text" readonly class="form-control">
+                            </div>
+                          </div>  
+                          <div class="form-group">
+                            <label for="C_Banco" class="control-label col-xs-4">
+                              <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Banco</font>
+                              </font>
+                            </label> 
+                            <div class="col-xs-8">
+                              <select id="C_Banco" name="C_Banco" required="required" class="select form-control">
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="C_Conta" class="control-label col-xs-4">
+                              <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Conta</font>
+                              </font>
+                            </label> 
+                            <div class="col-xs-8">
+                                <input id="C_Conta" name="C_Conta"  placeholder="Conta" type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="C_Agencia" class="control-label col-xs-4">
+                              <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Agencia</font>
+                              </font>
+                            </label> 
+                            <div class="col-xs-8">
+                              <input id="C_Agencia" name="C_Agencia" placeholder="Agencia" type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                              <label for="C_Tipo_Conta" class="control-label col-xs-4">
+                                <font style="vertical-align: inherit;">
+                                  <font style="vertical-align: inherit;">Tipo Conta</font>
+                                </font>
+                              </label> 
+                              <div class="col-xs-8">
+                                <select id="C_Tipo_Conta" name="C_Tipo_Conta" required="required" class="select form-control">
+                                </select>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label for="C_Tipo_Pix" class="control-label col-xs-4">
+                                <font style="vertical-align: inherit;">
+                                  <font style="vertical-align: inherit;">Tipo Pix</font>
+                                </font>
+                              </label> 
+                              <div class="col-xs-8">
+                                <select id="C_Tipo_Pix" name="C_Tipo_Pix" required="required" class="select form-control">
+                                </select>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="C_Chave_Pix" class="control-label col-xs-4">
+                              <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Chave pix</font>
+                              </font>
+                            </label> 
+                            <div class="col-xs-8">
+                              <input id="C_Chave_Pix" name="C_Chave_Pix" placeholder="Chave Pix" type="text" class="form-control">
+                            </div>
+                          </div> 
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnsalvarbanco">Salvar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../Adm/pages/convenio/js/convenio_read_script.js"></script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+[19-Jun-2020 19:22:16 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[19-Jun-2020 19:22:16 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[19-Jun-2020 19:22:16 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[19-Jun-2020 19:22:16 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[19-Jun-2020 19:22:25 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 113
+[19-Jun-2020 19:22:25 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 114
+[19-Jun-2020 16:22:25 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.571')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(133): Extenso::converte('5.571,30', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 19:30:13 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[19-Jun-2020 19:30:13 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[19-Jun-2020 19:30:13 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[19-Jun-2020 19:30:13 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[19-Jun-2020 19:30:20 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 115
+[19-Jun-2020 19:30:20 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 116
+[19-Jun-2020 16:30:20 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.571')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(135): Extenso::converte('5.571,30', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 19:34:31 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 115
+[19-Jun-2020 19:34:31 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 116
+[19-Jun-2020 16:34:31 America/Araguaina] PHP Warning:  include(/../cobranca/extenso.php): failed to open stream: No such file or directory in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 23
+[19-Jun-2020 16:34:31 America/Araguaina] PHP Warning:  include(): Failed opening '/../cobranca/extenso.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 23
+[19-Jun-2020 16:34:32 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'Extenso' not found in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php:135
+Stack trace:
+#0 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 135
+[19-Jun-2020 19:34:53 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 115
+[19-Jun-2020 19:34:53 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 116
+[19-Jun-2020 16:34:53 America/Araguaina] PHP Warning:  include(../../cobranca/extenso.php): failed to open stream: No such file or directory in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 23
+[19-Jun-2020 16:34:53 America/Araguaina] PHP Warning:  include(): Failed opening '../../cobranca/extenso.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 23
+[19-Jun-2020 16:34:53 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'Extenso' not found in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php:135
+Stack trace:
+#0 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 135
+[19-Jun-2020 19:35:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 115
+[19-Jun-2020 19:35:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 116
+[19-Jun-2020 16:35:18 America/Araguaina] PHP Warning:  include(/../../cobranca/extenso.php): failed to open stream: No such file or directory in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 23
+[19-Jun-2020 16:35:18 America/Araguaina] PHP Warning:  include(): Failed opening '/../../cobranca/extenso.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 23
+[19-Jun-2020 16:35:18 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Class 'Extenso' not found in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php:135
+Stack trace:
+#0 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 135
+[19-Jun-2020 19:35:46 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 115
+[19-Jun-2020 19:35:46 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 116
+[19-Jun-2020 16:35:46 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/cobranca/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/cobranca/extenso.php(35): Extenso::removerFormatacaoNumero('5.571')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(135): Extenso::converte('5.571,30', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/cobranca/extenso.php on line 22
+[19-Jun-2020 19:40:29 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 113
+[19-Jun-2020 19:40:29 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 114
+[19-Jun-2020 16:40:29 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.571')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(133): Extenso::converte('5.571,30', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 19:40:55 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[19-Jun-2020 19:40:55 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[19-Jun-2020 19:40:55 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[19-Jun-2020 19:40:55 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[19-Jun-2020 19:40:58 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 113
+[19-Jun-2020 19:40:58 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 114
+[19-Jun-2020 16:40:58 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.304')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(133): Extenso::converte('5.304,71', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 19:43:08 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 114
+[19-Jun-2020 19:43:08 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 115
+[19-Jun-2020 16:43:08 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.304')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(134): Extenso::converte('5.304,71', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 19:45:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[19-Jun-2020 19:45:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[19-Jun-2020 19:45:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[19-Jun-2020 19:45:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[19-Jun-2020 19:45:24 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 114
+[19-Jun-2020 19:45:24 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 115
+[19-Jun-2020 16:45:24 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.304')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(134): Extenso::converte('5.304,71', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 19:49:44 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 115
+[19-Jun-2020 19:49:44 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 116
+[19-Jun-2020 16:49:44 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.304')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(135): Extenso::converte('5.304,71', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 17:10:51 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.304')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('5.304,71', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 20:12:25 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[19-Jun-2020 20:12:25 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[19-Jun-2020 20:12:25 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[19-Jun-2020 20:12:25 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[19-Jun-2020 17:12:30 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.571')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('5.571,30', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 17:13:46 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strlen() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:72
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('557.130.00', true, false)
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 72
+[19-Jun-2020 20:17:08 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[19-Jun-2020 20:17:08 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[19-Jun-2020 20:17:08 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[19-Jun-2020 20:17:08 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[19-Jun-2020 17:17:11 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strlen() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:72
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('530.471.00', true, false)
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 72
+[19-Jun-2020 17:23:35 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strlen() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:72
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('530.471.00', true, false)
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 72
+[19-Jun-2020 17:33:39 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strlen() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:72
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('530.471.00', true, false)
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 72
+[19-Jun-2020 17:34:28 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5304')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('5304,71', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 20:34:55 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[19-Jun-2020 20:34:55 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[19-Jun-2020 20:34:55 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[19-Jun-2020 20:34:55 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[19-Jun-2020 17:34:58 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5304')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('5304,71', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 17:35:34 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strlen() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:72
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('530.471.00', true, false)
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 72
+[19-Jun-2020 17:48:19 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_substr() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:22
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php(35): Extenso::removerFormatacaoNumero('5.304')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('5.304,71', true, false)
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 22
+[19-Jun-2020 17:57:49 America/Sao_Paulo] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 27
+[19-Jun-2020 17:57:49 America/Sao_Paulo] PHP Notice:  A non well formed numeric value encountered in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 69
+[19-Jun-2020 17:57:49 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strlen() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:73
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('5.304.00', true, false)
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 73
+[19-Jun-2020 18:04:59 America/Araguaina] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strlen() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:73
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('5.304.71', true, false)
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 73
+[19-Jun-2020 18:06:21 America/Araguaina] PHP Fatal error:  Uncaught Error: Call to undefined function mb_strlen() in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php:73
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(137): Extenso::converte('530.471.00', true, false)
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/extenso.php on line 73
+[19-Jun-2020 21:20:21 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[19-Jun-2020 21:20:21 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[19-Jun-2020 21:20:21 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[19-Jun-2020 21:20:21 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[19-Jun-2020 18:21:41 America/Araguaina] PHP Notice:  Undefined index: mes_atual in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 18
+[19-Jun-2020 18:21:41 America/Araguaina] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[19-Jun-2020 18:21:41 America/Sao_Paulo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "AND"
+LINE 1: ... From sind.qextrato Where mes = '' and divisao =  AND divulg...
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php:112
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(112): PDO->query('Select nome_con...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 112
+[20-Jun-2020 12:40:00 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[20-Jun-2020 12:40:00 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[20-Jun-2020 12:40:00 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[20-Jun-2020 12:40:00 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[20-Jun-2020 12:40:05 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[20-Jun-2020 12:40:05 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[20-Jun-2020 12:40:05 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[20-Jun-2020 12:40:05 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[20-Jun-2020 12:40:21 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[20-Jun-2020 12:40:21 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[20-Jun-2020 12:40:21 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[20-Jun-2020 12:40:21 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[20-Jun-2020 12:41:19 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[20-Jun-2020 12:41:19 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[20-Jun-2020 12:41:19 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[20-Jun-2020 12:41:19 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[20-Jun-2020 12:41:42 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[20-Jun-2020 12:41:42 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[20-Jun-2020 12:41:42 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[20-Jun-2020 12:41:42 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[20-Jun-2020 12:42:40 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[20-Jun-2020 12:42:40 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[20-Jun-2020 12:42:40 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[20-Jun-2020 12:42:40 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[20-Jun-2020 12:43:51 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[20-Jun-2020 12:43:51 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[20-Jun-2020 12:43:51 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[20-Jun-2020 12:43:51 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[20-Jun-2020 12:48:37 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[20-Jun-2020 12:48:37 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[20-Jun-2020 12:48:37 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[20-Jun-2020 12:48:37 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[20-Jun-2020 12:49:03 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[20-Jun-2020 12:49:03 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[20-Jun-2020 12:49:03 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[20-Jun-2020 12:49:03 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:22:17 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:22:17 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:22:17 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:22:17 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:22:26 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:22:26 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:22:26 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:22:26 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:22:34 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:22:34 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:22:34 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:22:34 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:27:09 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:27:09 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:27:09 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:27:09 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:28:57 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:28:57 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:28:57 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:28:57 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:29:15 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:29:15 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:29:15 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:29:15 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:29:37 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:29:37 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:29:37 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:29:37 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:30:52 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:30:52 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:30:52 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:30:52 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:35:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:35:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:35:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:35:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 16:59:50 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 16:59:50 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 16:59:50 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 16:59:50 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 17:45:38 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 17:45:38 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 17:45:38 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 17:45:38 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 17:45:57 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 17:45:57 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 17:45:57 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 17:45:57 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 17:46:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 17:46:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 17:46:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 17:46:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[24-Jun-2020 17:48:04 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[24-Jun-2020 17:48:04 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[24-Jun-2020 17:48:04 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[24-Jun-2020 17:48:04 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[26-Jun-2020 18:08:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[26-Jun-2020 18:08:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[26-Jun-2020 18:08:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[26-Jun-2020 18:08:18 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[26-Jun-2020 18:10:16 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[26-Jun-2020 18:10:16 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[26-Jun-2020 18:10:16 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[26-Jun-2020 18:10:16 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[26-Jun-2020 18:25:48 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[26-Jun-2020 18:25:48 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[26-Jun-2020 18:25:48 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[26-Jun-2020 18:25:48 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[26-Jun-2020 18:31:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[26-Jun-2020 18:31:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[26-Jun-2020 18:31:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[26-Jun-2020 18:31:01 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[26-Jun-2020 18:31:15 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 20
+[26-Jun-2020 18:31:15 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 21
+[26-Jun-2020 18:31:15 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 25
+[26-Jun-2020 18:31:15 UTC] PHP Deprecated:  The (real) cast is deprecated, use (float) instead in /home/makecard/public_html/sind/Adm/pages/recibos/recibos.php on line 26
+[27-Jun-2020 10:41:44 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 10:41:44 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 10:41:44 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 10:41:44 America/Sao_Paulo] PHP Fatal error:  Uncaught Exception: FPDF error: Some data has already been output, can't send PDF file (output started at /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php:25) in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(1049): FPDF->Error('Some data has a...')
+#1 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(999): FPDF->_checkoutput()
+#2 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(160): FPDF->Output('I', 'RECIBOS-JUL/202...')
+#3 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php on line 271
+[27-Jun-2020 10:43:13 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 10:43:13 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 10:43:13 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 10:43:13 America/Sao_Paulo] PHP Fatal error:  Uncaught Exception: FPDF error: Some data has already been output, can't send PDF file (output started at /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php:25) in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(1049): FPDF->Error('Some data has a...')
+#1 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(999): FPDF->_checkoutput()
+#2 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(160): FPDF->Output('I', 'RECIBOS-JUL/202...')
+#3 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php on line 271
+[27-Jun-2020 10:43:16 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 10:43:16 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 10:43:16 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 10:43:16 America/Sao_Paulo] PHP Fatal error:  Uncaught Exception: FPDF error: Some data has already been output, can't send PDF file (output started at /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php:25) in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(1049): FPDF->Error('Some data has a...')
+#1 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(999): FPDF->_checkoutput()
+#2 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(160): FPDF->Output('I', 'RECIBOS-JUL/202...')
+#3 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php on line 271
+[27-Jun-2020 11:03:18 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 11:03:18 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 11:03:18 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[27-Jun-2020 11:03:18 America/Sao_Paulo] PHP Fatal error:  Uncaught Exception: FPDF error: Some data has already been output, can't send PDF file (output started at /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php:25) in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(1049): FPDF->Error('Some data has a...')
+#1 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(999): FPDF->_checkoutput()
+#2 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(160): FPDF->Output('I', 'RECIBOS-JUN/202...')
+#3 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php on line 271
+[29-Jun-2020 14:29:34 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[29-Jun-2020 14:29:34 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[29-Jun-2020 14:29:34 America/Sao_Paulo] PHP Notice:  Undefined index: data in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php on line 25
+[29-Jun-2020 14:29:34 America/Sao_Paulo] PHP Fatal error:  Uncaught Exception: FPDF error: Some data has already been output, can't send PDF file (output started at /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php:25) in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(1049): FPDF->Error('Some data has a...')
+#1 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(999): FPDF->_checkoutput()
+#2 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_gerador_pdf.php(160): FPDF->Output('I', 'RECIBOS-JUN/202...')
+#3 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php on line 271
+[25-Oct-2022 14:23:58 America/Sao_Paulo] PHP Notice:  Undefined index: mes_atual in /home/makecard/public_html/sind/Adm/pages/recibos/recibos_tx_pdf.php on line 19
+[25-Oct-2022 14:23:58 America/Sao_Paulo] PHP Fatal error:  Uncaught Exception: FPDF error: Some data has already been output, can't send PDF file (output started at /home/makecard/public_html/sind/Adm/pages/recibos/recibos_tx_pdf.php:19) in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php:271
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(1049): FPDF->Error('Some data has a...')
+#1 /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php(999): FPDF->_checkoutput()
+#2 /home/makecard/public_html/sind/Adm/pages/recibos/recibos_tx_pdf.php(147): FPDF->Output('I', 'RECIBOSTX--MAKE...')
+#3 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/components/fpdf/fpdf.php on line 271
+[25-Oct-2022 17:24:20 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/recibos/categoria_recibo.php(6): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27

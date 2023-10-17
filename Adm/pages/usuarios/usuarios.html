@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Usuarios</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+<style type="text/css">
+    .form-inline {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+    }
+    th {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    td {
+        font-size: 11px;
+    }
+    .modal-dialog {
+        position: relative;
+        display: table;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: auto;
+        min-width: 300px;
+    }
+    .form-group {
+        margin-bottom: 2px;
+    }
+    tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+</style>
+<body>
+<!-- Content Wrapper. Contains page content -->
+<div class="container-fluid" style="padding: 0">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1 style="margin-top: -1px;margin-left: -6px;">
+            Usuários <small><manutenção></manutenção></small> </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+            </li>
+            <li>
+                <a href="#">Tables</a>
+            </li>
+            <li class="active">Data tables</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-sx-12">
+                <div class="box">
+                    <div class="box-header">
+                        <form id="listagem" name="listagem" class="form-inline">
+                            <input type="button" name="btnInserir" id="btnInserir" class="btn btn-primary" value="Inserir" />
+                        </form>
+                    </div>
+                    <div class="box-body">
+                        <table id="tabela_usuario" class="display table table-striped table-hover dt-responsive compact nowrap" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>CÓDIGO</th>
+                                <th>USUÁRIO</th>
+                                <th>NOME</th>
+                                <th>SOBRENOME</th>
+                                <th>E-MAIL</th>
+                                <th>DIVISÃO</th>
+                                <th>SITUAÇÃO</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- Modal Edita e Cadastra -->
+<div class="modal fade bd-example-modal-lg" id="ModalEdita" name="ModalEdita" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+    <form data-toggle="validator" role="form" name="frmusuarios" id="frmusuarios">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">USUÁRIOS&nbsp<small id="rotulo_associado">Alterando</small></h5>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                    <div class="form-group control-group" style="float: right;padding-right: 5px;">
+                        <button type="submit" class="btn btn-primary" id="btnSalvar">
+                            <span class="glyphicon glyphicon-send"></span>
+                            Salvar
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div role="tabpanel">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="dados-tab" data-toggle="tab" href="#dados" role="tab" aria-controls="dados" aria-selected="true">Dados Principais</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="permissoes-tab" data-toggle="tab" href="#permissoes" role="tab" aria-controls="permissoes" aria-selected="false">Permissões</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade active" id="dados" role="tabpanel" aria-labelledby="dados-tab">
+                                <div class="row">
+                                    <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2" style="padding-right: 2px;">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="C_codigo">Código</label>
+                                            <input type="text" class="form-control input-sm" id="C_codigo" name="C_codigo" disabled style="text-transform:uppercase">
+                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6" style="padding-right: 2px;padding-left: 2px;">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="C_nome">Nome</label>
+                                            <input type="text" class="form-control input-sm" id="C_nome" name="C_nome" style="text-transform:uppercase" maxlength="50" placeholder="Nome" required>
+                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                            <input type="hidden" name="operation" id="operation">
+                                            <input type="hidden" name="tem_cadastro_conta" id="tem_cadastro_conta">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4" style="padding-left: 2px;">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="C_sobrenome">Sobrenome</label>
+                                            <input type="text" class="form-control input-sm" id="C_sobrenome" name="C_sobrenome" style="text-transform:uppercase" maxlength="50" placeholder="Sobrenome" required>
+                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-right: 2px;">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="C_user">Usuário</label>
+                                            <input type="text" class="form-control input-sm" id="C_user" name="C_user" maxlength="50" placeholder="Usuário" data-error="Por favor, informe o endereço." maxlength="50" required>
+                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4" style="padding-left: 2px;padding-right: 2px;">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="C_senha">Senha</label>
+                                            <input type="text" class="form-control input-sm" id="C_senha" name="C_senha" maxlength="10" placeholder="senha">
+                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-left: 2px">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="C_situacao">Situacao</label>
+                                            <select class="custom-select i_bd browser-default form-control input-sm" id="C_situacao" name="C_situacao">
+                                            </select>
+                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-right: 2px;">
+                                        <div class="form-group control-group">
+                                            <label class="control-label" for="C_Email">E-mail</label>
+                                            <input type="text" class="form-control input-sm" id="C_Email" name="C_Email" placeholder="E-mail" maxlength="50">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-left: 2px">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="C_divisao">Divisão</label>
+                                            <select class="custom-select i_bd form-control input-sm" id="C_divisao" name="C_divisao">
+                                            </select>
+                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="permissoes" role="tabpanel" aria-labelledby="permissoes-tab">
+                                <section class="content">
+                                    <div class="row">
+                                        <div class="col-ld-12">
+                                            <div class="box">
+                                                <div class="box-body">
+                                                    <table id="tabela_permissoes" class="display table table-striped table-hover dt-responsive compact nowrap">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>CODIGO</th>
+                                                            <th>GRUPO</th>
+                                                            <th>URL</th>
+                                                            <th>MENU</th>
+                                                            <th>PERMISSÃO</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Modal Edita PERMISSAO -->
+<div class="modal fade" id="ModalPermissao" name="ModalPermissao" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+    <form data-toggle="validator" role="form" name="frmpermissao" id="frmpermissao">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <section class="content" style="width: 700px">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalPermissaoLabel" style="width: 100px;float: left;font-size: x-large;">PERMISSÃO&nbsp<small id="rotulo_dependente"></small></h5>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        <div class="form-group control-group" style="float: right;padding-right: 5px;">
+                            <button type="button" class="btn btn-primary" id="btnSalvarDep">
+                                <span class="glyphicon glyphicon-send"></span>
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2" style="padding-left: 2px;">
+                                <div class="form-group control-group has-feedback">
+                                    <label class="control-label" for="C_codigo_menu">Codigo menu</label>
+                                    <input type="text" class="form-control input-sm" id="C_codigo_menu" name="C_codigo_menu" disabled>
+                                    <input type="hidden" id="C_cod_usuario_hiden" name="C_cod_usuario_hiden">
+                                    <input type="hidden" name="operationdep" id="operationdep">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6" style="padding-left: 2px;">
+                                <div class="form-group control-group has-feedback">
+                                    <label class="control-label" for="C_menu">Menu</label>
+                                    <input type="text" class="form-control input-sm" id="C_menu" name="C_menu" disabled style="text-transform:uppercase">
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3" style="padding-right: 2px;">
+                                <div class="form-group control-group has-feedback">
+                                    <label class="control-label" for="C_status">Status</label>
+                                    <select class="custom-select i_bd form-control input-sm" id="C_status" name="C_status">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="../Adm/pages/usuarios/js/usuarios.js"></script>
+</body>
+</html>

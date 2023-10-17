@@ -1,0 +1,318 @@
+[10-Jun-2020 17:25:57 UTC] PHP Notice:  Undefined index: usuario_global in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 7
+[10-Jun-2020 17:25:57 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 8
+[10-Jun-2020 17:25:57 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(27): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 27
+[10-Jun-2020 17:49:57 UTC] PHP Notice:  Undefined index: usuario_global in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 7
+[10-Jun-2020 17:49:57 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 8
+[10-Jun-2020 17:49:57 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(27): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 27
+[10-Jun-2020 17:51:33 UTC] PHP Notice:  Undefined index: usuario_global in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 8
+[10-Jun-2020 17:51:33 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 9
+[10-Jun-2020 17:51:33 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:28
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(28): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 28
+[10-Jun-2020 17:52:46 UTC] PHP Notice:  Undefined index: usuario_global in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 8
+[10-Jun-2020 17:52:46 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 9
+[10-Jun-2020 17:52:46 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:28
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(28): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 28
+[10-Jun-2020 17:52:57 UTC] PHP Notice:  Undefined index: usuario_global in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 8
+[10-Jun-2020 17:52:57 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 9
+[10-Jun-2020 17:52:57 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:28
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(28): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 28
+[10-Jun-2020 17:53:22 UTC] PHP Notice:  Undefined index: usuario_global in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 8
+[10-Jun-2020 17:53:22 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 9
+[10-Jun-2020 17:53:22 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:28
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(28): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 28
+[10-Jun-2020 18:01:03 UTC] PHP Notice:  Undefined index: usuario_global in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 8
+[10-Jun-2020 18:01:03 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 9
+[10-Jun-2020 18:01:03 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:28
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(28): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 28
+[10-Jun-2020 18:01:21 UTC] PHP Notice:  Undefined index: usuario_global in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 8
+[10-Jun-2020 18:01:21 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 9
+[10-Jun-2020 18:01:21 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:28
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(28): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 28
+[10-Jun-2020 18:02:10 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 8
+[10-Jun-2020 18:02:10 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(27): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 27
+[10-Jun-2020 18:02:31 UTC] PHP Notice:  Undefined index: divisao in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 9
+[10-Jun-2020 18:02:31 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 16: ...egador.id = associado.empregador WHERE empregador.divisao = 
+                                                                        ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:28
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(28): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 28
+[10-Jun-2020 18:02:52 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 2097152 bytes) in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 61
+[10-Jun-2020 18:05:13 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 2097152 bytes) in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 61
+[10-Jun-2020 19:08:51 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[10-Jun-2020 19:09:15 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[10-Jun-2020 19:23:04 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[10-Jun-2020 19:23:06 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[10-Jun-2020 19:23:07 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[10-Jun-2020 19:23:07 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[30-Jun-2020 12:25:45 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[30-Jun-2020 12:25:46 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[05-Jul-2020 13:42:03 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[05-Jul-2020 13:58:08 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[05-Jul-2020 17:57:10 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[05-Jul-2020 17:57:33 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "empregador" does not exist
+LINE 2:             FROM empregador INNER JOIN conta ON empregador.I...
+                         ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php:16
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php(16): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_valid_excluir.php on line 16
+[29-Aug-2022 19:37:10 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[29-Aug-2022 19:37:10 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[29-Aug-2022 19:37:12 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[29-Aug-2022 19:37:17 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[29-Aug-2022 19:37:22 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[29-Aug-2022 19:37:23 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[29-Aug-2022 19:37:23 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[09-Sep-2022 13:04:40 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[09-Sep-2022 13:04:42 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[09-Sep-2022 13:04:47 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[09-Sep-2022 13:04:52 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "AND"
+LINE 28:              AND associado.codigo <> '' 
+                      ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php:57
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(57): PDOStatement->execute()
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php on line 57
+[09-Sep-2022 13:05:18 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php on line 10
+[03-Nov-2022 16:13:37 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_tipos.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:13:37 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:13:37 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(6): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:22:00 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:22:00 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(6): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:22:00 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_situacao.php(4): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:29:17 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_tipos.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:29:17 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_read2.php(6): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:29:33 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_empregador.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27
+[03-Nov-2022 16:29:33 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[08006] [7] timeout expired in /home/makecard/public_html/sind/Adm/php/banco.php:27
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/php/banco.php(27): PDO->__construct('pgsql:dbname=ma...')
+#1 /home/makecard/public_html/sind/Adm/pages/associado/associado_funcao.php(5): Banco::conectar_postgres()
+#2 {main}
+  thrown in /home/makecard/public_html/sind/Adm/php/banco.php on line 27

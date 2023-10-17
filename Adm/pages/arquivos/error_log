@@ -1,0 +1,659 @@
+[16-Jun-2020 17:06:22 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "GROUP"
+LINE 12:         GROUP BY convenio.tipo, conta.associado, associado.n...
+                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/selecionar_dados.php:25
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/selecionar_dados.php(25): PDO->query('SELECT SUM(cont...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/selecionar_dados.php on line 25
+[16-Jun-2020 17:11:20 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "GROUP"
+LINE 12:         GROUP BY convenio.tipo, conta.associado, associado.n...
+                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/selecionar_dados.php:25
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/selecionar_dados.php(25): PDO->query('SELECT SUM(cont...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/selecionar_dados.php on line 25
+[16-Jun-2020 14:19:57 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:138
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(138): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 138
+[16-Jun-2020 14:21:54 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:138
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(138): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 138
+[16-Jun-2020 14:30:28 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 14:30:37 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 14:31:15 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 14:34:20 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 14:34:29 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 14:34:36 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 14:34:41 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 14:34:45 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 14:40:53 America/Araguaina] PHP Notice:  Undefined index: mes_atual in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 8
+[16-Jun-2020 14:40:53 America/Araguaina] PHP Notice:  Undefined index: empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 9
+[16-Jun-2020 14:40:53 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 1: SELECT * FROM sind.empregador WHERE id = 
+                                                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:102
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(102): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 102
+[16-Jun-2020 14:50:22 America/Araguaina] PHP Notice:  Undefined index: mes_atual in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 8
+[16-Jun-2020 14:50:22 America/Araguaina] PHP Notice:  Undefined index: empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 9
+[16-Jun-2020 14:50:22 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 1: SELECT * FROM sind.empregador WHERE id = 
+                                                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:102
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(102): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 102
+[16-Jun-2020 14:50:39 America/Araguaina] PHP Notice:  Undefined index: mes_atual in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 8
+[16-Jun-2020 14:50:39 America/Araguaina] PHP Notice:  Undefined index: empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 9
+[16-Jun-2020 14:50:39 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 1: SELECT * FROM sind.empregador WHERE id = 
+                                                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:102
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(102): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 102
+[16-Jun-2020 14:52:29 America/Araguaina] PHP Notice:  Undefined index: mes_atual in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 8
+[16-Jun-2020 14:52:29 America/Araguaina] PHP Notice:  Undefined index: empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 9
+[16-Jun-2020 14:52:29 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 1: SELECT * FROM sind.empregador WHERE id = 
+                                                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:102
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(102): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 102
+[16-Jun-2020 14:55:38 America/Araguaina] PHP Notice:  Undefined index: mes_atual in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 8
+[16-Jun-2020 14:55:38 America/Araguaina] PHP Notice:  Undefined index: empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 9
+[16-Jun-2020 14:55:38 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 1: SELECT * FROM sind.empregador WHERE id = 
+                                                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:102
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(102): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 102
+[16-Jun-2020 14:57:59 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 14:58:21 America/Araguaina] PHP Notice:  Undefined index: mes_atual in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 8
+[16-Jun-2020 14:58:21 America/Araguaina] PHP Notice:  Undefined index: empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 9
+[16-Jun-2020 14:58:21 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 1: SELECT * FROM sind.empregador WHERE id = 
+                                                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:102
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(102): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 102
+[16-Jun-2020 14:58:44 America/Araguaina] PHP Notice:  Undefined index: mes_atual in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 8
+[16-Jun-2020 14:58:44 America/Araguaina] PHP Notice:  Undefined index: empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 9
+[16-Jun-2020 14:58:44 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 1: SELECT * FROM sind.empregador WHERE id = 
+                                                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:102
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(102): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 102
+[16-Jun-2020 15:04:08 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:23:25 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:24:11 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:24:19 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:24:33 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:27:23 America/Araguaina] PHP Fatal error:  Uncaught Error: Class 'FPDF_Rotate' not found in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 14
+[16-Jun-2020 15:27:28 America/Araguaina] PHP Fatal error:  Uncaught Error: Class 'FPDF_Rotate' not found in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 14
+[16-Jun-2020 15:28:18 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:28:24 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:28:44 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:28:52 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:29:50 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:30:32 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:31:10 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:34:52 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:35:01 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:35:15 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[16-Jun-2020 15:35:27 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[17-Jun-2020 17:15:01 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[17-Jun-2020 17:21:23 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:139
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(139): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 139
+[17-Jun-2020 17:25:09 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:140
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(140): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 140
+[17-Jun-2020 20:59:07 UTC] PHP Warning:  scandir(C:\xampp\htdocs\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 20:59:07 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 20:59:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:01:06 UTC] PHP Warning:  scandir(C:\xampp\htdocs\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:01:06 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:01:06 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:03:04 UTC] PHP Warning:  scandir(C:\xampp\htdocs\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:03:04 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:03:04 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:19:12 UTC] PHP Warning:  unlink(uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): Is a directory in /home/makecard/public_html/sind/Adm/pages/arquivos/remove_arquivo.php on line 8
+[17-Jun-2020 21:21:56 UTC] PHP Warning:  scandir(C:\xampp\htdocs\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:21:56 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:21:56 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:22:14 UTC] PHP Warning:  scandir(C:\xampp\htdocs\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:22:14 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:22:14 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:25:53 UTC] PHP Warning:  scandir(C:\xampp\htdocs\sind\Adm\pages\arquivos\uploads\SINDSERVA\ABR-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:25:53 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:25:53 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:26:29 UTC] PHP Warning:  scandir(C:\xampp\htdocs\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:26:29 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[17-Jun-2020 21:26:29 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:30:42 UTC] PHP Warning:  scandir(C:\xampp\htdocs\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:30:42 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:30:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[17-Jun-2020 21:32:16 UTC] PHP Warning:  scandir(..\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:32:16 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:32:16 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[17-Jun-2020 21:33:05 UTC] PHP Warning:  scandir(..\Adm\pages\arquivos\uploads\SINDSERVA\ABR-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:33:05 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[17-Jun-2020 21:33:05 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 10:55:16 UTC] PHP Warning:  scandir(..\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 10:55:16 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 10:55:16 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 11:46:58 UTC] PHP Warning:  scandir(..\Adm\pages\arquivos\uploads\SINDSERVA\JUN-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 11:46:58 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 11:46:58 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 11:51:19 UTC] PHP Warning:  scandir(..\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 11:51:19 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 11:51:19 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 12:01:15 UTC] PHP Warning:  scandir(..\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:01:15 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:01:15 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 12:08:51 UTC] PHP Warning:  scandir(\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:08:51 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:08:51 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 12:09:02 UTC] PHP Warning:  scandir(\Adm\pages\arquivos\uploads\SINDSERVA\JUN-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:09:02 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:09:02 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 12:10:20 UTC] PHP Warning:  scandir(Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:10:20 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:10:20 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 12:10:28 UTC] PHP Warning:  scandir(Adm\pages\arquivos\uploads\SINDSERVA\ABR-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:10:28 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:10:28 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 12:10:43 UTC] PHP Warning:  scandir(Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:10:43 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:10:43 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 12:12:23 UTC] PHP Warning:  scandir(\home\makecard\public_html\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:12:23 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:12:23 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 12:12:35 UTC] PHP Warning:  scandir(\home\makecard\public_html\sind\Adm\pages\arquivos\uploads\SINDSERVA\ABR-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:12:35 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:12:35 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 12:12:52 UTC] PHP Warning:  scandir(\home\makecard\public_html\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:12:52 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 12:12:52 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 16
+[18-Jun-2020 14:34:35 UTC] PHP Warning:  filesize(): stat failed for /home/makecard/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL\PMV-MAIO2020.txt in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 36
+[18-Jun-2020 15:16:49 UTC] PHP Warning:  filesize(): stat failed for /home/makecard/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL\PMV-MAIO2020.txt in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 36
+[18-Jun-2020 15:18:40 UTC] PHP Warning:  scandir(Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 15:18:40 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 15:18:40 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 15
+[18-Jun-2020 15:20:16 UTC] PHP Warning:  scandir(/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 15:20:16 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 15:20:16 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 15
+[18-Jun-2020 15:22:49 UTC] PHP Warning:  filesize(): stat failed for /home/makecard/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL\PMV-MAIO2020.txt in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 36
+[18-Jun-2020 15:28:09 UTC] PHP Warning:  scandir(\home\makecard\public_html\sind\Adm\pages\arquivos\uploads\SINDSERVA\MAI-2020\PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 15:28:09 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Jun-2020 15:28:09 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 15
+[19-Jun-2020 23:31:54 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42P01]: Undefined table: 7 ERROR:  relation "sind.qrelatoriofinal" does not exist
+LINE 2:                 FROM sind.qrelatoriofinal 
+                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:140
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(140): PDO->query('SELECT codigo,n...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 140
+[22-Jun-2020 17:19:33 UTC] PHP Warning:  scandir(/home/makecard/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/SET-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:19:33 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:19:33 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 15
+[22-Jun-2020 17:23:26 UTC] PHP Warning:  scandir(makecard/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/JUL-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:26 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:26 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 15
+[22-Jun-2020 17:23:30 UTC] PHP Warning:  scandir(makecard/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:30 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:30 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 15
+[22-Jun-2020 17:23:32 UTC] PHP Warning:  scandir(makecard/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/ABR-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:32 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:32 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 15
+[22-Jun-2020 17:23:53 UTC] PHP Warning:  scandir(makecard/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:53 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:53 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 15
+[22-Jun-2020 17:23:56 UTC] PHP Warning:  scandir(makecard/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/JUN-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:56 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[22-Jun-2020 17:23:56 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 15
+[22-Jun-2020 17:34:06 UTC] PHP Warning:  unlink(uploads/SINDSERVA/JUN-2020/PREFEITURA MUNICIPAL): Is a directory in /home/makecard/public_html/sind/Adm/pages/arquivos/remove_arquivo.php on line 8
+[23-Jun-2020 00:26:04 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php on line 10
+[23-Jun-2020 00:26:05 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php on line 10
+[23-Jun-2020 00:37:20 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php on line 10
+[23-Jun-2020 00:39:24 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php on line 10
+[23-Jun-2020 17:20:26 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:20:26 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:20:26 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:20:26 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:20:38 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/ABR-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:20:38 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:20:38 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:20:38 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:20:40 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/JUN-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:20:40 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:20:40 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:20:40 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:21:31 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:21:31 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:21:31 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:21:31 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:23:52 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:23:52 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:23:52 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:23:52 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:23:54 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/ISA): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:23:54 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:23:54 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:23:54 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:23:55 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:23:55 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:23:55 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:23:55 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:23:56 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/ISA): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:23:56 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:23:56 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:23:56 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:24:14 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:24:14 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:24:14 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:24:14 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:27:08 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:27:08 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:27:08 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:27:08 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:28:30 UTC] PHP Warning:  scandir(home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:28:30 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:28:30 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:28:30 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:29:42 UTC] PHP Warning:  scandir(/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:29:42 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:29:42 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:29:42 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:30:46 UTC] PHP Warning:  scandir(public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:30:46 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:30:46 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:30:46 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:32:20 UTC] PHP Warning:  scandir(public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:32:20 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:32:20 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:32:20 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:33:04 UTC] PHP Warning:  scandir(/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:33:04 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:33:04 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:33:04 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:33:49 UTC] PHP Warning:  scandir(/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:33:49 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:33:49 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:33:49 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:33:52 UTC] PHP Warning:  scandir(/sind/Adm/pages/arquivos/uploads/SINDSERVA/JUN-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:33:52 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:33:52 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:33:52 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:34:02 UTC] PHP Warning:  scandir(/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:34:02 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:34:02 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:34:02 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:34:50 UTC] PHP Warning:  scandir(sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:34:50 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:34:50 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:34:50 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:34:59 UTC] PHP Warning:  scandir(sind/Adm/pages/arquivos/uploads/SINDSERVA/JUL-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:34:59 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:34:59 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:34:59 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:35:39 UTC] PHP Warning:  scandir(/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:35:39 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:35:39 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:35:39 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:35:51 UTC] PHP Warning:  scandir(/Adm/pages/arquivos/uploads/SINDSERVA/JUN-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:35:51 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:35:51 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:35:51 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:36:59 UTC] PHP Warning:  scandir(../Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:36:59 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:36:59 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:36:59 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:37:13 UTC] PHP Warning:  scandir(../Adm/pages/arquivos/uploads/SINDSERVA/ABR-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:37:13 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:37:13 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:37:13 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:39:50 UTC] PHP Warning:  scandir(../Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:39:50 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:39:50 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:39:50 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:40:07 UTC] PHP Warning:  scandir(../Adm/pages/arquivos/uploads/SINDSERVA/JUN-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:40:07 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:40:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:40:07 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:40:48 UTC] PHP Warning:  scandir(/home/public_html/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:40:48 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:40:48 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:40:48 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:40:56 UTC] PHP Warning:  scandir(/home/public_html/Adm/pages/arquivos/uploads/SINDSERVA/JUN-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:40:56 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:40:56 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:40:56 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:41:24 UTC] PHP Warning:  scandir(/home/public_html/Adm/pages/arquivos/uploads/SINDSERVA/ABR-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:41:24 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:41:24 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:41:24 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 17:41:29 UTC] PHP Warning:  scandir(/home/public_html/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:41:29 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 17:41:29 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 17:41:29 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:34:57 UTC] PHP Warning:  scandir(/home/public_html/Adm/pages/arquivos/uploads/SINDSERVA/JUL-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:34:57 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:34:57 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 18:34:57 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:35:00 UTC] PHP Warning:  scandir(/home/public_html/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:35:00 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:35:00 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 18:35:00 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:35:07 UTC] PHP Warning:  scandir(/home/public_html/Adm/pages/arquivos/uploads/SINDSERVA/JUN-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:35:07 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:35:07 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 18:35:07 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:37:11 UTC] PHP Warning:  scandir(/home/public_html/Adm/pages/arquivos/uploads/SINDSERVA/JUL-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:37:11 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:37:11 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 18:37:11 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:37:19 UTC] PHP Warning:  scandir(/home/public_html/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:37:19 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:37:19 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 18:37:19 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:38:35 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/JUL-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:38:35 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:38:35 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 18:38:35 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:38:45 UTC] PHP Warning:  scandir(/home/public_html/sind/Adm/pages/arquivos/uploads/SINDSERVA/MAI-2020/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:38:45 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[23-Jun-2020 18:38:45 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[23-Jun-2020 18:38:45 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:42:37 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:42:45 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 39
+[23-Jun-2020 18:51:04 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 40
+[23-Jun-2020 18:51:08 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 40
+[23-Jun-2020 18:51:25 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 40
+[23-Jun-2020 18:53:19 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 40
+[23-Jun-2020 18:53:36 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 40
+[23-Jun-2020 18:54:42 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 40
+[23-Jun-2020 18:54:55 UTC] PHP Notice:  Array to string conversion in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 40
+[29-Jun-2020 16:47:33 UTC] PHP Notice:  Undefined variable: dados5 in /home/makecard/public_html/sind/Adm/pages/arquivos/gravar_nao_descontado.php on line 19
+[29-Jun-2020 16:47:33 UTC] PHP Warning:  array_keys() expects parameter 1 to be array, null given in /home/makecard/public_html/sind/Adm/pages/arquivos/gravar_nao_descontado.php on line 19
+[29-Jun-2020 16:47:33 UTC] PHP Notice:  Undefined variable: dados5 in /home/makecard/public_html/sind/Adm/pages/arquivos/gravar_nao_descontado.php on line 20
+[29-Jun-2020 16:47:33 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/makecard/public_html/sind/Adm/pages/arquivos/gravar_nao_descontado.php on line 20
+[29-Jun-2020 19:50:50 UTC] PHP Notice:  Undefined variable: dados5 in /home/makecard/public_html/sind/Adm/pages/arquivos/gravar_nao_descontado.php on line 19
+[29-Jun-2020 19:50:50 UTC] PHP Warning:  array_keys() expects parameter 1 to be array, null given in /home/makecard/public_html/sind/Adm/pages/arquivos/gravar_nao_descontado.php on line 19
+[29-Jun-2020 19:50:50 UTC] PHP Notice:  Undefined variable: dados5 in /home/makecard/public_html/sind/Adm/pages/arquivos/gravar_nao_descontado.php on line 20
+[29-Jun-2020 19:50:50 UTC] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /home/makecard/public_html/sind/Adm/pages/arquivos/gravar_nao_descontado.php on line 20
+[30-Jun-2020 12:57:41 America/Sao_Paulo] PHP Notice:  Undefined variable: _nome_convenio in /home/makecard/public_html/sind/Adm/pages/arquivos/gravar_nao_descontado.php on line 69
+[30-Aug-2022 10:37:47 UTC] PHP Warning:  scandir(/home/makecard/public_html/sind/Adm/pages/arquivos/uploads/Casserv/AGO-2022/INPREV): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[30-Aug-2022 10:37:47 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[30-Aug-2022 10:37:47 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[18-Oct-2022 18:38:53 America/Araguaina] PHP Notice:  Undefined index: empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 9
+[18-Oct-2022 18:38:53 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 1: SELECT * FROM sind.empregador WHERE id = 
+                                                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:140
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(140): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 140
+[20-Oct-2022 21:59:09 America/Araguaina] PHP Notice:  Undefined variable: cod_empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/conta_imprimir_todos_pdf.php on line 32
+[20-Oct-2022 21:59:09 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "AND"
+LINE 4: ...onta.mes = 'OUT/2022' AND associado.empregador =  AND conta....
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/conta_imprimir_todos_pdf.php:179
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/conta_imprimir_todos_pdf.php(179): PDO->query('SELECT conta.la...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/conta_imprimir_todos_pdf.php on line 179
+[20-Oct-2022 21:59:21 America/Araguaina] PHP Notice:  Undefined variable: cod_empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/conta_imprimir_todos_pdf.php on line 32
+[20-Oct-2022 21:59:21 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "AND"
+LINE 4: ...onta.mes = 'OUT/2022' AND associado.empregador =  AND conta....
+                                                             ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/conta_imprimir_todos_pdf.php:179
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/conta_imprimir_todos_pdf.php(179): PDO->query('SELECT conta.la...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/conta_imprimir_todos_pdf.php on line 179
+[21-Oct-2022 11:17:32 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php on line 10
+[21-Oct-2022 11:23:41 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php on line 10
+[21-Oct-2022 11:24:16 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at or near "ORDER"
+LINE 1: SELECT * FROM sind.empregador WHERE divisao =  ORDER BY nome...
+                                                       ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php:10
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php(10): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/producao_empregador.php on line 10
+[27-Oct-2022 11:31:06 UTC] PHP Warning:  scandir(/home/makecard/public_html/sind/Adm/pages/arquivos/uploads/Casserv/OUT-2022/INPREV): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[27-Oct-2022 11:31:06 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[27-Oct-2022 11:31:06 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[01-Nov-2022 10:55:43 America/Araguaina] PHP Notice:  Undefined index: empregador in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 9
+[01-Nov-2022 10:55:43 America/Araguaina] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42601]: Syntax error: 7 ERROR:  syntax error at end of input
+LINE 1: SELECT * FROM sind.empregador WHERE id = 
+                                                 ^ in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php:140
+Stack trace:
+#0 /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php(140): PDO->query('SELECT * FROM s...')
+#1 {main}
+  thrown in /home/makecard/public_html/sind/Adm/pages/arquivos/relatorio_final.php on line 140
+[24-Nov-2022 11:15:57 UTC] PHP Warning:  scandir(/home/makecard/public_html/sind/Adm/pages/arquivos/uploads/Casserv/NOV-2022/PREFEITURA MUNICIPAL): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[24-Nov-2022 11:15:57 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[24-Nov-2022 11:15:57 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14
+[28-Nov-2022 11:57:58 UTC] PHP Warning:  scandir(/home/makecard/public_html/sind/Adm/pages/arquivos/uploads/Casserv/NOV-2022/INPREV): failed to open dir: No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[28-Nov-2022 11:57:58 UTC] PHP Warning:  scandir(): (errno 2): No such file or directory in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 12
+[28-Nov-2022 11:57:58 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/makecard/public_html/sind/Adm/pages/arquivos/carrega_arquivo.php on line 14

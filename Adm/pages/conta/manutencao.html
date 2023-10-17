@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Manutenção dos valores</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+</head>
+<style type="text/css">
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+
+    div.container {
+        width: 80%;
+    }
+    th {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    td {
+        font-size: 11px;
+    }
+    thead input {
+        width: 100%;
+    }
+    #tabela_busca_associado tbody tr {
+        cursor: pointer;
+    }
+    .modal-dialog {
+        position: relative;
+        display: table;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: auto;
+        min-width: 400px;
+    }
+    .esconde {
+        visibility: hidden;
+    }
+</style>
+<body>
+<!-- Content Wrapper. Contains page content -->
+<div class="container-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1 style="margin-top: -1px;margin-left: -6px;">
+            Manutenção <small>de valores</small> </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="col-sm-6 col-form-label">Consulta associado</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_matricula_origem" style="padding-top: 6px">Matricula</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" disabled id="C_matricula_origem" name="C_matricula_destino" onkeypress="return onlynumber();" maxlength="13" placeholder="Matrícula" required>
+
+                                <input type="hidden" class="form-control" disabled id="C_id_empregador_origem" name="C_id_empregador_origem">
+                                <input type="hidden" class="form-control" disabled id="limite" name="limite" value="">
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-primary" id="btnConsultar">
+                                    Consultar</button>
+                                <button type="button" class="btn btn-primary" id="btnCadastrar">
+                                    Cadastrar</button>
+                                <button type="button" class="btn btn-primary" id="btnExcluirVarios">
+                                    Excluir selecionados</button>
+                                <button type="button" class="btn btn-primary" id="btnImprimir" disabled>
+                                    Imprimir</button>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_nome_origem" style="padding-top: 6px">Associado</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" disabled id="C_nome_origem" name="C_associado_origem" onkeypress="return onlynumber();" maxlength="13" placeholder="Associado" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_empregador_origem" style="padding-top: 6px">Empregador</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" disabled id="C_empregador_origem" name="C_empregador_origem" onkeypress="return onlynumber();" maxlength="13" placeholder="Empregador" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_limite" style="padding-top: 6px">Limite</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" disabled id="C_limite" name="C_limite">
+                                </input>
+                                <input type="hidden" name="C_limite_hidden" id="C_limite_hidden" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_saldo" style="padding-top: 6px">Saldo cartão</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input class="form-control" disabled id="C_saldo" name="C_saldo"/>
+                                <input type="hidden" name="C_saldo_hidden" id="C_saldo_hidden" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" for="C_mes" style="padding-top: 6px">Mês</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-control i_bd" id="C_mes" name="C_mes">
+                                </select>
+                                <input type="hidden" name="C_mes_hidden" id="C_mes_hidden" value=""/>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radiobtnmes" id="input_check_atual" value="atual" checked>
+                                    <label class="form-check-label" for="input_check_atual">
+                                        Mês atual
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="radiobtnmes" id="input_check_todos" value="todos">
+                                    <label class="form-check-label" for="input_check_todos">
+                                        Todos os meses
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                        <hr style="height:1px; border:none; color:rgba(0,0,0,0.26); background-color:rgba(0,0,0,0.26); margin-top: 0px; margin-bottom: 0px;">
+                        </p>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table id="tab_matricula_origem" class="display" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 20px"></th>
+                                        <th style="font-size:x-small">REGISTRO</th>
+                                        <th style="font-size:x-small">MATRICULA</th>
+                                        <th style="font-size:x-small">VALOR</th>
+                                        <th style="font-size:x-small">DATA</th>
+                                        <th style="font-size:x-small">HORA</th>
+                                        <th style="font-size:x-small">PARC</th>
+                                        <th style="font-size:x-small">MES</th>
+                                        <th style="font-size:x-small">CONVENIO</th>
+                                        <th style="font-size:x-small">N FANTASIA</th>
+                                        <th style="font-size:x-small">OP</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 col-lg-8 col-xs-8 col-sm-8">
+                                <table id="tabela_categoria" class="display table table-striped dt-responsive compact nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col" style="text-align: end">Gastos</th>
+                                        <th scope="col" style="text-align: end">Descontos</th>
+                                        <th scope="col" style="text-align: end">Não descontado</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">Financeira</th>
+                                        <td><div id="fingasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="findesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="finndesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Farmacia</th>
+                                        <td><div id="fargasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="fardesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="farndesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Compras</th>
+                                        <td><div id="comgasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="comdesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="comndesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Unimed</th>
+                                        <td><div id="unigasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="unidesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="unindesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Totais</th>
+                                        <td><div id="totalgasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="totaldesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <td><div id="totalndesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </section>
+</div>
+<!-- Modal Busca Associado -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalBuscaAssociado" name="ModalBuscaAssociado">
+            <form data-toggle="validator" role="form" name="frmbusca" id="frmbusca">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">ASSOCIADO&nbsp<small>Consultando</small></h5>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sx-12">
+                                        <table id="tabela_busca_associado" class="display table table-striped table-hover dt-responsive" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>MATRICULA</th>
+                                                <th>NOME</th>
+                                                <th>ENDEREÇO</th>
+                                                <th>NÚMERO</th>
+                                                <th>BAIRRO</th>
+                                                <th>NASCIMENTO</th>
+                                                <th>EMPREGADOR</th>
+                                                <th>ABREVIACAO</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Modal Cadastra Conta -->
+<div class="modal fade" id="ModalCadastra" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+    <form data-toggle="validator" role="form" id="frmCadConta" name="frmCadConta">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="ModalCadLabel" >CONTA<small>&nbspCadastrando</small></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
+                            <div class="form-group control-group has-feedback">
+                                <div class="input-group" style="margin-top: 26px">
+                                    <span class="input-group-btn">
+                                        <button type="button" id="btnBuscaAssociado" name="btnBuscaAssociado" class="btn btn-search"><i class="glyphicon glyphicon-search" style="margin-left: 5px;"></i></button>
+                                    </span>
+                                    <input type="text" id="inputMatricula" name="inputMatricula" class="form-control" placeholder="Matricula" style="margin-left: 5px;" onkeypress="return onlynumber();" required>
+                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    <input type="hidden" id="funcionario_cad" name="funcionario_cad" value=""/>
+                                    <input type="hidden" id="situacao_reg" name="situacao_reg" value=""/>
+                                    <input type="hidden" id="tipo_reg" name="tipo_reg" value=""/>
+                                    <input type="hidden" id="operation" name="operation" value="Add"/>
+                                    <input type="hidden" id="id_empregador" name="id_empregador" value=""/>
+                                    <input type="hidden" id="tipo_parcela" name="tipo_parcela" value=""/>
+                                    <input type="hidden" id="cod_convenio" name="cod_convenio" value=""/>
+                                    <input type="hidden" id="nome_convenio" name="nome_convenio" value=""/>
+                                    <input type="hidden" id="inputMatricula_aux" name="inputMatricula_aux" value=""/>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-lg-7 col-xs-7 col-sm-7">
+                            <div class="form-group" style="margin-left: -12px;">
+                                <div class="panel panel-default" >
+                                    <div class="panel-heading" style="height:26px; padding-top: 2px">Associado</div>
+                                    <div class="panel-body" style="height:32px">
+                                        <p class="h5" style="margin-top: -20px"><div id="divAssociado"></div></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                            <div class="form-group" style="margin-left: -12px;">
+                                <div class="panel panel-default" >
+                                    <div class="panel-heading" style="height:26px; padding-top: 2px">Empregador</div>
+                                    <div class="panel-body" style="height:32px">
+                                        <p class="h5" style="margin-top: -20px"><div id="divEmpregador"></div></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
+                            <div class="form-group control-group">
+                                <div class="input-group" style="margin-top: 26px">
+                                    <span class="input-group-btn">
+                                        <button type="button" name="btnBuscaConvenio" id="btnBuscaConvenio" class="btn btn-search"><i class="glyphicon glyphicon-search" style="margin-left: 5px;"></i></button>
+                                    </span>
+                                    <input type="text" id="inputCodConvenio" name="inputCodConvenio" class="form-control" placeholder="Codigo" style="margin-left: 5px;" disabled required>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-lg-7 col-xs-7 col-sm-7">
+                            <div class="form-group" style="margin-left: -12px;">
+                                <div class="panel panel-default" >
+                                    <div class="panel-heading" style="height:26px; padding-top: 2px">Convenio</div>
+                                    <div class="panel-body" style="height:32px">
+                                        <p class="h5" style="margin-top: -20px"><div id="divNomeConvenio" name="divNomeConvenio"></div></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                            <div class="form-group" style="margin-left: -12px;">
+                                <label for="inputDataCad">Data</label>
+                                <div class='input-group'>
+                                    <input type='text' id="inputDataCad" name="inputDataCad" readonly class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                            <div class="form-group control-group has-feedback">
+                                <label for="inputValor">Valor</label>
+                                <div class='input-group'>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon glyphicon-usd"></i></span>
+                                    <input type="text" id="inputValor" name="inputValor" class="form-control" style="padding-right: 4pt;" required>
+                                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
+                            <div class="form-group">
+                                <label for="select_mes">Mês</label>
+                                <select class="form-control i_bd"  id="select_mes" name="select_mes">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputParcela">Parcela</label>
+                                <input type="text" id="inputParcela" name="inputParcela" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 col-xs-2 col-sm-2">
+                            <div class="form-group">
+                                <label for="inputParcela">Tipo</label>
+                                <div class="radio">
+                                    <label><input type="radio" id="optUnica" name="optParcela" value="unica">Parcela única</label>
+                                </div>
+                                <div class="radio">
+                                    <label><input type="radio" id="optTodas" name="optParcela" value="todas" >Todas parcelas</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
+                            <div class="form-group">
+                                <label for="obsCad" class="col-form-label">Observação:</label>
+                                <textarea class="form-control" id="obsCad" name="obsCad"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
+                            <table id="tabela_lancado" class="display table table-striped table-hover dt-responsive compact nowrap" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>REGISTRO</th>
+                                    <th>CONVENIO</th>
+                                    <th>VALOR</th>
+                                    <th>DATA</th>
+                                    <th>HORA</th>
+                                    <th>MES</th>
+                                    <th>PARCELA</th>
+                                    <th>DESCRI</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnFechar" class="btn btn-secondary"  data-dismiss="modal">Fechar</button>
+                        <button type="button" id="btnCadastrarCadastroConta" class="btn btn-primary">Cadastrar</button>
+                        <button type="button" id="btnSalvarCadastroConta" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Modal Busca Convenio -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalBuscaConvenio" name="ModalBuscaAssociado">
+            <form data-toggle="validator" role="form" name="frmbusca" id="frmbuscaConvenio">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="width: 100px;float: left;font-size: x-large;">CONVENIO&nbsp<small>Consultando</small></h5>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sx-12">
+                                        <table id="tabela_busca_convenio" class="display table table-striped table-hover dt-responsive compact" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>CODIGO</th>
+                                                <th>RAZAO SOCIAL</th>
+                                                <th>N FANTASIA</th>
+                                                <th>ENDEREÇO</th>
+                                                <th>TELEFONE</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Modal Edita o Registro Valor -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalEdita" name="ModalEdita" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+            <form data-toggle="validator" role="form" name="frmEditaReg" id="frmEditaReg">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalEditaRegistro" style="width: 100px;float: left;font-size: x-large;"><small>Atualizar</small></h5>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="padding-right: 2px;">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="inputRegistroEdita">Registro</label>
+                                            <input type="text" class="form-control input-sm" id="inputRegistroEdita" name="inputRegistroEdita" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="padding-right: 2px;">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="inputNomeEdita">Associado</label>
+                                            <input type="text" class="form-control input-sm" id="inputNomeEdita" name="inputNomeEdita" disabled >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="padding-right: 2px;">
+                                        <div class="form-group control-group has-feedback">
+                                            <label class="control-label" for="inputConvenioEdita">Convenio</label>
+                                            <input type="text" class="form-control input-sm" id="inputConvenioEdita" name="inputConvenioEdita" disabled >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10" style="padding-right: 2px;">
+                                        <label class="control-label" for="inputValorEdita">Valor</label>
+                                        <div class='input-group'>
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon glyphicon-usd"></i></span>
+                                            <input type="text" id="inputValorEdita" name="inputValorEdita" class="form-control" required>
+                                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                            <div class="form-group control-group" style="float: right;padding-right: 5px;">
+                                <button type="submit" class="btn btn-primary" id="btnSalvarEdicao">
+                                    <span class="glyphicon glyphicon-send"></span>
+                                    Salvar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Modal Comprovante Digital -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalEditaCompro" name="ModalEdita" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+            <form data-toggle="validator" role="form" name="frmEditaReg" id="frmCompro">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalCompro" style="width: 300px; float: left;font-size: x-large;"><small>Comprovante digital</small></h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row" style="text-align: center">
+                                    <img src="" id="img_comprovante_exibe" style="width: 400px;height: 300px"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script src="../Adm/pages/conta/js/manutencao.js"></script>
+</body>
+</html>

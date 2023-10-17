@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <style type="text/css">
+        th, td { white-space: nowrap; }
+        div.dataTables_wrapper {
+            margin: 0 auto;
+        }
+        #tab_matricula_origem tbody tr td {
+            margin: 0 auto;
+        }
+        div.container {
+            width: 80%;
+        }
+        .form-inline {
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-bottom: 5px;
+        }
+        .alinha_direita {
+            text-align: right;
+        }
+        th {
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        td {
+            font-size: 11px;
+        }
+        .modal-dialog {
+            position: relative;
+            display: table;
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 2px;
+        }
+        #events {
+            margin-bottom: 1em;
+            padding: 1em;
+            background-color: #f6f6f6;
+            border: 1px solid #999;
+            border-radius: 3px;
+            height: 100px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container-wrapper">
+    <section class="content-header">
+        <h1 style="margin-top: -1px;margin-left: -6px;">
+            CARTÕES <small>criar número de cartão</small> </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="box">
+                <div class="box-header">
+                    <form id="listagem" name="listagem"  role="form">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                
+                                    <label for="C_tipoarquivo">Tipo arquivo:</label>
+                                    <select class="form-control" id="C_tipoarquivo" name="C_tipoarquivo" style="margin-right: 20px;">
+                                    </select>
+                                
+                            </div>    
+                            <div class="form-group"></div>
+                                
+                                    <label for="C_lotes">Lotes:</label>
+                                    <select class="form-control" id="C_lotes" name="C_lotes" style="margin-right: 20px;">
+                                    </select>
+                                    <input type="button" name="btnConsultar" id="btnConsultar" class="btn btn-primary" style="margin-right: 20px;" value="Adcionar" />
+                                    <input type="button" name="gerararquivo" id="gerararquivo" class="btn btn-primary" value="Exportar" />  
+                            </div>
+                            
+                        </div>
+                    </form>
+                
+                <div class="box-body">
+                    <table id="tabela_dados" class="table display compact table-striped table-hover dt-responsive" width="100%">
+                        <thead>
+                            <tr>
+                                <td>CARTÃO</td>
+                                <td class="noExl">MATRICULA</td>
+                                <td class="noExl">EMPREGADOR</td>
+                                <td>NOME</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td class="noExl"></td>
+                                <td class="noExl"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- Modal Busca Associado -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalBuscaAssociado" name="ModalBuscaAssociado">
+            <form data-toggle="validator" role="form" name="frmbusca" id="frmbusca">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">ASSOCIADO&nbsp<small>Consultando</small></h5>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sx-12">
+                                        <table id="tabela_busca_associado" class="display table table-striped table-hover dt-responsive" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>CODIGO</th>
+                                                <th>NOME</th>
+                                                <th>EMPREGADOR</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script src="../Adm/pages/cartoes/js/arquivos_read_script.js"></script>
+</body>
+</html>

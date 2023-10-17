@@ -1,0 +1,60 @@
+/**
+ * author: guanheng88
+ * version: 1.0.0
+ */
+@font-color: #626b7a;
+@font-color-active: #1e2125;
+@background: #edf0f1;
+@background-active: #fafafa;
+@border-color: #dfe4e6;
+.menu-siderbar {
+    width: 240px;
+    /* 计算距离顶部nav的距离，可根据实际情况调整 */
+    min-height: calc(100vh - 56px);
+    background: @background;
+    border-right: 1px solid @border-color;
+
+    .nav-item {
+        position: relative;
+
+        .nav-link-parent:after {
+            position: absolute;
+            content: "\f107";
+            font-family: FontAwesome;
+            font-size: 12px;
+            line-height: 10px;
+            right: 14px;
+            top: 17px;
+        }
+        .nav-link {
+            color: @font-color;
+            :hover {
+                color: @font-color-active;
+                background: @background-active;
+            }
+
+            .menu-icon {
+                margin-right: 6px;
+            }
+        }
+        .nav-link.active {
+            color: @font-color-active;
+            background: @background-active;
+        }
+        .menu-siderbar-child {
+            display: none;
+
+            .nav-link {
+                padding-left: calc(1rem + 15px);
+            }
+        }
+    }
+    .nav-item.open {
+        .nav-link-parent:after {
+            content: "\f106";
+        }
+        .menu-siderbar-child{
+            display: block;
+        }
+    }
+}

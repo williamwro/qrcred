@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Associados</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+        th, td { white-space: nowrap; }
+        div.dataTables_wrapper {
+            margin: 0 auto;
+        }
+
+        div.container {
+            width: 80%;
+        }
+        .form-inline {
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-bottom: 5px;
+        }
+        .alinha_direita {
+            text-align: right;
+        }
+        th {
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        td {
+            font-size: 11px;
+        }
+        .modal-dialog {
+            position: relative;
+            display: table;
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 2px;
+        }
+        #events {
+            margin-bottom: 1em;
+            padding: 1em;
+            background-color: #f6f6f6;
+            border: 1px solid #999;
+            border-radius: 3px;
+            height: 100px;
+            overflow: auto;
+        }
+        thead input {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<section class="content-header">
+    <h1 style="margin-top: -1px;margin-left: -6px;">
+        Soma por mês <small>Visualização</small> </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+        </li>
+        <li>
+            <a href="#">Tables</a>
+        </li>
+        <li class="active">Data tables</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sx-12">
+            <div class="box">
+                <div class="box-header">
+                    <form id="listagem" name="listagem"role="form">
+
+                        <div class="form-group row">
+                            <div class="col-md-8">
+                                <label for="C_nome_convenio">Convenio</label>
+                                <input type="text" class="form-control" disabled id="C_nome_convenio">
+                                <input type="hidden" id="cod_convenio" name="cod_convenio" value="">
+                            </div>
+                            <div class="col-md-2" style="padding-top: 24px;">
+                                <input type="button" name="btnBuscaConvenio" id="btnBuscaConvenio" class="btn btn-primary" value="Consultar" />
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label for="C_mes">Mês</label>
+                                <select class="form-control i_bd" id="C_mes" name="C_mes">
+                                </select>
+                                <input type="hidden" name="C_mes_hidden" id="C_mes_hidden" value=""/>
+                            </div>
+                            <div class="col-md-1" style="padding-top: 24px;">
+                                <input type="button" name="btnExibir" id="btnExibir" class="btn btn-primary" value="Exibir" />
+                            </div>
+                            <div class="col-md-1" style="padding-top: 24px;">
+                                <input type="button" name="gerarpdf" id="gerarpdf" class="btn btn-primary" value="Relatório" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-body">
+                    <table id="tabela_producao" class="display table table-striped table-hover dt-responsive compact nowrap" width="100%">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>MÊS</th>
+                                <th>TOTAL</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal Busca Convenio -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalBuscaConvenio" name="ModalBuscaAssociado">
+            <form data-toggle="validator" role="form" name="frmbusca" id="frmbuscaConvenio">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="width: 100px;float: left;font-size: x-large;">CONVENIO&nbsp<small>Consultando&nbsp-&nbsp<span id="mes_rotulo"></span></small></h5>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sx-12">
+                                        <table id="tabela_busca_convenio" class="display table table-striped table-hover dt-responsive compact" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>CODIGO</th>
+                                                <th>RAZAO SOCIAL</th>
+                                                <th>ENDEREÇO</th>
+                                                <th>TELEFONE</th>
+                                                <th>DATA CADASTRO</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script src="../Adm/pages/producao/js/producao_read_script_soma.js"></script>
+</body>
+</html>
