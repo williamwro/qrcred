@@ -25,6 +25,7 @@ $bairro             = $_POST['bairro'];
 $cnpj               = $_POST['cnpj'];
 $cidade             = $_POST['cidade'];
 $numero             = $_POST['numero'];
+$divisao            = $_POST['divisao'];
 //$parcela_conv       = $_POST['parcela_conv'];
 //$valor_pedido       = $_POST['valor_pedido'];
 $pede_senha         = $_POST['pede_senha'];
@@ -649,7 +650,7 @@ $aceita_parce_individ = $_POST['aceita_parce_individ'];
                                                                width: 79px;
                                                                padding: 0;
                                                                padding-bottom: 3px;
-                                                               border-bottom: 1px solid #bdbdbd;">Casserv</td>
+                                                               border-bottom: 1px solid #bdbdbd;"><?php echo $divisao; ?></td>
                                         <td style="font-size: 9px;
                                                                vertical-align: bottom;
                                                                padding: 4px 6px 6px;
@@ -743,7 +744,7 @@ $aceita_parce_individ = $_POST['aceita_parce_individ'];
                                                                width: 79px;
                                                                padding: 0;
                                                                padding-bottom: 3px;
-                                                               border-bottom: 1px solid #bdbdbd;">Casserv</td>
+                                                               border-bottom: 1px solid #bdbdbd;"><?php echo $divisao; ?></td>
                                         <td style="font-size: 9px;
                                                                vertical-align: bottom;
                                                                padding: 4px 6px 6px;

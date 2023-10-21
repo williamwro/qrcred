@@ -24,6 +24,21 @@ $(document).ready(function(){
             $('.navbar-collapse').collapse('hide');
         }
     });
+    $("#recuparar_senha_admin").click(function (e) {
+        e.preventDefault();
+        var usuarioadmin = $("#login-username").val();
+        if(usuarioadmin === "") {
+            swal.fire({
+                title: "Atuação!",
+                text: "Favor o informar o usuário !",
+                icon: "warning",
+                dangerMode: true
+            })
+            exit();
+        }else{
+            $.redirect('esqueci_a_senha.php', {usuario:usuarioadmin});
+        }
+    });
     $("#btnEntrar").click(function (e) {
         e.preventDefault();
         var tipo_loginx;

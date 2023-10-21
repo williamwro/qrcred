@@ -77,7 +77,7 @@ $(document).ready(function() {
                         });
                         waitingDialog.hide();
                     } else if (tipo_loginx === "login incorreto") {
-                        $("#divLoading").css("display", "none");
+                        $("#divLoading").#recuperar_senhacss("display", "none");
                         Swal.fire({
                             title: "Atenção!",
                             text: "Login Incorreto !",

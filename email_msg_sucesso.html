@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar senha</title>
+    <link rel="stylesheet" href="Adm/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- <script src="Adm/bower_components/bootstrap/dist/js/bootstrap.js"></script> -->
+    <script type="application/javascript" src="js/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="js/jquery.redirect.js"></script>
+    <script type="text/javascript" src="js/sweetalert2.all.js"></script>
+
+    <!------ Include the above in your HEAD tag ---------->
+</head>
+<body>
+
+<div class="container">
+    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-success" >
+            <div class="panel-heading">
+                <div class="panel-title">QRCRED</div>
+            </div>
+            <div style="padding-top:30px" class="panel-body" >
+
+                <h1>Parabéns,</h1>
+                <h2>Sua senha foi alterada com sucesso!!!</h2>
+                <br>
+                <form action="https://qrcred.makecard.com.br" method="GET" id="formrecupararsenha" class="form-horizontal" role="form">
+                    <div style="margin-top:10px" class="form-group" style="margin:auto;">
+                        <!-- Button -->
+                        <div class="col-sm-12 mx-auto col-10 col-md-8 col-lg-6">
+                            <button id="btn-login" class="btn btn-success">Retornar a página inicial</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -2,8 +2,8 @@
 $userconv="";
 $passconv="";
 include "Adm/php/banco.php";
-if (isset($_POST['username']) && isset($_POST['password'])){
-    $username = $_POST['username'];
+if (isset($_POST['login-username']) && isset($_POST['password'])){
+    $username = $_POST['login-username'];
     $passuser = $_POST['password'];
     $cod_convenio = 0;
     $codigo = 0;

@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="Adm/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <!-- <script src="Adm/bower_components/bootstrap/dist/js/bootstrap.js"></script> -->
     <script type="application/javascript" src="js/jquery-3.4.1.js"></script>
-    <script type="text/javascript" src="js/jquery.redirect.js"></script>
-    <script type="text/javascript" src="js/sweetalert2.all.js"></script>
-
+    <script type="application/javascript" src="js/jquery.redirect.js"></script>
+    <script type="application/javascript" src="js/sweetalert2.all.js"></script>
+    <script type="application/javascript" src="alterar_senha.js"></script>
     <!------ Include the above in your HEAD tag ---------->
 </head>
 <body>
@@ -23,13 +23,13 @@ $chave = "";
     <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-info" >
             <div class="panel-heading">
-                <div class="panel-title">Makecard - Alterando</div>
+                <div class="panel-title">QRCRED - Alterando</div>
             </div>
             <div style="padding-top:30px" class="panel-body" >
 
                 <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-                <form action="set_nova_senha.php" method="POST" id="formrecupararsenha" class="form-horizontal" role="form">
+                <form action="#" id="formrecupararsenha" class="form-horizontal" role="form">
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                         <input id="user" type="text" readonly class="form-control" name="user" value="<?PHP echo $user; ?>">
@@ -37,7 +37,7 @@ $chave = "";
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                         <input id="email" type="email" class="form-control" name="email" value="" placeholder="E-mail">
-                        <input type="hidden" name="chave" value="<?PHP echo $chave; ?>">
+                        <input type="hidden" name="chave" id="chave" value="<?PHP echo $chave; ?>">
                     </div>
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>

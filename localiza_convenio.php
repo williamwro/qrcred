@@ -3,6 +3,7 @@ ini_set('display_errors', true);
 error_reporting(E_ALL);
 $userconv="";
 $passconv="";
+$cod_divisao=1;
 if (isset($_POST['userconv']) && isset($_POST['passconv'])){
     require 'Adm/php/banco.php';
     include "Adm/php/funcoes.php";
@@ -56,6 +57,11 @@ if (isset($_POST['userconv']) && isset($_POST['passconv'])){
             $std->divulga      = "S";
             $std->pede_senha   = "";
             $std->aceita_parce_individ = false;
+        }else{
+            $sql_divisao = $pdo->query("SELECT nome, cidade, id_divisao, descricao FROM sind.divisao WHERE id_divisao = ".$cod_divisao);
+            while($row_senha = $sql_divisao->fetch()) {
+                $std->divisao = $row_senha["nome"];
+            }
         }
 
 	}else{
