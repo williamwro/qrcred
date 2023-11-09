@@ -53,7 +53,7 @@ if (isset($_POST['valor_pedido']) && isset($_POST['txtSaldoCard'])) {
         $evetivar   = false;
         $datafatura = data_fatura($mes_pedido[0]);
         if ($pede_senha == 1) {
-            $sql_pede_senha = $pdo->query("SELECT * FROM sind.c_senhaassociado WHERE cod_associado = '" . $_POST['matricula'] . "' AND senha = '" . $_POST['pass'] . "'");
+            $sql_pede_senha = $pdo->query("SELECT * FROM sind.c_senhaassociado WHERE cod_associado = '" . $_POST['matricula'] . "' AND id_empregador = " . $_POST['e_p'] . " AND senha = '" . $_POST['pass'] . "'");
             while ($row_senha = $sql_pede_senha->fetch()) {
                 $contador_senha_associado = 1;
             }

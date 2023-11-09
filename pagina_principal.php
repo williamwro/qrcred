@@ -429,6 +429,8 @@ $aceita_parce_individ = $_POST['aceita_parce_individ'];
                                             <input type="hidden" id="pede_senha"          name="pede_senha"          value="<?PHP echo $pede_senha;?>"/>
                                             <input type="hidden" id="aceita_parce_individ"  name="aceita_parce_individ"  value="<?PHP echo $aceita_parce_individ;?>"/>
                                             <input type="hidden" id="val_parcela"         name="val_parcela"         value=""/>
+                                            <input type="hidden" id="numero"              name="numero"              value="<?PHP echo $numero;?>"/>
+                                            <input type="hidden" id="divisao"             name="divisao"             value="<?PHP echo $divisao;?>"/>
                                         </td>
                                         <td style="width: 50px;border: 0;padding-bottom: 0px;"></td>
                                         <td colspan="2" rowspan="3" style="width: 70px;border: 0;padding-bottom: 0px;">
@@ -606,18 +608,18 @@ $aceita_parce_individ = $_POST['aceita_parce_individ'];
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 text-center" style="padding: 4px" >
-                            <button class="btn btn-primary" type="button" id="reexibir">CLICK  AQUI  PARA  REIMPRIMIR</button>
+                        <div class="col-md-12 text-center" style="padding: 4px;padding-top: 20px" >
+                            <button class="btn btn-primary" type="button" style="width: 300px" id="reexibir">CLICK  AQUI  PARA  REIMPRIMIR</button>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 text-center" style="padding: 4px">
-                            <input class="btn btn-primary" type="button" id="botaoretornar" value="CLICK  AQUI  PARA  RETORNAR">
+                        <div class="col-md-12 text-center" style="padding: 4px;padding-top: 20px">
+                            <input class="btn btn-primary" type="button" style="width: 300px" id="botaoretornar" value="CLICK  AQUI  PARA  RETORNAR">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 text-center" style="padding: 4px">
-                            <input class="btn btn-primary" type="button" id="sairsistema" value="CLICK  AQUI  PARA  SAIR  DO  SISTEMA">
+                        <div class="col-md-12 text-center" style="padding: 4px;padding-top: 20px">
+                            <input class="btn btn-primary" type="button" style="width: 300px" id="sairsistema" value="CLICK  AQUI  PARA  SAIR  DO  SISTEMA">
                         </div>
                     </div>
                 </div>

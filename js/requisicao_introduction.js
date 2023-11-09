@@ -29,12 +29,13 @@ var uuid_conta;
 var valor_estorno;
 var nome_operador;
 var nome_titular;
+var saida_foco = "cod_carteira";
 $(document).ready(function(){
     cod_convenio = $("#cod_convenio").val();
     mes_atual = $("#C_mes").val();
     mes_atual = $("#m_p").val();
     aceita_parce_individ = $("#aceita_parce_individ").val();
-    debugger;
+    //debugger;
     $('#cod_convenio').val(cod_convenio);
     mescorrente = mes_atual;
     $.getJSON( "meses_conta.php",{ "origem": "convenio" }, function( data ) {
@@ -90,7 +91,7 @@ $(document).ready(function(){
     $('.tab-menu a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
-        debugger;
+        //debugger;
         //table.ajax.reload();
         //table_estorno.ajax.reload();
         $("#cod_carteira").val("");
@@ -119,17 +120,308 @@ $(document).ready(function(){
     $(document).on('shown.bs.modal', '#modal_confirma_estorno', function () {
         $("#nome_op").focus();
     });
-    $("input").keypress(function(e){
+    $("#pass").keypress(function(e){
+        //debugger;
+        if (e.which == 13) {
+            saida_foco = "pass";
+            $('#btnconfirmar').click();
+        }
+   });$('#btnLocaliza')
+ /*   $("#valor_pedido").keypress(function(e){
         debugger;
         if (e.which == 13) {
-            $("#btnSenha_Estor").click();
+            $('#pass').focus();
         }
-   });
-   let $modal = $(".modal-bootbox-confirm");
+    }); */
+   /* let $modal = $(".modal-bootbox-confirm");
    $modal.draggable({
         handle: ".modal-header",
    });
-   $modal.resizable();
+   $modal.resizable(); */
+   $('#cod_carteira').on('keyup', function(e){
+        //debugger;
+        if (e.keyCode === 13) {
+            //e.preventDefault();
+            saida_foco = "cod_carteira";
+            $('#btnLocaliza').click();
+        }
+    });
+    $('#valor_pedido').on('keyup', function(e){
+            //debugger;
+        saida_foco = "valor_pedido";
+        if (e.keyCode != 13) {
+            var total_digitado          = $("#valor_pedido").val();
+            var total_digitadox         = moedaParaNumero(total_digitado);
+            var limitex                 = $("#txtSaldo").html();
+            var saldo                   = moedaParaNumero(limitex);
+            var valor_parcela           = $("#valor_parcela").val();
+            valor_parcela               = parseInt(valor_parcela);
+            var nparcela_escolhida      = $("#nparcelas").val();
+            var nparcela_escolhida_int  =  parseInt(nparcela_escolhida);
+            if (total_digitadox > 0) {
+                if (saldo === 0) {
+                    $("#valor_pedido").val("");
+                    $("#valor_pedido").focus();
+                    Swal.fire({
+                        title: "Atenção!",
+                        text: "Não tem saldo !",
+                        icon: "warning"
+                    });
+                } else {
+                    if (nparcela_escolhida_int > 1) {
+                        $('#msg_parcela').css('display','block');
+                        nparcela_escolhida = parseInt(nparcela_escolhida);
+                        valor_parcela      = numeroParaMoeda(total_digitadox / nparcela_escolhida);
+                        $("#valor_parcela").html(valor_parcela);
+                        valor_parcela      = moedaParaNumero(valor_parcela);
+                        $("#col_parcela_input").show("fast");
+                        $("#col_parcela_rotulo").show("fast");
+                        valor_parcela      = numeroParaMoeda(valor_parcela);
+                        $("#valor_parcela").html(valor_parcela);
+                        valor_parcela      = moedaParaNumero(valor_parcela);
+        
+                        if (valor_parcela > saldo) {
+                            $("#col_parcela_input").hide("fast");
+                            $("#col_parcela_rotulo").hide("fast");
+                            $("#valor_parcela").html("");
+                            $("#nparcelas option[value=1]").prop('selected', true);
+                            Swal.fire({
+                                title: "Atenção!",
+                                text: "O valor da parcela é maior que o saldo !",
+                                icon: "warning"
+                            });
+                            $("#valor_pedido").val("");
+                            $("#valor_pedido").focus();
+                        }
+                    }
+                }
+            }else{
+                $("#valor_parcela").html("");
+                $("#val_parcela").val("");
+                $('#msg_parcela').css('display','none');
+            }
+        }else{
+            //e.preventDefault();
+            $('#pass').focus();
+        }
+    });
+    $("#btnLocaliza").on("click", function(e){
+       e.preventDefault();
+       debugger;
+       if(saida_foco === "cod_carteira"){
+            var nomex;
+            var situacaox;
+            var cod_cartaox;
+            var saldox;
+            var saldox2;
+            var matricula;
+            var mesescolhido;
+            var empregador;
+            var razao_social;
+            var parcelas_permitidas;
+            var valor_pedido_gravado;
+            var ultimo_mes;
+            $.ajax({
+                url: "localiza_associado.php",
+                type: "POST",
+                async: true,
+                cache: false,
+                data: $('#busca_associado').serialize(),
+                dataType: 'json',
+                beforeSend: function() {
+                    $("#divLoading").css("display", "block");
+                },
+                complete: function() {
+                    $("#divLoading").css("display", "none");
+                },
+                success: function(data){
+    
+                    nomex = data.nome;
+                    situacaox = data.situacao;
+                    cod_cartaox = data.cod_cart;
+                    saldox = data.limite;
+                    saldox2 = saldox;
+                    saldox2 = numeroParaMoeda(saldox2);
+                    matricula = data.matricula;
+                    mesescolhido = data.mes_desconto;
+                    empregador = data.empregador;
+                    razao_social = data.razaosocial;
+                    parcelas_permitidas = data.parcelas_permitidas;
+                    valor_pedido_gravado = data.valorpedido;
+                    ultimo_mes = data.ultimo_mes;
+                    //debugger;
+                    if (nomex !== "") {
+                        if (situacaox === 1 || situacaox === 4 || situacaox === 5 || situacaox === 6 || situacaox === 7 || situacaox === 8) {
+                            $("#nome_associado_exibir").html(nomex + " ( " + data.nome_empregador + " )");
+                            $("#nome").val(nomex);
+                            $("#cartao_exibir").html(cod_cartaox + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-success">   Liberado</span>');
+                            $("#txtSaldo").html("R$ " + saldox2);
+                            $("#txtSaldoCard").html(saldox2);
+                            $("#valor_pedido").val(valor_pedido_gravado);
+                            $("#matricula").val(matricula);
+                            $("#m_p").html(mesescolhido);
+                            $("#e_p").val(empregador);
+                            $("#razao_social").val(razao_social);
+                            $("#parcelas_permitidas").val(parcelas_permitidas);
+                            //document.getElementById("cartao_exibir").style.background = "#80FF80";
+                            //document.getElementById("cartao_exibir").style.color = "#000";
+                            $("#pass").prop("disabled", false);
+                            $("#valor_pedido").prop("disabled", false);
+                            $("#nparcelas").prop("disabled", false);
+                            $("#btnconfirmar").prop("disabled", false);
+                            $("#valor_pedido").focus();
+    
+                            var parcelas_convenio = $("#parcelas_a_exibir").val();
+                            parcelas_conv = $("#parcelas_a_exibir").val();
+                            if (parcelas_convenio === undefined) {
+                                parcelas_convenio = 0;
+                            } else {
+                                parcelas_convenio = parseInt(parcelas_convenio);
+                            }
+                            var parcelas_associado = $("#parcelas_permitidas").val();
+                            parcelas_associado = parseInt(parcelas_associado);
+    
+                            var parcelas_a_exibir;
+    
+                            if (parcelas_associado === null || parcelas_associado === 0) {
+                                parcelas_a_exibir = parcelas_convenio;
+                                if (parcelas_associado === 0) {
+                                    parcelas_a_exibir = 1;
+                                }
+                            } else {
+                                parcelas_a_exibir = parcelas_associado;
+                            }
+                            if(aceita_parce_individ === "true"){
+                                parcelas_a_exibir = parcelas_associado;
+                            }else{
+                                parcelas_a_exibir = parcelas_convenio;
+                            }
+    
+                            var $dropdown = $("#nparcelas");
+                            $dropdown.empty();
+                            for (var i = 1; i < parcelas_a_exibir + 1; i++) {
+                                $dropdown.append($("<option />").val(i).text(i));
+                            }
+    
+    
+                        } else if (situacaox === 0) {
+                            $("#nome_associado_exibir").html(nomex);
+                            $("#cartao_exibir").html(cod_cartaox + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-danger">Bloqueado</span>');
+                            //document.getElementById("cartao_exibir").style.background = "#F00";
+                            //document.getElementById("cartao_exibir").style.color = "#F7F7F7";
+                            $("#pass").prop("disabled", true);
+                            $("#valor_pedido").prop("disabled", true);
+                            $("#nparcelas").prop("disabled", true);
+                            $("#btnconfirmar").prop("disabled", true);
+                            $("#txtSaldo").html("");
+                            $("#valor_pedido").focus();
+                        } else if (situacaox === 2) {
+                            //debugger
+                            $("#nome_associado_exibir").html("");
+                            $("#cartao_exibir").html("");
+                            $("#txtSaldo").html("");
+                            $("#btnconfirmar").prop("disabled", true);
+                            if (browser_name === "iexplorer") {
+                                $.fallr.show({icon: 'error', content: '<p>Cartão Não encontrado</p>', position: 'center'});
+                            } else {
+                                Swal.fire.fire({
+                                    title: "Atenção!",
+                                    text: "Cartão Não encontrado !",
+                                    icon: "warning"
+                                });
+                            }
+                        }/*else if (situacaox === 8) {
+                            $("#nome_associado_exibir").html("");
+                            $("#cartao_exibir").html("");
+                            $("#txtSaldo").html("");
+                            $("#btnconfirmar").prop( "disabled", true );
+                            Swal.fire({
+                                title: "Atenção Associado ",
+                                text: "( "+nomex+" ), É NECESSARIO RENOVAR O CONTRATO COM A CASSERV.      " +
+                                    "Favor comparecer à Av Ministro Bias fortes, 79 - Centro, para retirar o novo cartão e renovar o contrato, para continuar usando o cartão. Atenciosamente, Casserv. Telefone : 3221-6502.",
+                                icon: "warning"
+                            });
+                        }*/
+                        if (situacaox === 8) {
+                            $("#nome_associado_exibir").html("");
+                            $("#cartao_exibir").html("");
+                            $("#txtSaldo").html("");
+                            $("#btnconfirmar").prop("disabled", true);
+                            Swal.fire({
+                                title: "CARTÃO BLOQUEADO!",
+                                text: "( " + nomex + " ), É NECESSARIO RETIRAR O NOVO CARTÃO COM A CASSERV.      " +
+                                    "Favor comparecer à Av Ministro Bias fortes, 79 - Centro, para retirar o novo cartão e renovar o contrato, para continuar usando os convenios. Atenciosamente, Casserv. Telefone : 3221-6502.",
+                                icon: "warning"
+                            }).then(() => {
+                                /*if (data.cod_situacao2 === 2) {
+                                    Swal.fire({
+                                        title: "Atenção conveniado!",
+                                        text: "ESTE NÚMERO DE CARTÃO ESTÁ LIBERADO!             " +
+                                            "Favor comunicar ao associado ( " + nomex + " ) para comparecer ao escritório do CASSERV Av Ministro Bias fortes, 79 - Centro, para a troca do cartão antigo, pelo novo cartão CASSERV o mais breve possível. Click OK para prosseguir na venda !",
+                                        icon: "warning"
+                                    });
+                                }*/
+                            });
+                        }
+                        if (data.cod_situacao2 === 2) {
+                            Swal.fire({
+                                title: "Atenção conveniado!",
+                                text: "ESTE NÚMERO DE CARTÃO ESTÁ LIBERADO!             " +
+                                    "Favor comunicar ao associado ( " + nomex + " ) para comparecer ao escritório do CASSERV Av Ministro Bias fortes, 79 - Centro, para a troca do cartão antigo, pelo novo cartão CASSERV o mais breve possível. Click OK para prosseguir na venda !",
+                                icon: "warning"
+                            }).then(() => {
+                                if (situacaox === 8) {
+                                    $("#nome_associado_exibir").html("");
+                                    $("#cartao_exibir").html("");
+                                    $("#txtSaldo").html("");
+                                    $("#btnconfirmar").prop("disabled", true);
+                                    Swal.fire({
+                                        title: "CARTÃO BLOQUEADO!",
+                                        text: "( " + nomex + " ), É NECESSARIO RETIRAR O NOVO CARTÃO COM A CASSERV.      " +
+                                            "Favor comparecer à Av Ministro Bias fortes, 79 - Centro, para retirar o novo cartão e renovar o contrato, para continuar usando os convenios. Atenciosamente, Casserv. Telefone : 3221-6502.",
+                                        icon: "warning"
+                                    })
+                                }
+                            });
+                        }
+                    } else {
+                        //debugger;
+                        $("#nome_associado_exibir").html("");
+                        $("#cartao_exibir").html("CARTAO NÃO ENCONTRADO");
+                        //document.getElementById("cartao_exibir").style.background = "#FFFF80";
+                        //document.getElementById("cartao_exibir").style.color = "#000";
+                        $("#pass").prop("disabled", true);
+                        $("#valor_pedido").prop("disabled", true);
+                        $("#nparcelas").prop("disabled", true);
+                        $("#btnconfirmar").prop("disabled", true);
+                        $("#txtSaldo").html("");
+                        if (browser_name === "iexplorer") {
+                            $.fallr.show({icon: 'error', content: '<p>Cartão Não encontrado</p>', position: 'center'});
+                        }else{
+                            Swal.fire({
+                                title: "Atenção!",
+                                text: "Cartão Não encontrado !",
+                                icon: "warning"
+                            });
+                        }
+                    }
+                },
+                error: function(request, status, erro) {
+                    alert("Problema ocorrido: " + status + "\nDescição: " + erro);
+                    //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
+                    alert("Informações da requisição: \n" + request.getAllResponseHeaders());
+                }
+                // Caso o request termine em sucesso, mostra o resultado recebido na div#resultado
+            });
+    
+            $("#valor_parcela").html("");
+            $("#val_parcela").val("");
+            $("#pass").val("");
+            $('#msg_parcela').css('display','none');
+        }
+    });
+   
+
 });
 function SidebarCollapse () {
     $('.menu-collapsed').toggleClass('d-none');
@@ -669,7 +961,7 @@ function carrega_grid(){
 }
 $('#btnconfirmar').on('click', function(event){
     event.preventDefault();
-    debugger;
+    //debugger;
     var cod_cartaox = $("#cod_carteira").val();
     var valor_pedidox = moedaParaNumero($("#valor_pedido").val());
     var passx = $("#pass").val();
@@ -691,7 +983,7 @@ $('#btnconfirmar').on('click', function(event){
     }else if(isNaN(valor_pedidox)){
         Swal.fire({
             title: "Atenção!",
-            text: "Informe o valor !",
+            text: "Informe o total !",
             icon: "warning"
         });
         $("#pass").val("");
@@ -727,16 +1019,11 @@ $('#btnconfirmar').on('click', function(event){
             cache: false,
             data: $('#busca_associado').serialize(),
             dataType: 'json',
-            beforeSend: function() {
-                $("#divLoading").css("display", "block");
-            },
-            complete: function() {
-                $("#divLoading").css("display", "none");
-            },
+        
             success: function (data) {
-
+               // debugger
                 if (data.situacao === 1) {
-                    debugger;
+                   // debugger;
                     $("#divLoading").css("display", "none");
                     comprovante = $('#comprovante');
                     principal = $('#link_principal');
@@ -774,7 +1061,7 @@ $('#btnconfirmar').on('click', function(event){
                     $("#hora_cupon").html(data.hora);
                     $("#codcarteira_cupon").html(data.codcarteira.substring(6,10));
                     $("#valorpedido_cupon").html(data.valorpedido);
-                    debugger;
+                    //debugger;
                     var valor_pedido = data.valorpedido;
                     var valor_pedido_x = "R$ "+data.valorpedido;
 
@@ -887,13 +1174,14 @@ $('#btnconfirmar').on('click', function(event){
                     }
                     $('#myModal').modal('show');
                 }else if(data.situacao === 2) {
+                    //debugger;
                     Swal.fire({
                         title: "Atenção!",
-                        text: "Senha errada !",
+                        text: "Senha errada !!",
                         icon: "warning"
                     });
                     $("#btnconfirmar").prop( "disabled", false );
-                    $('#pass').focus();
+                    //$('#pass').focus();
                 }
             }
         });
@@ -902,289 +1190,23 @@ $('#btnconfirmar').on('click', function(event){
 $('#sair_sistema').click(function () {
     $.redirect('index.html');
 });
-$('#cod_carteira').on('keyup', function(e){
-    if (e.keyCode === 13) {
-        e.preventDefault();
-        $('#btnLocaliza').click();
-    }
-});
+
+/*
 $('#pass').on('keyup', function(e){
+    debugger;
     if (e.keyCode === 13) {
         e.preventDefault();
-        $('#btnconfirmar').click();
+        $("#btnconfirmar").click();
     }
 });
-/*$('#valor_pedido').on('keyup', function(e){
+/* $('#valor_pedido').on('keyup', function(e){
     debugger
     if (e.keyCode === 13) {
         e.preventDefault();
         $('#pass').focus();
     }
-});*/
-$('#valor_pedido').keyup(function () {
-    debugger;
-    var total_digitado     = $("#valor_pedido").val();
-    var total_digitadox    = moedaParaNumero(total_digitado);
-    var limitex            = $("#txtSaldo").html();
-    var saldo              = moedaParaNumero(limitex);
-    var valor_parcela      = $("#valor_parcela").val();
-    valor_parcela          = parseInt(valor_parcela);
-    var nparcela_escolhida = $("#nparcelas").val();
-    if (total_digitadox > 0) {
-        if (saldo === 0) {
-            $("#valor_pedido").val("");
-            $("#valor_pedido").focus();
-            Swal.fire({
-                title: "Atenção!",
-                text: "Não tem saldo !",
-                icon: "warning"
-            });
-        } else {
-            if (nparcela_escolhida > 1) {
-                $('#msg_parcela').css('display','block');
-                nparcela_escolhida = parseInt(nparcela_escolhida);
-                valor_parcela      = numeroParaMoeda(total_digitadox / nparcela_escolhida);
-                $("#valor_parcela").html(valor_parcela);
-                valor_parcela      = moedaParaNumero(valor_parcela);
-                $("#col_parcela_input").show("fast");
-                $("#col_parcela_rotulo").show("fast");
-                valor_parcela      = numeroParaMoeda(valor_parcela);
-                $("#valor_parcela").html(valor_parcela);
-                valor_parcela      = moedaParaNumero(valor_parcela);
+}); */
 
-                if (valor_parcela > saldo) {
-                    $("#col_parcela_input").hide("fast");
-                    $("#col_parcela_rotulo").hide("fast");
-                    $("#valor_parcela").html("");
-                    $("#nparcelas option[value=1]").prop('selected', true);
-                    Swal.fire({
-                        title: "Atenção!",
-                        text: "O valor da parcela é maior que o saldo !",
-                        icon: "warning"
-                    });
-                    $("#valor_pedido").val("");
-                    $("#valor_pedido").focus();
-                }
-            }
-        }
-    }else{
-        $("#valor_parcela").html("");
-        $("#val_parcela").val("");
-        $('#msg_parcela').css('display','none');
-    }
-});
-$('#btnLocaliza').on('click', function(event){
-    event.preventDefault();
-
-    var nomex;
-    var situacaox;
-    var cod_cartaox;
-    var saldox;
-    var saldox2;
-    var matricula;
-    var mesescolhido;
-    var empregador;
-    var razao_social;
-    var parcelas_permitidas;
-    var valor_pedido_gravado;
-    var ultimo_mes;
-    $.ajax({
-        url: "localiza_associado.php",
-        type: "POST",
-        async: true,
-        cache: false,
-        data: $('#busca_associado').serialize(),
-        dataType: 'json',
-        beforeSend: function() {
-            $("#divLoading").css("display", "block");
-        },
-        complete: function() {
-            $("#divLoading").css("display", "none");
-        },
-        success: function(data){
-
-            nomex = data.nome;
-            situacaox = data.situacao;
-            cod_cartaox = data.cod_cart;
-            saldox = data.limite;
-            saldox2 = saldox;
-            saldox2 = numeroParaMoeda(saldox2);
-            matricula = data.matricula;
-            mesescolhido = data.mes_desconto;
-            empregador = data.empregador;
-            razao_social = data.razaosocial;
-            parcelas_permitidas = data.parcelas_permitidas;
-            valor_pedido_gravado = data.valorpedido;
-            ultimo_mes = data.ultimo_mes;
-            debugger;
-            if (nomex !== "") {
-                if (situacaox === 1 || situacaox === 4 || situacaox === 5 || situacaox === 6 || situacaox === 7 || situacaox === 8) {
-                    $("#nome_associado_exibir").html(nomex + " ( " + data.nome_empregador + " )");
-                    $("#nome").val(nomex);
-                    $("#cartao_exibir").html(cod_cartaox + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-success">   Liberado</span>');
-                    $("#txtSaldo").html("R$ " + saldox2);
-                    $("#txtSaldoCard").html(saldox2);
-                    $("#valor_pedido").val(valor_pedido_gravado);
-                    $("#matricula").val(matricula);
-                    $("#m_p").html(mesescolhido);
-                    $("#e_p").val(empregador);
-                    $("#razao_social").val(razao_social);
-                    $("#parcelas_permitidas").val(parcelas_permitidas);
-                    //document.getElementById("cartao_exibir").style.background = "#80FF80";
-                    //document.getElementById("cartao_exibir").style.color = "#000";
-                    $("#pass").prop("disabled", false);
-                    $("#valor_pedido").prop("disabled", false);
-                    $("#nparcelas").prop("disabled", false);
-                    $("#btnconfirmar").prop("disabled", false);
-                    $("#valor_pedido").focus();
-
-                    var parcelas_convenio = $("#parcelas_a_exibir").val();
-                    parcelas_conv = $("#parcelas_a_exibir").val();
-                    if (parcelas_convenio === undefined) {
-                        parcelas_convenio = 0;
-                    } else {
-                        parcelas_convenio = parseInt(parcelas_convenio);
-                    }
-                    var parcelas_associado = $("#parcelas_permitidas").val();
-                    parcelas_associado = parseInt(parcelas_associado);
-
-                    var parcelas_a_exibir;
-
-                    if (parcelas_associado === null || parcelas_associado === 0) {
-                        parcelas_a_exibir = parcelas_convenio;
-                        if (parcelas_associado === 0) {
-                            parcelas_a_exibir = 1;
-                        }
-                    } else {
-                        parcelas_a_exibir = parcelas_associado;
-                    }
-                    if(aceita_parce_individ === "true"){
-                        parcelas_a_exibir = parcelas_associado;
-                    }else{
-                        parcelas_a_exibir = parcelas_convenio;
-                    }
-
-                    var $dropdown = $("#nparcelas");
-                    $dropdown.empty();
-                    for (var i = 1; i < parcelas_a_exibir + 1; i++) {
-                        $dropdown.append($("<option />").val(i).text(i));
-                    }
-
-
-                } else if (situacaox === 0) {
-                    $("#nome_associado_exibir").html(nomex);
-                    $("#cartao_exibir").html(cod_cartaox + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-danger">Bloqueado</span>');
-                    //document.getElementById("cartao_exibir").style.background = "#F00";
-                    //document.getElementById("cartao_exibir").style.color = "#F7F7F7";
-                    $("#pass").prop("disabled", true);
-                    $("#valor_pedido").prop("disabled", true);
-                    $("#nparcelas").prop("disabled", true);
-                    $("#btnconfirmar").prop("disabled", true);
-                    $("#txtSaldo").html("");
-                    $("#valor_pedido").focus();
-                } else if (situacaox === 2) {
-                    debugger
-                    $("#nome_associado_exibir").html("");
-                    $("#cartao_exibir").html("");
-                    $("#txtSaldo").html("");
-                    $("#btnconfirmar").prop("disabled", true);
-                    if (browser_name === "iexplorer") {
-                        $.fallr.show({icon: 'error', content: '<p>Cartão Não encontrado</p>', position: 'center'});
-                    } else {
-                        Swal.fire.fire({
-                            title: "Atenção!",
-                            text: "Cartão Não encontrado !",
-                            icon: "warning"
-                        });
-                    }
-                }/*else if (situacaox === 8) {
-                    $("#nome_associado_exibir").html("");
-                    $("#cartao_exibir").html("");
-                    $("#txtSaldo").html("");
-                    $("#btnconfirmar").prop( "disabled", true );
-                    Swal.fire({
-                        title: "Atenção Associado ",
-                        text: "( "+nomex+" ), É NECESSARIO RENOVAR O CONTRATO COM A CASSERV.      " +
-                            "Favor comparecer à Av Ministro Bias fortes, 79 - Centro, para retirar o novo cartão e renovar o contrato, para continuar usando o cartão. Atenciosamente, Casserv. Telefone : 3221-6502.",
-                        icon: "warning"
-                    });
-                }*/
-                if (situacaox === 8) {
-                    $("#nome_associado_exibir").html("");
-                    $("#cartao_exibir").html("");
-                    $("#txtSaldo").html("");
-                    $("#btnconfirmar").prop("disabled", true);
-                    Swal.fire({
-                        title: "CARTÃO BLOQUEADO!",
-                        text: "( " + nomex + " ), É NECESSARIO RETIRAR O NOVO CARTÃO COM A CASSERV.      " +
-                            "Favor comparecer à Av Ministro Bias fortes, 79 - Centro, para retirar o novo cartão e renovar o contrato, para continuar usando os convenios. Atenciosamente, Casserv. Telefone : 3221-6502.",
-                        icon: "warning"
-                    }).then(() => {
-                        /*if (data.cod_situacao2 === 2) {
-                            Swal.fire({
-                                title: "Atenção conveniado!",
-                                text: "ESTE NÚMERO DE CARTÃO ESTÁ LIBERADO!             " +
-                                    "Favor comunicar ao associado ( " + nomex + " ) para comparecer ao escritório do CASSERV Av Ministro Bias fortes, 79 - Centro, para a troca do cartão antigo, pelo novo cartão CASSERV o mais breve possível. Click OK para prosseguir na venda !",
-                                icon: "warning"
-                            });
-                        }*/
-                    });
-                }
-                if (data.cod_situacao2 === 2) {
-                    Swal.fire({
-                        title: "Atenção conveniado!",
-                        text: "ESTE NÚMERO DE CARTÃO ESTÁ LIBERADO!             " +
-                            "Favor comunicar ao associado ( " + nomex + " ) para comparecer ao escritório do CASSERV Av Ministro Bias fortes, 79 - Centro, para a troca do cartão antigo, pelo novo cartão CASSERV o mais breve possível. Click OK para prosseguir na venda !",
-                        icon: "warning"
-                    }).then(() => {
-                        if (situacaox === 8) {
-                            $("#nome_associado_exibir").html("");
-                            $("#cartao_exibir").html("");
-                            $("#txtSaldo").html("");
-                            $("#btnconfirmar").prop("disabled", true);
-                            Swal.fire({
-                                title: "CARTÃO BLOQUEADO!",
-                                text: "( " + nomex + " ), É NECESSARIO RETIRAR O NOVO CARTÃO COM A CASSERV.      " +
-                                    "Favor comparecer à Av Ministro Bias fortes, 79 - Centro, para retirar o novo cartão e renovar o contrato, para continuar usando os convenios. Atenciosamente, Casserv. Telefone : 3221-6502.",
-                                icon: "warning"
-                            })
-                        }
-                    });
-                }
-            } else {
-                debugger;
-                $("#nome_associado_exibir").html("");
-                $("#cartao_exibir").html("CARTAO NÃO ENCONTRADO");
-                //document.getElementById("cartao_exibir").style.background = "#FFFF80";
-                //document.getElementById("cartao_exibir").style.color = "#000";
-                $("#pass").prop("disabled", true);
-                $("#valor_pedido").prop("disabled", true);
-                $("#nparcelas").prop("disabled", true);
-                $("#btnconfirmar").prop("disabled", true);
-                $("#txtSaldo").html("");
-                if (browser_name === "iexplorer") {
-                    $.fallr.show({icon: 'error', content: '<p>Cartão Não encontrado</p>', position: 'center'});
-                }else{
-                    Swal.fire({
-                        title: "Atenção!",
-                        text: "Cartão Não encontrado !",
-                        icon: "warning"
-                    });
-                }
-            }
-        },
-        error: function(request, status, erro) {
-            alert("Problema ocorrido: " + status + "\nDescição: " + erro);
-            //Abaixo está listando os header do conteudo que você requisitou, só para confirmar se você setou os header e dataType corretos
-            alert("Informações da requisição: \n" + request.getAllResponseHeaders());
-        }
-        // Caso o request termine em sucesso, mostra o resultado recebido na div#resultado
-    });
-    $("#valor_parcela").html("");
-    $("#val_parcela").val("");
-    $("#pass").val("");
-    $('#msg_parcela').css('display','none');
-});
 $('#pagina_relatorio').click(function () {
     $.ajaxSetup({
         cache:true
@@ -1452,7 +1474,7 @@ $("#C_mesestorno").change(function() {
 });
 $('#tabela_producao tbody').on( 'click', '.btnvia2', function () {
     $("#divLoading").css("display", "block");
-    debugger;
+    //debugger;
     var linha = table.row( $(this).parents('tr') ).data();
     var lancamento     = linha["lancamento"];
     var matricula      = linha["matricula"];
@@ -1580,7 +1602,7 @@ $('#tabela_producao tbody').on( 'click', '.btnvia2', function () {
     });
 } );
 $('#tabela_producao tbody').on( 'click', '.btnestornar', function () {
-    debugger;
+    //debugger;
     data_row_estorno = table.row($(this).closest('tr')).data();
     lancamento_estorno =  data_row_estorno.lancamento;
     cod_convenio_estorno = data_row_estorno.cod_convenio;
@@ -1601,7 +1623,7 @@ $('#tabela_producao tbody').on( 'click', '.btnestornar', function () {
                             data: {lancamento : lancamento_estorno},
                             dataType: "json",
                             success:function (data) {
-                                debugger;
+                                //debugger;
                                 messagetable  = '<div class="panel panel-default"><div class="panel-heading">Titular</div><div class="panel-body">'+nome_titular+'</div></div>';	
                                 messagetable += '<table class="table table-striped table-sm" style="width:100%;">';
                                 messagetable += '<thead><tr>' +
@@ -1687,7 +1709,7 @@ $('#tabela_producao tbody').on( 'click', '.btnestornar', function () {
 
                                     var $button = $(this);
                                     var valor;
-                                    debugger;
+                                    //debugger;
                                     valor =  parseFloat(data_row_estorno.valor).toFixed(2).replace(".", ",");
                                     valor_estorno = parseFloat(data_row_estorno.valor).toFixed(2).replace(".", ",");
                                     subtitle = 'Registro... : <span style="color:blue;font-weight:bold">'
@@ -1808,7 +1830,7 @@ $('#tabela_producao_estorno tbody').on( 'click', '.btncancelarestorno', function
 
     var data_row = table.row($(this).closest('tr')).data();
     var $button = $(this);
-    var valor;
+    var valor;  
     valor =  parseFloat(data_row.valor).toFixed(2).replace(".", ",");
     var subtitle = 'Registro... : <span style="color:blue;font-weight:bold">'+data_row.lancamento+'</span><br>Associado : <span style="color:blue;font-weight:bold">'+data_row.associado+'</span><br>Valor.......... : <span style="color:blue;font-weight:bold">'+valor+'</span><br>Data........... : <span style="color:blue;font-weight:bold">'+data_row.data+'</span><br>Hora........... : <span style="color:blue;font-weight:bold">'+data_row.hora+'</span><br>Parcela...... : <span style="color:blue;font-weight:bold">'+data_row.parcela+'</span>';
     bsd.mydialog('Confirma o estorno das informações abaixo ?',subtitle, function(value){
@@ -1935,13 +1957,13 @@ $("#btnSenha_Estor").click(function(event){
     event.preventDefault();
     var $button = $(this);
     var senha = $("#C_Senha_Estor").val();
-    debugger;
+    //debugger;
     lancamento_estorno =  data_row_estorno.lancamento;
     cod_convenio_estorno = data_row_estorno.cod_convenio;
     nome_titular = data_row_estorno.associado;
     uuid_conta = "";	
     valor_estorno = 0;
-    debugger;
+    //debugger;
     if(senha !== ""){
             if(senha === senha_estorno){
                 $("#ModalSenhaEstor").modal('hide');
@@ -1953,7 +1975,7 @@ $("#btnSenha_Estor").click(function(event){
                         data: {lancamento : lancamento_estorno},
                         dataType: "json",
                         success:function (data) {
-                            debugger;
+                            //debugger;
                             messagetable  = '<div class="panel panel-default"><div class="panel-heading">Titular</div><div class="panel-body">'+nome_titular+'</div></div>';	
                             messagetable += '<table class="table table-striped table-sm" style="width:100%;">';
                             messagetable += '<thead><tr>' +
@@ -2042,7 +2064,7 @@ $("#btnSenha_Estor").click(function(event){
 
                                 var $button = $(this);
                                 var valor;
-                                debugger;
+                                //debugger;
                                 valor =  parseFloat(data_row_estorno.valor).toFixed(2).replace(".", ",");
                                 valor_estorno = parseFloat(data_row_estorno.valor).toFixed(2).replace(".", ",");
                                 subtitle = 'Registro... : <span style="color:blue;font-weight:bold">'
@@ -2131,7 +2153,7 @@ $("#botaoimprir").click(function () {
 
 });
 $("#botaoretornar").click(function () {
-    debugger;
+    //debugger;
     var cod_convenio = $('#cod_convenio').val();
     var userconv = $('#userconv').val();
     var passconv = $('#passconv').val();
@@ -2144,13 +2166,15 @@ $("#botaoretornar").click(function () {
     var pede_senha = $('#pede_senha').val();
     var cnpj = $('#cnpj').val();
     var aceita_parce_individ = $('#aceita_parce_individ').val();
-    $.redirect('pagina_principal.php',{ cod_convenio: cod_convenio, userconv: userconv, passconv: passconv, razaosocial: razaosocial, nomefantasia: nomefantasia, endereco: endereco, bairro: bairro, parcela_conv: parcela_conv, pede_senha: pede_senha, cnpj: cnpj, cidade: cidade, aceita_parce_individ: aceita_parce_individ });
+    var numero = $('#numero').val();
+    var divisao = $('#divisao').val();
+    $.redirect('pagina_principal.php',{ cod_convenio: cod_convenio, userconv: userconv, passconv: passconv, razaosocial: razaosocial, nomefantasia: nomefantasia, endereco: endereco, bairro: bairro, parcela_conv: parcela_conv, pede_senha: pede_senha, cnpj: cnpj, cidade: cidade, aceita_parce_individ: aceita_parce_individ, numero: numero, divisao: divisao });
 });
 $("#sairsistema").click(function () {
     document.location.href = 'index.html';
 });
 function btsair() {
-    debugger;
+    //debugger;
     $.redirect('index.html');
 }
 $("#reexibir").click(function () {
