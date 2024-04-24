@@ -39,6 +39,7 @@ if ( isset($_POST['valor_pedido']) ) {
     $hora             	  = date("H:i:s");
     $data            	  = date("Y-m-d");
     $uri_cupom        	  = $_POST['uri_cupom'];
+    $descricao        	  = $_POST['descricao'];
     $datafatura = data_fatura($mes_pedido[0]);
     try {
         // -----------------------------------------------------------
@@ -81,8 +82,8 @@ if ( isset($_POST['valor_pedido']) ) {
                     $uuid = UUID::v4();
                     for ($as = 1; $as <= $qtde_parcelas; $as++) {
 
-                        $sql = "INSERT INTO sind.conta (associado,convenio,valor,data,hora,mes,empregador,parcela,uri_cupom,data_fatura,uuid_conta) ";
-                        $sql .= "VALUES (:associado,:convenio,:valor,:data,:hora,:mes,:empregador,:parcela,:uri_cupom,:data_fatura,:uuid_conta) RETURNING lastval()";
+                        $sql = "INSERT INTO sind.conta (associado,convenio,valor,data,hora,mes,empregador,parcela,uri_cupom,data_fatura,uuid_conta,descricao) ";
+                        $sql .= "VALUES (:associado,:convenio,:valor,:data,:hora,:mes,:empregador,:parcela,:uri_cupom,:data_fatura,:uuid_conta,:descricao) RETURNING lastval()";
                         $parcela = "";
                         $parcela = str_pad($as, 2, "0", STR_PAD_LEFT) . "/" . str_pad($qtde_parcelas, 2, "0", STR_PAD_LEFT);
 
@@ -97,6 +98,7 @@ if ( isset($_POST['valor_pedido']) ) {
                         $stmt->bindParam(':parcela', $parcela, PDO::PARAM_STR);
                         $stmt->bindParam(':data_fatura', $datafatura, PDO::PARAM_STR);
                         $stmt->bindParam(':uuid_conta', $uuid, PDO::PARAM_STR);
+                        $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
                         if($as == 1){
                             $stmt->bindParam(':uri_cupom', $uri_cupom, PDO::PARAM_STR);
                         }else{
@@ -136,8 +138,8 @@ if ( isset($_POST['valor_pedido']) ) {
                 } else {
                     $uuid = UUID::v4();
                     $count = 0;
-                    $sql = "INSERT INTO sind.conta (associado,convenio,valor,data,hora,mes,empregador,uri_cupom,data_fatura,uuid_conta) ";
-                    $sql .= "VALUES (:associado,:convenio,:valor,:data,:hora,:mes,:empregador,:uri_cupom,:data_fatura,:uuid_conta) RETURNING lastval()";
+                    $sql = "INSERT INTO sind.conta (associado,convenio,valor,data,hora,mes,empregador,uri_cupom,data_fatura,uuid_conta,descricao) ";
+                    $sql .= "VALUES (:associado,:convenio,:valor,:data,:hora,:mes,:empregador,:uri_cupom,:data_fatura,:uuid_conta,:descricao) RETURNING lastval()";
 
                     $stmt = $pdo->prepare($sql);
                     $stmt->bindParam(':associado', $matricula, PDO::PARAM_STR);
@@ -150,6 +152,7 @@ if ( isset($_POST['valor_pedido']) ) {
                     $stmt->bindParam(':uri_cupom', $uri_cupom, PDO::PARAM_STR);
                     $stmt->bindParam(':data_fatura', $datafatura, PDO::PARAM_STR);
                     $stmt->bindParam(':uuid_conta', $uuid, PDO::PARAM_STR);
+                    $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
                     $stmt->execute();
 
                     $registrolan = $stmt->fetchColumn();
@@ -173,6 +176,8 @@ if ( isset($_POST['valor_pedido']) ) {
                     $std["primeiro_mes"] = "";
                     $std["pede_senha"]   = $pede_senha;
                     $std["id_categoria"] = $id_categoria;
+                    $std["descricao"]    = $descricao;
+
 
                 }
             }else{

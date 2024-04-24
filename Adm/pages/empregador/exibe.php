@@ -4,9 +4,6 @@ $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 if(isset($_POST["cod_empregador"])){
     $std = new stdClass();
-    $cod_empregador = $_POST["cod_empregador"];
-    $nome = $_POST["nome"];
-    $divisao = $_POST["divisao"];
 
     $query = "SELECT id,nome,responsavel,telefone,abreviacao,divisao
                 FROM sind.empregador WHERE id = ".$cod_empregador;

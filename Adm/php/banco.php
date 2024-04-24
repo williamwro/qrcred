@@ -19,8 +19,8 @@ class Banco extends PDO{
 
     static public function conectar_postgres(){
         $username = "postgres";
-        $password = "Abc25149076";
-        $host     = "34.95.183.208"; // google cloud
+        $password = "@Mak&#CARD#2024";
+        $host     = "216.245.210.4"; // google cloud
         //$host     = "74.63.238.118"; // iphosting
         $database = "qrcred"; 
         if(!isset(self::$_instance)){

@@ -22,7 +22,7 @@ $nomefantasia       = $_POST['nomefantasia'];
 $razaosocial        = $_POST['razaosocial'];
 $endereco           = $_POST['endereco'];
 $bairro             = $_POST['bairro'];
-$cnpj               = $_POST['cnpj'];
+if(isset($_POST['cnpj'])){$cnpj = $_POST['cnpj'];}else{$cnpj="";}
 $cidade             = $_POST['cidade'];
 $numero             = $_POST['numero'];
 $divisao            = $_POST['divisao'];

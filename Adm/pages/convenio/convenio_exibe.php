@@ -63,6 +63,7 @@ if(isset($_POST["cod_convenio"])){
             $std->desativado = false;//Unchecked
         }
         $std->parcelas       = $row['n_parcelas'];
+        $std->lista_site     = $row['lista_site'];
 
     }
     echo json_encode($std);

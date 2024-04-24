@@ -46,6 +46,7 @@ $_tipoempresa = isset($_POST['C_tipoempresa']) ? (int)$_POST['C_tipoempresa'] : 
 $_cobranca = isset($_POST['C_cobranca']) ? true : false;
 $_desativado = isset($_POST['C_desativado']) ? true : false;
 $_parc_ind = isset($_POST['C_parc_ind']) ? true : false;
+$_aprova_convenio = isset($_POST['C_aprova_convenio']) ? true : false;
 $_pede_senha = 1;
 function converte_data($date) {
     return substr($date,6,4).'-'.substr($date,3,2).'-'.substr($date,0,2).' 00:00:00';
@@ -90,7 +91,8 @@ if(isset($_POST["operation"])) {
         $sql .= "cobranca = :cobranca, ";
         $sql .= "desativado = :desativado, ";
         $sql .= "pede_senha = :pede_senha, ";
-        $sql .= "aceita_parce_individ = :aceita_parce_individ ";
+        $sql .= "aceita_parce_individ = :aceita_parce_individ , ";
+        $sql .= "lista_site = :lista_site ";
         $sql .= "WHERE Codigo = " . $_codigo;
 
         $msg_grava_cad = "atualizado";
@@ -99,7 +101,7 @@ if(isset($_POST["operation"])) {
 
         $sql = "INSERT INTO sind.convenio( ";
         $sql .= "codigo, razaosocial, nomefantasia, endereco, numero, bairro, cidade, uf, cep, telefone, fax, cel, tipo, contato, prolabore, prolabore2, cnpj, cpf, insc, id_categoria, ";
-        $sql .= "id_categoria_recibo, n_parcelas, registro, situacao, divulga, data_cadastro, email, email2, insc_mun, tipo2, cobranca, desativado, pede_senha,aceita_parce_individ) VALUES( ";
+        $sql .= "id_categoria_recibo, n_parcelas, registro, situacao, divulga, data_cadastro, email, email2, insc_mun, tipo2, cobranca, desativado, pede_senha,aceita_parce_individ,lista_site) VALUES( ";
         $sql .= ":codigo, ";
         $sql .= ":razaosocial, ";
         $sql .= ":nomefantasia, ";
@@ -133,7 +135,8 @@ if(isset($_POST["operation"])) {
         $sql .= ":cobranca, ";
         $sql .= ":desativado, ";
         $sql .= ":aceita_parce_individ, ";
-        $sql .= ":pede_senha)";
+        $sql .= ":pede_senha, ";
+        $sql .= ":lista_site)";
 
         $msg_grava_cad = "cadastrado";
 
@@ -178,6 +181,7 @@ if(isset($_POST["operation"])) {
         $stmt->bindParam(':desativado', $_desativado, PDO::PARAM_BOOL);
         $stmt->bindParam(':aceita_parce_individ', $_parc_ind, PDO::PARAM_BOOL);
         $stmt->bindParam(':pede_senha', $_pede_senha, PDO::PARAM_INT);
+        $stmt->bindParam(':lista_site', $_aprova_convenio, PDO::PARAM_BOOL);
 
         $stmt->execute();
 

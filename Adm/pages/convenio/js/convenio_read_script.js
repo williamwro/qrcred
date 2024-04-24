@@ -400,6 +400,7 @@ $(document).on('click','.updateconvenio',function () {
             $("#C_email2").val(data.email2);
             $("#C_tipo").val(data.tipo);
             $("#C_tipoempresa").val(data.tipoempresa);
+            $("#C_aprova_convenio").prop("checked", data.lista_site);
             $("#C_cobranca").prop("checked", data.cobranca);
             $("#C_desativado").prop("checked", data.desativado);
             $("#C_parc_ind").prop("checked", data.aceita_parce_individ);

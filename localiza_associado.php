@@ -26,23 +26,23 @@ $contador=0;
 $l_c=0;
 
 $sql_associado = $pdo->query("SELECT associado.codigo, 
-                                                  associado.nome, 
-                                                  associado.empregador, 
-                                                  associado.limite, 
-                                                  associado.salario, 
-                                                  associado.parcelas_permitidas, 
-                                                  associado.ultimo_mes, 
-                                                  c_cartaoassociado.cod_situacaocartao, 
-                                                  c_cartaoassociado.cod_verificacao,
-                                                  c_cartaoassociado.cod_situacao2,
-                                                  empregador.nome as nome_empregador
-                                             FROM sind.associado 
-                                       INNER JOIN sind.c_cartaoassociado 
-									   		   ON associado.codigo = c_cartaoassociado.cod_associado 
-									   INNER JOIN sind.empregador 
-									   		   ON associado.empregador = empregador.id
-                                              AND associado.empregador = c_cartaoassociado.empregador
-                                            WHERE c_cartaoassociado.cod_verificacao='".$cod_cartao."'");
+                                     associado.nome, 
+                                     associado.empregador, 
+                                     associado.limite, 
+                                     associado.salario, 
+                                     associado.parcelas_permitidas, 
+                                     associado.ultimo_mes, 
+                                     c_cartaoassociado.cod_situacaocartao, 
+                                     c_cartaoassociado.cod_verificacao,
+                                     c_cartaoassociado.cod_situacao2,
+                                     empregador.nome as nome_empregador
+                                FROM sind.associado 
+                        INNER JOIN sind.c_cartaoassociado 
+                                ON associado.codigo = c_cartaoassociado.cod_associado 
+                        INNER JOIN sind.empregador 
+                                ON associado.empregador = empregador.id
+                                AND associado.empregador = c_cartaoassociado.empregador
+                            WHERE c_cartaoassociado.cod_verificacao='".$cod_cartao."'");
 while($row_assoc = $sql_associado->fetch()) {
     $contador=1;
     $parcelas_permitidas = $row_assoc["parcelas_permitidas"];
@@ -66,13 +66,15 @@ while($row_assoc = $sql_associado->fetch()) {
         $std->razaosocial         = $razao_social;
         $std->mes_desconto        = $m_p;
         $l_c = 0;
+
         $sql_debito_associado = $pdo->query("SELECT SUM(valor) AS valor1, mes FROM sind.conta WHERE mes='" . $m_p . "' AND associado='" . $row_assoc['codigo'] . "' AND empregador = " . $empregador . " GROUP BY mes");
         while ($row_debito = $sql_debito_associado->fetch()) {
             $l_c    = floatval($row_debito["valor1"]);
         }
         $limite = floatval($row_assoc["limite"]);
+      
         $limite_credito = number_format((($l_c * -1) + $limite), 2, '.', ',');// Valor DISPONIVEL para compras
-
+        
         $limite_credito = str_replace(",","",$limite_credito);
 
         $std->limite = $limite_credito;

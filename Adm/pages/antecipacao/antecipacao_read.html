@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Antecipação</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    </head>
+    <style type="text/css">
+        .modal-dialog {
+            position: relative;
+            display: table;
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 300px;
+        }
+        .red {
+            background-color: #fdd9cf !important;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .green {
+            background-color: #cfffdf !important;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .black {
+            background-color: #aeaeae !important;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        @font-face {
+            font-family: "TomaSans-Regular";
+            src: local(Raleway), url(../../../fonte/TTF/TomaSans-Regular.ttf);
+        }
+        #tabela_antecipacao_assoc{
+            font-family: "calibri", Trebuchet MS, Arial, Helvetica, sans-serif;
+        }
+</style>
+    <body>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="container-fluid" style="padding: 0">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1 style="margin-top: -1px;margin-left: -6px;">
+                Antecipação<small>Visualização</small> </h1>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-sx-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <form id="listagem" name="listagem" class="form-inline">
+                                    <div class="container">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="RadioAnalisando" name="RadioSituacao" class="custom-control-input" value="null" checked>
+                                                    <label class="custom-control-label" for="RadioAnalisando">Analisando</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="RadioAprovados" name="RadioSituacao" class="custom-control-input" value="true">
+                                                    <label class="custom-control-label" for="RadioAprovados">Aprovados</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="RadioNaoAprovados" name="RadioSituacao" class="custom-control-input" value="false">
+                                                    <label class="custom-control-label" for="RadioNaoAprovados">Reprovados</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="RadioTodos" name="RadioSituacao" class="custom-control-input" value="0">
+                                                    <label class="custom-control-label" for="RadioTodos">Todos</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="box-body">
+                                <table id="tabela_antecipacao_assoc" class="table table-striped table-hover compact" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>MATRICULA</th>
+                                            <th>NOME</th>
+                                            <th>ID EMPREGADOR</th>
+                                            <th>NOME EMPREGADOR</th>
+                                            <th>MES</th>
+                                            <th>DATA SOLICITACAO</th>
+                                            <th>VALOR</th>
+                                            <th>APROVADO</th>
+                                            <th>DATA CONCLUSÃO</th>
+                                            <th>CELULAR</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- Modal Edita e Cadastra -->
+        <div class="modal fade" id="ModalEditaAntecipado" name="ModalEditaAntecipado" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+            <form data-toggle="validator" role="form" name="frmantecipado" id="frmantecipado">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalEditaLabel" style="width: 100px;float: left;font-size: x-large;">ANTECIPAÇÃO&nbsp<small id="rotulo_antecipado">Alterando</small></h5>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        <div class="form-group control-group" style="float: right;padding-right: 5px;">
+                            <button type="button" class="btn btn-primary" id="btnSalvar">
+                                <span class="glyphicon glyphicon-send"></span>
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_nome_antecipacao">Nome</label>
+                                        <input type="text" class="form-control input-sm" id="C_nome_antecipacao" name="C_nome_antecipacao" readonly="true" style="text-transform:uppercase" maxlength="50" placeholder="Nome">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        <input type="hidden" name="operation" id="operation">
+                                        <input type="hidden" name="divisao" id="divisao">
+                                        <input type="hidden" name="C_id_empregador_antecipacao" id="C_id_empregador_antecipacao">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_matricula_antecipacao">Matrícula</label>
+                                        <input type="text" class="form-control input-sm" id="C_matricula_antecipacao" readonly="true" name="C_matricula_antecipacao" maxlength="13" placeholder="Matrícula">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_empregador_antecipacao">Empregador</label>
+                                        <input type="text" class="form-control input-sm" id="C_empregador_antecipacao" readonly="true" name="C_empregador_antecipacao">
+                                    
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_mes">Mes</label>
+                                        <input type="text" class="form-control input-sm" id="C_mes" name="C_mes" readonly="true" maxlength="10" placeholder="Mes desconto">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_datasolicitacao">Data Solicitação</label>
+                                        <input type="text" class="form-control input-sm" id="C_datasolicitacao" readonly="true" name="C_datasolicitacao" tabindex="-1">
+                                    </div>  
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_valor_antecipacao">Valor</label>
+                                        <input type="text" class="form-control input-sm" id="C_valor_antecipacao" readonly="true" name="C_valor_antecipacao" style="text-transform:uppercase" placeholder="Valor" maxlength="20">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_cel_antecipacao">Celular contato</label>
+                                        <input type="text" class="form-control input-sm" id="C_cel_antecipacao" readonly="true" name="C_cel_antecipacao" maxlength="10" placeholder="Mes desconto">
+                                    </div>
+                                </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_aprovado">Aprovado</label>
+                                        <select class="custom-select form-control input-sm" id="C_aprovado" name="C_aprovado">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+        <script src="../Adm/pages/antecipacao/js/antecipacao_read_script.js"></script>
+   </body>
+</html>

@@ -13,6 +13,7 @@ if(isset($_POST['codigo_convenio'])){
     }
     $_senha = md5($_POST['C_Senha']);
     $_senhaconfirma = md5($_POST['C_Confirma_Senha']);
+    $_senha_decryptografada = $_POST['C_Senha'];
     $_existe_senha = $_POST['existe_senha'];
     $stmt = new stdClass();
     $pdo = Banco::conectar_postgres();
@@ -33,8 +34,8 @@ if(isset($_POST['codigo_convenio'])){
 
         if($_existe_senha=="nao"){
 
-            $sql = "INSERT INTO sind.c_senhaconvenio(cod_convenio, usuario, senha, usuario_texto) ";
-            $sql .= "VALUES(:codigo_convenio, :usuario, :senha, :usuario_texto)";
+            $sql = "INSERT INTO sind.c_senhaconvenio(cod_convenio, usuario, senha, usuario_texto, password) ";
+            $sql .= "VALUES(:codigo_convenio, :usuario, :senha, :usuario_texto, :password)";
             $msg_grava_cad="cadastrado";
             if($_usuario == ""){
 
@@ -47,6 +48,7 @@ if(isset($_POST['codigo_convenio'])){
                 $stmt->bindParam(':usuario', $_usuario, PDO::PARAM_STR);
                 $stmt->bindParam(':senha', $_senha, PDO::PARAM_STR);
                 $stmt->bindParam(':usuario_texto', $_usuario_texto, PDO::PARAM_STR);
+                $stmt->bindParam(':password', $_senha_decryptografada, PDO::PARAM_STR);
 
                 $stmt->execute();
 
@@ -60,7 +62,8 @@ if(isset($_POST['codigo_convenio'])){
             $sql = "UPDATE sind.c_senhaconvenio SET ";
             $sql .= "usuario = :usuario, ";
             $sql .= "senha = :senha, ";
-            $sql .= "usuario_texto = :usuario_texto ";
+            $sql .= "usuario_texto = :usuario_texto, ";
+            $sql .= "password = :password ";
             $sql .= "WHERE cod_convenio = :codigo_convenio";
             $msg_grava_cad="atualizado";
 
@@ -70,6 +73,7 @@ if(isset($_POST['codigo_convenio'])){
             $stmt->bindParam(':usuario', $_usuario, PDO::PARAM_STR);
             $stmt->bindParam(':senha', $_senha, PDO::PARAM_STR);
             $stmt->bindParam(':usuario_texto', $_usuario_texto, PDO::PARAM_STR);
+            $stmt->bindParam(':password', $_senha_decryptografada, PDO::PARAM_STR);
 
             $stmt->execute();
 

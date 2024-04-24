@@ -219,6 +219,27 @@ $(document).ready(function(){
             $('#pagina_conteudo').load('pages/cheques/cheques.html',null,function () {
             });
         });
+        $('#link_antecipacao').click(function(){
+            $.ajaxSetup({
+                cache:true
+            });
+            $('#pagina_conteudo').load('pages/antecipacao/antecipacao_read.html',null,function () {
+            });
+        });
+        $('#link_email_app').click(function(){
+            $.ajaxSetup({
+                cache:true
+            });
+            $('#pagina_conteudo').load('pages/email_app/email_app.html',null,function () {
+            });
+        });
+        $('#link_taxa_antecipacao').click(function(){
+            $.ajaxSetup({
+                cache:true
+            });
+            $('#pagina_conteudo').load('pages/taxa_antecipacao/taxa_antecipacao_app.html',null,function () {
+            });
+        });
     }else{
 
         $.redirect('../index.html');
