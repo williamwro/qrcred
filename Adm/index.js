@@ -16,9 +16,9 @@ $(document).ready(function(){
         $('#texto_footer').html("QrCred 2023.");
     }else if (divisao === "2") {// 2 - outra empresa
         $('#title_inicio').html("QrCred");
-        $('#logo1').html('<img src="dist/img/makecard-logo.png" alt="Makecard" style="height: 30px;">');
+        $('#logo1').html('<img src="dist/img/qrcred-logo.png" alt="QrCred" style="height: 30px;">');
         $('#logo2').html('');
-        $('#logo3').html('<img src="dist/img/makecard-logo.png" alt="Makecard" style="height: 30px;">');
+        $('#logo3').html('<img src="dist/img/qrcred-logo.png" alt="QrCred" style="height: 30px;">');
         $('#logo4').html('');
         $('#texto_footer').html("Makecard 2023.");
     }
