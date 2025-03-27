@@ -100,8 +100,9 @@ $('#C_matricula_assoc').on('keypress', function (event) {
     }
 });
 $(document).on('click','.update_antecipacao',function () {
-   
-    var cod_associado = $(this).attr("id");
+   debugger;
+    var id_entecipacao = tabela_antecipacao.row($(this).parents('tr')).data()["id"];
+    var cod_associado = tabela_antecipacao.row($(this).parents('tr')).data()["matricula"];
     var tdobj = $(this).closest('tr').find('td');
     var empregador = tabela_antecipacao.row($(this).parents('tr')).data()["id_empregador"];
 
@@ -109,7 +110,7 @@ $(document).on('click','.update_antecipacao',function () {
     $.ajax({
         url: "pages/antecipacao/antecipacao_exibe.php",
         method: "POST",
-        data: {cod_associado : cod_associado, empregador: empregador},
+        data: {cod_associado : cod_associado, empregador: empregador, id_entecipacao: id_entecipacao},
         dataType: "json",
         success:function (data) {
             $.fn.modal.Constructor.prototype.enforceFocus = function() {};

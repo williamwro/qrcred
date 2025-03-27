@@ -1,6 +1,8 @@
 <?PHP
 include "../../php/banco.php";
 include "../../php/funcoes.php";
+ini_set('display_errors', true);
+error_reporting(E_ALL);
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $tem_cadastro_conta = false;
@@ -8,6 +10,8 @@ if(isset($_POST["cod_associado"])){
     $std = new stdClass();
     $cod_associado = $_POST["cod_associado"];
     $empregador = $_POST["empregador"];
+    $id_entecipacao = $_POST["id_entecipacao"];
+
 
     
     $query = "SELECT ant.id, ant.matricula, ass.nome, ant.empregador as id_empregador, 
@@ -16,7 +20,7 @@ if(isset($_POST["cod_associado"])){
                 FROM sind.antecipacao ant
                 JOIN sind.associado ass ON ass.codigo = ant.matricula
                 JOIN sind.empregador emp ON emp.id = ant.empregador
-               WHERE ant.matricula = '".$cod_associado."' AND ant.empregador = ".$empregador.";";
+               WHERE ant.matricula = '".$cod_associado."' AND ant.empregador = ".$empregador." AND ant.id = ".$id_entecipacao.";";
     $statment = $pdo->prepare($query);
 
     $statment->execute();

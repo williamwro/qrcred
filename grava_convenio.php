@@ -1,6 +1,9 @@
 <?PHP
+ini_set('display_errors', true);
+error_reporting(E_ALL);
 include "Adm/php/banco.php";
 include "Adm/php/funcoes.php";
+
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $std = new stdClass();

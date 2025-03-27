@@ -1,35 +1,45 @@
-<?PHP
+<?php
 header("Content-type: application/json");
 include "Adm/php/banco.php";
 include "Adm/php/funcoes.php";
-$pdo = Banco::conectar_postgres();
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$std = new stdClass();
-$someArray = array();
+try {
+    $pdo = Banco::conectar_postgres();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$query = $pdo->query("SELECT * FROM sind.mes_corrente");
+    // Buscar o mês corrente
+    $query = $pdo->query("SELECT id, abreviacao, id_divisao, status 
+                         FROM sind.mes_corrente 
+                         WHERE status = 1 
+                         ORDER BY id DESC 
+                         LIMIT 1");
+    
+    $mesCorrente = $query->fetch(PDO::FETCH_ASSOC);
 
-while($row = $query->fetch()) {
+    if ($mesCorrente) {
+        // Buscar a taxa de antecipação
+        $taxa_query = $pdo->query("SELECT porcentagem FROM sind.taxa_antecipacao ORDER BY id DESC LIMIT 1");
+        $taxa = $taxa_query->fetch(PDO::FETCH_ASSOC);
 
-    // Segunda consulta
-    $taxa_query = $pdo->query("SELECT id, porcentagem FROM sind.taxa_antecipacao");
-    $taxa_row = $taxa_query->fetch();
-    // Adicionando dados da primeira consulta
-    $someArray[] = array_map("utf8_encode", $row);
-    // Adicionando dados da segunda consulta
-    //$someArray[count($someArray) - 1]['id'] = $taxa_row['id'];
-    $someArray[count($someArray) - 1]['porcentagem'] = $taxa_row['porcentagem'];
+        // Buscar o email de antecipação
+        $email_query = $pdo->query("SELECT email FROM sind.email_antecipacao ORDER BY id DESC LIMIT 1");
+        $email = $email_query->fetch(PDO::FETCH_ASSOC);
 
-     // terceira consulta
-     $email_query = $pdo->query("SELECT id, email FROM sind.email_antecipacao");
-     $email_row = $email_query->fetch();
-     // Adicionando dados da primeira consulta
-     //$someArray[] = array_map("utf8_encode", $row);
-     // Adicionando dados da segunda consulta
-     //$someArray[count($someArray) - 1]['id'] = $taxa_row['id'];
-     $someArray[count($someArray) - 1]['email'] = $email_row['email'];
+        // Montar o objeto de resposta
+        $response = [
+            'id' => $mesCorrente['id'],
+            'abreviacao' => $mesCorrente['abreviacao'],
+            'id_divisao' => $mesCorrente['id_divisao'],
+            'status' => $mesCorrente['status'],
+            'porcentagem' => $taxa ? $taxa['porcentagem'] : null,
+            'email' => $email ? $email['email'] : null
+        ];
 
+        echo json_encode($response);
+    } else {
+        echo json_encode(['error' => 'Nenhum mês corrente encontrado']);
+    }
+
+} catch (PDOException $e) {
+    echo json_encode(['error' => 'Erro ao conectar com o banco de dados: ' . $e->getMessage()]);
 }
-
-echo json_encode($someArray);

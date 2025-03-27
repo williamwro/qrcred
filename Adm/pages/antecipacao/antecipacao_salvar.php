@@ -55,6 +55,50 @@ $msg_grava_cad="";
         
         $stmt->execute();
 
+        // Se a antecipação foi aprovada, insere o registro na tabela conta
+        if($_POST['C_aprovado'] == "2") {
+            $data_atual = new DateTime();
+            $data = $data_atual->format('Y-m-d');
+            $hora = $data_atual->format('H:i:s');
+            
+            $sql_conta = "INSERT INTO sind.conta (associado, convenio, valor, data, hora, mes, empregador) 
+                         VALUES (:associado, 1, :valor, :data, :hora, :mes, :empregador)";
+            
+            try {
+                $stmt_conta = $pdo->prepare($sql_conta);
+                $stmt_conta->bindParam(':associado', $_matricula, PDO::PARAM_STR);
+                $stmt_conta->bindParam(':valor', $_valor, PDO::PARAM_STR);
+                $stmt_conta->bindParam(':data', $data, PDO::PARAM_STR);
+                $stmt_conta->bindParam(':hora', $hora, PDO::PARAM_STR);
+                $stmt_conta->bindParam(':mes', $_mes, PDO::PARAM_STR);
+                $stmt_conta->bindParam(':empregador', $_empregador, PDO::PARAM_INT);
+                $stmt_conta->execute();
+            } catch (PDOException $erro) {
+                // Se houver erro ao inserir na conta, apenas registra o erro mas não interrompe o fluxo
+                error_log("Erro ao inserir na tabela conta: " . $erro->getMessage());
+            }
+        }
+        // Se a antecipação foi reprovada, remove o registro da tabela conta
+        else if($_POST['C_aprovado'] == "3") {
+            $sql_delete_conta = "DELETE FROM sind.conta 
+                                WHERE associado = :associado 
+                                AND mes = :mes 
+                                AND empregador = :empregador 
+                                AND valor = :valor ";
+            
+            try {
+                $stmt_delete = $pdo->prepare($sql_delete_conta);
+                $stmt_delete->bindParam(':associado', $_matricula, PDO::PARAM_STR);
+                $stmt_delete->bindParam(':mes', $_mes, PDO::PARAM_STR);
+                $stmt_delete->bindParam(':empregador', $_empregador, PDO::PARAM_INT);
+                $stmt_delete->bindParam(':valor', $_valor, PDO::PARAM_STR);
+                $stmt_delete->execute();
+            } catch (PDOException $erro) {
+                // Se houver erro ao deletar da conta, apenas registra o erro mas não interrompe o fluxo
+                error_log("Erro ao deletar da tabela conta: " . $erro->getMessage());
+            }
+        }
+
         $data2      = new DateTime();
         $data       = $data2->format('Y-m-d h:i:s');
         

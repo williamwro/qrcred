@@ -30,7 +30,11 @@ if(isset($_POST["operation"])) {
         $stmt = $pdo->prepare($sql);
 
         $stmt->bindParam(':nome', $_nome, PDO::PARAM_STR);
-        $stmt->bindParam(':id', $_id, PDO::PARAM_INT);
+        
+        // Só vincular o parâmetro :id se for uma operação de Update
+        if($_POST["operation"] == "Update") {
+            $stmt->bindParam(':id', $_codigo, PDO::PARAM_INT);
+        }
 
         $stmt->execute();
 

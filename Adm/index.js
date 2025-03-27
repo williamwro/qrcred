@@ -9,17 +9,17 @@ $(document).ready(function(){
     var usuario_cod = sessionStorage.getItem("usuario_cod");
     if (divisao === "1") {// 1 - casserv
         $('#title_inicio').html("QrCred");
-        $('#logo1').html("Q");
-        $('#logo2').html("R");
-        $('#logo3').html("QR");
-        $('#logo4').html("CRED");
+        $('#logo1').html('<img src="dist/img/qrcred-logo.png" alt="QrCred" style="height: 30px;">');
+        $('#logo2').html('');
+        $('#logo3').html('<img src="dist/img/qrcred-logo.png" alt="QrCred" style="height: 30px;">');
+        $('#logo4').html('');
         $('#texto_footer').html("QrCred 2023.");
     }else if (divisao === "2") {// 2 - outra empresa
         $('#title_inicio').html("QrCred");
-        $('#logo1').html("M");
-        $('#logo2').html("KD");
-        $('#logo3').html("M");
-        $('#logo4').html("AKECARD");
+        $('#logo1').html('<img src="dist/img/makecard-logo.png" alt="Makecard" style="height: 30px;">');
+        $('#logo2').html('');
+        $('#logo3').html('<img src="dist/img/makecard-logo.png" alt="Makecard" style="height: 30px;">');
+        $('#logo4').html('');
         $('#texto_footer').html("Makecard 2023.");
     }
     $('#pagina_conteudo').load('pages/home.html');

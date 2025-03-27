@@ -91,24 +91,25 @@ $("#btnSalvar").click(function(event){
                            success: function (data) {
                                $("#frmFormularioFuncao")[0].reset();
                                if (data === "atualizado") {
-                                   $.notify({
-                                           message: 'Salvo com Sucesso!'
-                                       }, {
-                                           type: 'success'
-                                       }, {
-                                           position: 'center'
-                                       }
-                                   );
+
+                                    Swal.fire({
+                                        title: "Parabens!",
+                                        text: "Função atualizado com sucesso !",
+                                        icon: "success",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    
                                } else if (data === "cadastrado") {
 
-                                   $.notify({
-                                           message: 'Cadastrado com Sucesso!'
-                                       }, {
-                                           type: 'success'
-                                       }, {
-                                           position: 'center'
-                                       }
-                                   );
+                                    Swal.fire({
+                                        title: "Parabens!",
+                                        text: "Função cadastrado com sucesso !",
+                                        icon: "success",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+
                                }
                                $("#frmFormularioFuncao")[0].reset();
                                $("#ModalEditaFuncao").modal('hide');

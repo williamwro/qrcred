@@ -1,6 +1,8 @@
 <?PHP
 header("Content-type: application/json");
 require '../../php/banco.php';
+ini_set('display_errors', true);
+error_reporting(E_ALL);
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 date_default_timezone_set('America/Sao_Paulo');
