@@ -1,4 +1,19 @@
 <?PHP
+// Permitir acesso de qualquer origem
+header("Access-Control-Allow-Origin: *");
+
+// Ou para permitir apenas de origens específicas:
+// header("Access-Control-Allow-Origin: http://localhost:3000");
+
+// Definir métodos HTTP permitidos
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+
+// Permitir headers específicos
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+// Definir por quanto tempo (em segundos) o navegador pode armazenar em cache os resultados da preflight request
+header("Access-Control-Max-Age: 86400");
+header("Content-type: application/json");
     include 'Adm/php/banco.php';
     include "Adm/php/funcoes.php";
     $pdo = Banco::conectar_postgres();

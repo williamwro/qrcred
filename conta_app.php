@@ -1,4 +1,18 @@
 <?PHP
+    // Permitir acesso de qualquer origem
+    header("Access-Control-Allow-Origin: *");
+
+    // Ou para permitir apenas de origens específicas:
+    // header("Access-Control-Allow-Origin: http://localhost:3000");
+
+    // Definir métodos HTTP permitidos
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+
+    // Permitir headers específicos
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+    // Definir por quanto tempo (em segundos) o navegador pode armazenar em cache os resultados da preflight request
+    header("Access-Control-Max-Age: 86400");
     include "Adm/php/banco.php";
     include "Adm/php/funcoes.php";
     $pdo = Banco::conectar_postgres();
@@ -23,7 +37,7 @@ if(isset($_POST['mes'])) {
     $someArray = array();
 
     $query = $pdo->query("SELECT associado.codigo AS associado,associado.nome, 
-                                 convenio.razaosocial,convenio.nomefantasia,conta.valor,conta.mes, 
+                                 convenio.razaosocial,convenio.nomefantasia,conta.lancamento,conta.valor,conta.mes, 
                                  conta.parcela,conta.data as dia,conta.hora,convenio.cnpj,
                                  empregador.id AS id_empregador,empregador.nome AS nome_empregador, 
                                  divisao.id_divisao,divisao.nome AS nome_divisao,conta.uri_cupom

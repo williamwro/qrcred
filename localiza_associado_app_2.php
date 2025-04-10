@@ -1,4 +1,13 @@
 <?php
+// Permitir acesso de qualquer origem
+header("Access-Control-Allow-Origin: *");
+// Definir métodos HTTP permitidos
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+// Permitir headers específicos
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+// Definir por quanto tempo (em segundos) o navegador pode armazenar em cache os resultados da preflight request
+header("Access-Control-Max-Age: 86400");
+header("Content-type: application/json");
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 header("Content-type: application/json");

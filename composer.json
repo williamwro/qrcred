@@ -1,0 +1,14 @@
+{
+    "name": "qrcred/app",
+    "description": "Sistema QR CRED",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "phpmailer/phpmailer": "^6.9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "QrCred\\App\\": "src/"
+        }
+    }
+} 
