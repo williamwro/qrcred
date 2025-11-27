@@ -18,7 +18,7 @@ $(document).ready(function(){
     datainicial.mask('99/99/9999');
     datafinal.mask('99/99/9999');
     $('#C_empregador').html("<option> Carregando ... </option>");
-    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio" }, function( data ) {
+    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio", "divisao": divisao }, function( data ) {
         $.each(data, function (index, value) {
             if (value.mes_corrente !== undefined) {
                 mescorrente = value.mes_corrente;

@@ -5,22 +5,29 @@
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $origem = $_GET['origem'];
+$divisao = $_GET['divisao'];
 $someArray = array();
 $i=0;
 $row = $pdo->query( "SELECT abreviacao FROM sind.mes_corrente" )->fetch();
 $someArray[$i]["mes_corrente"] = $row["abreviacao"];
 if($origem === "admin"){
-    $sql = "SELECT * FROM sind.meses_conta WHERE status_admin = 1 ORDER BY data";
+    $sql = "SELECT * FROM sind.meses_conta WHERE status_admin = 1 AND divisao = ? ORDER BY data";
 }elseif($origem === "convenio"){
-    $sql = "SELECT * FROM sind.meses_conta WHERE  status_convenio = 1 ORDER BY data";
+    $sql = "SELECT * FROM sind.meses_conta WHERE  status_convenio = 1 AND divisao = ? ORDER BY data";
 }elseif($origem === "relatorio"){
-    $sql = "SELECT * FROM sind.meses_conta WHERE  status_relatorio = 1 ORDER BY data";
+    $sql = "SELECT * FROM sind.meses_conta WHERE  status_relatorio = 1 AND divisao = ? ORDER BY data";
+}elseif($origem === "cadastro"){
+    $sql = "SELECT * FROM sind.meses_conta WHERE  status_cadastro = 1 AND divisao = ? ORDER BY data";
+}elseif($origem === "ultimo_mes"){
+    $sql = "SELECT * FROM sind.meses_conta WHERE  status_ultimo_mes = 1 AND divisao = ? ORDER BY data";
 }
-$sql = $pdo->query($sql);
-
+$stmt = $pdo->prepare($sql);
+$stmt->execute(array($divisao));
 $i++;
-while($row = $sql->fetch()) {
-    $someArray[$i] = array_map("utf8_encode",$row);
+while($row = $stmt->fetch()) {
+    $someArray[$i] = array_map(function($value) {
+        return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+    }, $row);
     $i++;
 }
 

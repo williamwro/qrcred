@@ -1,4 +1,5 @@
 <?PHP
+require_once '../../../functions.php';
 require '../../php/banco.php';
 include "../../php/funcoes.php";
 

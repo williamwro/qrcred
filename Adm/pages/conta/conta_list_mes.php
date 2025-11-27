@@ -1,4 +1,5 @@
 <?PHP
+header('Content-Type: application/json; charset=utf-8');
 include "../../php/banco.php";
 include "../../php/funcoes.php";
 $pdo = Banco::conectar_postgres();
@@ -14,6 +15,28 @@ if(isset($_POST["mes"])) {
     $mes = $_POST["mes"];
     $matricula = $_POST["matricula"];
     $codempregador = $_POST["codempregador"];
+    $id_associado_origem = isset($_POST["id_associado"]) ? $_POST["id_associado"] : null;
+    $id_divisao_origem = isset($_POST["id_divisao"]) ? $_POST["id_divisao"] : null;
+    
+    // Obter ID do associado baseado na matrícula e empregador e id_associado e id_divisao
+    $query_associado = "SELECT id FROM sind.associado WHERE codigo = :matricula AND empregador = :empregador";
+    if ($id_associado_origem && $id_divisao_origem) {
+        $query_associado .= " AND id = :id_associado AND id_divisao = :id_divisao";
+    }
+    $stmt_associado = $pdo->prepare($query_associado);
+    $stmt_associado->bindParam(':matricula', $matricula, PDO::PARAM_STR);
+    $stmt_associado->bindParam(':empregador', $codempregador, PDO::PARAM_INT);
+    if ($id_associado_origem && $id_divisao_origem) {
+        $stmt_associado->bindParam(':id_associado', $id_associado_origem, PDO::PARAM_INT);
+        $stmt_associado->bindParam(':id_divisao', $id_divisao_origem, PDO::PARAM_INT);
+    }
+    $stmt_associado->execute();
+    $result_associado = $stmt_associado->fetchAll();
+    $id_associado = 0;
+    foreach ($result_associado as $row) {
+        $id_associado = (int)$row["id"];
+    }
+    
     if ($mes == 'todos') {
         //$sqlmes = "conta.mes NOT IN(SELECT mes FROM sind.controle) AND "; //NAO MOSTRAS OS MESES BLOQUEADOS
         $sqlmes = "";
@@ -23,52 +46,72 @@ if(isset($_POST["mes"])) {
     /*BUSCA limite associado*/
     $sql_lim_saldo = "SELECT codigo,limite,empregador 
                         FROM sind.associado 
-                       WHERE codigo = '" . $matricula . "' 
-                         AND empregador = " . $codempregador . ";";
+                       WHERE id = :id_associado";
+    if ($id_divisao_origem) {
+        $sql_lim_saldo .= " AND id_divisao = :id_divisao";
+    }
     $statments = $pdo->prepare($sql_lim_saldo);
+    $statments->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+    if ($id_divisao_origem) {
+        $statments->bindParam(':id_divisao', $id_divisao_origem, PDO::PARAM_INT);
+    }
     $statments->execute();
     $results = $statments->fetchAll();
     foreach ($results as $row) {
         $sub_arrayli["limite"] = $row['limite'];
-        $someArray["limite"] = array_map("utf8_encode",$sub_arrayli);
+        $someArray["limite"] = $sub_arrayli;
     }
     /*BUSCA REGISTROS*/
-    $sql = "SELECT DISTINCT conta.associado, 
-                   conta.valor, 
-                   empregador.abreviacao, 
-                   conta.lancamento, 
-                   conta.data, 
-                   conta.mes, 
-                   conta.parcela, 
-                   empregador.id, 
-                   empregador.nome, 
-                   usuarios.username, 
-                   associado.nome AS nome_associado, 
-                   convenio.razaosocial, 
-                   convenio.nomefantasia,
-                   conta.hora,
-                   situacao_conta.descri as situacao,
-                   associado.limite,
-                   conta.exclui,
-                   conta.uri_cupom,
-                   controle.mes as mes_controle
-              FROM sind.convenio RIGHT JOIN 
-                   (sind.associado RIGHT JOIN 
-                   (sind.usuarios RIGHT JOIN 
-                   (sind.empregador RIGHT JOIN 
-                   (sind.situacao_conta RIGHT JOIN
-                   (sind.controle RIGHT JOIN 
-                   sind.conta ON
-                   conta.mes = controle.mes) ON
-                   conta.id_situacao = situacao_conta.id_situacao OR conta.id_situacao ISNULL) ON
-                   empregador.id = conta.empregador) ON 
-                   usuarios.codigo = conta.Funcionario) ON 
-                   associado.codigo = conta.associado AND associado.empregador = conta.empregador) ON 
-                   convenio.codigo = conta.convenio
-            WHERE " . $sqlmes . " associado.codigo = '" . $matricula . "' 
-              AND empregador.id = " . $codempregador . ";";
+    $sql = "SELECT DISTINCT 
+                conta.associado, 
+                conta.valor, 
+                empregador.abreviacao, 
+                conta.lancamento, 
+                conta.data, 
+                conta.mes, 
+                conta.parcela, 
+                empregador.id, 
+                empregador.nome, 
+                usuarios.username, 
+                associado.nome AS nome_associado, 
+                convenio.razaosocial, 
+                convenio.nomefantasia,
+                conta.hora,
+                situacao_conta.descri as situacao,
+                associado.limite,
+                conta.exclui,
+                conta.uri_cupom,
+                controle.mes as mes_controle,
+                associado.id_divisao as id_divisao
+            FROM sind.convenio 
+            RIGHT JOIN (sind.associado 
+            RIGHT JOIN (sind.usuarios 
+            RIGHT JOIN (sind.empregador 
+            RIGHT JOIN (sind.situacao_conta 
+            RIGHT JOIN (
+                sind.controle 
+                INNER JOIN sind.conta 
+                    ON conta.divisao = controle.divisao
+                    AND controle.codigo = (
+                        SELECT MAX(c2.codigo) 
+                        FROM sind.controle c2 
+                        WHERE c2.divisao = conta.divisao
+                    )
+            ) ON conta.id_situacao = situacao_conta.id_situacao OR conta.id_situacao IS NULL
+            ) ON empregador.id = conta.empregador
+            ) ON usuarios.codigo = conta.Funcionario
+            ) ON associado.id = conta.id_associado
+            ) ON convenio.codigo = conta.convenio
+            WHERE " . $sqlmes . " conta.id_associado = :id_associado AND (conta.aprovado = true OR conta.aprovado IS NULL)";
+    if ($id_divisao_origem) {
+        $sql .= " AND associado.id_divisao = :id_divisao";
+    }
 
     $statment = $pdo->prepare($sql);
+    $statment->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+    if ($id_divisao_origem) {
+        $statment->bindParam(':id_divisao', $id_divisao_origem, PDO::PARAM_INT);
+    }
     $statment->execute();
     $result = $statment->fetchAll();
     foreach ($result as $row) {
@@ -95,7 +138,7 @@ if(isset($_POST["mes"])) {
         $sub_array["situacao"]        = $row['situacao'];
         $sub_array["excluir"]         = $row['exclui'];
         $sub_array["uri_cupom"]       = $row['uri_cupom'];
-        if ($row['mes_controle'] === null){
+        if ($row['mes_controle'] !== $row['mes'] ){
             $sub_array["mes_controle"] = "<span class='label label-success'>Aberto</span>";
         }else{
             $sub_array["mes_controle"] = "<span class='label label-warning'>Fechado</span>";
@@ -110,7 +153,7 @@ if(isset($_POST["mes"])) {
         $sub_array["botaoalterar"]    = '<button type="button" name="btnalterarList" id="' . $row["lancamento"] . '" class="btn btn-warning glyphicon glyphicon-edit btn-xs btnalterarList" data-toggle="tooltip" data-placement="top" title="Alterar"></button>';
         $sub_array["botaoexcluir"]    = '<button type="button" name="btnexcluirList" id="' . $row["lancamento"] . '" class="btn btn-danger glyphicon glyphicon-trash btn-xs btnexcluirList" data-toggle="tooltip" data-placement="top" title="Excluir"></button>';
 
-        $someArray["data"][] = array_map("utf8_encode", $sub_array);
+        $someArray["data"][] = $sub_array;
 
     }
 }
@@ -120,60 +163,52 @@ if(isset($_POST["mes"])) {
 $sql_categorias = "SELECT DISTINCT Sum(conta.valor) AS total, tipoconvenio.nome
                       FROM sind.tipoconvenio RIGHT JOIN 
                           (sind.convenio RIGHT JOIN 
-                          (sind.associado RIGHT JOIN 
-                          (sind.empregador RIGHT JOIN 
                           (sind.situacao_conta RIGHT JOIN 
                           sind.conta ON 
                           situacao_conta.id_situacao = conta.id_situacao OR conta.id_situacao ISNULL) ON 
-                          empregador.id = conta.empregador) ON 
-                          associado.codigo = conta.associado AND associado.empregador = conta.empregador) ON 
                           convenio.codigo = conta.convenio) ON 
                           tipoconvenio.codigo = convenio.tipo
-                    WHERE " . $sqlmes . " conta.associado = '" . $matricula . "' AND conta.empregador = " . $codempregador . "
-                 GROUP BY convenio.tipo, conta.associado, tipoconvenio.nome;";
+                    WHERE " . $sqlmes . " conta.id_associado = :id_associado AND (conta.aprovado = true OR conta.aprovado IS NULL)
+                 GROUP BY convenio.tipo, conta.id_associado, tipoconvenio.nome;";
 
 $statmentx = $pdo->prepare($sql_categorias);
+$statmentx->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
 $statmentx->execute();
 $resultx = $statmentx->fetchAll();
 $sub_array2 = array();
-$sub_array2["Farmacia"]   = 0;
-$sub_array2["Compras"]    = 0;
-$sub_array2["Unimed"]     = 0;
-$sub_array2["Financeira"] = 0;
+$sub_array2["taxacartao"]   = 0;
+$sub_array2["cartao"]    = 0;
+$sub_array2["adiantamento"]    = 0;
+
+
 foreach ($resultx as $rowx) {
     //$sub_array = array();
-    if($rowx['nome'] == "FARMACIA"){
-        $sub_array2["Farmacia"] = $rowx['total'];
+    if($rowx['nome'] == "TAXA_CARTÃO"){
+        $sub_array2["taxacartao"] = $rowx['total'];
     }
-    if($rowx['nome'] == "COMPRAS"){
-        $sub_array2["Compras"] = $rowx['total'];
+    if($rowx['nome'] == "CARTÃO"){
+        $sub_array2["cartao"] = $rowx['total'];
     }
-    if($rowx['nome'] == "UNIMED"){
-        $sub_array2["Unimed"] = $rowx['total'];
-    }
-    if($rowx['nome'] == "FINANCEIRA"){
-        $sub_array2["Financeira"] = $rowx['total'];
+    if($rowx['nome'] == "ADIANTAMENTO"){
+        $sub_array2["adiantamento"] = $rowx['total'];
     }
 }
-$someArray["categorias"] = array_map("utf8_encode",$sub_array2);
+$someArray["categorias"] = $sub_array2;
 if($mes !== 'todos') {
     $mes_posterior = somames_gravar($mes);
     /*BUSCA NAO DEScontaDOS CND = 47, FNC = 48, END = 49 ,DND = 68 DO MES POSTERIOR*/
     $sql_ND = "SELECT DISTINCT conta.valor, convenio.codigo
                      FROM sind.tipoconvenio RIGHT JOIN 
                           (sind.convenio RIGHT JOIN 
-                          (sind.associado RIGHT JOIN 
-                          (sind.empregador RIGHT JOIN 
                           (sind.situacao_conta RIGHT JOIN 
                           sind.conta ON 
                           situacao_conta.id_situacao = conta.id_situacao OR conta.id_situacao ISNULL) ON 
-                          empregador.id = conta.empregador) ON 
-                          associado.codigo = conta.associado AND associado.empregador = conta.empregador) ON 
                           convenio.codigo = conta.convenio) ON 
                           tipoconvenio.codigo = convenio.tipo
-                    WHERE conta.mes = '" . $mes_posterior . "' AND conta.associado = '" . $matricula . "' AND conta.empregador = " . $codempregador . ";";
+                    WHERE conta.mes = '" . $mes_posterior . "' AND conta.id_associado = :id_associado AND (conta.aprovado = true OR conta.aprovado IS NULL)";
 
     $statmentnd = $pdo->prepare($sql_ND);
+    $statmentnd->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
     $statmentnd->execute();
     $resultnd = $statmentnd->fetchAll();
     $sub_arraynd = array();
@@ -207,7 +242,7 @@ if($mes !== 'todos') {
     $sub_arraynd["ENDES"] = $ENDES;
     $sub_arraynd["DND"] = $DND;
 
-    $someArray["naodescontado"] = array_map("utf8_encode", $sub_arraynd);
+    $someArray["naodescontado"] = $sub_arraynd;
 }
 
-echo json_encode($someArray);
+echo json_encode($someArray, JSON_UNESCAPED_UNICODE);

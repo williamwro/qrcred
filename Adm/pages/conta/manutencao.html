@@ -81,6 +81,8 @@
                                     Excluir selecionados</button>
                                 <button type="button" class="btn btn-primary" id="btnImprimir" disabled>
                                     Imprimir</button>
+                                <button type="button" class="btn btn-info" id="btnCartoes" disabled>
+                                    Cartões</button>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -171,46 +173,30 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-8 col-lg-8 col-xs-8 col-sm-8">
+                            <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4">
                                 <table id="tabela_categoria" class="display table table-striped dt-responsive compact nowrap">
                                     <thead>
                                     <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col" style="text-align: end">Gastos</th>
-                                        <th scope="col" style="text-align: end">Descontos</th>
-                                        <th scope="col" style="text-align: end">Não descontado</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col" style="text-align: end">Valor</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <th scope="row">Financeira</th>
-                                        <td><div id="fingasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="findesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="finndesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <th scope="row">Adiantamento</th>
+                                        <td><div id="empgasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Farmacia</th>
-                                        <td><div id="fargasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="fardesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="farndesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <th scope="row">Taxa Cartão</th>
+                                        <td><div id="taxagasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
                                     </tr>
                                     <tr>
-                                        <th scope="row">Compras</th>
-                                        <td><div id="comgasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="comdesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="comndesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">Unimed</th>
-                                        <td><div id="unigasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="unidesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="unindesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
+                                        <th scope="row">Cartão</th>
+                                        <td><div id="cartgasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
                                     </tr>
                                     <tr>
                                         <th scope="row">Totais</th>
                                         <td><div id="totalgasto" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="totaldesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
-                                        <td><div id="totalndesc" style="text-align: end;font-size: 16px;font-family: inherit;"></div></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -545,6 +531,100 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+</section>
+<!-- Modal Cartões do Associado -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalCartoesAssociado" name="ModalCartoesAssociado" tabindex="-1" role="dialog" aria-labelledby="ModalCartoesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCartoesLabel" style="width: 300px;float: left;font-size: x-large;">CARTÕES DO ASSOCIADO&nbsp<small>Gerenciando</small></h5>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <strong>Associado:</strong> <span id="nomeAssociadoCartoes"></span> | 
+                                            <strong>Matrícula:</strong> <span id="matriculaAssociadoCartoes"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="tabela_cartoes_associado" class="display table table-striped table-hover dt-responsive" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>CARTÃO</th>
+                                            <th>SITUAÇÃO</th>
+                                            <th>DATA PEDIDO</th>
+                                            <th>LOTE</th>
+                                            <th>STATUS / AÇÃO</th>
+                                            <th>HISTÓRICO</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal Histórico do Cartão -->
+<section class="content">
+    <div class="row">
+        <div class="modal fade" id="ModalHistoricoCartao" name="ModalHistoricoCartao" tabindex="-1" role="dialog" aria-labelledby="ModalHistoricoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalHistoricoLabel" style="width: 300px;float: left;font-size: x-large;">HISTÓRICO DO CARTÃO&nbsp<small>Visualizando</small></h5>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <strong>Cartão:</strong> <span id="numeroCartaoHistorico"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table id="tabela_historico_cartao" class="display table table-striped table-hover dt-responsive" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>DATA</th>
+                                            <th>HORA</th>
+                                            <th>SITUAÇÃO</th>
+                                            <th>OPERADOR</th>
+                                            <th>OBSERVAÇÃO</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

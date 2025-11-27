@@ -1,4 +1,8 @@
 <?php
+// Clear any output buffer and prevent output before PDF generation
+ob_start();
+ob_clean();
+
 date_default_timezone_set('America/Araguaina');
 ini_set('max_execution_time', 360);
 include "../../php/funcoes.php";
@@ -16,16 +20,19 @@ if (isset($_POST['subtipo'])){
 }else{
     $subtipo = "";
 }
-if(isset($_POST['empregador'])) {
+if(isset($_POST['empregador']) && $_POST['empregador'] != '') {
     $empregador_id = $_POST['empregador'];
     $sql_empregador = $pdo->query("SELECT nome FROM sind.empregador WHERE id = ".$empregador_id);
+    $empregador_nome = "";
     while($row = $sql_empregador->fetch()) {
         $empregador_nome = $row["nome"];
     }
 }else{
     $empregador_id = 0;
+    $empregador_nome = "";
 }
 $divisao = $_POST['divisao'];
+$divisao_nome = $_POST['divisao_nome'];
 //$mes_atual = $mes_atual."/".$_POST['ano'];
 
 require("../components/fpdf/fpdf.php");
@@ -44,33 +51,41 @@ class PDF extends FPDF
     public static function setPG( $PAGINA ) {
         self::$PG = $PAGINA;
     }
+    private static $DN;
+    public static function setDN( $DIVISAON ) {
+        self::$DN = $DIVISAON;
+    }
+    private static $DV;
+    public static function getDV( $DIVISAOX ) {
+        return self::$DV = $DIVISAOX;
+    }
     function Header()
     {
         // Logo
-        $this->Image('../../../pictures_site-sind/logo4.png',10,8,18);
+        $this->Image('../../../pictures_site-sind/logo_saspng.png',10,8,18);
         // Arial bold 15
         $this->SetFont('Arial','B',12   );
 
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(0,utf8_decode('Relatório de somas'));
+        $this->Write(0,mb_convert_encoding('Relatório de somas', 'ISO-8859-1', 'UTF-8'));
 
         $this->Cell(22);//move para direita 20 posiçoes
         $this->Write(0,date('d/m/Y')." - ".date('H:i:s'));
 
         $this->Ln();//pula linha
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(12,"Empregador: ".utf8_decode(self::$RS));// razao social
+        $this->Write(12,"Empregador: ".mb_convert_encoding(self::$RS ? self::$RS : '', 'ISO-8859-1', 'UTF-8'));// razao social
 
         $this->Cell(10);
-        $this->Write(12,utf8_decode("Mês: ").self::$MS);
+        $this->Write(12,mb_convert_encoding("Mês: ", 'ISO-8859-1', 'UTF-8').self::$MS);
 
         $this->Cell(22);
         $this->Write(12,"Pagina: ".self::$PG);
 
-        $this->Ln(15);//pula linha
+        $this->Ln(18);//pula linha
         $this->SetFont('Arial','B',8);
 
-        $this->Cell(105,3,utf8_decode('Descrição'),0,0,'L');
+        $this->Cell(105,3,mb_convert_encoding('Descrição', 'ISO-8859-1', 'UTF-8'),0,0,'L');
 
         $this->Cell(15,3,"Valor",0,0,'L');
 
@@ -78,7 +93,7 @@ class PDF extends FPDF
         $this->Ln(0);
         //linha horizontal
         $this->SetLineWidth(0.2);
-        $this->Line("7","29","201","29");
+        $this->Line("11","32","205","32");
     }
 
 // Page footer
@@ -90,7 +105,7 @@ class PDF extends FPDF
         $this->SetFont('Arial','I',8);
         // Page number
         //$this->Cell(0,10,'Pagina '.$this->PageNo().'/{nb}',0,0,'C');
-        $this->Cell(0,10,'QRCRED',0,0,'C');
+        $this->Cell(0,10,self::$DN,0,0,'C');
         $this->SetLineWidth(0.2);
         $this->Line("7","280","201","280");
     }
@@ -98,33 +113,39 @@ class PDF extends FPDF
 PDF::setMS($mes_atual);
 $pagina=1;
 PDF::setPG($pagina);
+PDF::getDV($divisao);
+PDF::setDN($divisao_nome);
 
 $item   = 0;
 $item_pagina = 0;
 $total  = 0;
 
 
-if ($cod_tipo != 0 and $empregador_id != "" ) {
+if ($cod_tipo != 0 and $empregador_id != 0 and $empregador_id != "" ) {
     PDF::setRS($empregador_nome);
-    $query = "Select nome_convenio as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual ."' and id_empregador = " . $_POST["empregador"] . " and cod_tipo_convenio = " . $_POST["cod_tipo"] . " and divisao = ".$divisao." and cobranca = true Group by nome_convenio, divisao order by nome_convenio";
+    $query = "Select nome_convenio as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual ."' and id_empregador = " . $empregador_id . " and cod_tipo_convenio = " . $cod_tipo . " and divisao = ".$divisao." and cobranca = true Group by nome_convenio, divisao, cod_convenio order by nome_convenio";
 
-}else if ($cod_tipo != 0 and $empregador_id == "" ) {
+}else if ($cod_tipo != 0 and ($empregador_id == 0 or $empregador_id == "") ) {
     PDF::setRS("TODOS");
-    if ($subtipo == "" || $subtipo == "empregador") {
-        $query = "Select nome_empregador as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual . "' and cod_tipo_convenio = " . $_POST["cod_tipo"] . " and divisao = ".$divisao." and cobranca = true Group by nome_empregador, divisao order by nome_empregador";
+    if ($subtipo == "" || $subtipo == "EMPREGADOR") {
+        $query = "Select nome_empregador as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual . "' and cod_tipo_convenio = " . $cod_tipo . " and divisao = ".$divisao." and cobranca = true Group by nome_empregador, divisao, cod_convenio order by nome_empregador";
     }else{
-        $query = "Select nome_convenio as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual . "' and cod_tipo_convenio = " . $_POST["cod_tipo"] . " and divisao = ".$divisao." and cobranca = true Group by nome_convenio, divisao order by nome_convenio";
+        $query = "Select nome_convenio as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual . "' and cod_tipo_convenio = " . $cod_tipo . " and divisao = ".$divisao." and cobranca = true Group by nome_convenio, divisao, cod_convenio order by nome_convenio";
     }
 
-}else if ($cod_tipo == 0 and $empregador_id != "" ) {
+}else if ($cod_tipo == 0 and $empregador_id != 0 and $empregador_id != "" ) {
     PDF::setRS($empregador_nome);
-    $query = "Select nome_convenio as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual ."' and id_empregador = " . $_POST["empregador"]. " and divisao = ".$divisao." and cobranca = true Group by nome_convenio, divisao order by nome_convenio";
-}else if ($cod_tipo == 0 and $empregador_id == "" and $subtipo == "CONVENIO") {
+    $query = "Select nome_convenio as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual ."' and id_empregador = " . $empregador_id. " and divisao = ".$divisao." and cobranca = true Group by nome_convenio, divisao, cod_convenio order by nome_convenio";
+}else if ($cod_tipo == 0 and ($empregador_id == 0 or $empregador_id == "") and $subtipo == "CONVENIO") {
     PDF::setRS("CONVENIOS");
-    $query = "Select nome_convenio as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual . "' and divisao = ".$divisao." and cobranca = true Group by nome_convenio, divisao order by nome_convenio";
-}else if ($cod_tipo == 0 and $empregador_id == "" and $subtipo == "EMPREGADOR") {
+    $query = "Select nome_convenio as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual . "' and divisao = ".$divisao." and cobranca = true Group by nome_convenio, divisao, cod_convenio order by nome_convenio";
+}else if ($cod_tipo == 0 and ($empregador_id == 0 or $empregador_id == "") and $subtipo == "EMPREGADOR") {
     PDF::setRS("EMPREGADORES");
-    $query = "Select nome_empregador as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual . "' and divisao = ".$divisao." and cobranca = true Group by nome_empregador, divisao order by nome_empregador";
+    $query = "Select nome_empregador as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual . "' and divisao = ".$divisao." and cobranca = true Group by nome_empregador, divisao, cod_convenio order by nome_empregador";
+}else {
+    // Default case - all records
+    PDF::setRS("TODOS");
+    $query = "Select nome_convenio as descri, sum(valor) as total From sind.qextrato Where mes = '" . $mes_atual . "' and divisao = ".$divisao." and cobranca = true Group by nome_convenio, divisao, cod_convenio order by nome_convenio";
 }
 PDF::setMS($mes_atual);
 $convenio_aux="";
@@ -174,5 +195,9 @@ $total = 0;
 
 $item=0;
 
-$pdf->Output('I','Totais'."-".$mes_atual."-QRCRED.pdf");
+// Clear any remaining output buffer before PDF output
+if (ob_get_length()) {
+    ob_end_clean();
+}
 
+$pdf->Output('I','Totais'."-".$mes_atual."-".PDF::getDV($divisao).".pdf");

@@ -1,6 +1,14 @@
 <?php
+// Iniciar buffer de output para evitar problemas com warnings/notices
+ob_start();
+
 date_default_timezone_set('America/Araguaina');
 ini_set('max_execution_time', 360);
+
+// Verificar se a extensão mbstring está disponível
+if (!extension_loaded('mbstring')) {
+    die('Erro: A extensão PHP mbstring é necessária para este script.');
+}
 include "../../php/funcoes.php";
 include "../../php/banco.php";
 $pdo = Banco::conectar_postgres();
@@ -25,22 +33,22 @@ if(isset($_POST['limite'])) {
         $limite = 0;
     }
 }
-if(isset($_POST['farmacia'])) {
-    $farmacia = str_replace(',', '.', str_replace('.', '', $_POST['farmacia']));
+if(isset($_POST['adiantamento'])) {
+    $adiantamento = str_replace(',', '.', str_replace('.', '', $_POST['adiantamento']));
 }else{
-    $farmacia = 0;
+    $adiantamento = 0;
 }
-if(isset($_POST['compras'])) {
-    $compras = str_replace(',','.',str_replace('.','',$_POST['compras']));
+if(isset($_POST['taxa_cartao'])) {
+    $taxa_cartao = str_replace(',','.',str_replace('.','',$_POST['taxa_cartao']));
 }else{
-    $compras = 0;
+    $taxa_cartao = 0;
 }
-if(isset($_POST['emprestimo'])) {
-    $emprestimo = str_replace(',', '.', str_replace('.', '', $_POST['emprestimo']));
+if(isset($_POST['cartao'])) {
+    $cartao = str_replace(',', '.', str_replace('.', '', $_POST['cartao']));
 }else{
-    $emprestimo = 0;
+    $cartao = 0;
 }
-if(isset($_POST['unimed'])) {
+/*if(isset($_POST['unimed'])) {
     $unimed = str_replace(',', '.', str_replace('.', '', $_POST['unimed']));
 }else{
     $unimed = 0;
@@ -64,7 +72,7 @@ if(isset($_POST['dnd'])) {
     $dnd = str_replace(',', '.', str_replace('.', '', $_POST['dnd']));
 }else{
     $dnd = 0;
-}
+}*/
 require("../components/fpdf/fpdf.php");
 require('../components/fpdf/makefont/makefont.php');
 class PDF extends FPDF
@@ -93,13 +101,13 @@ class PDF extends FPDF
     function Header()
     {
         // Logo
-        $this->Image('../../../pictures_site-sind/logo4.png',10,8,18);
+        $this->Image('../../../pictures_site-sind/logo_saspng.png',10,8,18);
         // Arial bold 15
 
-        $this->SetFont('arial','B',12);
+        $this->SetFont('arial','B',10);
 
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(0,utf8_decode('EXTRATO DO ASSOCIADO'));
+        $this->Write(0,mb_convert_encoding('EXTRATO DO ASSOCIADO', 'ISO-8859-1', 'UTF-8'));
 
         $this->Cell(22);//move para direita 20 posiçoes
         $this->Write(0,date('d/m/Y')." - ".date('H:i:s'));
@@ -109,19 +117,19 @@ class PDF extends FPDF
 
         $this->Ln();//pula linha
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(12,"associado: ".utf8_decode(self::$AS));// associado
+        $this->Write(12,"associado: ".mb_convert_encoding(self::$AS, 'ISO-8859-1', 'UTF-8'));// associado
 
         $this->Ln();//pula linha
         $this->Cell(22);
-        $this->Write(0,utf8_decode("Mês: ").self::$MS);// mes
+        $this->Write(0,mb_convert_encoding("Mês: ", 'ISO-8859-1', 'UTF-8').self::$MS);// mes
 
 
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(0,"Matricula: ".utf8_decode(self::$MT));// matricula
+        $this->Write(0,"Matricula: ".mb_convert_encoding(self::$MT, 'ISO-8859-1', 'UTF-8'));// matricula
         //
 
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(0,"empregador: ".utf8_decode(self::$EM));// empregador
+        $this->Write(0,"empregador: ".mb_convert_encoding(self::$EM, 'ISO-8859-1', 'UTF-8'));// empregador
 
 
 
@@ -130,17 +138,17 @@ class PDF extends FPDF
         $this->Ln(12);//pula linha
         $this->SetFont('Arial','B',10);
 
-        $this->Cell(20,-6,"Registro",0,0,'L');
+        $this->Cell(25,-6,"Registro",0,0,'L');
 
-        $this->Cell(89,-6,"Convenio",0,0,'L');
+        $this->Cell(65,-6,"Convenio",0,0,'L');
 
-        $this->Cell(18,-6,"Parcela",0,0,'C');
+        $this->Cell(20,-6,"Parcela",0,0,'C');
 
-        $this->Cell(25,-6,"data",0,0,'L');
+        $this->Cell(16,-6,"Data",0,0,'L');
 
-        $this->Cell(12,-6,"Valor",0,0,'R');
+        $this->Cell(25,-6,"Valor",0,0,'R');
 
-        $this->Cell(12,-6,"Tipo",0,0,'R');
+        $this->Cell(35,-6,"Tipo",0,0,'R');
 
         // Line break
         $this->Ln(0);
@@ -207,7 +215,7 @@ PDF::setPG($pagina);
             $pdf = new PDF();
             $pdf->AliasNbPages();
             $pdf->AddPage();
-            $pdf->SetFont('Arial','B',12);
+            $pdf->SetFont('Arial','B',9);
             $pagina = 1;
             $item_pagina = 0;
             PDF::setPG($pagina);
@@ -228,60 +236,60 @@ PDF::setPG($pagina);
         $total = $total + $valor;
         $valor = number_format($valor, 2, ',', '.');
 
-        $pdf->Cell(20, 6, $row['lancamento']);
-        $pdf->Cell(89, 6, substr($row['nomefantasia'],0,33));
-        $pdf->Cell(15, 6, $row['parcela'], '', '', 'C');
-        $pdf->Cell(20, 6, date('d/m/y', strtotime($row['data'])));
-        //$objDate = DateTime::createFromFormat('Y-m-d H:i:s', $row['hora']);
-        //$pdf->Cell(12, 4, substr($row['hora'],0,7));
-        $pdf->Cell(20, 6, $valor, '', '', 'R');
-        $pdf->Cell(25, 6, $row['nome_tipo'], '', '', 'R');
+        $pdf->Cell(25, 6, $row['lancamento']);
+        $pdf->Cell(65, 6, mb_convert_encoding(substr($row['nomefantasia'],0,28), 'ISO-8859-1', 'UTF-8'));
+        $pdf->Cell(20, 6, $row['parcela'], '', '', 'C');
+        $pdf->Cell(16, 6, date('d/m/y', strtotime($row['data'])));
+        $pdf->Cell(25, 6, $valor, '', '', 'R');
+        $pdf->Cell(35, 6, mb_convert_encoding($row['nome_tipo'], 'ISO-8859-1', 'UTF-8'), '', '', 'R');
 
         $pdf->Ln();
 
     }
 
-$pdf->Cell(144, 10, "Total : ", 0, 0, 'R');
-$pdf->Cell(20, 10, number_format($total, "2", ",", "."), 0, 0, 'R');
+$pdf->Cell(135, 10, "Total : ", 0, 0, 'R');
+$pdf->Cell(16, 10, number_format($total, "2", ",", "."), 0, 0, 'R');
 $pdf->Ln(8);
 
-$pdf->Cell(144, 10, "Limite : ", 0, 0, 'R');
-$pdf->Cell(20, 10, number_format($limite, "2", ",", "."), 0, 0, 'R');
+$pdf->Cell(135, 10, "Limite : ", 0, 0, 'R');
+$pdf->Cell(16, 10, number_format($limite, "2", ",", "."), 0, 0, 'R');
 $pdf->Ln(3);
 
 PDF::setPG($pagina);
 // SOMAS DA ULTIMA PAGINA **********************************************
-$pdf->Cell(60, 20, "GASTOS", 0, 0, 'R');
-$pdf->Cell(30, 20, "DESCONTOS", 0, 0, 'R');
-$pdf->Cell(45, 20, "NAO DESCONTADO", 0, 0, 'R');
+//$pdf->Cell(60, 20, "TOTAIS", 0, 0, 'R');
+//$pdf->Cell(30, 20, "DESCONTOS", 0, 0, 'R');
+//$pdf->Cell(45, 20, "NAO DESCONTADO", 0, 0, 'R');
 $pdf->Ln(6);
 
-$pdf->Cell(40, 20, "COMPRAS : ", 0, 0, 'R');
-$pdf->Cell(18, 20, number_format($compras, "2", ",", "."), 0, 0, 'R');
-$pdf->Cell(30, 20, number_format($compras-$cnd, "2", ",", "."), 0, 0, 'R');
-$pdf->Cell(30, 20, number_format($cnd, "2", ",", "."), 0, 0, 'R');
+$pdf->Cell(40, 20, "Adiantamento : ", 0, 0, 'R');
+$pdf->Cell(18, 20, number_format($adiantamento, "2", ",", "."), 0, 0, 'R');
+//$pdf->Cell(30, 20, number_format($compras-$cnd, "2", ",", "."), 0, 0, 'R');
+//$pdf->Cell(30, 20, number_format($cnd, "2", ",", "."), 0, 0, 'R');
 $pdf->Ln(5);
 
-$pdf->Cell(40, 20, "FARMACIA : ", 0, 0, 'R');
-$pdf->Cell(18, 20, number_format($farmacia, "2", ",", "."), 0, 0, 'R');
-$pdf->Cell(30, 20, number_format($farmacia-$fnd, "2", ",", "."), 0, 0, 'R');
-$pdf->Cell(30, 20, number_format($fnd, "2", ",", "."), 0, 0, 'R');
+$pdf->Cell(40, 20, mb_convert_encoding("Taxa cartão : ", 'ISO-8859-1', 'UTF-8'), 0, 0, 'R');
+$pdf->Cell(18, 20, number_format($taxa_cartao, "2", ",", "."), 0, 0, 'R');
+//$pdf->Cell(30, 20, number_format($farmacia-$fnd, "2", ",", "."), 0, 0, 'R');
+//$pdf->Cell(30, 20, number_format($fnd, "2", ",", "."), 0, 0, 'R');
 $pdf->Ln(5);
 
-$pdf->Cell(40, 20, "UNIMED : ", 0, 0, 'R');
-$pdf->Cell(18, 20, number_format($unimed, "2", ",", "."), 0, 0, 'R');
-$pdf->Cell(30, 20, number_format($unimed-$dnd, "2", ",", "."), 0, 0, 'R');
-$pdf->Cell(30, 20, number_format($dnd, "2", ",", "."), 0, 0, 'R');
+$pdf->Cell(40, 20, mb_convert_encoding("Cartão : ", 'ISO-8859-1', 'UTF-8'), 0, 0, 'R');
+$pdf->Cell(18, 20, number_format($cartao, "2", ",", "."), 0, 0, 'R');
+//$pdf->Cell(30, 20, number_format($unimed-$dnd, "2", ",", "."), 0, 0, 'R');
+//$pdf->Cell(30, 20, number_format($dnd, "2", ",", "."), 0, 0, 'R');
 $pdf->Ln(6);
 
 $pdf->Cell(40, 20, "Total : ", 0, 0, 'R');
 $pdf->Cell(18, 20, number_format($total, "2", ",", "."), 0, 0, 'R');
-$pdf->Cell(30, 20, number_format(($compras+$farmacia+$emprestimo+$unimed)-($cnd+$fnd+$endes+$dnd), "2", ",", "."), 0, 0, 'R');
-$pdf->Cell(30, 20, number_format(($cnd+$fnd+$endes+$dnd), "2", ",", "."), 0, 0, 'R');
+//$pdf->Cell(30, 20, number_format(($adiantamento+$taxa_cartao+$cartao)-($cnd+$fnd+$endes+$dnd), "2", ",", "."), 0, 0, 'R');
+//$pdf->Cell(30, 20, number_format(($cnd+$fnd+$endes+$dnd), "2", ",", "."), 0, 0, 'R');
 $total = 0;
 
 $item=0;
 
 if($associado_aux != ""){
+    // Limpar qualquer output buffer para evitar problemas com o PDF
+    ob_end_clean();
     $pdf->Output('I',$associado_aux."-".$mes."-QRCRED.pdf");
 }

@@ -1,4 +1,5 @@
 <?PHP
+header('Content-Type: application/json; charset=utf-8');
 include "../../php/banco.php";
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -10,6 +11,7 @@ $query = "SELECT empregador.id,
                  empregador.telefone,
                  empregador.abreviacao,
                  empregador.divisao,
+                 empregador.bloqueio,
                  divisao.nome as nome_divisao,
                  divisao.cidade
             FROM sind.empregador INNER JOIN sind.divisao 
@@ -23,15 +25,16 @@ $linhas_filtradas = $statment->rowCount();
 foreach ($result as $row){
     $sub_array = array();
     $sub_array["id"]           = $row["id"];
-    $sub_array["nome"]         = $row["nome"];
-    $sub_array["responsavel"]  = $row["responsavel"];
+    $sub_array["nome"]         = htmlspecialchars($row["nome"], ENT_QUOTES, 'UTF-8');
+    $sub_array["responsavel"]  = htmlspecialchars($row["responsavel"], ENT_QUOTES, 'UTF-8');
     $sub_array["telefone"]     = $row["telefone"];
-    $sub_array["abreviacao"]   = $row["abreviacao"];
-    $sub_array["nome_divisao"] = $row["nome_divisao"];
-    $sub_array["cidade"]       = $row["cidade"];
+    $sub_array["abreviacao"]   = htmlspecialchars($row["abreviacao"], ENT_QUOTES, 'UTF-8');
+    $sub_array["nome_divisao"] = htmlspecialchars($row["nome_divisao"], ENT_QUOTES, 'UTF-8');
+    $sub_array["cidade"]       = htmlspecialchars($row["cidade"], ENT_QUOTES, 'UTF-8');
+    $sub_array["bloqueio"]     = $row["bloqueio"] == 't' || $row["bloqueio"] == '1' ? 
+        '<div class="text-center"><i class="fa fa-lock text-danger" title="Bloqueado"></i></div>' : 
+        '<div class="text-center"><i class="fa fa-unlock text-success" title="Liberado"></i></div>';
     $sub_array["botao"]        = '<button type="button" name="update_emp" id="'.$row["id"].'" class="btn btn-warning btn-xs update_emp">Alterar</button>';
-    $sub_array["botaoexcluir"] = '<button type="button" name="btnexcluir" id="'.$row["id"].'" class="btn btn-danger btn-xs btnexcluir">Excluir</button>';
-    $someArray["data"][] = array_map("utf8_encode",$sub_array);
+    $someArray["data"][] = $sub_array;
 }
-$pp = json_encode($someArray);
-echo json_encode($someArray);
+echo json_encode($someArray, JSON_UNESCAPED_UNICODE);

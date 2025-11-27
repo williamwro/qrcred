@@ -29,15 +29,6 @@
             <section class="content-header">
                 <h1 style="margin-top: -1px;margin-left: -6px;">
                     Empregador <small>Visualização</small> </h1>
-                <ol class="breadcrumb">
-                    <li>
-                        <a href="#"><i class="fa fa-dashboard"></i> Home</a>
-                    </li>
-                    <li>
-                        <a href="#">Tables</a>
-                    </li>
-                    <li class="active">Data tables</li>
-                </ol>
             </section>
             <section class="content">
                 <div class="row">
@@ -45,7 +36,15 @@
                         <div class="box">
                             <div class="box-header">
                                 <form id="listagem" name="listagem" class="form-inline">
-                                    <input type="button" name="btnInserir" id="btnInserir" class="btn btn-primary" value="Inserir" />
+                                    <input type="button"    name="btnInserir" id="btnInserir" class="btn btn-primary" value="Inserir" />
+                                    <div class="pull-right">
+                                        <button type="button" id="btnBloquearTodos" class="btn btn-danger btn-sm">
+                                            <i class="fa fa-lock"></i> Bloquear Todos
+                                        </button>
+                                        <button type="button" id="btnLiberarTodos" class="btn btn-success btn-sm">
+                                            <i class="fa fa-unlock"></i> Liberar Todos
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                             <div class="box-body">
@@ -59,7 +58,7 @@
                                             <th>ABREVIACAO</th>
                                             <th>DIVISAO</th>
                                             <th>CIDADE</th>
-                                            <th></th>
+                                            <th>BLOQUEIO</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -137,6 +136,38 @@
                                         <select type="text" class="form-control input-sm" id="C_divisao" name="C_divisao" style="text-transform:uppercase">
                                         </select>
                                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_usuario">Usuário</label>
+                                        <input type="text" class="form-control input-sm" id="C_usuario" name="C_usuario" placeholder="Usuário" maxlength="50">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_senha">Senha</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control input-sm" id="C_senha" name="C_senha" placeholder="Senha" maxlength="6">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-info btn-sm" id="btnGerarSenha" title="Gerar senha aleatória">
+                                                    <i class="fa fa-refresh"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 15px;">
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-left: 2px;padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_bloqueio">
+                                            <input type="checkbox" id="C_bloqueio" name="C_bloqueio" value="1">
+                                            Bloqueio
+                                        </label>
                                     </div>
                                 </div>
                             </div>

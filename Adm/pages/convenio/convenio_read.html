@@ -69,6 +69,51 @@
            left: 5px;
            color: #99a1a7;
        }
+       /* Estilo para tags */
+       .tag-container {
+           border: 1px solid #ddd;
+           border-radius: 4px;
+           padding: 5px;
+           min-height: 40px;
+           background-color: #f9f9f9;
+           display: flex;
+           flex-wrap: wrap;
+           gap: 5px;
+           align-items: flex-start;
+       }
+       .tag-item {
+           display: inline-flex;
+           align-items: center;
+           background-color: #007bff;
+           color: white;
+           padding: 4px 8px;
+           border-radius: 15px;
+           font-size: 12px;
+           margin: 2px;
+       }
+       .tag-remove {
+           background: none;
+           border: none;
+           color: white;
+           margin-left: 5px;
+           cursor: pointer;
+           font-size: 14px;
+           padding: 0;
+           width: 16px;
+           height: 16px;
+           border-radius: 50%;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+       .tag-remove:hover {
+           background-color: rgba(255,255,255,0.2);
+       }
+       .tag-placeholder {
+           color: #999;
+           font-style: italic;
+           padding: 8px;
+       }
  </style>
  <body>
  <!-- Content Wrapper. Contains page content -->
@@ -85,6 +130,12 @@
                 <div class="box">
                     <div class="box-header">
                         <form id="listagem" name="listagem" class="form-inline">
+                            <div class="form-group" style="margin-right: 10px;">
+                                <label for="filtro_divisao" style="margin-right: 5px;">Regiao:</label>
+                                <select id="filtro_divisao" name="filtro_divisao" class="form-control" style="width: 200px;">
+                                    <option value="">Todas as divisões</option>
+                                </select>
+                            </div>
                             <input type="button" name="btnInserir" id="btnInserir" class="btn btn-primary" value="Inserir" />
                         </form>
                     </div>
@@ -97,14 +148,15 @@
                                     <th>RAZAO SOCIAL</th>
                                     <th>NOME FANTASIA</th>
                                     <th>ENDEREÇO</th>
+                                    <th>CIDADE</th>
                                     <th>TELEFONE</th>
                                     <th>DATA CAD</th>
+                                    <th>CNPJ</th>
+                                    <th>CPF</th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th>DIV</th>
-                                    <th>DES</th>
                                 </tr>
                             </thead>
                         </table>
@@ -243,7 +295,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-2 col-md-2 col-xs-2 col-lg-2" style="padding-right: 2px;padding-left: 2px;">
+                            <div class="col-sm-4 col-md-4 col-xs-4 col-lg-4" style="padding-right: 2px;padding-left: 2px;">
                                 <div class="form-group control-group">
                                     <label class="control-label" for="C_contato">Contato</label>
                                     <input type="text" class="form-control input-sm" id="C_contato" placeholder="Contato" name="C_contato" maxlength="50">
@@ -251,16 +303,11 @@
                             </div>
                             <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-right: 2px;padding-left: 2px;">
                                 <div class="form-group control-group">
-                                    <label class="control-label" for="C_prolabore">Prolab. 1</label>
+                                    <label class="control-label" for="C_prolabore">Prolabore</label>
                                     <input type="text" class="form-control input-sm" id="C_prolabore" placeholder="Prolabore" data-error="Por favor, informe o prolabore 1." required name="C_prolabore">
                                 </div>
                             </div>
-                            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
-                                <div class="form-group control-group">
-                                    <label class="control-label" for="C_prolabore2">Prolab. 2</label>
-                                    <input type="text" class="form-control input-sm" id="C_prolabore2" placeholder="Prolabore 2" data-error="Por favor, informe o prolabore 2." required name="C_prolabore2">
-                                </div>
-                            </div>
+                           
                         </div>
                         <div class="row" id="row_nao_mostra">
                             <div class="col-sm-4 col-md-4 col-lg-4 col-xs-4" style="padding-right: 2px;">
@@ -347,40 +394,31 @@
                                 </div>
                             </div>
                         </div>
+
+                        
+                        <!-- Seção de Especialidades -->
+                       
                         <div class="row">
-                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-right: 2px;">
+                            <div class="col-md-8">
                                 <div class="form-group control-group">
-                                    <label class="control-label" for="C_categoriarecibo">Categoria Recibo</label>
-                                    <select class="form-control i_bd input-sm" id="C_categoriarecibo" name="C_categoriarecibo">
-                                    </select>
+                                    <label class="control-label">Especialidades Vinculadas</label>
+                                    <div id="especialidades_vinculadas" class="tag-container" style="min-height: 100px; max-height: 200px; overflow-y: auto;">
+                                        <div id="lista_especialidades">
+                                            <!-- As especialidades vinculadas aparecerão aqui -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-right: 2px;padding-left: 30px;">
+                            <div class="col-md-4" style="padding-left: 2px;">
                                 <div class="form-group control-group">
-                                    <input class="control-label" type="checkbox" checked="checked" id="C_parc_ind" name="C_parc_ind">Parc. individual
-                                </div>
-                            </div>
-                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-right: 2px;padding-left: 30px;">
-                                <div class="form-group control-group">
-                                    <input class="control-label" type="checkbox" checked="checked" value="S" id="C_ativo" name="C_ativo">Ativo
-                                </div>
-                            </div>
-                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-right: 2px;padding-left: 30px;">
-                                <div class="form-group control-group">
-                                    <input class="control-label" type="checkbox" checked="checked" value="S" id="C_divulga" name="C_divulga">Divulga
-                                </div>
-                            </div>
-                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-left: 30px;">
-                                <div class="form-group control-group">
-                                    <input class="control-label" type="checkbox" checked="checked" id="C_cobranca" name="C_cobranca">Cobrança
-                                </div>
-                            </div>
-                            <div class="col-xs-2 col-md-2 col-sm-2 col-lg-2" style="height: 59px;padding-top: 30px;padding-left: 30px;">
-                                <div class="form-group control-group">
-                                    <input class="control-label" type="checkbox" id="C_desativado" name="C_desativado">Desativado
+                                    <label class="control-label">Gerenciar Profissionais</label>
+                                    <button type="button" class="btn btn-primary btn-sm" id="btnAbrirModalProfissionais" style="display: block; margin-top: 5px;">
+                                        <span class="glyphicon glyphicon-user"></span> Selecionar Profissionais
+                                    </button>
                                 </div>
                             </div>
                         </div>
+                        
                     </form>
                 </div>
             </div>
@@ -546,6 +584,76 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Seleção de Profissionais -->
+<div class="modal fade" id="ModalSelecionarProfissionais" name="ModalSelecionarProfissionais" tabindex="-1" role="dialog" aria-labelledby="ModalProfissionaisLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="ModalProfissionaisLabel">Selecionar Profissionais para o Convênio</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12" style="margin-bottom: 15px;">
+                            <div class="form-group">
+                                <label class="control-label" for="filtro_profissionais">Buscar Profissional:</label>
+                                <input type="text" class="form-control" id="filtro_profissionais" placeholder="Digite para filtrar por nome, especialidade ou tipo especialidade..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="tabela_profissionais" class="table table-striped table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25px !important; min-width: 25px !important; max-width: 25px !important;">
+                                        </th>
+                                        <th>Nome do Profissional</th>
+                                        <th>Especialidades</th>
+                                        <th>Tipo Especialidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody_profissionais">
+                                    <!-- Os profissionais serão carregados aqui via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnConfirmarSelecao">
+                    <span class="glyphicon glyphicon-ok"></span> Adicionar Selecionados
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="../Adm/pages/convenio/js/convenio_read_script.js"></script>
+<script>
+    // Auto-versioning para todos os recursos
+    document.addEventListener('DOMContentLoaded', function() {
+        const version = new Date().getTime(); // Ou use uma versão fixa: '1.0.3'
+        
+        // Atualiza tags <link> CSS
+        document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+            link.href = addVersion(link.href);
+        });
+        
+        // Atualiza tags <script> (exceto este próprio script)
+        document.querySelectorAll('script[src]').forEach(script => {
+            if(!script.hasAttribute('data-no-version')) {
+                script.src = addVersion(script.src);
+            }
+        });
+        
+        function addVersion(url) {
+            return url.split('?')[0] + '?v=' + version;
+        }
+    });
+</script>
 </body>
 </html>

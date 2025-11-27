@@ -33,22 +33,31 @@ $someArray = array();
     $linha = array();
 
     foreach ($result as $row){
-        $sub_array = array();
-        $sub_array["menu_item_id"]     = $row["menu_item_id"];
-        $sub_array["menu_parent_id"]   = $row["menu_parent_id"];
-        $sub_array["url"]              = $row["url"];
-        $sub_array["menu_parent_id"]   = $row["menu_parent_id"];
-        $sub_array["menu_item_name"]   = htmlspecialchars($row["menu_item_name"]);
-        $sub_array["menu_order"]       = $row["menu_order"];
-        $sub_array["description"]      = htmlspecialchars($row["description"]);
-        if($row["status_usuario"] ==  1){
-            $sub_array["status_usuario"] = "1";
-            $sub_array["badges"]       = '<span></span>';
-        }else{
-            $sub_array["status_usuario"] = "0";
-            $sub_array["badges"]       = '<span class="badge badge-pill badge-danger" style="background-color: red">Bloqueado</span>';
+        $idmenu = $row["menu_item_id"];
+        // Usuário 28 vê todos os menus, outros usuários veem todos exceto menu 19
+        if ($cod_usuario == 28 || $idmenu != 19){
+            $sub_array = array();
+            $sub_array["menu_item_id"]     = $row["menu_item_id"];
+            $sub_array["menu_parent_id"]   = $row["menu_parent_id"];
+            $sub_array["url"]              = $row["url"];
+            $sub_array["menu_parent_id"]   = $row["menu_parent_id"];
+            $sub_array["menu_item_name"]   = htmlspecialchars($row["menu_item_name"] ?? '');
+            $sub_array["menu_order"]       = $row["menu_order"];
+            $sub_array["description"]      = htmlspecialchars($row["description"] ?? '');
+            if($row["status_usuario"] ==  0){
+                $sub_array["status_usuario"] = "0";
+                $sub_array["badges"]       = '<span class="badge badge-pill badge-danger" style="background-color: red">Bloqueado</span>';
+            }else{
+                $sub_array["status_usuario"] = "1";
+                $sub_array["badges"]       = '<span class="badge badge-pill badge-success" style="background-color: green">Liberado</span>';
+            }
+            $checked = ($row["status_usuario"] == 1) ? 'checked' : '';
+            $sub_array["botao"]            = '<input type="checkbox" name="status_checkbox" data-menu-id="'.$row["menu_item_id"].'" class="status-checkbox" '.$checked.'>';
+            $someArray["data"][]           = // Substituir utf8_encode() depreciado por mb_convert_encoding()
+            array_map(function($value) {
+                return is_string($value) ? (mb_check_encoding($value, 'UTF-8') ? $value : mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1')) : $value;
+                
+            }, $sub_array);
         }
-        $sub_array["botao"]            = '<button type="button" name="update2" id="'.$row["menu_item_id"].'" class="btn btn-warning btn-xs update2">Alterar</button>';
-        $someArray["data"][]           = array_map("utf8_encode",$sub_array);
     }
 echo json_encode($someArray);

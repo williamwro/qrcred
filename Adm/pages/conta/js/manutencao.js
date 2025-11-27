@@ -6,7 +6,6 @@ var matricula;
 var empregador;
 var nome = "";
 var cod_convenio = "";
-var nome_convenio = "";
 var abreviacao = "";
 var botao_clicado = "";
 var Codempregador_origem;
@@ -14,7 +13,7 @@ var mes_escolhido;
 var divisao;
 var viaradio = false;
 var mescorrente = "";
-var checkedmes;
+var checkedmes = 'atual'; // Inicializa com 'atual' como padrão
 var KEYBOARD = {
     esc: 27
 };
@@ -24,6 +23,8 @@ var card3;
 var card4;
 var card5;
 var card6;
+var id_associado_origem;
+var id_divisao_origem;
 
 $(document).ready(function(){
     divisao = sessionStorage.getItem("divisao");
@@ -52,7 +53,7 @@ $(document).ready(function(){
             $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
         }, 0);
     });
-    $.getJSON( "../Adm/pages/conta/meses_conta.php",{ "origem": "convenio" }, function( data ) {
+    $.getJSON( "../Adm/pages/conta/meses_conta.php",{ "origem": "convenio", "divisao": divisao }, function( data ) {
         $('#C_mes').append('<option value="todos">Todos os meses</option>');
         $.each(data, function (index, value) {
             if (value.mes_corrente !== undefined) {
@@ -67,7 +68,7 @@ $(document).ready(function(){
             }
         });
     });
-    $.getJSON( "../Adm/pages/conta/meses_conta.php",{ "origem": "cadastro" }, function( data ) {
+    $.getJSON( "../Adm/pages/conta/meses_conta.php",{ "origem": "cadastro", "divisao": divisao }, function( data ) {
         $.each(data, function (index, value) {
             if (value.mes_corrente !== undefined) {
                 mescorrente = value.mes_corrente;
@@ -251,6 +252,12 @@ $(document).ready(function(){
             }
         }
     });
+        // Previne seleção automática de todos os checkboxes ao clicar no checkbox do cabeçalho
+    $(document).on('click', '#tab_matricula_origem thead input[type="checkbox"]', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    });
     $('#btnExcluirVarios').click(function () {
         var dTRows = table_origem.rows({selected:true}).data().toArray();
         var messagetable = '';
@@ -317,6 +324,9 @@ $(document).ready(function(){
                                 success: function (data) {
                                     if (data.Resultado === "excluido") {
                                         table_origem.rows('.selected').remove().draw();
+                                        // Desmarca todos os checkboxes após exclusão
+                                        table_origem.rows().deselect();
+                                        $('#tab_matricula_origem thead input[type="checkbox"]').prop('checked', false);
                                         //alert("Excluido com sucesso");
                                         waitingDialog.hide();
                                         BootstrapDialog.show({
@@ -372,9 +382,46 @@ $(document).ready(function(){
             });
         }
     });
-    table_lancado = $('#tabela_lancado').DataTable();
-    $('#tabela_lancado-wrapper').hide();
-
+    
+    // Função auxiliar para garantir que table_lancado esteja inicializado
+    function initTableLancado() {
+        if (!table_lancado && typeof $.fn.DataTable !== 'undefined') {
+            try {
+                table_lancado = $('#tabela_lancado').DataTable({
+                    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
+                    processing: false,
+                    paging: false,
+                    ordering: false,
+                    info: false,
+                    searching: false,
+                    scrollY: "120px",
+                    scrollCollapse: true,
+                    columns: [
+                        {data: "registro"},
+                        {data: "nome_convenio"},
+                        {data: "valor"},
+                        {data: "data"},
+                        {data: "hora"},
+                        {data: "mes"},
+                        {data: "parcela"},
+                        {data: "descricao"}
+                    ],
+                    language: {
+                        decimal: ",",
+                        thousands: ".",
+                        zeroRecords: "Não ha dados",
+                        emptyTable: "Não ha dados.",
+                        infoEmpty: 'Zero registros'
+                    }
+                });
+                $('#tabela_lancado-wrapper').hide();
+            } catch(e) {
+                console.error('Erro ao inicializar table_lancado:', e);
+            }
+        }
+        return table_lancado;
+    }
+    
     function carrega_cadastro() {
         $.ajax({
             url: "pages/conta/conta_cadastro.php",
@@ -390,9 +437,21 @@ $(document).ready(function(){
                         table_lancado.destroy();
                         table_lancado = $('#tabela_lancado').DataTable({
                             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
-                            processing: false,
+                            processing: true,
                             ServerSide: false,
-                            responsive: true,
+                            responsive: ( $.fn.dataTable && $.fn.dataTable.Responsive ) ? {
+                                details: {
+                                    display: $.fn.dataTable.Responsive.display.modal({
+                                        header: function (row) {
+                                            var data = row.data();
+                                            return 'Detalhes';
+                                        }
+                                    }),
+                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                        tableClass: 'table'
+                                    })
+                                }
+                            } : true,
                             autoWidth: true,
                             paging:   false,
                             ordering: false,
@@ -450,7 +509,19 @@ $(document).ready(function(){
                             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
                             processing: false,
                             ServerSide: false,
-                            responsive: true,
+                            responsive: ( $.fn.dataTable && $.fn.dataTable.Responsive ) ? {
+                                details: {
+                                    display: $.fn.dataTable.Responsive.display.modal({
+                                        header: function (row) {
+                                            var data = row.data();
+                                            return 'Detalhes';
+                                        }
+                                    }),
+                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                        tableClass: 'table'
+                                    })
+                                }
+                            } : true,
                             autoWidth: true,
                             paging: false,
                             ordering: false,
@@ -524,7 +595,8 @@ $(document).ready(function(){
         dataHora = (d.toLocaleString());
         $('#inputDataCad').val(dataHora.substring(0,10));
         $('#inputDataCad').mask("00/00/0000");
-        table_lancado.columns.adjust().draw();
+        var tbl = initTableLancado();
+        if (tbl) tbl.columns.adjust().draw();
         $("#btnCadastrarCadastroConta").prop("disabled",false);
         $("#inputMatricula").prop("disabled",true);
         $("#inputValor").prop("disabled",true);
@@ -552,8 +624,10 @@ $(document).ready(function(){
         if (matricula !== ""){
             if(mes_escolhido === 'todos'){
                 $("#input_check_todos").prop("checked", true);
+                checkedmes = 'todos'; // Atualiza a variável para sincronizar com o radio button
             }else{
                 $("#input_check_atual").prop("checked", true);
+                checkedmes = 'atual'; // Atualiza a variável para sincronizar com o radio button
             }
             carrega_origem();
         }
@@ -562,6 +636,9 @@ $(document).ready(function(){
         $("#frmCadConta")[0].reset();
         var d = new Date();
         dataHora = (d.toLocaleString());
+        checkedmes = 'atual'; // Atualiza a variável para sincronizar com o radio button
+        $("#input_check_atual").prop("checked", true);
+        $("#input_check_todos").prop("checked", false);
         $('#inputDataCad').val(dataHora.substring(0,10));
         $("#inputMatricula").prop("disabled",true);
         $("#inputValor").prop("disabled",false);
@@ -573,7 +650,8 @@ $(document).ready(function(){
         $("#optUnica").prop("disabled",false);
         $("#btnBuscaAssociado").prop("disabled",false);
         $("#btnBuscaConvenio").prop("disabled",false);
-        table_lancado.clear().draw();
+        var tbl = initTableLancado();
+        if (tbl) tbl.clear().draw();
         $('#btnBuscaAssociado').focus();
         $("#btnSalvarCadastroConta").prop("disabled",false);
         $(this).prop("disabled",true);
@@ -589,7 +667,8 @@ $(document).ready(function(){
         $('#divEmpregador').html("");
         $("#ModalCadastra").modal("show");
         $('#btnBuscaAssociado').focus();
-        table_lancado.clear().draw();
+        var tbl = initTableLancado();
+        if (tbl) tbl.clear().draw();
     });
     $("#btnFechar").click(function(){
         $("#btnSalvar").prop("disabled",false);
@@ -661,74 +740,175 @@ $(document).ready(function(){
              });*/
         }
     });
+    // Função para carregar scripts do DataTable dinamicamente
+    function loadDataTableScripts(callback) {
+        // Verificar se já está carregado
+        if (typeof $.fn.DataTable !== 'undefined') {
+            callback();
+            return;
+        }
+        
+        // Carregar CSS do DataTable
+        if (!$('link[href*="datatables"]').length) {
+            $('<link>')
+                .attr('rel', 'stylesheet')
+                .attr('href', '//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css')
+                .appendTo('head');
+        }
+        
+        // Carregar JS do DataTable
+        $.getScript('//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js', function() {
+            console.log('DataTable carregado com sucesso');
+            // Carregar extensões necessárias
+            $.when(
+                $.getScript('https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js'),
+                $.getScript('https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js'),
+                $.getScript('https://cdn.datatables.net/fixedheader/3.1.6/js/dataTables.fixedHeader.min.js')
+            ).done(function() {
+                console.log('Extensões do DataTable carregadas');
+                callback();
+            }).fail(function() {
+                console.error('Erro ao carregar extensões do DataTable');
+                callback(); // Tentar continuar mesmo sem extensões
+            });
+        }).fail(function() {
+            console.error('Erro ao carregar DataTable');
+            alert('Erro ao carregar a biblioteca DataTable. Verifique sua conexão com a internet.');
+        });
+    }
+    
     $("#btnConsultar").click(function () {
         botao_clicado = "busca_conta";
+        
+        // Abrir o modal primeiro
         $("#ModalBuscaAssociado").modal("show");
-        if ( $.fn.dataTable.isDataTable( '#tabela_busca_associado' ) ) {
-            tableconsulta = $('#tabela_busca_associado').DataTable();
-        }
-        else {
-            tableconsulta = $('#tabela_busca_associado').DataTable({
-                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
-                processing: false,
-                ServerSide: false,
-                responsive: true,
-                autoWidth: true,
-                ajax: {
-                    url: 'pages/conta/exibe_todos_associados.php',
-                    method: 'POST',
-                    data: {"divisao": divisao, 'card1': card1, 'card2': card2, 'card3': card3, 'card4': card4, 'card5': card5, 'card6': card6},
-                    dataType: 'json'
-                },
-                deferRender: true,
-                order: [[1, "asc"]],
-                columns: [
-                    {data: "matricula"},
-                    {data: "nome"},
-                    {data: "endereco"},
-                    {data: "numero"},
-                    {data: "bairro"},
-                    {data: "nascimento"},
-                    {data: "empregador"},
-                    {data: "abreviacao"}
-                ],
-                language: {
-                    //url: "pages/conta/Portuguese-Brasil.json"
-                    decimal: ",",
-                    thousands: ".",
-                    zeroRecords: "Não ha dados",
-                    emptyTable: "Não ha dados.",
-                    infoEmpty: 'Zero registros',
-                    paginate: {
-                        next: "Próximo",
-                        previous: "Anterior",
-                        first: "Primeiro",
-                        last: "Último"
+        
+        // Carregar DataTable se necessário e depois inicializar
+        loadDataTableScripts(function() {
+            // Aguardar o modal estar completamente visível
+            setTimeout(function() {
+                // Inicializar DataTable apenas quando o modal estiver visível
+                if (!$.fn.dataTable.isDataTable('#tabela_busca_associado')) {
+                tableconsulta = $('#tabela_busca_associado').DataTable({
+                    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
+                    processing: false,
+                    ServerSide: false,
+                    responsive: ($.fn.dataTable && $.fn.dataTable.Responsive) ? {
+                        details: {
+                            display: $.fn.dataTable.Responsive.display.modal({
+                                header: function (row) {
+                                    var data = row.data();
+                                    return 'Detalhes';
+                                }
+                            }),
+                            renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                tableClass: 'table'
+                            })
+                        }
+                    } : true,
+                    autoWidth: true,
+                    scrollX: true,
+                    scrollCollapse: false,
+                    columnDefs: [
+                        { "visible": false, "targets": [3] }, // numero
+                        { "visible": false, "targets": [4] }, // bairro
+                        { "visible": false, "targets": [5] }, // nascimento
+                        { "visible": false, "targets": [6] }  // empregador
+                    ],
+                    ajax: {
+                        url: 'pages/conta/exibe_todos_associados.php',
+                        method: 'POST',
+                        data: {"divisao": divisao},
+                        dataType: 'json'
                     },
-                    search: "Pesquisar",
-                    info: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                    infoFiltered: "(Filtrados de _MAX_ registros)",
-                    infoPostFix: "",
-                    lengthMenu: "_MENU_ resultados por página"
-                },
-                pagingType: "full_numbers"
-            });
-            $('#ModalBuscaAssociado tbody').on('click', 'tr', function () {
-                if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                } else {
-                    tableconsulta.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                }
-            });
-        }
-        tableconsulta.on( 'key', function ( e, datatable, key, cell, originalEvent ) {
-            //events.prepend( '<div>Key press: '+key+' for cell <i>'+cell.data()+'</i></div>' );
-            if(key === 13){
-                //alert("funcionou.");
-                //$('#tabela_busca_associado').on( 'dblclick', 'tr', function () {});
+                    deferRender: true,
+                    order: [[1, "asc"]],
+                    columns: [
+                        {data: "matricula"},
+                        {data: "nome"},
+                        {data: "endereco"},
+                        {data: "numero"},
+                        {data: "bairro"},
+                        {data: "nascimento"},
+                        {data: "empregador"},
+                        {data: "abreviacao"},
+                        {data: "id_associado", visible: false},
+                        {data: "id_divisao", visible: false}
+                    ],
+                    language: {
+                        decimal: ",",
+                        thousands: ".",
+                        zeroRecords: "Não ha dados",
+                        emptyTable: "Não ha dados.",
+                        infoEmpty: 'Zero registros',
+                        paginate: {
+                            next: "Próximo",
+                            previous: "Anterior",
+                            first: "Primeiro",
+                            last: "Último"
+                        },
+                        search: "Pesquisar",
+                        info: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        infoFiltered: "(Filtrados de _MAX_ registros)",
+                        infoPostFix: "",
+                        lengthMenu: "_MENU_ resultados por página"
+                    },
+                    pagingType: "full_numbers"
+                });
+                
+                // Adicionar evento de clique nas linhas
+                $('#ModalBuscaAssociado tbody').on('click', 'tr', function () {
+                    if ($(this).hasClass('selected')) {
+                        $(this).removeClass('selected');
+                    } else {
+                        tableconsulta.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                });
+                
+                // Adicionar evento de tecla
+                tableconsulta.on('key', function (e, datatable, key, cell, originalEvent) {
+                    if(key === 13){
+                        // Enter pressionado
+                    }
+                });
+            } else {
+                // Se já existe, apenas recarregar os dados
+                tableconsulta = $('#tabela_busca_associado').DataTable();
+                tableconsulta.ajax.reload();
             }
-        });
+            
+            // Forçar scroll horizontal no modal e wrapper da tabela
+            $("#ModalBuscaAssociado .modal-body").css({
+                'overflow-x': 'auto',
+                'overflow-y': 'auto',
+                'max-width': '100%'
+            });
+            $('#tabela_busca_associado_wrapper').css({
+                'width': '100%',
+                'overflow-x': 'auto',
+                'overflow-y': 'visible'
+            });
+            // Garantir que o campo de busca fique visível
+            $('#tabela_busca_associado_filter').css({
+                'position': 'sticky',
+                'top': '0',
+                'background': 'white',
+                'z-index': '10',
+                'padding': '10px 0'
+            });
+            // Ajustar colunas após a animação do modal
+            setTimeout(function(){
+                if ($.fn.dataTable.isDataTable('#tabela_busca_associado')) {
+                    var dt = $('#tabela_busca_associado').DataTable();
+                    dt.columns.adjust().draw(false);
+                    if (dt.responsive && dt.responsive.recalc) {
+                        dt.responsive.recalc();
+                    }
+                }
+            }, 150);
+            }, 500); // Aguardar 500ms para o modal estar visível
+        }); // Fim do loadDataTableScripts callback
     });
     $('#tabela_busca_associado').on( 'click', 'tr', function () {
         // CAPTURA O VALOR DA LINHA SELECIONADA EM DUPLOCLICK
@@ -738,6 +918,8 @@ $(document).ready(function(){
         abreviacao = data["abreviacao"];
         matricula  = data["matricula"];
         Codempregador_origem = data["codempregador"];
+        id_associado_origem = data["id_associado"];
+        id_divisao_origem = data["id_divisao"];
         if(botao_clicado === "busca_conta") {
             $("#C_matricula_origem").val(matricula);
             $("#C_nome_origem").val(nome);
@@ -745,6 +927,7 @@ $(document).ready(function(){
             $("#C_id_empregador_origem").val(Codempregador_origem);
             mes_escolhido = $('#C_mes').val();
             $("#btnImprimir").prop("disabled",false);
+            $("#btnCartoes").prop("disabled",false);
             carrega_origem();
         }else if(botao_clicado === "busca_cad"){
             $("#inputMatricula").val(matricula);
@@ -771,7 +954,19 @@ $(document).ready(function(){
                 lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
                 processing: false,
                 ServerSide: false,
-                responsive: true,
+                responsive: ( $.fn.dataTable && $.fn.dataTable.Responsive ) ? {
+                    details: {
+                        display: $.fn.dataTable.Responsive.display.modal({
+                            header: function (row) {
+                                var data = row.data();
+                                return 'Detalhes';
+                            }
+                        }),
+                        renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                            tableClass: 'table'
+                        })
+                    }
+                } : true,
                 autoWidth: true,
                 JQueryUI: true,
                 searching: true,
@@ -895,7 +1090,7 @@ $(document).ready(function(){
             url:"pages/conta/conta_list_mes.php",
             method: "POST",
             async: false,
-            data: {'matricula': matricula, 'mes': mes_escolhido, 'codempregador': Codempregador_origem },
+            data: {'matricula': matricula, 'mes': mes_escolhido, 'codempregador': Codempregador_origem, 'id_associado': id_associado_origem, 'id_divisao': id_divisao_origem },
             dataType: "json",
             success:function (datab) {
                 var fdesc = 0;
@@ -904,31 +1099,30 @@ $(document).ready(function(){
                 var ddesc = 0;
                 var totaldesc = 0;
                 if(checkedmes !== 'todos') {
+                    debugger;
                     var length = 0;
-                    var farmacia = parseFloat(datab["categorias"].Farmacia);
-                    var compras = parseFloat(datab["categorias"].Compras);
-                    var financeira = parseFloat(datab["categorias"].Financeira);
-                    var unimed = parseFloat(datab["categorias"].Unimed);
-                    var total = farmacia + compras + financeira + unimed;
-                    if (farmacia === 0) {
-                        farmacia = '';
+                    var cartao = parseFloat(datab["categorias"].cartao || 0);
+                    var taxa_cartao = parseFloat(datab["categorias"].taxacartao || 0);
+                    var emprestimo = parseFloat(datab["categorias"].adiantamento || 0);
+                    var total = cartao + taxa_cartao + emprestimo;
+                    var limite = datab["limite"] ? datab["limite"].limite * 1 : 0;
+                    var saldo = datab["limite"] ? datab["limite"].limite - total : 0;
+                    if (cartao === 0) {
+                        cartao = '';
                     }
-                    if (compras === 0) {
-                        compras = '';
+                    if (taxa_cartao === 0) {
+                        taxa_cartao = '';
                     }
-                    if (financeira === 0) {
-                        financeira = '';
-                    }
-                    if (unimed === 0) {
-                        unimed = '';
+                    if (emprestimo === 0) {
+                        emprestimo = '';
                     }
                     if (total === 0) {
                         total = '';
                     }
-                    $("#fargasto").html(farmacia.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
-                    $("#comgasto").html(compras.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
-                    $("#fingasto").html(financeira.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
-                    $("#unigasto").html(unimed.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
+                    $("#empgasto").html(emprestimo.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
+                    $("#taxagasto").html(taxa_cartao.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
+                    $("#cartgasto").html(cartao.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
+                    
                     $("#totalgasto").html(total.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
                     if (datab["naodescontado"] !== undefined) {
                         var fnd = parseFloat(datab["naodescontado"].FND);
@@ -956,13 +1150,14 @@ $(document).ready(function(){
                         $("#finndesc").html(endes.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
                         $("#unindesc").html(dnd.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
                         $("#totalndesc").html(totalndesc.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
-                        fdesc = farmacia - fnd;
-                        cdesc = compras - cnd;
-                        edesc = financeira - endes;
-                        ddesc = unimed - dnd;
+                        fdesc = parseFloat(emprestimo || 0) - fnd;
+                        cdesc = parseFloat(cartao || 0) - cnd;
+                        edesc = parseFloat(taxa_cartao || 0) - endes;
+                        ddesc = 0 - dnd;
+                        debugger;
                         totaldesc = fdesc + cdesc + edesc + ddesc;
                         var limite = datab["limite"].limite * 1;
-                        var saldo = datab["limite"].limite - total;
+                        var saldo = datab["limite"].limite - parseFloat(total || 0);
                         if (fdesc === 0) {
                             fdesc = '';
                         }
@@ -980,6 +1175,8 @@ $(document).ready(function(){
                         }
                     }
                 }else{
+                    var limite = datab["limite"] ? datab["limite"].limite * 1 : 0;
+                    var saldo = datab["limite"] ? datab["limite"].limite : 0;
                     $("#fargasto").html('');
                     $("#comgasto").html('');
                     $("#fingasto").html('');
@@ -1031,6 +1228,7 @@ $(document).ready(function(){
                     length++;
                 });
                 if (length > 0){
+                    debugger;
                     if ( $.fn.dataTable.isDataTable( '#tab_matricula_origem' ) ) {
                         table_origem.destroy();
                         table_origem = $('#tab_matricula_origem').DataTable({
@@ -1065,13 +1263,31 @@ $(document).ready(function(){
                             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
                             processing: false,
                             ServerSide: false,
-                            responsive: true,
+                            responsive: ( $.fn.dataTable && $.fn.dataTable.Responsive ) ? {
+                                details: {
+                                    display: $.fn.dataTable.Responsive.display.modal({
+                                        header: function (row) {
+                                            var data = row.data();
+                                            return 'Detalhes';
+                                        }
+                                    }),
+                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                        tableClass: 'table'
+                                    })
+                                }
+                            } : true,
                             autoWidth: true,
                             ajax: {
                                 url: 'pages/conta/conta_list_mes.php',
                                 method: 'POST',
                                 data: {'matricula': matricula, 'mes': mes_escolhido, 'codempregador': Codempregador_origem },
-                                dataType: 'json'
+                                dataType: 'json',
+                                dataSrc: function(json){
+                                    if (!json) { return []; }
+                                    if (Array.isArray(json)) { return json; }
+                                    if (json.data && Array.isArray(json.data)) { return json.data; }
+                                    return [];
+                                }
                             },
                             deferRender:true,
                             columns: [
@@ -1103,6 +1319,8 @@ $(document).ready(function(){
                             language: {
                                 decimal: ",",
                                 thousands: ".",
+                                processing: "Processing...",
+                                loadingRecords: "",
                                 zeroRecords: "Não ha dados",
                                 emptyTable: "Não ha dados.",
                                 infoEmpty: 'Zero registros',
@@ -1150,15 +1368,33 @@ $(document).ready(function(){
                                 style: 'multi'
                             },
                             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
-                            processing: false,
+                            processing: true,
                             ServerSide: false,
-                            responsive: true,
+                            responsive: ( $.fn.dataTable && $.fn.dataTable.Responsive ) ? {
+                                details: {
+                                    display: $.fn.dataTable.Responsive.display.modal({
+                                        header: function (row) {
+                                            var data = row.data();
+                                            return 'Detalhes';
+                                        }
+                                    }),
+                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                        tableClass: 'table'
+                                    })
+                                }
+                            } : true,
                             autoWidth: true,
                             ajax: {
                                 url: 'pages/conta/conta_list_mes.php',
                                 method: 'POST',
                                 data: {'matricula': matricula, 'mes': mes_escolhido, 'codempregador': Codempregador_origem },
-                                dataType: 'json'
+                                dataType: 'json',
+                                dataSrc: function(json){
+                                    if (!json) { return []; }
+                                    if (Array.isArray(json)) { return json; }
+                                    if (json.data && Array.isArray(json.data)) { return json.data; }
+                                    return [];
+                                }
                             },
                             deferRender:true,
                             columns: [
@@ -1190,6 +1426,8 @@ $(document).ready(function(){
                             language: {
                                 decimal: ",",
                                 thousands: ".",
+                                processing: "Processing...",
+                                loadingRecords: "",
                                 zeroRecords: "Não ha dados",
                                 emptyTable: "Não ha dados.",
                                 infoEmpty: 'Zero registros',
@@ -1240,15 +1478,33 @@ $(document).ready(function(){
                                 style: 'multi'
                             },
                             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
-                            processing: false,
+                            processing: true,
                             ServerSide: false,
-                            responsive: true,
+                            responsive: ( $.fn.dataTable && $.fn.dataTable.Responsive ) ? {
+                                details: {
+                                    display: $.fn.dataTable.Responsive.display.modal({
+                                        header: function (row) {
+                                            var data = row.data();
+                                            return 'Detalhes';
+                                        }
+                                    }),
+                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                        tableClass: 'table'
+                                    })
+                                }
+                            } : true,
                             autoWidth: true,
                             ajax: {
                                 url: 'pages/conta/conta_list_mes.php',
                                 method: 'POST',
                                 data: {'matricula': matricula, 'mes': mes_escolhido, 'codempregador': Codempregador_origem },
-                                dataType: 'json'
+                                dataType: 'json',
+                                dataSrc: function(json){
+                                    if (!json) { return []; }
+                                    if (Array.isArray(json)) { return json; }
+                                    if (json.data && Array.isArray(json.data)) { return json.data; }
+                                    return [];
+                                }
                             },
                             deferRender:true,
                             columns: [
@@ -1277,6 +1533,8 @@ $(document).ready(function(){
                             language: {
                                 decimal: ",",
                                 thousands: ".",
+                                processing: "Processing...",
+                                loadingRecords: "",
                                 zeroRecords: "Não ha dados",
                                 emptyTable: "Não ha dados.",
                                 infoEmpty: 'Zero registros',
@@ -1324,15 +1582,33 @@ $(document).ready(function(){
                                 style: 'multi'
                             },
                             lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
-                            processing: false,
+                            processing: true,
                             ServerSide: false,
-                            responsive: true,
+                            responsive: ( $.fn.dataTable && $.fn.dataTable.Responsive ) ? {
+                                details: {
+                                    display: $.fn.dataTable.Responsive.display.modal({
+                                        header: function (row) {
+                                            var data = row.data();
+                                            return 'Detalhes';
+                                        }
+                                    }),
+                                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                                        tableClass: 'table'
+                                    })
+                                }
+                            } : true,
                             autoWidth: true,
                             ajax: {
                                 url: 'pages/conta/conta_list_mes.php',
                                 method: 'POST',
                                 data:{'matricula': matricula, 'mes': mes_escolhido, 'codempregador': Codempregador_origem },
-                                dataType: 'json'
+                                dataType: 'json',
+                                dataSrc: function(json){
+                                    if (!json) { return []; }
+                                    if (Array.isArray(json)) { return json; }
+                                    if (json.data && Array.isArray(json.data)) { return json.data; }
+                                    return [];
+                                }
                             },
                             deferRender:true,
                             columns: [
@@ -1361,6 +1637,8 @@ $(document).ready(function(){
                             language: {
                                 decimal: ",",
                                 thousands: ".",
+                                processing: "Processing...",
+                                loadingRecords: "",
                                 zeroRecords: "Não ha dados",
                                 emptyTable: "Não ha dados.",
                                 infoEmpty: 'Zero registros',
@@ -1408,15 +1686,15 @@ $(document).ready(function(){
         var mes            = $('#C_mes').val();
         var cod_empregador = $('#C_id_empregador_origem').val();
         var empregador     = $('#C_empregador_origem').val();
-        var farmacia       = $('#fargasto').html();
-        var compras        = $('#comgasto').html();
-        var emprestimo     = $('#fingasto').html();
-        var unimed         = $('#unigasto').html();
-        var fnd            = $('#farndesc').html();
+        var adiantamento   = $('#empgasto').html();
+        var taxa_cartao    = $('#taxagasto').html();
+        var cartao         = $('#cartgasto').html();
+        /*var unimed         = $('#unigasto').html();
+        /*var fnd            = $('#farndesc').html();
         var cnd            = $('#comndesc').html();
         var endes          = $('#finndesc').html();
         var dnd            = $('#unindesc').html();
-        var limite         = $('#limite').val();
+        var limite         = $('#limite').val();*/
         if( table_origem.data().count() > 0 ) {
             $.redirect('../Adm/pages/conta/conta_imprimir_pdf.php',
                 {
@@ -1425,15 +1703,10 @@ $(document).ready(function(){
                     cod_empregador: cod_empregador,
                     empregador: empregador,
 
-                    farmacia: farmacia,
-                    compras: compras,
-                    emprestimo: emprestimo,
-                    unimed: unimed,
-
-                    fnd: fnd,
-                    cnd: cnd,
-                    endes: endes,
-                    dnd: dnd,
+                    adiantamento: adiantamento,
+                    taxa_cartao: taxa_cartao,
+                    cartao: cartao,
+                 
                     limite: limite
                 }, "POST", "_blank");
         }else{
@@ -1452,4 +1725,291 @@ $(document).ready(function(){
             });
         }
     });
+
+    // Funcionalidade do botão Cartões
+    $('#btnCartoes').click(function () {
+        var matricula = $('#C_matricula_origem').val();
+        var nome_associado = $('#C_nome_origem').val();
+        var id_empregador = $('#C_id_empregador_origem').val();
+
+        if (!matricula || !id_empregador) {
+            BootstrapDialog.show({
+                closable: false,
+                title: 'Atenção',
+                message: 'Primeiro consulte um associado para visualizar seus cartões!',
+                buttons: [{
+                    cssClass: 'btn-warning',
+                    label: 'Ok',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }]
+            });
+            return;
+        }
+
+        // Preenche informações do associado no modal
+        $('#nomeAssociadoCartoes').text(nome_associado);
+        $('#matriculaAssociadoCartoes').text(matricula);
+
+        // Abre o modal
+        $("#ModalCartoesAssociado").modal("show");
+
+        // Carrega os cartões do associado
+        carregarCartoesAssociado(matricula, id_empregador);
+    });
+
+    // Função para carregar cartões do associado
+    function carregarCartoesAssociado(matricula, id_empregador) {
+        if ($.fn.dataTable.isDataTable('#tabela_cartoes_associado')) {
+            $('#tabela_cartoes_associado').DataTable().destroy();
+        }
+
+        var tableCartoes = $('#tabela_cartoes_associado').DataTable({
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
+            processing: false,
+            serverSide: false,
+            responsive: ( $.fn.dataTable && $.fn.dataTable.Responsive ) ? {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.modal({
+                        header: function (row) {
+                            var data = row.data();
+                            return 'Detalhes';
+                        }
+                    }),
+                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                        tableClass: 'table'
+                    })
+                }
+            } : true,
+            autoWidth: true,
+            ajax: {
+                url: 'pages/conta/cartoes_associado.php',
+                method: 'POST',
+                data: {
+                    "divisao": divisao,
+                    "matricula": matricula,
+                    "id_empregador": id_empregador,
+                    "id_associado": id_associado_origem
+                },
+                dataType: 'json'
+            },
+            order: [[2, "desc"]], // Ordena por data de criação (mais recente primeiro)
+            columns: [
+                {data: "cartao"},
+                {data: "situacao"},
+                {data: "data_criacao"},
+                {data: "lote"},
+                {data: "checkbox_ativo", orderable: false},
+                {data: "botao_historico", orderable: false, render: function(data, type, row) {
+                    if (typeof data === 'string') {
+                        return data.replace(/HistÃ³rico/g, 'Histórico');
+                    }
+                    return data;
+                }}
+            ],
+            language: {
+                decimal: ",",
+                thousands: ".",
+                zeroRecords: "Não há dados",
+                emptyTable: "Não há dados.",
+                infoEmpty: 'Zero registros',
+                paginate: {
+                    next: "Próximo",
+                    previous: "Anterior",
+                    first: "Primeiro",
+                    last: "Último"
+                },
+                search: "Pesquisar",
+                info: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                infoFiltered: "(Filtrados de _MAX_ registros)",
+                infoPostFix: "",
+                lengthMenu: "_MENU_ resultados por página"
+            },
+            pagingType: "full_numbers"
+        });
+    }
+
+    // Funcionalidade para bloquear cartão
+    $(document).on('click', '.btn-bloquear-cartao', function() {
+        var cartao = $(this).data('cartao');
+		
+		Swal.fire({
+			title: 'Confirmar Bloqueio',
+			text: 'Tem certeza que deseja BLOQUEAR o cartão ' + cartao + '?',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#f0ad4e',
+			cancelButtonColor: '#6c757d',
+			confirmButtonText: 'Bloquear Cartão',
+			cancelButtonText: 'Cancelar'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				alterarStatusCartao(cartao, 0); // 0 = Bloquear
+			}
+		});
+    });
+
+    // Funcionalidade para liberar cartão
+    $(document).off('click', '.btn-liberar-cartao').on('click', '.btn-liberar-cartao', function() {
+        var cartao = $(this).data('cartao');
+		
+		Swal.fire({
+			title: 'Confirmar Liberação',
+			text: 'Tem certeza que deseja LIBERAR o cartão ' + cartao + '?',
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonColor: '#28a745',
+			cancelButtonColor: '#6c757d',
+			confirmButtonText: 'Liberar Cartão',
+			cancelButtonText: 'Cancelar'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				alterarStatusCartao(cartao, 1); // 1 = Liberar
+			}
+		});
+    });
+
+    // Função para alterar status do cartão
+    function alterarStatusCartao(cartao, ativo) {
+        var matricula_atual = $('#C_matricula_origem').val();
+        var id_empregador_atual = $('#C_id_empregador_origem').val();
+        
+        $.ajax({
+            url: "pages/conta/salvar_status_cartao.php",
+            method: "POST",
+            dataType: "json",
+            data: {
+                "cartao": cartao,
+                "ativo": ativo,
+                "divisao": divisao,
+                "usuario_cod": usuario_cod,
+                "usuario_global": usuario_global,
+                "matricula": matricula_atual,
+                "id_empregador": id_empregador_atual,
+                "id_associado": id_associado_origem
+            },
+            success: function(response) {
+                if (response.resultado === "atualizado") {
+                    var acao = ativo == 1 ? "liberado" : "bloqueado";
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso',
+                        text: 'Cartão ' + cartao + ' foi ' + acao + ' com sucesso!',
+                        confirmButtonText: 'Ok',
+                        confirmButtonColor: '#28a745'
+                    }).then(() => {
+                        $('#tabela_cartoes_associado').DataTable().ajax.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: 'Ocorreu um erro ao alterar o status do cartão!',
+                        confirmButtonText: 'Ok',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Erro de comunicação com o servidor!',
+                    confirmButtonText: 'Ok',
+                    confirmButtonColor: '#dc3545'
+                });
+            }
+        });
+    }
+
+    // Funcionalidade para ver histórico do cartão
+    $(document).on('click', '.btn-historico-cartao', function() {
+        var cartao = $(this).data('cartao');
+        var empregador = $(this).data('empregador');
+        var associado = $(this).data('associado');
+        
+        // Preenche informações do cartão no modal
+        $('#numeroCartaoHistorico').text(cartao);
+        
+        // Abre o modal
+        $("#ModalHistoricoCartao").modal("show");
+        
+        // Carrega o histórico do cartão
+        carregarHistoricoCartao(cartao, empregador, associado);
+    });
+
+    // Função para carregar histórico do cartão
+    function carregarHistoricoCartao(cartao, empregador, associado) {
+        if ($.fn.dataTable.isDataTable('#tabela_historico_cartao')) {
+            $('#tabela_historico_cartao').DataTable().destroy();
+        }
+
+        var tableHistorico = $('#tabela_historico_cartao').DataTable({
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
+            processing: false,
+            serverSide: false,
+            responsive: ( $.fn.dataTable && $.fn.dataTable.Responsive ) ? {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.modal({
+                        header: function (row) {
+                            var data = row.data();
+                            return 'Detalhes';
+                        }
+                    }),
+                    renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+                        tableClass: 'table'
+                    })
+                }
+            } : true,
+            autoWidth: true,
+            paging: false,
+            ordering: false,
+            info: false,
+            ajax: {
+                url: 'pages/conta/historico_cartao.php',
+                method: 'POST',
+                data: {
+                    "cartao": cartao,
+                    "id_empregador": empregador,
+                    "id_associado": associado
+                },
+                dataType: 'json'
+            },
+            columns: [
+                {data: "data"},
+                {data: "hora"},
+                {data: "situacao"},
+                {data: "operador"},
+                {data: "obs", render: function(data, type, row) {
+                    if (typeof data === 'string') {
+                        try {
+                            return decodeURIComponent(escape(data));
+                        } catch (e) {
+                            return data;
+                        }
+                    }
+                    return data;
+                }}
+            ],
+            language: {
+                decimal: ",",
+                thousands: ".",
+                zeroRecords: "Não há dados",
+                emptyTable: "Não há dados.",
+                infoEmpty: 'Zero registros',
+                paginate: {
+                    next: "Próximo",
+                    previous: "Anterior",
+                    first: "Primeiro",
+                    last: "Último"
+                },
+                search: "Pesquisar",
+                info: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                infoFiltered: "(Filtrados de _MAX_ registros)",
+                infoPostFix: "",
+                lengthMenu: "_MENU_ resultados por página"
+            }
+        });
+    }
 });

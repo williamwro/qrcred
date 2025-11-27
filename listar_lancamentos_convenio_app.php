@@ -1,107 +1,133 @@
-<?php
-// Headers CORS
+<?PHP
+// Permitir acesso de qualquer origem
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Max-Age: 86400");
-header("Content-type: application/json");
+header("Content-Type: application/json");
 
-// Incluir arquivos de conexão e funções
-include 'Adm/php/banco.php';
-include "Adm/php/funcoes.php";
+ini_set('display_errors', true);
+error_reporting(E_ALL);
+
+include "Adm/php/banco.php";
+$pdo = Banco::conectar_postgres();
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Debug: Log da requisição
+error_log("=== LISTAR LANÇAMENTOS CONVÊNIO ===");
+error_log("GET params: " . print_r($_GET, true));
+error_log("POST params: " . print_r($_POST, true));
+
+$response = new stdClass();
 
 try {
-    // Conectar ao banco PostgreSQL
-    $pdo = Banco::conectar_postgres();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Verificar se o código do convênio foi fornecido
-    if (!isset($_GET['cod_convenio'])) {
-        throw new Exception('Código do convênio não fornecido');
+    // Obter código do convênio
+    $cod_convenio = isset($_GET['cod_convenio']) ? $_GET['cod_convenio'] : (isset($_POST['cod_convenio']) ? $_POST['cod_convenio'] : null);
+    
+    if (!$cod_convenio) {
+        $response->success = false;
+        $response->message = "Código do convênio não fornecido";
+        echo json_encode($response);
+        exit;
     }
 
-    $cod_convenio = intval($_GET['cod_convenio']);
+    error_log("Código do convênio: " . $cod_convenio);
 
-    // Consulta SQL para buscar os lançamentos do convênio
-    $query = "SELECT 
-                conta.lancamento, 
-                conta.associado AS matricula, 
-                conta.valor, 
-                conta.data, 
-                to_char(conta.hora, 'HH24:MI') as hora,
-                conta.mes, 
-                empregador.nome AS empregador, 
-                empregador.id AS codigoempregador, 
-                convenio.razaosocial AS convenio, 
-                convenio.codigo AS cod_convenio, 
-                associado.nome AS associado, 
-                conta.funcionario, 
-                conta.parcela, 
-                conta.descricao,
-                conta.data_fatura,
-                convenio.senha_estorno
-            FROM sind.associado 
-            RIGHT JOIN (
-                sind.empregador 
-                RIGHT JOIN (
-                    sind.convenio 
-                    RIGHT JOIN sind.conta 
-                    ON convenio.codigo = conta.convenio
-                ) 
-                ON empregador.id = conta.empregador
-            ) 
-            ON associado.codigo = conta.associado 
-            AND associado.empregador = conta.empregador 
-            WHERE convenio.codigo = :cod_convenio 
-            AND convenio.desativado = false 
-            ORDER BY conta.lancamento DESC";
+    // Consulta SQL SEM filtros de data para pegar todos os lançamentos
+    $sql = "SELECT 
+                c.lancamento,
+                c.associado,
+                c.convenio,
+                c.valor,
+                c.data,
+                c.hora,
+                c.mes,
+                c.parcela,
+                c.descricao,
+                c.data_fatura,
+                c.empregador,
+                a.nome as nome_associado,
+                e.nome as nome_empregador,
+                a.cpf as cpf_associado,
+                conv.razaosocial,
+                conv.cnpj as cnpj
+            FROM sind.conta c
+            LEFT JOIN sind.associado a ON c.associado = a.codigo AND c.empregador = a.empregador
+            INNER JOIN sind.empregador e ON c.empregador = e.id
+            INNER JOIN sind.convenio conv ON c.convenio = conv.codigo
+            WHERE c.convenio = :cod_convenio
+            ORDER BY c.data DESC, c.hora DESC";
 
-    // Preparar e executar a consulta
-    $stmt = $pdo->prepare($query);
+    error_log("SQL Query: " . $sql);
+
+    $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':cod_convenio', $cod_convenio, PDO::PARAM_INT);
     $stmt->execute();
 
-    // Array para armazenar os resultados
-    $lancamentos = array();
-
-    // Processar os resultados
+    $lancamentos = [];
+    $meses_encontrados = [];
+    
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // Formatar os dados
         $lancamento = array(
-            'id' => $row['lancamento'],
-            'data' => date('d/m/Y', strtotime($row['data'])),
+            'lancamento' => intval($row['lancamento']),
+            'data' => $row['data'],
             'hora' => $row['hora'],
-            'valor' => number_format($row['valor'], 2, ',', '.'),
-            'associado' => $row['associado'] ?: 'N/A',
-            'matricula' => $row['matricula'] ?: 'N/A',
-            'empregador' => $row['empregador'] ?: 'N/A',
-            'codigoempregador' => $row['codigoempregador'],
+            'valor' => $row['valor'],
+            'associado' => $row['associado'],
+            'empregador' => $row['empregador'],
             'mes' => $row['mes'],
-            'parcela' => $row['parcela'],
-            'descricao' => $row['descricao'] ?: '-',
-            'data_fatura' => $row['data_fatura'] ? date('d/m/Y', strtotime($row['data_fatura'])) : '-'
+            'parcela' => $row['parcela'] ? $row['parcela'] : 0,
+            'descricao' => $row['descricao'],
+            'data_fatura' => $row['data_fatura'],
+            'nome_associado' => $row['nome_associado'],
+            'nome_empregador' => $row['nome_empregador'],
+            'matricula' => $row['associado'], // Alias para compatibilidade
+            'cpf_associado' => $row['cpf_associado'],
+            'codigoempregador' => intval($row['empregador']),
+            'razaosocial' => $row['razaosocial'],
+            'cnpj' => $row['cnpj']
         );
-
+        
         $lancamentos[] = $lancamento;
+        
+        // Coletar meses únicos para debug
+        if ($row['mes'] && !in_array($row['mes'], $meses_encontrados)) {
+            $meses_encontrados[] = $row['mes'];
+        }
     }
 
-    // Retornar os resultados
-    echo json_encode(array(
-        'success' => true,
-        'lancamentos' => $lancamentos
-    ));
+    // Debug: Log dos resultados
+    error_log("Total de lançamentos encontrados: " . count($lancamentos));
+    error_log("Meses encontrados: " . implode(', ', $meses_encontrados));
+    
+    // Verificar especificamente se tem AGO/2025
+    $tem_ago_2025 = false;
+    foreach ($lancamentos as $lanc) {
+        if ($lanc['mes'] === 'AGO/2025') {
+            $tem_ago_2025 = true;
+            break;
+        }
+    }
+    error_log("Tem AGO/2025: " . ($tem_ago_2025 ? 'SIM' : 'NÃO'));
+
+    // Resposta de sucesso
+    $response->success = true;
+    $response->message = "Lançamentos encontrados com sucesso";
+    $response->lancamentos = $lancamentos;
+    $response->total = count($lancamentos);
+    $response->meses_encontrados = $meses_encontrados;
+    $response->debug = array(
+        'cod_convenio' => $cod_convenio,
+        'total_lancamentos' => count($lancamentos),
+        'tem_ago_2025' => $tem_ago_2025,
+        'sql_executada' => $sql
+    );
 
 } catch (Exception $e) {
-    // Em caso de erro, retornar mensagem de erro
-    http_response_code(500);
-    echo json_encode(array(
-        'success' => false,
-        'message' => 'Erro ao buscar lançamentos: ' . $e->getMessage()
-    ));
+    error_log("Erro na consulta: " . $e->getMessage());
+    $response->success = false;
+    $response->message = "Erro ao buscar lançamentos: " . $e->getMessage();
+    $response->error_details = $e->getTrace();
 }
 
-// Fechar a conexão
-if (isset($pdo)) {
-    $pdo = null;
-}
-?> 
+echo json_encode($response);

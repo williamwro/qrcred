@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Assinaturas Digitais</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    </head>
+    <style type="text/css">
+        .modal-dialog {
+            position: relative;
+            display: table;
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 300px;
+        }
+        .red {
+            background-color: #fdd9cf !important;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .green {
+            background-color: #cfffdf !important;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .black {
+            background-color: #aeaeae !important;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        @font-face {
+            font-family: "TomaSans-Regular";
+            src: local(Raleway), url(../../../fonte/TTF/TomaSans-Regular.ttf);
+        }
+                #tabela_assinaturas_digitais{
+            font-family: "calibri", Trebuchet MS, Arial, Helvetica, sans-serif;
+        }
+        
+        /* Estilos para melhorar responsividade dos botões */
+        .btn-responsive {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .radio-container {
+            margin-bottom: 5px;
+        }
+        
+        .button-row {
+            margin-top: 10px;
+        }
+        
+        .dropdown-menu {
+            min-width: 200px;
+        }
+        
+        /* Ajustes para telas pequenas */
+        @media (max-width: 767px) {
+            .custom-control-label {
+                font-size: 12px;
+            }
+            
+            .btn-sm {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+            
+            .dropdown-menu {
+                min-width: 150px;
+                font-size: 12px;
+            }
+        }
+        
+        /* Ajustes para telas muito pequenas */
+        @media (max-width: 480px) {
+            .custom-control-label {
+                font-size: 11px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100px;
+            }
+            
+            .btn-sm {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
+            
+            .glyphicon {
+                font-size: 10px;
+            }
+            
+            /* Empilhar radio buttons em telas muito pequenas */
+            .radio-stack .col-xs-6 {
+                width: 50% !important;
+                float: left;
+            }
+        }
+        
+        /* Ajustes para orientação landscape em dispositivos móveis */
+        @media (max-width: 767px) and (orientation: landscape) {
+            .btn-sm {
+                font-size: 10px;
+                padding: 2px 4px;
+            }
+            
+            .custom-control-label {
+                font-size: 10px;
+            }
+        }
+        
+        /* Melhorar espaçamento em todas as telas */
+        .form-inline .row {
+            margin-left: -5px;
+            margin-right: -5px;
+        }
+        
+        .form-inline .row [class*="col-"] {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        
+        /* Estilos responsivos para o indicador de auto-atualização */
+        #auto-update-indicator {
+            /* Desktop - ocupar toda a largura da coluna */
+            width: 100%;
+        }
+        
+        /* Ajustes do indicador para telas pequenas */
+        @media (max-width: 767px) {
+            #auto-update-indicator {
+                font-size: 9px !important;
+                padding: 4px 6px !important;
+                border-radius: 12px !important;
+                min-height: 26px !important;
+                line-height: 16px !important;
+            }
+        }
+        
+        /* Ajustes do indicador para telas muito pequenas */
+        @media (max-width: 480px) {
+            #auto-update-indicator {
+                font-size: 8px !important;
+                padding: 3px 4px !important;
+                border-radius: 10px !important;
+                min-height: 24px !important;
+                line-height: 14px !important;
+            }
+        }
+        
+        /* Estilos para os botões de vincular código */
+        .vincular_codigo {
+            transition: all 0.3s ease;
+        }
+        
+        .vincular_codigo:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:disabled {
+            opacity: 0.6;
+        }
+        
+        /* Ajustes responsivos para a tabela */
+        @media (max-width: 767px) {
+            .btn-xs {
+                font-size: 9px !important;
+                padding: 2px 5px !important;
+            }
+            
+            .glyphicon {
+                font-size: 9px !important;
+            }
+        }
+        
+        /* Estilos para botões autorizados por duplicação */
+        .btn-success.autorizado-duplicado {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        
+        .btn-success.autorizado-duplicado:hover {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* Destaque visual para linhas com códigos duplicados */
+        .duplicate-code-row {
+            background-color: #f8f9fa !important;
+        }
+        
+        .duplicate-code-row:hover {
+            background-color: #e9ecef !important;
+        }
+        
+        /* ========================================
+           OCULTAR ELEMENTOS DE AUTO-ATUALIZAÇÃO
+           ======================================== */
+        
+        /* Ocultar botão de atualização manual */
+        #btnAtualizarManual {
+            display: none !important;
+        }
+        
+        /* Ocultar dropdown de auto-atualização */
+        #autoUpdateDropdown,
+        .dropdown:has(#autoUpdateDropdown) {
+            display: none !important;
+        }
+        
+        /* Ocultar indicador de auto-atualização */
+        #auto-update-indicator {
+            display: none !important;
+        }
+        
+        /* Ocultar status de auto-atualização no cabeçalho */
+        #status-auto-update {
+            display: none !important;
+        }
+        
+        /* Ocultar colunas que continham os elementos de auto-atualização */
+        .col-xs-6:has(#btnAtualizarManual),
+        .col-xs-6:has(.dropdown #autoUpdateDropdown),
+        .col-xs-6:has(#auto-update-indicator) {
+            display: none !important;
+        }
+        
+        /* Fallback para navegadores que não suportam :has() */
+        .auto-update-column-1,
+        .auto-update-column-2,
+        .auto-update-column-3 {
+            display: none !important;
+        }
+</style>
+    <body>
+        
+        
+        <!-- Content Wrapper. Contains page content -->
+        <div class="container-fluid" style="padding: 0">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1 style="margin-top: -1px;margin-left: -6px;">
+                Assinaturas Digitais<small>Visualização</small> 
+                <!-- Status de auto-atualização oculto -->
+                <small id="status-auto-update" style="color: #28a745; font-size: 12px; margin-left: 10px; display: none;">
+                    <span class="glyphicon glyphicon-refresh"></span> Auto-atualização ativa
+                </small>
+                </h1>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-sx-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <form id="listagem" name="listagem" class="form-inline">
+                                    <div class="container-fluid">
+                                        <!-- Primeira linha: Filtros de Radio -->
+                                        <div class="row" style="margin-bottom: 10px;">
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="row radio-stack">
+                                                    <div class="col-xs-6 col-sm-3 col-md-3" style="padding: 3px;">
+                                                        <div class="custom-control custom-radio custom-control-inline radio-container">
+                                                            <input type="radio" id="RadioNaoAutorizado" name="RadioSituacao" class="custom-control-input" value="false" checked>
+                                                            <label class="custom-control-label" for="RadioNaoAutorizado">Não Autorizado</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-3 col-md-3" style="padding: 3px;">
+                                                        <div class="custom-control custom-radio custom-control-inline radio-container">
+                                                            <input type="radio" id="RadioAutorizado" name="RadioSituacao" class="custom-control-input" value="true">
+                                                            <label class="custom-control-label" for="RadioAutorizado">Autorizado</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-3 col-md-3" style="padding: 3px;">
+                                                        <div class="custom-control custom-radio custom-control-inline radio-container">
+                                                            <input type="radio" id="RadioAssinados" name="RadioSituacao" class="custom-control-input" value="signed">
+                                                            <label class="custom-control-label" for="RadioAssinados">Assinados</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-3 col-md-3" style="padding: 3px;">
+                                                        <div class="custom-control custom-radio custom-control-inline radio-container">
+                                                            <input type="radio" id="RadioTodos" name="RadioSituacao" class="custom-control-input" value="0">
+                                                            <label class="custom-control-label" for="RadioTodos">Todos</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Segunda linha: Botões de Ação -->
+                                        <div class="row button-row">
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="row">
+                                                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="padding: 3px;">
+                                                        <button type="button" class="btn btn-success btn-block btn-sm" id="btnInserir">
+                                                            <span class="glyphicon glyphicon-plus"></span>
+                                                            Inserir
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <!-- Botões de auto-atualização ocultos -->
+                                                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 auto-update-column-1" style="padding: 3px; display: none;">
+                                                        <button type="button" class="btn btn-warning btn-block btn-sm" id="btnAtualizarManual" title="Atualizar dados agora" style="display: none;">
+                                                            <span class="glyphicon glyphicon-refresh"></span>
+                                                            Atualizar
+                                                        </button>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 auto-update-column-2" style="padding: 3px; display: none;">
+                                                        <div class="dropdown" style="display: none;">
+                                                            <button class="btn btn-info btn-block btn-sm dropdown-toggle" type="button" id="autoUpdateDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: none;">
+                                                                <span class="glyphicon glyphicon-refresh"></span> Auto-atualização
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="autoUpdateDropdown">
+                                                                <a class="dropdown-item" href="#" onclick="changeAutoUpdateFrequency(5000)">5 segundos</a>
+                                                                <a class="dropdown-item" href="#" onclick="changeAutoUpdateFrequency(10000)">10 segundos</a>
+                                                                <a class="dropdown-item" href="#" onclick="changeAutoUpdateFrequency(15000)">15 segundos (padrão)</a>
+                                                                <a class="dropdown-item" href="#" onclick="changeAutoUpdateFrequency(30000)">30 segundos</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a class="dropdown-item" href="#" onclick="stopAutoUpdate()">
+                                                                    <span class="glyphicon glyphicon-pause"></span> Pausar
+                                                                </a>
+                                                                <a class="dropdown-item" href="#" onclick="isAutoUpdateEnabled = true; startAutoUpdate()">
+                                                                    <span class="glyphicon glyphicon-play"></span> Retomar
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 auto-update-column-3" style="padding: 3px; display: none;">
+                                                        <!-- Indicador de Auto-atualização oculto -->
+                                                        <div id="auto-update-indicator" style="
+                                                            background: #28a745;
+                                                            color: white;
+                                                            padding: 6px 10px;
+                                                            border-radius: 15px;
+                                                            font-size: 11px;
+                                                            font-weight: bold;
+                                                            cursor: pointer;
+                                                            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                                                            transition: all 0.3s ease;
+                                                            text-align: center;
+                                                            white-space: nowrap;
+                                                            overflow: hidden;
+                                                            text-overflow: ellipsis;
+                                                            display: none !important;
+                                                            min-height: 30px;
+                                                            line-height: 18px;
+                                                        " title="Clique para pausar/retomar atualização automática">
+                                                            🔄 Ativo (15s)
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Espaço adicional para futuras funcionalidades -->
+                                                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                                                        <!-- Espaço reservado -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="box-body">
+                                <table id="tabela_assinaturas_digitais" class="table table-striped table-hover compact" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>CÓDIGO</th>
+                                            <th>NOME</th>
+                                            <th>CELULAR</th>
+                                            <th>DATA/HORA</th>
+                                            <th>AUTORIZADO</th>
+                                            <th>ACEITOU TERMO</th>
+                                            <th>EVENT</th>
+                                            <th>DOC TOKEN</th>
+                                            <th>DOC NAME</th>
+                                            <th>SIGNED AT</th>
+                                            <th>NAME</th>
+                                            <th>EMAIL</th>
+                                            <th>CPF</th>
+                                            <th>HAS SIGNED</th>
+                                            <th>CEL INFORMADO</th>
+                                            <th>VINCULAR</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Modal Edita e Cadastra -->
+        <div class="modal fade" id="ModalEditaAssinaturaDigital" name="ModalEditaAssinaturaDigital" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+            <form data-toggle="validator" role="form" name="frmassinatura" id="frmassinatura">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalEditaLabel" style="width: 200px;float: left;font-size: x-large;">ASSINATURA DIGITAL&nbsp<small id="rotulo_assinatura">Alterando</small></h5>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        <div class="form-group control-group" style="float: right;padding-right: 5px;">
+                            <button type="button" class="btn btn-primary" id="btnSalvar">
+                                <span class="glyphicon glyphicon-send"></span>
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-8 col-lg-8 col-xs-8 col-sm-8">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_nome_assinatura">Nome</label>
+                                        <input type="text" class="form-control input-sm" id="C_nome_assinatura" name="C_nome_assinatura" style="text-transform:uppercase" maxlength="100" placeholder="Nome">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        <input type="hidden" name="operation" id="operation">
+                                        <input type="hidden" name="C_id_assinatura" id="C_id_assinatura">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4" style="padding-left: 2px;">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_codigo_assinatura">Código</label>
+                                        <input type="text" class="form-control input-sm" id="C_codigo_assinatura" name="C_codigo_assinatura" maxlength="50" placeholder="Código">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_celular_assinatura">Celular</label>
+                                        <input type="text" class="form-control input-sm" id="C_celular_assinatura" name="C_celular_assinatura" maxlength="20" placeholder="Celular">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_cel_informado_assinatura">Cel. Informado</label>
+                                        <input type="text" class="form-control input-sm" id="C_cel_informado_assinatura" name="C_cel_informado_assinatura" maxlength="20" placeholder="Cel. Informado">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_email_assinatura">Email</label>
+                                        <input type="email" class="form-control input-sm" id="C_email_assinatura" name="C_email_assinatura" maxlength="100" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_cpf_assinatura">CPF</label>
+                                        <input type="text" class="form-control input-sm" id="C_cpf_assinatura" name="C_cpf_assinatura" maxlength="14" placeholder="CPF">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_autorizado">Autorizado</label>
+                                        <select class="custom-select form-control input-sm" id="C_autorizado" name="C_autorizado">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_aceitou_termo">Aceitou Termo</label>
+                                        <select class="custom-select form-control input-sm" id="C_aceitou_termo" name="C_aceitou_termo">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_has_signed">Assinado</label>
+                                        <select class="custom-select form-control input-sm" id="C_has_signed" name="C_has_signed">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_event_assinatura">Event</label>
+                                        <input type="text" class="form-control input-sm" id="C_event_assinatura" name="C_event_assinatura" maxlength="100" placeholder="Event">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_signed_at_assinatura">Signed At</label>
+                                        <input type="text" class="form-control input-sm" id="C_signed_at_assinatura" name="C_signed_at_assinatura" maxlength="50" placeholder="Signed At">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_doc_token_assinatura">Doc Token</label>
+                                        <input type="text" class="form-control input-sm" id="C_doc_token_assinatura" name="C_doc_token_assinatura" maxlength="100" placeholder="Doc Token">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_doc_name_assinatura">Doc Name</label>
+                                        <input type="text" class="form-control input-sm" id="C_doc_name_assinatura" name="C_doc_name_assinatura" maxlength="100" placeholder="Doc Name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+        <script src="../Adm/pages/assinaturas_digitais/js/assinaturas_digitais_read_script.js"></script>
+   </body>
+</html> 

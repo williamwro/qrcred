@@ -28,6 +28,7 @@ $(document).ready(function(){
             { "data": "id_divisao" },
             { "data": "nome" },
             { "data": "cidade" },
+            { "data": "dia_mes_renovacao" },
             { "data": "botao" },
             { "data": "botaoexcluir" }
         ],
@@ -58,6 +59,7 @@ $(document).on('click','.update_divisao',function () {
             $("#C_codigo").val(data.id_divisao);
             $("#C_nome_divisao").val(data.nome);
             $("#C_cidade").val(data.cidade);
+            $("#C_dia_mes_renovacao").val(data.dia_mes_renovacao);
             $('#operation').val("Update");
         }
     })
@@ -96,24 +98,33 @@ $("#btnSalvar").click(function(event){
                            success: function (data) {
                                $("#frmdivisao")[0].reset();
                                if (data === "atualizado") {
-                                   $.notify({
-                                           message: 'Salvo com Sucesso!'
-                                       }, {
-                                           type: 'success'
-                                       }, {
-                                           position: 'center'
-                                       }
-                                   );
+                                   BootstrapDialog.show({
+                                       closable: false,
+                                       title: 'Sucesso',
+                                       message: 'Salvo com Sucesso!',
+                                       type: BootstrapDialog.TYPE_SUCCESS,
+                                       buttons: [{
+                                           cssClass: 'btn-success',
+                                           label: 'Ok',
+                                           action: function (dialogItself) {
+                                               dialogItself.close();
+                                           }
+                                       }]
+                                   });
                                } else if (data === "cadastrado") {
-
-                                   $.notify({
-                                           message: 'Cadastrado com Sucesso!'
-                                       }, {
-                                           type: 'success'
-                                       }, {
-                                           position: 'center'
-                                       }
-                                   );
+                                   BootstrapDialog.show({
+                                       closable: false,
+                                       title: 'Sucesso',
+                                       message: 'Cadastrado com Sucesso!',
+                                       type: BootstrapDialog.TYPE_SUCCESS,
+                                       buttons: [{
+                                           cssClass: 'btn-success',
+                                           label: 'Ok',
+                                           action: function (dialogItself) {
+                                               dialogItself.close();
+                                           }
+                                       }]
+                                   });
                                }
                                $("#frmdivisao")[0].reset();
                                $("#ModalEditaDivisao").modal('hide');
@@ -146,24 +157,33 @@ $("#btnSalvar").click(function(event){
                success: function (data) {
                    $("#frmdivisao")[0].reset();
                    if (data === "atualizado") {
-                       $.notify({
-                               message: 'Salvo com Sucesso!'
-                           }, {
-                               type: 'success'
-                           }, {
-                               position: 'center'
-                           }
-                       );
+                       BootstrapDialog.show({
+                           closable: false,
+                           title: 'Sucesso',
+                           message: 'Salvo com Sucesso!',
+                           type: BootstrapDialog.TYPE_SUCCESS,
+                           buttons: [{
+                               cssClass: 'btn-success',
+                               label: 'Ok',
+                               action: function (dialogItself) {
+                                   dialogItself.close();
+                               }
+                           }]
+                       });
                    } else if (data === "cadastrado") {
-
-                       $.notify({
-                               message: 'Cadastrado com Sucesso!'
-                           }, {
-                               type: 'success'
-                           }, {
-                               position: 'center'
-                           }
-                       );
+                       BootstrapDialog.show({
+                           closable: false,
+                           title: 'Sucesso',
+                           message: 'Cadastrado com Sucesso!',
+                           type: BootstrapDialog.TYPE_SUCCESS,
+                           buttons: [{
+                               cssClass: 'btn-success',
+                               label: 'Ok',
+                               action: function (dialogItself) {
+                                   dialogItself.close();
+                               }
+                           }]
+                       });
                    }
                    $("#frmdivisao")[0].reset();
                    $("#ModalEditaDivisao").modal('hide');

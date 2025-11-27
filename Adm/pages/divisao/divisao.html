@@ -56,6 +56,7 @@
                                             <th>CODIGO</th>
                                             <th>NOME</th>
                                             <th>CIDADE</th>
+                                            <th>DIA RENOVAÇÃO</th>
                                             <th></th>
                                             <th></th>
                                         </tr>
@@ -105,7 +106,16 @@
                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-right: 2px;">
                                     <div class="form-group control-group has-feedback">
                                         <label class="control-label" for="C_cidade">Cidade</label>
-                                        <input class="form-control input-sm" id="C_cidade" name="C_cidade">
+                                        <input class="form-control input-sm" id="C_cidade" name="C_cidade" style="text-transform:uppercase" placeholder="Cidade">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3" style="padding-left: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_dia_mes_renovacao"><strong>Dia Renovação</strong></label>
+                                        <input type="number" class="form-control input-sm" id="C_dia_mes_renovacao" name="C_dia_mes_renovacao" min="1" max="31" placeholder="Dia (1-31)">
                                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                     </div>
                                 </div>

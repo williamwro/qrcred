@@ -1,4 +1,5 @@
 <?php
+require_once '../../../functions.php';
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
@@ -86,7 +87,7 @@ if ($cnpj ==! ''){
 /*$data = substr($_POST['data'],-4)."-".substr($_POST['data'],3,2)."-".substr($_POST['data'],0,2);
 $data = strtotime($data);
 $data = strftime('%A, %d de %B de %Y',$data);*/
-//define('FPDF_FONTPATH','C:\xampp\htdocs\sind\fonte\TTF\TomSans-Regular.ttf');
+//define('FPDF_FONTPATH','C:\xampp2\htdocs\sind\fonte\TTF\TomSans-Regular.ttf');
 require('../components/fpdf/fpdf.php');
 
 class PDF_WriteTag extends FPDF

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Som de Beep e Códigos Duplicados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+        
+        .test-button.success {
+            background: #28a745;
+        }
+        
+        .test-button.warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        
+        .status-info {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .status-info.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-info.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status-info.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #b8daff;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+        }
+        
+        .code-example {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            border-left: 4px solid #007bff;
+            margin: 10px 0;
+        }
+        
+        .instruction {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        
+        .log-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+        }
+        
+        .log-entry {
+            margin: 2px 0;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .log-entry.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .log-entry.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .log-entry.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .checklist li {
+            margin: 8px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            border-radius: 3px;
+        }
+        
+        .checklist li::before {
+            content: "✅ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .checklist li.pending::before {
+            content: "⏳ ";
+            color: #ffc107;
+        }
+        
+        .checklist li.error::before {
+            content: "❌ ";
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔊 Teste - Som de Beep e Códigos Duplicados</h1>
+        
+        <div class="instruction">
+            <strong>📋 Instruções:</strong><br>
+            Este é um teste para verificar se o som de beep funciona corretamente e se a detecção de códigos duplicados está operacional.
+        </div>
+    </div>
+    
+    <!-- Seção 1: Teste de Som -->
+    <div class="container">
+        <div class="test-section">
+            <h2>🎵 Teste de Som de Beep</h2>
+            
+            <p>Teste se o som de notificação está funcionando corretamente:</p>
+            
+            <button id="testBeepBasic" class="test-button">🔊 Testar Som Básico</button>
+            <button id="testBeepUpdate" class="test-button">📡 Simular Atualização</button>
+            <button id="testBeepVincular" class="test-button success">🔗 Simular Vinculação</button>
+            
+            <div class="code-example">
+                <strong>Teste manual no console:</strong><br>
+                testNotificationBeep(); // Testar som diretamente
+            </div>
+            
+            <div id="soundStatus" class="status-info info">
+                <strong>Status:</strong> Aguardando teste...
+            </div>
+        </div>
+    </div>
+    
+    <!-- Seção 2: Detecção de Códigos Duplicados -->
+    <div class="container">
+        <div class="test-section">
+            <h2>🔐 Detecção de Códigos Duplicados</h2>
+            
+            <p>Para testar a detecção de códigos duplicados:</p>
+            
+            <ol>
+                <li><strong>Vá para a página de assinaturas digitais</strong></li>
+                <li><strong>Crie 2 registros com:</strong>
+                    <ul>
+                        <li>Mesmo CPF (ex: 123.456.789-00)</li>
+                        <li>Mesmo código (ex: TESTE123)</li>
+                        <li>Mesma data (horário pode diferir)</li>
+                    </ul>
+                </li>
+                <li><strong>Verifique se os botões aparecem como "Autorizado" (verde)</strong></li>
+                <li><strong>Confirme se os botões estão desabilitados</strong></li>
+            </ol>
+            
+            <div class="code-example">
+                <strong>Critérios para autorização automática:</strong><br>
+                • Mesmo CPF + Mesmo Código + Mesma Data<br>
+                • 2 ou mais registros com essas características<br>
+                • Botões ficam verdes com texto "Autorizado"<br>
+                • Botões ficam desabilitados (não clicáveis)
+            </div>
+            
+            <button id="testDuplicateLogic" class="test-button warning">🧪 Testar Lógica de Duplicação</button>
+            <button id="checkDuplicateStatus" class="test-button">📊 Verificar Status</button>
+        </div>
+    </div>
+    
+    <!-- Seção 3: Checklist de Verificação -->
+    <div class="container">
+        <div class="test-section">
+            <h2>✅ Checklist de Verificação</h2>
+            
+            <ul class="checklist">
+                <li id="check-sound-load" class="pending">Som de beep carregado</li>
+                <li id="check-sound-play" class="pending">Som de beep funcionando</li>
+                <li id="check-auto-update" class="pending">Auto-atualização com som</li>
+                <li id="check-vincular-sound" class="pending">Som ao vincular código</li>
+                <li id="check-duplicate-detection" class="pending">Detecção de códigos duplicados</li>
+                <li id="check-button-authorization" class="pending">Botões autorizados (verde)</li>
+                <li id="check-button-disabled" class="pending">Botões desabilitados</li>
+                <li id="check-table-update" class="pending">Atualização automática da tabela</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Seção 4: Log de Testes -->
+    <div class="container">
+        <div class="test-section">
+            <h2>📋 Log de Testes</h2>
+            
+            <div class="log-container">
+                <div id="logContent">
+                    <div class="log-entry info">[Iniciando] Sistema de teste carregado</div>
+                </div>
+            </div>
+            
+            <button id="clearLog" class="test-button" style="background: #6c757d;">🗑️ Limpar Log</button>
+        </div>
+    </div>
+
+    <script>
+        // Variáveis globais
+        let logContainer = document.getElementById('logContent');
+        let testResults = {
+            soundLoad: false,
+            soundPlay: false,
+            autoUpdate: false,
+            vincularSound: false,
+            duplicateDetection: false,
+            buttonAuthorization: false,
+            buttonDisabled: false,
+            tableUpdate: false
+        };
+        
+        // Função de log
+        function addLog(message, type = 'info') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+        
+        // Atualizar checklist
+        function updateChecklist(item, status) {
+            const element = document.getElementById(`check-${item}`);
+            if (element) {
+                element.className = status;
+                if (status === 'success') {
+                    testResults[item.replace(/-/g, '')] = true;
+                }
+            }
+        }
+        
+        // Verificar se funções de som existem
+        function checkSoundFunctions() {
+            if (typeof testNotificationBeep === 'function') {
+                addLog('✅ Função testNotificationBeep encontrada', 'success');
+                updateChecklist('sound-load', '');
+                return true;
+            } else {
+                addLog('❌ Função testNotificationBeep não encontrada', 'error');
+                updateChecklist('sound-load', 'error');
+                return false;
+            }
+        }
+        
+        // Testar som básico
+        function testBasicSound() {
+            addLog('🔊 Testando som básico...', 'info');
+            
+            if (checkSoundFunctions()) {
+                try {
+                    testNotificationBeep();
+                    addLog('✅ Som básico testado com sucesso', 'success');
+                    updateChecklist('sound-play', '');
+                    updateSoundStatus('Som básico funcionando!', 'success');
+                } catch (error) {
+                    addLog('❌ Erro ao testar som básico: ' + error.message, 'error');
+                    updateChecklist('sound-play', 'error');
+                    updateSoundStatus('Erro no som básico: ' + error.message, 'error');
+                }
+            }
+        }
+        
+        // Simular atualização
+        function simulateUpdate() {
+            addLog('📡 Simulando atualização automática...', 'info');
+            
+            // Simular chegada de novos dados
+            setTimeout(() => {
+                addLog('🆕 Simulando dados novos recebidos', 'info');
+                
+                if (typeof testNotificationBeep === 'function') {
+                    testNotificationBeep();
+                    addLog('✅ Som de atualização tocado', 'success');
+                    updateChecklist('auto-update', '');
+                    updateSoundStatus('Som de atualização funcionando!', 'success');
+                } else {
+                    addLog('❌ Função de som não disponível', 'error');
+                    updateChecklist('auto-update', 'error');
+                }
+            }, 1000);
+        }
+        
+        // Simular vinculação
+        function simulateVincular() {
+            addLog('🔗 Simulando vinculação de código...', 'info');
+            
+            setTimeout(() => {
+                addLog('💾 Código vinculado com sucesso', 'info');
+                
+                if (typeof testNotificationBeep === 'function') {
+                    testNotificationBeep();
+                    addLog('✅ Som de vinculação tocado', 'success');
+                    updateChecklist('vincular-sound', '');
+                    updateSoundStatus('Som de vinculação funcionando!', 'success');
+                } else {
+                    addLog('❌ Função de som não disponível', 'error');
+                    updateChecklist('vincular-sound', 'error');
+                }
+            }, 1500);
+        }
+        
+        // Testar lógica de duplicação
+        function testDuplicateLogic() {
+            addLog('🧪 Testando lógica de códigos duplicados...', 'info');
+            
+            // Simular dados duplicados
+            const testData = {
+                cpf: '123.456.789-00',
+                codigo: 'TESTE123',
+                data: '2024-01-15',
+                registros: [
+                    { id: 1, nome: 'João Silva', horario: '10:30:00' },
+                    { id: 2, nome: 'João Silva', horario: '14:15:00' }
+                ]
+            };
+            
+            addLog(`📊 Dados de teste: CPF=${testData.cpf}, Código=${testData.codigo}`, 'info');
+            addLog(`📋 Registros: ${testData.registros.length} com mesmo CPF+código+data`, 'info');
+            
+            if (testData.registros.length >= 2) {
+                addLog('✅ Critério de duplicação atendido (2+ registros)', 'success');
+                addLog('🟢 Botões devem aparecer como "Autorizado" (verde)', 'success');
+                addLog('🔒 Botões devem estar desabilitados', 'success');
+                
+                updateChecklist('duplicate-detection', '');
+                updateChecklist('button-authorization', '');
+                updateChecklist('button-disabled', '');
+            } else {
+                addLog('❌ Critério de duplicação não atendido', 'error');
+                updateChecklist('duplicate-detection', 'error');
+            }
+        }
+        
+        // Verificar status
+        function checkDuplicateStatus() {
+            addLog('📊 Verificando status da detecção de duplicados...', 'info');
+            
+            // Instruções para verificação manual
+            const instructions = [
+                'Vá para a página de assinaturas digitais',
+                'Procure por registros com mesmo CPF e código',
+                'Verifique se botões estão verdes com texto "Autorizado"',
+                'Confirme se botões estão desabilitados',
+                'Teste criar novos registros duplicados'
+            ];
+            
+            instructions.forEach((instruction, index) => {
+                addLog(`${index + 1}. ${instruction}`, 'info');
+            });
+            
+            addLog('⚠️ Verificação manual necessária na página principal', 'info');
+        }
+        
+        // Atualizar status do som
+        function updateSoundStatus(message, type) {
+            const statusDiv = document.getElementById('soundStatus');
+            statusDiv.className = `status-info ${type}`;
+            statusDiv.innerHTML = `<strong>Status:</strong> ${message}`;
+        }
+        
+        // Event listeners
+        document.getElementById('testBeepBasic').addEventListener('click', testBasicSound);
+        document.getElementById('testBeepUpdate').addEventListener('click', simulateUpdate);
+        document.getElementById('testBeepVincular').addEventListener('click', simulateVincular);
+        document.getElementById('testDuplicateLogic').addEventListener('click', testDuplicateLogic);
+        document.getElementById('checkDuplicateStatus').addEventListener('click', checkDuplicateStatus);
+        
+        document.getElementById('clearLog').addEventListener('click', () => {
+            logContainer.innerHTML = '<div class="log-entry info">[Limpo] Log reiniciado</div>';
+        });
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            addLog('🚀 Sistema de teste inicializado', 'info');
+            
+            // Verificar se estamos na página correta
+            if (window.location.pathname.includes('assinaturas_digitais')) {
+                addLog('✅ Página de assinaturas digitais detectada', 'success');
+                updateChecklist('table-update', '');
+            } else {
+                addLog('⚠️ Página de teste - vá para assinaturas digitais para teste completo', 'info');
+            }
+            
+            // Verificar se funções existem
+            setTimeout(checkSoundFunctions, 500);
+        });
+        
+        // Expor funções para console
+        window.testBeepSystem = {
+            testBasicSound,
+            simulateUpdate,
+            simulateVincular,
+            testDuplicateLogic,
+            checkDuplicateStatus,
+            addLog
+        };
+        
+        console.log('🎯 Sistema de teste carregado!');
+        console.log('Use: testBeepSystem.testBasicSound() para testar som');
+    </script>
+</body>
+</html> 

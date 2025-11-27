@@ -70,7 +70,7 @@ class Extenso
         $inteiro = explode( ".", $valor );
 
         for ( $i = 0; $i < count( $inteiro ); $i++ )
-            for ( $ii = mb_strlen( $inteiro[$i] ); $ii < 3; $ii++ )
+            for ( $ii = strlen( $inteiro[$i] ); $ii < 3; $ii++ )
                 $inteiro[$i] = "0" . $inteiro[$i];
 
         // $fim identifica onde que deve se dar junção de centenas por "e" ou por "," ;)

@@ -63,7 +63,7 @@ if(isset($_POST["matricula"])){
         $sub_array = array();
 
         $sub_array["Registro"]    = $row['Lancamento'];
-        $sub_array["Valor"]       = utf8_encode($row['Valor']);
+        $sub_array["Valor"]       = mb_convert_encoding($row['Valor'], 'UTF-8', 'ISO-8859-1');
         $sub_array["Data"]        =  date('d/m/Y', strtotime($row['Data']));
         $sub_array["Mes"]         = $row['mes'];
         if ($row['parcela'] == null) {
@@ -73,7 +73,9 @@ if(isset($_POST["matricula"])){
         }
         $sub_array["Empregador"]  = $row['Id'];
 
-        $someArray["data"][] = array_map("utf8_encode",$sub_array);
+        $someArray["data"][] = array_map(function($value) {
+            return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+        }, $sub_array);
 
     }
     echo json_encode($someArray);

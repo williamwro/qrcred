@@ -3,30 +3,68 @@ include "../../php/banco.php";
 include "../../php/funcoes.php";
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$tem_cadastro_conta = false;
+
 if(isset($_POST["cod_associado"])){
     $std = new stdClass();
     $cod_associado = $_POST["cod_associado"];
     $empregador = $_POST["id_empregador"];
+    $id_associado = $_POST["id_associado"];
+    $divisao = $_POST["divisao"];
 
-    $sql = "SELECT conta.associado, conta.valor, empregador.abreviacao, conta.lancamento, conta.data
-            FROM empregador INNER JOIN conta ON empregador.Id = conta.empregador
-            WHERE conta.associado = '".$cod_associado."' AND conta.empregador = ".$empregador.";";
-    $statment = $pdo->prepare($sql);
-    $statment->execute();
-    $result = $statment->fetchAll();
-    $tem_conta = count($result);
-    if ($tem_conta > 0){
-        $tem_conta = true;
-        $msg = "existe conta";
-        $arr = array('Resultado'=>$msg);
-    }else{
-        $tem_conta = false;
-        $msg = "nao existe conta";
-        $arr = array('Resultado'=>$msg);
+    // Verificar tabela CONTA
+    $sql_conta = "SELECT COUNT(*) as total FROM sind.conta 
+                  WHERE associado = :cod_associado AND empregador = :empregador AND divisao = :divisao";
+    $stmt_conta = $pdo->prepare($sql_conta);
+    $stmt_conta->bindParam(':cod_associado', $cod_associado, PDO::PARAM_STR);
+    $stmt_conta->bindParam(':empregador', $empregador, PDO::PARAM_INT);
+    $stmt_conta->bindParam(':divisao', $divisao, PDO::PARAM_INT);
+    $stmt_conta->execute();
+    $result_conta = $stmt_conta->fetch(PDO::FETCH_ASSOC);
+    $tem_conta = $result_conta['total'] > 0;
+
+    // Verificar tabela C_cartaoassociado
+    $sql_cartao = "SELECT COUNT(*) as total FROM sind.c_cartaoassociado 
+                   WHERE id_associado = :id_associado";
+    $stmt_cartao = $pdo->prepare($sql_cartao);
+    $stmt_cartao->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+    $stmt_cartao->execute();
+    $result_cartao = $stmt_cartao->fetch(PDO::FETCH_ASSOC);
+    $tem_cartao = $result_cartao['total'] > 0;
+
+    // Verificar tabela antecipacao
+    $sql_antecipacao = "SELECT COUNT(*) as total FROM sind.antecipacao 
+                        WHERE matricula = :cod_associado AND empregador = :empregador AND divisao = :divisao";
+    $stmt_antecipacao = $pdo->prepare($sql_antecipacao);
+    $stmt_antecipacao->bindParam(':cod_associado', $cod_associado, PDO::PARAM_STR);
+    $stmt_antecipacao->bindParam(':empregador', $empregador, PDO::PARAM_INT);
+    $stmt_antecipacao->bindParam(':divisao', $divisao, PDO::PARAM_INT);
+    $stmt_antecipacao->execute();
+    $result_antecipacao = $stmt_antecipacao->fetch(PDO::FETCH_ASSOC);
+    $tem_antecipacao = $result_antecipacao['total'] > 0;
+
+    // Verificar tabela c_senha_associado
+    $sql_senha = "SELECT COUNT(*) as total FROM sind.c_senhaassociado 
+                  WHERE id_associado = :id_associado";
+    $stmt_senha = $pdo->prepare($sql_senha);
+    $stmt_senha->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+    $stmt_senha->execute();
+    $result_senha = $stmt_senha->fetch(PDO::FETCH_ASSOC);
+    $tem_senha = $result_senha['total'] > 0;
+
+    // Verificar se existe algum impedimento
+    if ($tem_conta || $tem_cartao || $tem_antecipacao || $tem_senha) {
+        $motivos = array();
+        if ($tem_conta) $motivos[] = "lançamentos na conta";
+        if ($tem_cartao) $motivos[] = "cartões associados";
+        if ($tem_antecipacao) $motivos[] = "antecipações";
+        if ($tem_senha) $motivos[] = "senha cadastrada";
+        
+        $msg = "existe impedimento";
+        $arr = array('Resultado' => $msg, 'Motivos' => implode(", ", $motivos));
+    } else {
+        $msg = "pode excluir";
+        $arr = array('Resultado' => $msg);
     }
 
-    $someArray = array_map("utf8_encode",$arr);
-
-    echo json_encode($someArray);
+    echo json_encode($arr, JSON_UNESCAPED_UNICODE);
 }

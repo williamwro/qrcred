@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Taxa Cartão - Cadastro</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    </head>
+    <style type="text/css">
+        body {
+            table-layout: fixed;
+        }
+        th {
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        td {
+            font-size: 11px;
+        }
+        .form-control {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        .alert {
+            margin-top: 15px;
+        }
+    </style>
+    <body>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="container-fluid" style="padding: 0">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1 style="margin-top: -1px;margin-left: -6px;">
+                    Taxa Cartão <small>Cadastro de Parcelamentos</small>
+                </h1>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Lançamento de Taxa de Cartão</h3>
+                            </div>
+                            <div class="box-body">
+                                <form id="formTaxaCartao" name="formTaxaCartao">
+                                    <div class="row">
+                                        <!-- Mês -->
+                                        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+                                            <div class="form-group">
+                                                <label for="C_mes"><strong>Mês:</strong></label>
+                                                <input type="text" class="form-control" id="C_mes" name="C_mes" 
+                                                       readonly style="background-color: #f9f9f9; cursor: not-allowed;">
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Valor -->
+                                        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
+                                            <div class="form-group">
+                                                <label for="C_valor"><strong>Valor (R$):</strong></label>
+                                                <input type="text" class="form-control" id="C_valor" name="C_valor" 
+                                                       value="7,50" required style="text-align: right;" 
+                                                       placeholder="0,00" maxlength="10">
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Descrição -->
+                                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+                                            <div class="form-group">
+                                                <label for="C_descricao"><strong>Descrição:</strong></label>
+                                                <input type="text" class="form-control" id="C_descricao" name="C_descricao" 
+                                                       value="Tarifa Cartao / Manutenção" required maxlength="100">
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Botão Gravar -->
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-2">
+                                            <div class="form-group">
+                                                <label>&nbsp;</label>
+                                                <button type="submit" id="btnGravar" class="btn btn-success btn-block">
+                                                    <i class="fa fa-save"></i> Gravar Taxa
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Informações adicionais -->
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="alert alert-info">
+                                                <i class="fa fa-info-circle"></i>
+                                                <strong>Informação:</strong> Esta taxa será lançada automaticamente para todos os associados 
+                                                ativos que possuem valores lançados no <strong>mês corrente</strong>.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Área de resultado -->
+                                    <div class="row" id="resultadoArea" style="display: none;">
+                                        <div class="col-xs-12">
+                                            <div id="resultadoMensagem"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <script src="../Adm/pages/txcartao/txcartao_cadastro.js"></script>
+    </body>
+</html>

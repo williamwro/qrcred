@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Teste de Layout - Assinaturas Digitais</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        /* Copiando estilos do arquivo principal */
+        .btn-responsive {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        
+        .radio-container {
+            margin-bottom: 5px;
+        }
+        
+        .button-row {
+            margin-top: 10px;
+        }
+        
+        .dropdown-menu {
+            min-width: 200px;
+        }
+        
+        /* Ajustes para telas pequenas */
+        @media (max-width: 767px) {
+            .custom-control-label {
+                font-size: 12px;
+            }
+            
+            .btn-sm {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+            
+            .dropdown-menu {
+                min-width: 150px;
+                font-size: 12px;
+            }
+        }
+        
+        /* Ajustes para telas muito pequenas */
+        @media (max-width: 480px) {
+            .custom-control-label {
+                font-size: 11px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100px;
+            }
+            
+            .btn-sm {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
+            
+            .glyphicon {
+                font-size: 10px;
+            }
+            
+            /* Empilhar radio buttons em telas muito pequenas */
+            .radio-stack .col-xs-6 {
+                width: 50% !important;
+                float: left;
+            }
+        }
+        
+        /* Ajustes para orientação landscape em dispositivos móveis */
+        @media (max-width: 767px) and (orientation: landscape) {
+            .btn-sm {
+                font-size: 10px;
+                padding: 2px 4px;
+            }
+            
+            .custom-control-label {
+                font-size: 10px;
+            }
+        }
+        
+        /* Melhorar espaçamento em todas as telas */
+        .form-inline .row {
+            margin-left: -5px;
+            margin-right: -5px;
+        }
+        
+        .form-inline .row [class*="col-"] {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        
+        .demo-container {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .size-indicator {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: #000;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 12px;
+            z-index: 10000;
+        }
+        
+        .auto-update-demo {
+            position: fixed;
+            top: 50px;
+            left: 10px;
+            background: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 9998;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            max-width: 200px;
+        }
+        
+        @media (max-width: 767px) {
+            .auto-update-demo {
+                font-size: 10px;
+                padding: 6px 8px;
+                max-width: 150px;
+                left: 5px;
+                top: 45px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .auto-update-demo {
+                font-size: 9px;
+                padding: 4px 6px;
+                max-width: 120px;
+                border-radius: 15px;
+            }
+        }
+        
+        .test-container {
+            padding: 20px;
+            margin: 20px 0;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        /* Estilos responsivos para o indicador de auto-atualização */
+        #auto-update-indicator {
+            /* Desktop - ocupar toda a largura da coluna */
+            width: 100%;
+        }
+        
+        /* Ajustes do indicador para telas pequenas */
+        @media (max-width: 767px) {
+            #auto-update-indicator {
+                font-size: 9px !important;
+                padding: 4px 6px !important;
+                border-radius: 12px !important;
+                min-height: 26px !important;
+                line-height: 16px !important;
+            }
+        }
+        
+        /* Ajustes do indicador para telas muito pequenas */
+        @media (max-width: 480px) {
+            #auto-update-indicator {
+                font-size: 8px !important;
+                padding: 3px 4px !important;
+                border-radius: 10px !important;
+                min-height: 24px !important;
+                line-height: 14px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Indicador de tamanho da tela -->
+    <div class="size-indicator">
+        <span id="screen-size"></span>
+    </div>
+    
+    <!-- Demo do indicador de auto-atualização (lado esquerdo) -->
+    <div class="auto-update-demo" onclick="alert('Indicador de auto-atualização!\nPosição: Lado esquerdo\nNão interfere com menus do usuário.')">
+        🔄 Auto-atualização ativa (15s)
+    </div>
+    
+    <div class="demo-container">
+        <h2>Teste de Layout Responsivo - Assinaturas Digitais</h2>
+        <p><strong>Redimensione a janela</strong> para testar a responsividade dos botões e filtros.</p>
+        
+        <!-- Reproduzindo o layout da página principal -->
+        <div class="box">
+            <div class="box-header">
+                <form class="form-inline">
+                    <div class="container-fluid">
+                        <!-- Primeira linha: Filtros de Radio -->
+                        <div class="row" style="margin-bottom: 10px;">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="row radio-stack">
+                                    <div class="col-xs-6 col-sm-3 col-md-3" style="padding: 3px;">
+                                        <div class="radio radio-container">
+                                            <label>
+                                                <input type="radio" name="RadioSituacao" value="false" checked>
+                                                Não Autorizado
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-3 col-md-3" style="padding: 3px;">
+                                        <div class="radio radio-container">
+                                            <label>
+                                                <input type="radio" name="RadioSituacao" value="true">
+                                                Autorizado
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-3 col-md-3" style="padding: 3px;">
+                                        <div class="radio radio-container">
+                                            <label>
+                                                <input type="radio" name="RadioSituacao" value="signed">
+                                                Assinados
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-3 col-md-3" style="padding: 3px;">
+                                        <div class="radio radio-container">
+                                            <label>
+                                                <input type="radio" name="RadioSituacao" value="0">
+                                                Todos
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Segunda linha: Botões de Ação -->
+                        <div class="row button-row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="padding: 3px;">
+                                        <button type="button" class="btn btn-success btn-block btn-sm">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                            Inserir
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" style="padding: 3px;">
+                                        <button type="button" class="btn btn-warning btn-block btn-sm" title="Atualizar dados agora">
+                                            <span class="glyphicon glyphicon-refresh"></span>
+                                            Atualizar
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3" style="padding: 3px;">
+                                        <div class="dropdown">
+                                            <button class="btn btn-info btn-block btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+                                                <span class="glyphicon glyphicon-refresh"></span> Auto-atualização
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">5 segundos</a></li>
+                                                <li><a href="#">10 segundos</a></li>
+                                                <li><a href="#">15 segundos (padrão)</a></li>
+                                                <li><a href="#">30 segundos</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#"><span class="glyphicon glyphicon-pause"></span> Pausar</a></li>
+                                                <li><a href="#"><span class="glyphicon glyphicon-play"></span> Retomar</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- Espaço adicional para futuras funcionalidades -->
+                                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5">
+                                        <!-- Espaço reservado -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Informações de Teste -->
+        <div class="alert alert-info">
+            <h4>Instruções de Teste:</h4>
+            <ul>
+                <li><strong>Desktop (> 992px):</strong> Todos elementos em linha</li>
+                <li><strong>Tablet (768px - 991px):</strong> Botões se reorganizam mas mantêm alinhamento</li>
+                <li><strong>Mobile (< 768px):</strong> Radio buttons em 2 colunas, botões empilhados</li>
+                <li><strong>Mobile pequeno (< 480px):</strong> Textos menores, botões compactos</li>
+            </ul>
+        </div>
+        
+        <!-- Informações sobre o indicador -->
+        <div class="alert alert-success">
+            <h4>✅ Indicador de Auto-atualização:</h4>
+            <ul>
+                <li><strong>Posição:</strong> Lado esquerdo da tela (verde no canto superior)</li>
+                <li><strong>Funcionalidade:</strong> Agora está integrado no HTML da página</li>
+                <li><strong>Responsivo:</strong> Adapta tamanho conforme resolução da tela</li>
+                <li><strong>Não interfere:</strong> Não sobrepõe menus do usuário</li>
+                <li><strong>Interativo:</strong> Clique para pausar/retomar auto-atualização</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Mostrar tamanho da tela em tempo real
+        function updateScreenSize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            let device = 'Desktop';
+            
+            if (width < 480) device = 'Mobile Pequeno';
+            else if (width < 768) device = 'Mobile';
+            else if (width < 992) device = 'Tablet';
+            else if (width < 1200) device = 'Desktop';
+            else device = 'Desktop Grande';
+            
+            document.getElementById('screen-size').textContent = 
+                `${device} - ${width}x${height}px`;
+        }
+        
+        // Atualizar ao carregar e redimensionar
+        window.addEventListener('load', updateScreenSize);
+        window.addEventListener('resize', updateScreenSize);
+    </script>
+</body>
+</html> 

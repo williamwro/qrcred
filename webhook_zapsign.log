@@ -1,0 +1,331 @@
+[2025-08-15 19:30:00] === LOG CRIADO MANUALMENTE PARA TESTE ===
+[2025-08-15 19:30:00] Aguardando eventos do ZapSign...
+
+[2025-08-18 02:47:33] TESTE: Verificando se conseguimos escrever no log
+[2025-08-18 02:47:33] TESTE: Arquivo de log funcionando corretamente
+[2025-08-18 02:48:56] === WEBHOOK ZAPSIGN INICIADO (v1.3 com notificações) ===
+[2025-08-18 02:48:56] Método: POST
+[2025-09-17 20:20:10] === WEBHOOK ZAPSIGN INICIADO (v1.3 com notificações) ===
+[2025-09-17 20:20:10] Método: POST
+[2025-09-17 20:20:10] Headers: {"Host":"localhost","User-Agent":"curl\/8.13.0","Accept":"*\/*","Content-Type":"application\/json","Content-Length":"2"}
+[2025-09-17 20:20:10] Query Params: []
+[2025-09-17 20:20:10] Corpo da requisição recebido: {\
+[2025-09-17 20:20:10] ERRO: JSON inválido - Syntax error
+[2025-09-17 20:20:46] === WEBHOOK ZAPSIGN INICIADO (v1.3 com notificações) ===
+[2025-09-17 20:20:46] Método: POST
+[2025-09-17 20:20:46] Headers: {"Host":"localhost","User-Agent":"curl\/8.13.0","Accept":"*\/*","Content-Type":"application\/json","Content-Length":"413"}
+[2025-09-17 20:20:46] Query Params: []
+[2025-09-17 20:20:46] Corpo da requisição recebido: {  "event_type": "doc_created",  "token": "teste-manual-456",  "name": "TERMO DE ADESÃO DO CARTÃO CONVÊNIO",  "signed_at": "2025-09-17T15:20:00Z",  "signers": [    {      "name": "Teste Manual Usuario",      "email": "teste@exemplo.com",      "cpf": "12345678901",      "status": "pending",      "signed_at": "2025-09-17T15:20:00Z",      "token": "signer-teste-456",      "phone_number": "11999999999"    }  ]}
+[2025-09-17 20:20:46] JSON decodificado: {"event_type":"doc_created","token":"teste-manual-456","name":"TERMO DE ADESÃO DO CARTÃO CONVÊNIO","signed_at":"2025-09-17T15:20:00Z","signers":[{"name":"Teste Manual Usuario","email":"teste@exemplo.com","cpf":"12345678901","status":"pending","signed_at":"2025-09-17T15:20:00Z","token":"signer-teste-456","phone_number":"11999999999"}]}
+[2025-09-17 20:20:46] === DADOS COMPLETOS DO WEBHOOK ===
+[2025-09-17 20:20:46] JSON Raw: {
+    "event_type": "doc_created",
+    "token": "teste-manual-456",
+    "name": "TERMO DE ADESÃO DO CARTÃO CONVÊNIO",
+    "signed_at": "2025-09-17T15:20:00Z",
+    "signers": [
+        {
+            "name": "Teste Manual Usuario",
+            "email": "teste@exemplo.com",
+            "cpf": "12345678901",
+            "status": "pending",
+            "signed_at": "2025-09-17T15:20:00Z",
+            "token": "signer-teste-456",
+            "phone_number": "11999999999"
+        }
+    ]
+}
+[2025-09-17 20:20:46] === CAMPOS INDIVIDUAIS ===
+[2025-09-17 20:20:46] Campo 'event_type': doc_created
+[2025-09-17 20:20:46] Campo 'event': [NÃO ENCONTRADO]
+[2025-09-17 20:20:46] Campo 'token': teste-manual-456
+[2025-09-17 20:20:46] Campo 'doc_token': [NÃO ENCONTRADO]
+[2025-09-17 20:20:46] Campo 'name': TERMO DE ADESÃO DO CARTÃO CONVÊNIO
+[2025-09-17 20:20:46] Campo 'doc_name': [NÃO ENCONTRADO]
+[2025-09-17 20:20:46] Campo 'signed_at': 2025-09-17T15:20:00Z
+[2025-09-17 20:20:46] Campo 'created_at': [NÃO ENCONTRADO]
+[2025-09-17 20:20:46] Campo 'updated_at': [NÃO ENCONTRADO]
+[2025-09-17 20:20:46] Campo 'status': [NÃO ENCONTRADO]
+[2025-09-17 20:20:46] Campo 'signers': [{"name":"Teste Manual Usuario","email":"teste@exemplo.com","cpf":"12345678901","status":"pending","signed_at":"2025-09-17T15:20:00Z","token":"signer-teste-456","phone_number":"11999999999"}]
+[2025-09-17 20:20:46] === SIGNATÁRIOS DETALHADOS ===
+[2025-09-17 20:20:46] --- Signatário 1 ---
+[2025-09-17 20:20:46] Dados completos: {"name":"Teste Manual Usuario","email":"teste@exemplo.com","cpf":"12345678901","status":"pending","signed_at":"2025-09-17T15:20:00Z","token":"signer-teste-456","phone_number":"11999999999"}
+[2025-09-17 20:20:46]   name: Teste Manual Usuario
+[2025-09-17 20:20:46]   email: teste@exemplo.com
+[2025-09-17 20:20:46]   cpf: 12345678901
+[2025-09-17 20:20:46]   status: pending
+[2025-09-17 20:20:46]   has_signed: [NÃO ENCONTRADO]
+[2025-09-17 20:20:46]   signed_at: 2025-09-17T15:20:00Z
+[2025-09-17 20:20:46]   token: signer-teste-456
+[2025-09-17 20:20:46]   phone: [NÃO ENCONTRADO]
+[2025-09-17 20:20:46] === FIM DOS DADOS DO WEBHOOK ===
+[2025-09-17 20:20:46] Event: doc_created
+[2025-09-17 20:20:46] Doc Token: teste-manual-456
+[2025-09-17 20:20:46] Doc Name: TERMO DE ADESÃO DO CARTÃO CONVÊNIO
+[2025-09-17 20:20:46] === EVENTO RECEBIDO: doc_created ===
+[2025-09-17 20:20:46] STATUS DO DOCUMENTO: N/A
+[2025-09-17 20:20:46] PROCESSANDO EVENTO: doc_created
+[2025-09-17 20:20:46] DEBUG: Identificando tipo de documento:
+[2025-09-17 20:20:46] - Token recebido: 'teste-manual-456'
+[2025-09-17 20:20:46] - Nome recebido: 'TERMO DE ADESÃO DO CARTÃO CONVÊNIO'
+[2025-09-17 20:20:46] DEBUG: Verificação por nome (token não reconhecido):
+[2025-09-17 20:20:46] - Normalizado recebido: 'termo de adesão do cartão convênio'
+[2025-09-17 20:20:46] - Normalizado adesão: 'termo de adesão do cartão convênio'
+[2025-09-17 20:20:46] - Normalizado antecipação: 'contrato de antecipação salarial'
+[2025-09-17 20:20:46] ✅ DOCUMENTO IDENTIFICADO: Adesão (tipo=1) - baseado no nome
+[2025-09-17 20:20:46] SUCCESS: Documento validado - Tipo: 1 (Adesão)
+[2025-09-17 20:20:46] Conectando ao banco usando arquivo de conexão do sistema...
+[2025-09-17 20:20:46] Conexão com banco estabelecida
+[2025-09-17 20:20:46] Processando signatário: {"name":"Teste Manual Usuario","email":"teste@exemplo.com","cpf":"12345678901","status":"pending","signed_at":"2025-09-17T15:20:00Z","token":"signer-teste-456","phone_number":"11999999999"}
+[2025-09-17 20:20:46] EVENTO DE CRIAÇÃO DETECTADO: doc_created
+[2025-09-17 20:20:46] SIGNER TOKEN CAPTURADO: signer-teste-456 (para signatário: Teste Manual Usuario)
+[2025-09-17 20:20:46] URL de assinatura seria: https://app.zapsign.com.br/verificar/signer-teste-456
+[2025-09-17 20:20:46] CPF FORNECIDO: 12345678901
+[2025-09-17 20:20:47] PENDENTE: Documento adicionado à fila de reprocessamento (tentativa em 2 minutos)
+[2025-09-17 20:20:47] GRAVANDO REGISTRO COMPLETO: CPF já disponível no webhook inicial
+[2025-09-17 20:20:47] REGISTRO COMPLETO: Iniciando atualização de registro existente com dados obtidos
+[2025-09-17 20:20:48] REGISTRO COMPLETO: Nenhum registro existente encontrado, criando novo
+[2025-09-17 20:20:48] REGISTRO COMPLETO: Novo registro criado - ID: 353, Código: webhook_signed_teste-ma_8901_68cafc001044f
+[2025-09-17 20:20:48] APROVAÇÃO AUTOMÁTICA: Iniciando para registro ID: 353, CPF: 12345678901
+[2025-09-17 20:20:48] APROVAÇÃO AUTOMÁTICA: Associado não encontrado na tabela sind.associado para CPF: 12345678901
+[2025-09-17 20:20:49] PASSO 1A: Buscando registro existente por CPF: 12345678901
+[2025-09-17 20:20:49] SUCESSO: Encontrado registro por CPF - ID: 353
+[2025-09-17 20:20:49] REGISTRO COM CPF: Não sobrescrever campos já atualizados pela gravarRegistroComDadosCompletos
+[2025-09-17 20:20:49] Registro atualizado com sucesso por CPF - ID: 353
+[2025-09-17 20:20:50] NOTIFICAÇÃO ENVIADA: document_created para código webhook_signed_teste-ma_8901_68cafc001044f
+[2025-09-17 20:20:50] SUCCESS: {"status":"sucesso","mensagem":"Webhook processado com sucesso","processados":1,"event":"doc_created","doc_token":"teste-manual-456","doc_name":"TERMO DE ADES\u00c3O DO CART\u00c3O CONV\u00caNIO"}
+[2025-09-17 20:43:41] === WEBHOOK ZAPSIGN INICIADO (v1.3 com notificações) ===
+[2025-09-17 20:43:41] Método: POST
+[2025-09-17 20:43:41] Headers: {"Host":"localhost","User-Agent":"curl\/8.13.0","Accept":"*\/*","Content-Type":"application\/json","Content-Length":"3534"}
+[2025-09-17 20:43:41] Query Params: []
+[2025-09-17 20:43:41] Corpo da requisição recebido: {  "sandbox": false,  "external_id": "",  "open_id": 526,  "token": "d9821c06-64c2-4759-9f6e-da18608d34ef",  "name": "TERMO DE ADESÃO DO CARTÃO CONVÊNIO",  "folder_path": "/SASCRED/",  "folder_token": "832a5b1a-ab0c-4b9f-b68a-c4393d85b295",  "status": "pending",  "rejected_reason": null,  "lang": "pt-br",  "original_file": "https://zapsign.s3.amazonaws.com/2025/8/docs/a0540402-da80-41d3-8ddd-1917c1d88a8f/37074b84-8fbb-4f11-a471-55efd2eadace.pdf?AWSAccessKeyId=AKIASUFZJ7JCTI2ZRGWX&Signature=YPRj%2Fic7xAECjdg4uSCkh7ygdjA%3D&Expires=1758137832",  "signed_file": null,  "extra_docs": [],  "created_through": "template",  "deleted": false,  "deleted_at": null,  "signed_file_only_finished": false,  "disable_signer_emails": false,  "brand_logo": "",  "brand_primary_color": "",  "created_at": "2025-09-17T18:37:40.604509Z",  "last_update_at": "2025-09-17T18:37:40.626952Z",  "created_by": {    "email": "daniel@danielmelloadv.com.br"  },  "template": {    "token": "4bdad7db-07ae-4505-b8cb-0bee880f6fdd"  },  "signers": [    {      "external_id": "",      "sign_url": "https://app.zapsign.com.br/verificar/fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c",      "token": "fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c",      "status": "new",      "name": "William Ribeiro de oliveira",      "lock_name": true,      "email": "",      "lock_email": false,      "hide_email": false,      "blank_email": false,      "phone_country": "55",      "phone_number": "",      "lock_phone": false,      "hide_phone": false,      "blank_phone": false,      "times_viewed": 0,      "last_view_at": null,      "signed_at": null,      "auth_mode": "assinaturaTela",      "qualification": "",      "require_selfie_photo": true,      "require_document_photo": true,      "geo_latitude": null,      "geo_longitude": null,      "redirect_link": "",      "signature_image": null,      "visto_image": null,      "document_photo_url": "",      "document_verse_photo_url": "",      "selfie_photo_url": "",      "selfie_photo_url2": "",      "send_via": "",      "resend_attempts": null,      "cpf": "",      "cnpj": "",      "send_automatic_whatsapp_signed_file": null,      "liveness_photo_url": "",      "selfie_validation_type": "none",      "ip": null,      "delegator": null,      "signature_anchor_text": null,      "rubrica_anchor_text": null    }  ],  "answers": [    {"variable": "Nome da variável", "value": "17 de setembro de 2025"},    {"variable": "#224027156 checkbox", "value": "$true"},    {"variable": "#224027157 checkbox", "value": "$true"},    {"variable": "#224027158 checkbox", "value": "$true"},    {"variable": "#224027159 checkbox", "value": "$true"},    {"variable": "#224027160 checkbox", "value": "$true"},    {"variable": "#224027161 checkbox", "value": "$true"},    {"variable": "#224027162 checkbox", "value": "$true"},    {"variable": "#224027163 checkbox", "value": "$true"},    {"variable": "#224027164 checkbox", "value": "$true"},    {"variable": "#224027165 checkbox", "value": "$true"},    {"variable": "#224027166 checkbox", "value": "$true"},    {"variable": "#224027167 checkbox", "value": "$true"},    {"variable": "#224027168 checkbox", "value": "$true"},    {"variable": "#224027169 checkbox", "value": "$true"},    {"variable": "#224027170 checkbox", "value": "$true"},    {"variable": "#224027171 checkbox", "value": "$true"},    {"variable": "#224027172 checkbox", "value": "$true"}  ],  "auto_reminder": 0,  "signature_report": null,  "tsa_country": null,  "use_timestamp": true,  "metadata": [],  "event_type": "doc_created"}
+[2025-09-17 20:43:41] JSON decodificado: {"sandbox":false,"external_id":"","open_id":526,"token":"d9821c06-64c2-4759-9f6e-da18608d34ef","name":"TERMO DE ADESÃO DO CARTÃO CONVÊNIO","folder_path":"\/SASCRED\/","folder_token":"832a5b1a-ab0c-4b9f-b68a-c4393d85b295","status":"pending","rejected_reason":null,"lang":"pt-br","original_file":"https:\/\/zapsign.s3.amazonaws.com\/2025\/8\/docs\/a0540402-da80-41d3-8ddd-1917c1d88a8f\/37074b84-8fbb-4f11-a471-55efd2eadace.pdf?AWSAccessKeyId=AKIASUFZJ7JCTI2ZRGWX&Signature=YPRj%2Fic7xAECjdg4uSCkh7ygdjA%3D&Expires=1758137832","signed_file":null,"extra_docs":[],"created_through":"template","deleted":false,"deleted_at":null,"signed_file_only_finished":false,"disable_signer_emails":false,"brand_logo":"","brand_primary_color":"","created_at":"2025-09-17T18:37:40.604509Z","last_update_at":"2025-09-17T18:37:40.626952Z","created_by":{"email":"daniel@danielmelloadv.com.br"},"template":{"token":"4bdad7db-07ae-4505-b8cb-0bee880f6fdd"},"signers":[{"external_id":"","sign_url":"https:\/\/app.zapsign.com.br\/verificar\/fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","token":"fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","status":"new","name":"William Ribeiro de oliveira","lock_name":true,"email":"","lock_email":false,"hide_email":false,"blank_email":false,"phone_country":"55","phone_number":"","lock_phone":false,"hide_phone":false,"blank_phone":false,"times_viewed":0,"last_view_at":null,"signed_at":null,"auth_mode":"assinaturaTela","qualification":"","require_selfie_photo":true,"require_document_photo":true,"geo_latitude":null,"geo_longitude":null,"redirect_link":"","signature_image":null,"visto_image":null,"document_photo_url":"","document_verse_photo_url":"","selfie_photo_url":"","selfie_photo_url2":"","send_via":"","resend_attempts":null,"cpf":"","cnpj":"","send_automatic_whatsapp_signed_file":null,"liveness_photo_url":"","selfie_validation_type":"none","ip":null,"delegator":null,"signature_anchor_text":null,"rubrica_anchor_text":null}],"answers":[{"variable":"Nome da variável","value":"17 de setembro de 2025"},{"variable":"#224027156 checkbox","value":"$true"},{"variable":"#224027157 checkbox","value":"$true"},{"variable":"#224027158 checkbox","value":"$true"},{"variable":"#224027159 checkbox","value":"$true"},{"variable":"#224027160 checkbox","value":"$true"},{"variable":"#224027161 checkbox","value":"$true"},{"variable":"#224027162 checkbox","value":"$true"},{"variable":"#224027163 checkbox","value":"$true"},{"variable":"#224027164 checkbox","value":"$true"},{"variable":"#224027165 checkbox","value":"$true"},{"variable":"#224027166 checkbox","value":"$true"},{"variable":"#224027167 checkbox","value":"$true"},{"variable":"#224027168 checkbox","value":"$true"},{"variable":"#224027169 checkbox","value":"$true"},{"variable":"#224027170 checkbox","value":"$true"},{"variable":"#224027171 checkbox","value":"$true"},{"variable":"#224027172 checkbox","value":"$true"}],"auto_reminder":0,"signature_report":null,"tsa_country":null,"use_timestamp":true,"metadata":[],"event_type":"doc_created"}
+[2025-09-17 20:43:41] === DADOS COMPLETOS DO WEBHOOK ===
+[2025-09-17 20:43:41] JSON Raw: {
+    "sandbox": false,
+    "external_id": "",
+    "open_id": 526,
+    "token": "d9821c06-64c2-4759-9f6e-da18608d34ef",
+    "name": "TERMO DE ADESÃO DO CARTÃO CONVÊNIO",
+    "folder_path": "\/SASCRED\/",
+    "folder_token": "832a5b1a-ab0c-4b9f-b68a-c4393d85b295",
+    "status": "pending",
+    "rejected_reason": null,
+    "lang": "pt-br",
+    "original_file": "https:\/\/zapsign.s3.amazonaws.com\/2025\/8\/docs\/a0540402-da80-41d3-8ddd-1917c1d88a8f\/37074b84-8fbb-4f11-a471-55efd2eadace.pdf?AWSAccessKeyId=AKIASUFZJ7JCTI2ZRGWX&Signature=YPRj%2Fic7xAECjdg4uSCkh7ygdjA%3D&Expires=1758137832",
+    "signed_file": null,
+    "extra_docs": [],
+    "created_through": "template",
+    "deleted": false,
+    "deleted_at": null,
+    "signed_file_only_finished": false,
+    "disable_signer_emails": false,
+    "brand_logo": "",
+    "brand_primary_color": "",
+    "created_at": "2025-09-17T18:37:40.604509Z",
+    "last_update_at": "2025-09-17T18:37:40.626952Z",
+    "created_by": {
+        "email": "daniel@danielmelloadv.com.br"
+    },
+    "template": {
+        "token": "4bdad7db-07ae-4505-b8cb-0bee880f6fdd"
+    },
+    "signers": [
+        {
+            "external_id": "",
+            "sign_url": "https:\/\/app.zapsign.com.br\/verificar\/fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c",
+            "token": "fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c",
+            "status": "new",
+            "name": "William Ribeiro de oliveira",
+            "lock_name": true,
+            "email": "",
+            "lock_email": false,
+            "hide_email": false,
+            "blank_email": false,
+            "phone_country": "55",
+            "phone_number": "",
+            "lock_phone": false,
+            "hide_phone": false,
+            "blank_phone": false,
+            "times_viewed": 0,
+            "last_view_at": null,
+            "signed_at": null,
+            "auth_mode": "assinaturaTela",
+            "qualification": "",
+            "require_selfie_photo": true,
+            "require_document_photo": true,
+            "geo_latitude": null,
+            "geo_longitude": null,
+            "redirect_link": "",
+            "signature_image": null,
+            "visto_image": null,
+            "document_photo_url": "",
+            "document_verse_photo_url": "",
+            "selfie_photo_url": "",
+            "selfie_photo_url2": "",
+            "send_via": "",
+            "resend_attempts": null,
+            "cpf": "",
+            "cnpj": "",
+            "send_automatic_whatsapp_signed_file": null,
+            "liveness_photo_url": "",
+            "selfie_validation_type": "none",
+            "ip": null,
+            "delegator": null,
+            "signature_anchor_text": null,
+            "rubrica_anchor_text": null
+        }
+    ],
+    "answers": [
+        {
+            "variable": "Nome da variável",
+            "value": "17 de setembro de 2025"
+        },
+        {
+            "variable": "#224027156 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027157 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027158 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027159 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027160 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027161 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027162 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027163 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027164 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027165 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027166 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027167 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027168 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027169 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027170 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027171 checkbox",
+            "value": "$true"
+        },
+        {
+            "variable": "#224027172 checkbox",
+            "value": "$true"
+        }
+    ],
+    "auto_reminder": 0,
+    "signature_report": null,
+    "tsa_country": null,
+    "use_timestamp": true,
+    "metadata": [],
+    "event_type": "doc_created"
+}
+[2025-09-17 20:43:41] === CAMPOS INDIVIDUAIS ===
+[2025-09-17 20:43:41] Campo 'event_type': doc_created
+[2025-09-17 20:43:41] Campo 'event': [NÃO ENCONTRADO]
+[2025-09-17 20:43:41] Campo 'token': d9821c06-64c2-4759-9f6e-da18608d34ef
+[2025-09-17 20:43:41] Campo 'doc_token': [NÃO ENCONTRADO]
+[2025-09-17 20:43:41] Campo 'name': TERMO DE ADESÃO DO CARTÃO CONVÊNIO
+[2025-09-17 20:43:41] Campo 'doc_name': [NÃO ENCONTRADO]
+[2025-09-17 20:43:41] Campo 'signed_at': [NÃO ENCONTRADO]
+[2025-09-17 20:43:41] Campo 'created_at': 2025-09-17T18:37:40.604509Z
+[2025-09-17 20:43:41] Campo 'updated_at': [NÃO ENCONTRADO]
+[2025-09-17 20:43:41] Campo 'status': pending
+[2025-09-17 20:43:41] Campo 'signers': [{"external_id":"","sign_url":"https:\/\/app.zapsign.com.br\/verificar\/fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","token":"fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","status":"new","name":"William Ribeiro de oliveira","lock_name":true,"email":"","lock_email":false,"hide_email":false,"blank_email":false,"phone_country":"55","phone_number":"","lock_phone":false,"hide_phone":false,"blank_phone":false,"times_viewed":0,"last_view_at":null,"signed_at":null,"auth_mode":"assinaturaTela","qualification":"","require_selfie_photo":true,"require_document_photo":true,"geo_latitude":null,"geo_longitude":null,"redirect_link":"","signature_image":null,"visto_image":null,"document_photo_url":"","document_verse_photo_url":"","selfie_photo_url":"","selfie_photo_url2":"","send_via":"","resend_attempts":null,"cpf":"","cnpj":"","send_automatic_whatsapp_signed_file":null,"liveness_photo_url":"","selfie_validation_type":"none","ip":null,"delegator":null,"signature_anchor_text":null,"rubrica_anchor_text":null}]
+[2025-09-17 20:43:41] === SIGNATÁRIOS DETALHADOS ===
+[2025-09-17 20:43:41] --- Signatário 1 ---
+[2025-09-17 20:43:41] Dados completos: {"external_id":"","sign_url":"https:\/\/app.zapsign.com.br\/verificar\/fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","token":"fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","status":"new","name":"William Ribeiro de oliveira","lock_name":true,"email":"","lock_email":false,"hide_email":false,"blank_email":false,"phone_country":"55","phone_number":"","lock_phone":false,"hide_phone":false,"blank_phone":false,"times_viewed":0,"last_view_at":null,"signed_at":null,"auth_mode":"assinaturaTela","qualification":"","require_selfie_photo":true,"require_document_photo":true,"geo_latitude":null,"geo_longitude":null,"redirect_link":"","signature_image":null,"visto_image":null,"document_photo_url":"","document_verse_photo_url":"","selfie_photo_url":"","selfie_photo_url2":"","send_via":"","resend_attempts":null,"cpf":"","cnpj":"","send_automatic_whatsapp_signed_file":null,"liveness_photo_url":"","selfie_validation_type":"none","ip":null,"delegator":null,"signature_anchor_text":null,"rubrica_anchor_text":null}
+[2025-09-17 20:43:41]   name: William Ribeiro de oliveira
+[2025-09-17 20:43:41]   email: 
+[2025-09-17 20:43:41]   cpf: 
+[2025-09-17 20:43:41]   status: new
+[2025-09-17 20:43:41]   has_signed: [NÃO ENCONTRADO]
+[2025-09-17 20:43:41]   signed_at: [NÃO ENCONTRADO]
+[2025-09-17 20:43:41]   token: fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c
+[2025-09-17 20:43:41]   phone: [NÃO ENCONTRADO]
+[2025-09-17 20:43:41] === FIM DOS DADOS DO WEBHOOK ===
+[2025-09-17 20:43:41] Event: doc_created
+[2025-09-17 20:43:41] Doc Token: d9821c06-64c2-4759-9f6e-da18608d34ef
+[2025-09-17 20:43:41] Doc Name: TERMO DE ADESÃO DO CARTÃO CONVÊNIO
+[2025-09-17 20:43:41] === EVENTO RECEBIDO: doc_created ===
+[2025-09-17 20:43:41] STATUS DO DOCUMENTO: N/A
+[2025-09-17 20:43:41] PROCESSANDO EVENTO: doc_created
+[2025-09-17 20:43:41] DEBUG: Identificando tipo de documento:
+[2025-09-17 20:43:41] - Token recebido: 'd9821c06-64c2-4759-9f6e-da18608d34ef'
+[2025-09-17 20:43:41] - Nome recebido: 'TERMO DE ADESÃO DO CARTÃO CONVÊNIO'
+[2025-09-17 20:43:41] DEBUG: Verificação por nome (token não reconhecido):
+[2025-09-17 20:43:41] - Normalizado recebido: 'termo de adesão do cartão convênio'
+[2025-09-17 20:43:41] - Normalizado adesão: 'termo de adesão do cartão convênio'
+[2025-09-17 20:43:41] - Normalizado antecipação: 'contrato de antecipação salarial'
+[2025-09-17 20:43:41] ✅ DOCUMENTO IDENTIFICADO: Adesão (tipo=1) - baseado no nome
+[2025-09-17 20:43:41] SUCCESS: Documento validado - Tipo: 1 (Adesão)
+[2025-09-17 20:43:41] Conectando ao banco usando arquivo de conexão do sistema...
+[2025-09-17 20:43:42] Conexão com banco estabelecida
+[2025-09-17 20:43:42] Processando signatário: {"external_id":"","sign_url":"https:\/\/app.zapsign.com.br\/verificar\/fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","token":"fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","status":"new","name":"William Ribeiro de oliveira","lock_name":true,"email":"","lock_email":false,"hide_email":false,"blank_email":false,"phone_country":"55","phone_number":"","lock_phone":false,"hide_phone":false,"blank_phone":false,"times_viewed":0,"last_view_at":null,"signed_at":null,"auth_mode":"assinaturaTela","qualification":"","require_selfie_photo":true,"require_document_photo":true,"geo_latitude":null,"geo_longitude":null,"redirect_link":"","signature_image":null,"visto_image":null,"document_photo_url":"","document_verse_photo_url":"","selfie_photo_url":"","selfie_photo_url2":"","send_via":"","resend_attempts":null,"cpf":"","cnpj":"","send_automatic_whatsapp_signed_file":null,"liveness_photo_url":"","selfie_validation_type":"none","ip":null,"delegator":null,"signature_anchor_text":null,"rubrica_anchor_text":null}
+[2025-09-17 20:43:42] EVENTO DE CRIAÇÃO DETECTADO: doc_created
+[2025-09-17 20:43:42] SIGNER TOKEN CAPTURADO: fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c (para signatário: William Ribeiro de oliveira)
+[2025-09-17 20:43:42] URL de assinatura seria: https://app.zapsign.com.br/verificar/fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c
+[2025-09-17 20:43:42] AVISO: CPF vazio, iniciando sistema de tentativas múltiplas...
+[2025-09-17 20:43:42] TENTATIVA 1/4: Consultando APIs ZapSign...
+[2025-09-17 20:43:42] ESTRATÉGIA 1: Consultando endpoint específico do signatário
+[2025-09-17 20:43:42] CONSULTA SIGNATÁRIO API: Iniciando consulta para signatário fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c
+[2025-09-17 20:43:42] SUCESSO SIGNATÁRIO API: Dados do signatário obtidos com sucesso
+[2025-09-17 20:43:42] SIGNATÁRIO API RESPONSE: {"external_id":"","sign_url":"https:\/\/app.zapsign.com.br\/verificar\/fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","token":"fb0ad195-b1d1-4fa3-ae67-55dbd4e16c4c","status":"signed","name":"William Ribeiro de oliveira","lock_name":true,"email":"william@makecard.com.br","lock_email":false,"hide_email":false,"blank_email":false,"phone_country":"55","phone_number":"35998120032","lock_phone":false,"hide_phone":false,"blank_phone":false,"times_viewed":3,"last_view_at":"2025-09-17T18:37:45.944533Z","signed_at":"2025-09-17T18:38:53.232026Z","auth_mode":"assinaturaTela","qualification":"","require_selfie_photo":true,"require_document_photo":true,"geo_latitude":"-23.453375","geo_longitude":"-45.068346","redirect_link":"","signature_image":"https:\/\/zapsign.s3.amazonaws.com\/2025\/9\/files\/a505bd9b-2f23-43b0-8d23-e2852f048d7d\/0540d37e-cae9-4767-9ffb-ad96a6b67ffc.png?AWSAccessKeyId=AKIASUFZJ7JCTI2ZRGWX&Signature=fuYmJAlVGVn3%2BWvQ%2BiE75AObbR8%3D&Expires=1758138220","visto_image":"","document_photo_url":"https:\/\/zapsign.s3.amazonaws.com\/2025\/9\/files\/8f9d1b4d-e885-4db5-b010-e9a8785dc8e1\/c02f5115-ee9c-4c22-a383-d3e1f6476534.jpg?AWSAccessKeyId=AKIASUFZJ7JCTI2ZRGWX&Signature=nALHNzxQu%2BbFNmO%2BZsUrANJ1Ibk%3D&Expires=1758138220","document_verse_photo_url":"https:\/\/zapsign.s3.amazonaws.com\/2025\/9\/files\/902d15e5-c835-4d27-8a66-377c7c380850\/92e5d97a-b7f0-4b5e-8faa-d713ce3147b8.jpg?AWSAccessKeyId=AKIASUFZJ7JCTI2ZRGWX&Signature=BinD6Xr3%2Fy2FTGtzcomPdeGpJIQ%3D&Expires=1758138220","selfie_photo_url":"https:\/\/zapsign.s3.amazonaws.com\/2025\/9\/files\/caf13d7b-f67b-4547-b5b6-6259c51f2524\/08882439-de08-4a82-b1a3-5f672b4d3e7e.jpg?AWSAccessKeyId=AKIASUFZJ7JCTI2ZRGWX&Signature=wUE9LWvZ2F%2BROLQLplUGZ%2B8Rppc%3D&Expires=1758138220","selfie_photo_url2":"","send_via":"","resend_attempts":null,"cpf":"023.995.136-06","cnpj":"","send_automatic_whatsapp_signed_file":null,"liveness_photo_url":"","selfie_validation_type":"none","ip":"168.121.98.101","delegator":null,"signature_anchor_text":null,"rubrica_anchor_text":null}
+[2025-09-17 20:43:42] DADOS SIGNATÁRIO API: CPF=023.995.136-06, Nome=William Ribeiro de oliveira, Email=william@makecard.com.br, Telefone=35998120032, Status=signed
+[2025-09-17 20:43:42] SUCESSO TENTATIVA 1: Dados obtidos do endpoint do signatário
+[2025-09-17 20:43:42] DADOS API: CPF=023.995.136-06, Nome=William Ribeiro de oliveira, Email=william@makecard.com.br, Telefone=(35) 99812-0032
+[2025-09-17 20:43:42] SUCESSO TENTATIVAS: CPF obtido após 1 tentativa(s) - 023.995.136-06
+[2025-09-17 20:43:42] CPF LIMPO: 02399513606
+[2025-09-17 20:43:43] PENDENTE: Documento adicionado à fila de reprocessamento (tentativa em 2 minutos)
+[2025-09-17 20:43:43] GRAVANDO NOVO REGISTRO: Simulando doc_signed com dados obtidos da API
+[2025-09-17 20:43:43] REGISTRO COMPLETO: Iniciando atualização de registro existente com dados obtidos
+[2025-09-17 20:43:44] REGISTRO COMPLETO: Nenhum registro existente encontrado, criando novo
+[2025-09-17 20:43:44] REGISTRO COMPLETO: Novo registro criado - ID: 354, Código: webhook_signed_d9821c06_3606_68cb016027416
+[2025-09-17 20:43:44] APROVAÇÃO AUTOMÁTICA: Iniciando para registro ID: 354, CPF: 02399513606
+[2025-09-17 20:43:44] APROVAÇÃO AUTOMÁTICA: Associado encontrado - Código: 023999, Nome: WILLIAM RIBEIRO DE OLIVEIRA
+[2025-09-17 20:43:45] APROVAÇÃO AUTOMÁTICA: Registro atualizado com sucesso
+[2025-09-17 20:43:45] APROVAÇÃO AUTOMÁTICA: Código: 023999, Valor: 550.00, Data: 2025-09-17 20:43:44
+[2025-09-17 20:43:45] APROVAÇÃO AUTOMÁTICA: Campos adicionais - autorizado: true, aceitou_termo: true, event: doc_signed, has_signed: true, limite: 2000.00
+[2025-09-17 20:43:45] PASSO 1A: Buscando registro existente por CPF: 02399513606
+[2025-09-17 20:43:46] SUCESSO: Encontrado registro por CPF - ID: 354
+[2025-09-17 20:43:46] REGISTRO COM CPF: Não sobrescrever campos já atualizados pela gravarRegistroComDadosCompletos
+[2025-09-17 20:43:46] Registro atualizado com sucesso por CPF - ID: 354
+[2025-09-17 20:43:46] NOTIFICAÇÃO ENVIADA: document_created para código 023999
+[2025-09-17 20:43:46] SUCCESS: {"status":"sucesso","mensagem":"Webhook processado com sucesso","processados":1,"event":"doc_created","doc_token":"d9821c06-64c2-4759-9f6e-da18608d34ef","doc_name":"TERMO DE ADES\u00c3O DO CART\u00c3O CONV\u00caNIO"}

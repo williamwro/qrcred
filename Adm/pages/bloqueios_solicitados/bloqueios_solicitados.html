@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Bloqueios Solicitados</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+<style type="text/css">
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        margin: 0 auto;
+    }
+    th {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    td {
+        font-size: 11px;
+    }
+    .label {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .label-warning {
+        background-color: #f0ad4e;
+        color: #fff;
+    }
+    .label-success {
+        background-color: #5cb85c;
+        color: #fff;
+    }
+    .label-danger {
+        background-color: #d9534f;
+        color: #fff;
+    }
+    .label-default {
+        background-color: #777;
+        color: #fff;
+    }
+    .btn-aprovar {
+        background-color: #5cb85c;
+        color: white;
+        border: none;
+        padding: 4px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 5px;
+    }
+    .btn-reprovar {
+        background-color: #d9534f;
+        color: white;
+        border: none;
+        padding: 4px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-aprovar:hover {
+        background-color: #449d44;
+    }
+    .btn-reprovar:hover {
+        background-color: #c9302c;
+    }
+</style>
+<body>
+<!-- Campo hidden para divisão (preenchido pelo index.js via .load()) -->
+<input type="hidden" id="divisao" name="divisao" value="">
+
+<!-- Content Wrapper. Contains page content -->
+<div class="container-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1 style="margin-top: -1px;margin-left: -6px;">
+            Bloqueios <small>Solicitados</small>
+        </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="col-sm-6 col-form-label"><strong>Solicitações de Bloqueio de Cartão</strong></label>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" id="filtro_situacao_bloqueio" name="filtro_situacao_bloqueio">
+                                    <option value="todos" selected>Todos</option>
+                                    <option value="1">Pendente</option>
+                                    <option value="2">Aprovado</option>
+                                    <option value="3">Reprovado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <table id="tab_solicitacoes_bloqueio" class="display table table-striped dt-responsive compact nowrap" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th style="font-size:x-small">CÓD. VERIFICAÇÃO</th>
+                                        <th style="font-size:x-small">ASSOCIADO</th>
+                                        <th style="font-size:x-small">MATRÍCULA</th>
+                                        <th style="font-size:x-small">EMPREGADOR</th>
+                                        <th style="font-size:x-small">DATA/HORA SOLICITAÇÃO</th>
+                                        <th style="font-size:x-small">DATA/HORA RESPOSTA</th>
+                                        <th style="font-size:x-small">SITUAÇÃO</th>
+                                        <th style="font-size:x-small">AÇÕES</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </section>
+</div>
+
+<script src="../Adm/pages/bloqueios_solicitados/js/bloqueios_solicitados.js"></script>
+</body>
+</html>

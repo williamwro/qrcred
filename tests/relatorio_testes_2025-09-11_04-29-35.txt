@@ -1,0 +1,45 @@
+RELATÓRIO DE TESTES QRCRED - 11/09/2025 04:29:35
+=============================================================
+
+Autenticação e Login:
+  Passou: 0
+  Avisos: 0
+  Falhou: 6
+  Tempo: 13.55s
+
+Recuperação de Senha:
+  Passou: 0
+  Avisos: 0
+  Falhou: 11
+  Tempo: 24.81s
+
+Convênio:
+  Passou: 0
+  Avisos: 0
+  Falhou: 11
+  Tempo: 24.75s
+
+Antecipação e SAS+:
+  Passou: 0
+  Avisos: 0
+  Falhou: 8
+  Tempo: 18.00s
+
+Outros Serviços:
+  Passou: 0
+  Avisos: 0
+  Falhou: 9
+  Tempo: 20.37s
+
+Administração e Debug:
+  Passou: 0
+  Avisos: 0
+  Falhou: 9
+  Tempo: 20.24s
+
+RESUMO GERAL:
+Total: 54 testes
+Passou: 0
+Avisos: 0
+Falhou: 54
+Tempo total: 121.74s

@@ -1,0 +1,103 @@
+================================================================================
+AUTOMATIZAÇÃO DE TAXA DE CARTÃO - INSTRUÇÕES RÁPIDAS
+================================================================================
+
+OBJETIVO:
+Inserir automaticamente na tabela sind.conta o valor da taxa de cartão para 
+todos os associados que tiverem pelo menos um lançamento no mês corrente.
+
+================================================================================
+OPÇÃO 1: TRIGGER (RECOMENDADO) - TOTALMENTE AUTOMÁTICO
+================================================================================
+
+1. Execute o arquivo: trigger_taxa_cartao_automatica.sql
+
+2. Configure a taxa de cartão para sua divisão:
+
+   INSERT INTO sind.valor_taxa_cartao (valor, descricao, divisao) 
+   VALUES (5.00, 'Taxa de Cartão', 1);
+
+3. Pronto! Agora sempre que um lançamento for inserido na tabela sind.conta,
+   o trigger verificará automaticamente se o associado precisa ter a taxa
+   de cartão inserida também.
+
+COMO FUNCIONA:
+→ Trigger dispara quando há INSERT na tabela sind.conta
+→ Verifica se o associado já tem taxa de cartão no mês
+→ Se não tiver, insere automaticamente
+→ Evita duplicação
+
+VANTAGENS:
+✓ Totalmente automático
+✓ Sem intervenção manual
+✓ Inteligente (verifica antes de inserir)
+✓ Auditável com logs
+
+================================================================================
+OPÇÃO 2: SCRIPT MANUAL - EXECUÇÃO SOB DEMANDA
+================================================================================
+
+1. Abra o arquivo: inserir_taxa_cartao_manual.sql
+
+2. Ajuste os parâmetros:
+   v_divisao INTEGER := 1;           -- ID da divisão
+   v_valor_taxa DOUBLE PRECISION := 5.00;  -- Valor da taxa
+
+3. Execute o script
+
+VANTAGENS:
+✓ Controle total
+✓ Sem triggers
+✓ Transparente
+
+DESVANTAGENS:
+✗ Requer execução manual
+✗ Pode ser esquecido
+
+================================================================================
+ARQUIVOS CRIADOS:
+================================================================================
+
+1. trigger_taxa_cartao_automatica.sql
+   - Script SQL para criar o trigger automático
+
+2. inserir_taxa_cartao_manual.sql
+   - Script SQL para execução manual
+
+3. README_TAXA_CARTAO_AUTOMATICA.md
+   - Documentação completa com exemplos e troubleshooting
+
+4. INSTRUCOES_RAPIDAS.txt
+   - Este arquivo com instruções resumidas
+
+================================================================================
+COMO FUNCIONA O TRIGGER:
+================================================================================
+
+1. Trigger dispara quando há INSERT na tabela sind.conta
+2. Ignora se o lançamento já é uma taxa de cartão (convenio = 249)
+3. Verifica se o associado já tem taxa de cartão no mês do lançamento
+4. Se não tiver, busca o valor da taxa na sind.valor_taxa_cartao
+5. Insere automaticamente a taxa de cartão para o associado
+6. Evita duplicação automaticamente
+
+================================================================================
+VERIFICAR SE FUNCIONOU:
+================================================================================
+
+SELECT 
+    c.id,
+    c.associado,
+    a.nome,
+    c.valor,
+    c.mes,
+    c.data
+FROM sind.conta c
+INNER JOIN sind.associado a ON a.id = c.id_associado
+WHERE c.convenio = 249
+  AND c.mes = (SELECT abreviacao FROM sind.mes_corrente LIMIT 1)
+ORDER BY c.data DESC, a.nome;
+
+================================================================================
+RECOMENDAÇÃO: Use a Opção 1 (TRIGGER) para automação total!
+================================================================================

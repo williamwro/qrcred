@@ -26,7 +26,9 @@ $controle = $_POST['controle'];
         $stmt->execute();
 
         $arr = array('resultado'=>$msg_grava_cad);
-        $someArray = array_map("utf8_encode",$arr);
+        $someArray = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $arr);
         echo json_encode($someArray);
     } catch (PDOException $erro) {
         echo "Não foi possivel inserir os dados no banco: " . $erro->getMessage();

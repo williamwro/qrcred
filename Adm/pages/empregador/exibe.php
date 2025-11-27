@@ -1,22 +1,28 @@
 <?PHP
+header('Content-Type: application/json; charset=utf-8');
 include "../../php/banco.php";
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 if(isset($_POST["cod_empregador"])){
+    $cod_empregador = $_POST["cod_empregador"];
     $std = new stdClass();
 
-    $query = "SELECT id,nome,responsavel,telefone,abreviacao,divisao
+    $query = "SELECT id,nome,responsavel,telefone,abreviacao,divisao,bloqueio,usuario,senha
                 FROM sind.empregador WHERE id = ".$cod_empregador;
     $statment = $pdo->prepare($query);
     $statment->execute();
     $result = $statment->fetchAll();
 
     foreach ($result as $row){
-        $std->id         = $row["id"];
-        $std->nome       = utf8_encode($row["nome"]);
-        $std->responsavel = utf8_encode($row["responsavel"]);
-        $std->telefone   = utf8_encode($row["telefone"]);
-        $std->abreviacao = utf8_encode($row["abreviacao"]);
-        $std->divisao    = utf8_encode($row["divisao"]);
+        $std->id          = $row["id"];
+        $std->nome        = $row["nome"];
+        $std->responsavel = $row["responsavel"];
+        $std->telefone    = $row["telefone"];
+        $std->abreviacao  = $row["abreviacao"];
+        $std->divisao     = $row["divisao"];
+        $std->bloqueio    = $row["bloqueio"];
+        $std->usuario     = isset($row["usuario"]) ? $row["usuario"] : "";
+        $std->senha       = isset($row["senha"]) ? $row["senha"] : "";
     }
-    echo json_encode($std);}
+    echo json_encode($std, JSON_UNESCAPED_UNICODE);
+}

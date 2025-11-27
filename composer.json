@@ -3,12 +3,18 @@
     "description": "Sistema QR CRED",
     "type": "project",
     "require": {
-        "php": ">=7.4",
-        "phpmailer/phpmailer": "^6.9.3"
+        "php": ">=8.1",
+        "phpmailer/phpmailer": "^6.9.3",
+        "minishlink/web-push": "^8.0",
+        "web-token/jwt-library": "^3.4"
     },
     "autoload": {
         "psr-4": {
             "QrCred\\App\\": "src/"
         }
+    },
+    "config": {
+        "optimize-autoloader": true
     }
+    
 } 

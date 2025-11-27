@@ -62,9 +62,11 @@ try {
     
     // Capturar campos obrigatórios
     $nome = isset($_POST['C_nome_assoc']) ? trim($_POST['C_nome_assoc']) : '';
-    $cpf = isset($_POST['C_cpf_assoc']) ? preg_replace('/\D/', '', $_POST['C_cpf_assoc']) : '';
+    $cpf = isset($_POST['C_cpf_assoc']) ? trim($_POST['C_cpf_assoc']) : '';
     $email = isset($_POST['C_Email_assoc']) ? trim($_POST['C_Email_assoc']) : '';
-    $celular = isset($_POST['C_cel_assoc']) ? preg_replace('/\D/', '', $_POST['C_cel_assoc']) : '';
+    $celular = isset($_POST['C_cel_assoc']) ? trim($_POST['C_cel_assoc']) : '';
+    $codigo = isset($_POST['C_codigo_assoc']) ? trim($_POST['C_codigo_assoc']) : ''; // Novo campo
+    $empregador = isset($_POST['C_empregador_assoc']) ? intval($_POST['C_empregador_assoc']) : null; // Novo campo
     
     // Validações
     $erros = [];
@@ -75,8 +77,8 @@ try {
     
     if (empty($cpf)) {
         $erros[] = "CPF é obrigatório";
-    } elseif (strlen($cpf) !== 11) {
-        $erros[] = "CPF deve ter 11 dígitos";
+    } elseif (strlen($cpf) > 14 || strlen(preg_replace('/\D/', '', $cpf)) !== 11) {
+        $erros[] = "CPF inválido";
     }
     
     if (empty($email)) {
@@ -154,16 +156,18 @@ try {
         rg VARCHAR(20),
         cpf VARCHAR(14) UNIQUE,
         email VARCHAR(50),
-        uf VARCHAR(2)
+        uf VARCHAR(2),
+        codigo VARCHAR(50), -- Novo campo
+        empregador INTEGER -- Novo campo
     )");
     
     // Preparar SQL
     $sql = "INSERT INTO sind.associado_novo_app (
         nome, cpf, rg, nascimento, email, cel, telres,
-        cep, endereco, numero, complemento, bairro, cidade, uf
+        cep, endereco, numero, complemento, bairro, cidade, uf, codigo, empregador
     ) VALUES (
         :nome, :cpf, :rg, :nascimento, :email, :cel, :telres,
-        :cep, :endereco, :numero, :complemento, :bairro, :cidade, :uf
+        :cep, :endereco, :numero, :complemento, :bairro, :cidade, :uf, :codigo, :empregador
     ) RETURNING id";
     
     $stmt = $pdo->prepare($sql);
@@ -183,6 +187,8 @@ try {
     $stmt->bindParam(':bairro', $bairro);
     $stmt->bindParam(':cidade', $cidade);
     $stmt->bindParam(':uf', $uf);
+    $stmt->bindParam(':codigo', $codigo); // Novo campo
+    $stmt->bindParam(':empregador', $empregador); // Novo campo
     
     // Executar e obter ID
     $stmt->execute();

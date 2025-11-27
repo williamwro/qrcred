@@ -7,14 +7,15 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $someArray = array();
 $i=0;
 $status_cheque = 1;
-
-$sql = "SELECT abreviacao FROM sind.meses_conta WHERE status_cheque = ".$status_cheque;
-
-$sql = $pdo->query($sql);
-
+$divisao = $_GET['divisao'];
+$sql = "SELECT abreviacao FROM sind.meses_conta WHERE status_cheque = ".$status_cheque." AND divisao = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(array($divisao));
 $i++;
-while($row = $sql->fetch()) {
-    $someArray[$i] = array_map("utf8_encode",$row);
+while($row = $stmt->fetch()) {
+    $someArray[$i] = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $row);
     $i++;
 }
 

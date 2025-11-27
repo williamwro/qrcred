@@ -70,20 +70,20 @@ if(isset($_POST["cod_associado"])){
 
     foreach ($result as $row){
         $std->codigo          = $row["codigo"];
-        $std->nome            = htmlspecialchars($row["nome"]);
-        $std->endereco        = htmlspecialchars($row["endereco"]);
+        $std->nome            = htmlspecialchars($row["nome"] ?? '');
+        $std->endereco        = htmlspecialchars($row["endereco"] ?? '');
         $std->numero          = $row["numero"];
         $std->nascimento      = date('d/m/Y', strtotime($row["nascimento"]));
-        $std->salario         = (float)str_replace('.',',',$row["salario"]);
-        $std->limite          = (float)str_replace('.',',',$row["limite"]);
+        $std->salario         = (float)str_replace('.', ',', (string)($row["salario"] ?? '0'));
+        $std->limite          = (float)str_replace('.', ',', (string)($row["limite"] ?? '0'));
         $std->empregador      = (int)$row["id_empregador"];
         $std->cep             = $row["cep"];
         $std->telres          = $row["telres"];
         $std->telcom          = $row["telcom"];
         $std->cel             = $row["cel"];
-        $std->bairro          = htmlspecialchars($row["bairro"]);
-        $std->complemento     = htmlspecialchars($row["complemento"]);
-        $std->cidade          = htmlspecialchars($row["cidade"]);
+        $std->bairro          = htmlspecialchars($row["bairro"] ?? '');
+        $std->complemento     = htmlspecialchars($row["complemento"] ?? '');
+        $std->cidade          = htmlspecialchars($row["cidade"] ?? '');
         $std->uf              = $row["uf"];
         $std->rg              = $row["rg"];
         $std->cpf             = $row["cpf"];
@@ -99,7 +99,7 @@ if(isset($_POST["cod_associado"])){
         }else{
             $std->celwatzap = false;//Unchecked
         }
-        $std->obs             =  htmlspecialchars($row["obs"]);
+        $std->obs             =  htmlspecialchars($row["obs"] ?? '');
         $std->id_situacao     = (int)$row["id_situacao"];
         if ($row["data_filiacao"] != null){
             $std->data_filiacao   = date('d/m/Y', strtotime($row["data_filiacao"]));

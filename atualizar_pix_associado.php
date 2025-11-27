@@ -1,0 +1,100 @@
+<?php
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
+
+include "Adm/php/banco.php";
+
+try {
+    // Obter os parâmetros do POST
+    $matricula = isset($_POST['matricula']) ? $_POST['matricula'] : '';
+    $id_empregador = isset($_POST['id_empregador']) ? $_POST['id_empregador'] : '';
+    $id_associado = isset($_POST['id_associado']) ? $_POST['id_associado'] : '';
+    $id_divisao = isset($_POST['id_divisao']) ? $_POST['id_divisao'] : '';
+    $pix = isset($_POST['pix']) ? $_POST['pix'] : '';
+    
+    if (empty($matricula) || empty($id_empregador) || empty($id_associado) || empty($id_divisao) || empty($pix)) {
+        echo json_encode(['erro' => 'Parâmetros obrigatórios não informados']);
+        exit;
+    }
+    
+    // Conectar ao banco
+    $pdo = Banco::conectar_postgres();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    // Atualizar o campo PIX do associado
+    $sql = "UPDATE sind.associado 
+            SET pix = :pix
+            WHERE codigo = :matricula 
+            AND empregador = :id_empregador 
+            AND id = :id_associado 
+            AND id_divisao = :id_divisao";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':pix', $pix, PDO::PARAM_STR);
+    $stmt->bindParam(':matricula', $matricula, PDO::PARAM_STR);
+    $stmt->bindParam(':id_empregador', $id_empregador, PDO::PARAM_STR);
+    $stmt->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+    $stmt->bindParam(':id_divisao', $id_divisao, PDO::PARAM_INT);
+    
+    $resultado = $stmt->execute();
+    $linhasAfetadas = $stmt->rowCount();
+    
+    // Debug: Buscar o registro para verificar se existe
+    $sqlVerifica = "SELECT codigo, empregador, id, id_divisao, pix 
+                    FROM sind.associado 
+                    WHERE codigo = :matricula 
+                    AND empregador = :id_empregador 
+                    AND id = :id_associado 
+                    AND id_divisao = :id_divisao";
+    
+    $stmtVerifica = $pdo->prepare($sqlVerifica);
+    $stmtVerifica->bindParam(':matricula', $matricula, PDO::PARAM_STR);
+    $stmtVerifica->bindParam(':id_empregador', $id_empregador, PDO::PARAM_STR);
+    $stmtVerifica->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+    $stmtVerifica->bindParam(':id_divisao', $id_divisao, PDO::PARAM_INT);
+    $stmtVerifica->execute();
+    $registroEncontrado = $stmtVerifica->fetch(PDO::FETCH_ASSOC);
+    
+    if ($resultado && $linhasAfetadas > 0) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'PIX atualizado com sucesso',
+            'linhas_afetadas' => $linhasAfetadas,
+            'debug' => [
+                'registro_encontrado' => true,
+                'pix_anterior' => $registroEncontrado ? $registroEncontrado['pix'] : null,
+                'pix_novo' => $pix
+            ]
+        ]);
+    } else if ($resultado && $linhasAfetadas === 0) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Nenhum registro encontrado para atualizar',
+            'linhas_afetadas' => 0,
+            'debug' => [
+                'parametros_busca' => [
+                    'matricula' => $matricula,
+                    'id_empregador' => $id_empregador,
+                    'id_associado' => $id_associado,
+                    'id_divisao' => $id_divisao
+                ],
+                'registro_encontrado' => $registroEncontrado ? true : false,
+                'registro_detalhes' => $registroEncontrado
+            ]
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erro ao atualizar PIX',
+            'debug' => [
+                'erro_sql' => $stmt->errorInfo()
+            ]
+        ]);
+    }
+    
+} catch (Exception $e) {
+    echo json_encode(['erro' => 'Erro ao atualizar PIX: ' . $e->getMessage()]);
+} finally {
+}

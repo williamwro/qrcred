@@ -56,7 +56,7 @@ while($row_assoc = $sql_associado->fetch()) {
 
         $std->situacao            = 1; //1 = liberado
         $std->cod_situacao2       = $row_assoc['cod_situacao2']; //2 = disponivel
-        $std->nome                = utf8_encode($row_assoc['nome']);
+        $std->nome                = mb_convert_encoding($row_assoc['nome'], 'UTF-8', 'ISO-8859-1');
         $std->cod_cart            = $row_assoc['cod_verificacao'];
         $std->matricula           = $row_assoc['codigo'];
         $std->empregador          = $row_assoc['empregador'];
@@ -84,7 +84,7 @@ while($row_assoc = $sql_associado->fetch()) {
 
         $std->situacao = 8; //1 = liberado
         $std->cod_situacao2 = $row_assoc['cod_situacao2']; //2 = disponivel
-        $std->nome = utf8_encode($row_assoc['nome']);
+        $std->nome = mb_convert_encoding($row_assoc['nome'], 'UTF-8', 'ISO-8859-1');
         $std->cod_cart = $row_assoc['cod_verificacao'];
         $std->matricula = $row_assoc['codigo'];
         $std->empregador = $row_assoc['empregador'];

@@ -55,8 +55,14 @@
             "name": "Chrome Debug js",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost/sind/index.html",
+            "url": "http://localhost/qrcred/index.html",
             "webRoot": "${workspaceFolder}"
         },
+        {
+            "name": "Listen for Xdebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9003
+        } 
     ]
 }

@@ -1,8 +1,10 @@
+var divisao;    
     $(document).ready(function(){
         var $a = jQuery.noConflict();
         var mescorrente = "";
+        divisao = sessionStorage.getItem("divisao");
         $a('#C_empregador').html("<option> Carregando ... </option>");
-        $a.getJSON( "../Adm/pages/producao/meses_conta.php", function( data ) {
+        $a.getJSON( "../Adm/pages/producao/meses_conta.php", { "divisao": divisao }, function( data ) {
             $a.each(data, function (index, value) {
       
                  if (value.mes_corrente !== undefined) {

@@ -1,4 +1,5 @@
 <?php
+require_once '../../../functions.php';
 require '../../php/banco.php';
 $stmtx = new stdClass();
 $pdo = Banco::conectar_postgres();
@@ -30,5 +31,8 @@ try {
     $msggrava = "nao atualizado";
     $arr = array('resultado'=>$msggrava);
 }
-$someArray = array_map("utf8_encode",$arr);
+// Substituir utf8_encode() depreciado por mb_convert_encoding()
+$someArray = array_map(function($value) {
+    return is_string($value) ? (mb_check_encoding($value, 'UTF-8') ? $value : mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1')) : $value;
+}, $arr);
 echo json_encode($someArray);

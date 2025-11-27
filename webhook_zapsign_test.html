@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Webhook ZapSign - Console Debug</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            background: rgba(255,255,255,0.95); 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: #333;
+        }
+        .header { 
+            text-align: center;
+            border-bottom: 3px solid #667eea; 
+            padding-bottom: 20px; 
+            margin-bottom: 30px; 
+        }
+        .section { 
+            background: #f8f9fa; 
+            border: 1px solid #dee2e6; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+        }
+        .btn { 
+            background: #667eea; 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            margin: 5px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover { 
+            background: #5a6fd8; 
+            transform: translateY(-2px);
+        }
+        .btn-success { background: #28a745; }
+        .btn-success:hover { background: #218838; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-warning:hover { background: #e0a800; }
+        .btn-danger { background: #dc3545; }
+        .btn-danger:hover { background: #c82333; }
+        .status { 
+            padding: 15px; 
+            border-radius: 6px; 
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .status-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .status-info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .json-display { 
+            background: #2d3748; 
+            color: #e2e8f0; 
+            padding: 15px; 
+            border-radius: 6px; 
+            font-family: Consolas, monospace; 
+            font-size: 12px;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .console-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-group textarea {
+            height: 120px;
+            font-family: Consolas, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Teste Webhook ZapSign</h1>
+            <p>Ferramenta para testar e debugar webhooks com logs no console do navegador</p>
+        </div>
+        
+        <div class="console-info">
+            <h3>📱 Instruções:</h3>
+            <ol>
+                <li><strong>Abra o Console do Navegador</strong> (F12 → Console)</li>
+                <li>Use os botões abaixo para simular diferentes tipos de webhook</li>
+                <li>Todos os dados serão logados no console com detalhes completos</li>
+                <li>Para debug em tempo real, acesse: <a href="webhook_zapsign.php?debug=1" target="_blank">webhook_zapsign.php?debug=1</a></li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h3>🚀 Testes Rápidos</h3>
+            <button class="btn btn-success" onclick="testDocumentSigned()">✅ Documento Assinado</button>
+            <button class="btn btn-warning" onclick="testDocumentPending()">⏳ Documento Pendente</button>
+            <button class="btn btn-danger" onclick="testInvalidData()">❌ Dados Inválidos</button>
+            <button class="btn" onclick="testMultipleSigners()">👥 Múltiplos Signatários</button>
+            <button class="btn" onclick="clearConsole()">🧹 Limpar Console</button>
+        </div>
+        
+        <div class="section">
+            <h3>🛠️ Webhook Customizado</h3>
+            <div class="form-group">
+                <label>Evento:</label>
+                <input type="text" id="eventType" value="doc_signed" placeholder="doc_signed, doc_pending, etc.">
+            </div>
+            <div class="form-group">
+                <label>Token do Documento:</label>
+                <input type="text" id="docToken" value="doc_123456789" placeholder="Token único do documento">
+            </div>
+            <div class="form-group">
+                <label>Nome do Documento:</label>
+                <input type="text" id="docName" value="Termo Adesão SasPyx" placeholder="Nome do documento">
+            </div>
+            <div class="form-group">
+                <label>JSON Customizado (opcional):</label>
+                <textarea id="customJson" placeholder="Cole aqui um JSON de webhook personalizado"></textarea>
+            </div>
+            <button class="btn btn-success" onclick="testCustomWebhook()">🔥 Testar Webhook Customizado</button>
+        </div>
+        
+        <div class="section">
+            <h3>📊 Status dos Testes</h3>
+            <div id="testStatus" class="status status-info">
+                Aguardando teste... Abra o console do navegador (F12) para ver os logs detalhados.
+            </div>
+        </div>
+        
+        <div class="section">
+            <h3>🔗 Links Úteis</h3>
+            <a href="webhook_zapsign.php?status=1" target="_blank" class="btn">📋 Status do Webhook</a>
+            <a href="webhook_zapsign.php?debug=1" target="_blank" class="btn btn-warning">🔍 Debug em Tempo Real</a>
+            <a href="Adm/pages/assinaturas_digitais/assinaturas_digitais_read.html" target="_blank" class="btn btn-success">📄 Ver Assinaturas Digitais</a>
+        </div>
+    </div>
+    
+    <script>
+        console.log("🔧 Webhook ZapSign - Página de Teste Carregada");
+        console.log("📋 Use os botões da página para simular webhooks e ver os logs aqui");
+        
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('testStatus');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status status-' + type;
+        }
+        
+        function logWebhookData(data, description = 'Teste de Webhook') {
+            console.group(`🎯 ${description} - ${new Date().toLocaleString()}`);
+            console.log("📦 Dados Completos:", data);
+            
+            // Log campos principais
+            if (data.event_type || data.event) {
+                console.log("🔔 Evento:", data.event_type || data.event);
+            }
+            
+            if (data.token || data.doc_token) {
+                console.log("🔑 Token:", data.token || data.doc_token);
+            }
+            
+            if (data.name || data.doc_name) {
+                console.log("📄 Documento:", data.name || data.doc_name);
+            }
+            
+            if (data.signed_at) {
+                console.log("📅 Assinado em:", data.signed_at);
+            }
+            
+            // Log signatários
+            if (data.signers && Array.isArray(data.signers)) {
+                console.group(`👥 Signatários (${data.signers.length})`);
+                data.signers.forEach((signer, index) => {
+                    console.group(`👤 Signatário ${index + 1}`);
+                    console.log("📝 Nome:", signer.name || '[Não informado]');
+                    console.log("📧 Email:", signer.email || '[Não informado]');
+                    console.log("🆔 CPF:", signer.cpf || '[Não informado]');
+                    console.log("✍️ Status:", signer.status || '[Não informado]');
+                    console.log("✅ Assinou:", signer.has_signed || false);
+                    console.log("📅 Data:", signer.signed_at || '[Não informado]');
+                    console.log("🔗 Token:", signer.token || '[Não informado]');
+                    console.log("📱 Telefone:", signer.phone || '[Não informado]');
+                    console.groupEnd();
+                });
+                console.groupEnd();
+            }
+            
+            console.groupEnd();
+        }
+        
+        function testDocumentSigned() {
+            const webhookData = {
+                event_type: "doc_signed",
+                token: "doc_" + Date.now(),
+                name: "Termo Adesão SasPyx",
+                signed_at: new Date().toISOString(),
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                status: "signed",
+                signers: [
+                    {
+                        name: "João Silva",
+                        email: "joao.silva@email.com",
+                        cpf: "123.456.789-00",
+                        status: "signed",
+                        has_signed: true,
+                        signed_at: new Date().toISOString(),
+                        token: "signer_" + Date.now(),
+                        phone: "(11) 99999-9999"
+                    }
+                ]
+            };
+            
+            logWebhookData(webhookData, "Documento Assinado com Sucesso");
+            updateStatus("✅ Webhook de documento assinado simulado! Verifique o console.", "success");
+        }
+        
+        function testDocumentPending() {
+            const webhookData = {
+                event_type: "doc_pending",
+                token: "doc_" + Date.now(),
+                name: "Termo Adesão SasPyx",
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                status: "pending",
+                signers: [
+                    {
+                        name: "Maria Santos",
+                        email: "maria.santos@email.com",
+                        cpf: "987.654.321-00",
+                        status: "pending",
+                        has_signed: false,
+                        signed_at: null,
+                        token: "signer_" + Date.now(),
+                        phone: "(11) 88888-8888"
+                    }
+                ]
+            };
+            
+            logWebhookData(webhookData, "Documento Pendente de Assinatura");
+            updateStatus("⏳ Webhook de documento pendente simulado! Verifique o console.", "info");
+        }
+        
+        function testInvalidData() {
+            const webhookData = {
+                event_type: "",
+                token: null,
+                name: "",
+                signers: null
+            };
+            
+            logWebhookData(webhookData, "Dados Inválidos - Teste de Erro");
+            updateStatus("❌ Webhook com dados inválidos simulado! Verifique o console.", "error");
+        }
+        
+        function testMultipleSigners() {
+            const webhookData = {
+                event_type: "doc_signed",
+                token: "doc_multi_" + Date.now(),
+                name: "Termo Adesão SasPyx",
+                signed_at: new Date().toISOString(),
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+                status: "signed",
+                signers: [
+                    {
+                        name: "Ana Oliveira",
+                        email: "ana.oliveira@email.com",
+                        cpf: "111.222.333-44",
+                        status: "signed",
+                        has_signed: true,
+                        signed_at: new Date().toISOString(),
+                        token: "signer1_" + Date.now(),
+                        phone: "(11) 77777-7777"
+                    },
+                    {
+                        name: "Carlos Pereira",
+                        email: "carlos.pereira@email.com",
+                        cpf: "555.666.777-88",
+                        status: "signed",
+                        has_signed: true,
+                        signed_at: new Date().toISOString(),
+                        token: "signer2_" + Date.now(),
+                        phone: "(11) 66666-6666"
+                    },
+                    {
+                        name: "Beatriz Costa",
+                        email: "beatriz.costa@email.com",
+                        cpf: "999.888.777-66",
+                        status: "pending",
+                        has_signed: false,
+                        signed_at: null,
+                        token: "signer3_" + Date.now(),
+                        phone: "(11) 55555-5555"
+                    }
+                ]
+            };
+            
+            logWebhookData(webhookData, "Múltiplos Signatários (2 assinados, 1 pendente)");
+            updateStatus("👥 Webhook com múltiplos signatários simulado! Verifique o console.", "success");
+        }
+        
+        function testCustomWebhook() {
+            const eventType = document.getElementById('eventType').value;
+            const docToken = document.getElementById('docToken').value;
+            const docName = document.getElementById('docName').value;
+            const customJson = document.getElementById('customJson').value;
+            
+            let webhookData;
+            
+            if (customJson.trim()) {
+                try {
+                    webhookData = JSON.parse(customJson);
+                } catch (e) {
+                    console.error("❌ JSON inválido:", e);
+                    updateStatus("❌ JSON inválido! Verifique a sintaxe.", "error");
+                    return;
+                }
+            } else {
+                webhookData = {
+                    event_type: eventType,
+                    token: docToken,
+                    name: docName,
+                    signed_at: new Date().toISOString(),
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                    status: eventType.includes('signed') ? 'signed' : 'pending',
+                    signers: [
+                        {
+                            name: "Usuario Teste",
+                            email: "teste@email.com",
+                            cpf: "000.000.000-00",
+                            status: eventType.includes('signed') ? 'signed' : 'pending',
+                            has_signed: eventType.includes('signed'),
+                            signed_at: eventType.includes('signed') ? new Date().toISOString() : null,
+                            token: "signer_custom_" + Date.now(),
+                            phone: "(11) 99999-0000"
+                        }
+                    ]
+                };
+            }
+            
+            logWebhookData(webhookData, "Webhook Customizado");
+            updateStatus("🔥 Webhook customizado simulado! Verifique o console.", "success");
+        }
+        
+        function clearConsole() {
+            console.clear();
+            console.log("🧹 Console limpo");
+            console.log("🔧 Webhook ZapSign - Página de Teste");
+            updateStatus("🧹 Console limpo! Pronto para novos testes.", "info");
+        }
+        
+        // Simular chegada de webhook automaticamente após 2 segundos
+        setTimeout(() => {
+            console.log("🎬 Simulação automática iniciada...");
+            testDocumentSigned();
+        }, 2000);
+    </script>
+</body>
+</html> 

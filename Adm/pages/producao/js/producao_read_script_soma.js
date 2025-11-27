@@ -6,13 +6,14 @@ $C_convenio = $('#cod_convenio');
 $todos = "todos";
 $(document).ready(function() {
     divisao = sessionStorage.getItem("divisao");
+    divisao_nome = sessionStorage.getItem("divisao_nome");
     $("#fechar_colapse").on('click',function(){
         $('.collapse').collapse('hide');
     });
 
     var mescorrente = "";
     $('#C_mes').append('<option selected value="todos">' + $todos + '</option>');
-    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio" },function( data ) {
+    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio", "divisao": divisao },function( data ) {
         $.each(data, function (index, value) {
 
             if (value.mes_corrente !== undefined) {
@@ -87,7 +88,7 @@ $('#gerarpdf').click(function () {
         ordem = selected.val();
     }
 
-    $.redirect('../Adm/pages/producao/producao_gerador_pdf.php',{ cod_convenio: cod_convenio, mes_atual: mes_atual, ano: ano,  ordem: ordem, empregador: empregador, parcela: parcela, divisao : divisao}, "POST", "_blank");
+    $.redirect('../Adm/pages/producao/producao_gerador_pdf.php',{ cod_convenio: cod_convenio, mes_atual: mes_atual, ano: ano,  ordem: ordem, empregador: empregador, parcela: parcela, divisao : divisao,divisao_nome: divisao_nome}, "POST", "_blank");
 });// .update é o botão alterar
 $("#btnInserir").click(function(){
     $("#frmconvenio")[0].reset();
@@ -222,7 +223,7 @@ function carrega_dados(todos){
                 method: 'POST',
                 data: function (data) {
                     data.cod_convenio = $("#cod_convenio").val();
-                    data.mes = $("#C_mes").val();
+                    data.divisao = divisao;
                 },
                 dataType: 'json'
             },

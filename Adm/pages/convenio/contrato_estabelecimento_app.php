@@ -28,6 +28,7 @@
 	</STYLE>
 </HEAD>
 <?PHP
+    require_once '../../../functions.php';
     if($_GET['cnpj'] ==! ""){
         $cnpjorcpf      = $_GET['cnpj'];
         $cnpjorcpftexto = "pessoa jurídica de direito privado inscrita no CNPJ sob o nº ";

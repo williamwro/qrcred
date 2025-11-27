@@ -38,8 +38,8 @@ $(document).ready(function(){
             { "data": "abreviacao" },
             { "data": "nome_divisao" },
             { "data": "cidade" },
+            { "data": "bloqueio" },
             { "data": "botao" },
-            { "data": "botaoexcluir" }
         ],
         "language": {
             url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json",
@@ -75,6 +75,9 @@ $(document).on('click','.update_emp',function () {
             $("#C_telefone").val(data.telefone);
             $("#C_abreviacao").val(data.abreviacao);
             $("#C_divisao").val(data.divisao);
+            $("#C_usuario").val(data.usuario);
+            $("#C_senha").val(data.senha);
+            $("#C_bloqueio").prop('checked', data.bloqueio == true || data.bloqueio == '1');
             $('#operation').val("Update");
         }
     })
@@ -88,6 +91,42 @@ $("#btnInserir").click(function(){
     $('#operation').val("Add");
     var d = new Date().toLocaleString("pt-BR", {timeZone: "America/Sao_Paulo"});
 });
+$("#btnBloquearTodos").click(function(){
+    BootstrapDialog.confirm({
+        message: 'Confirma o bloqueio de TODOS os empregadores da divisão?',
+        title: 'Bloquear Todos os Empregadores',
+        type: BootstrapDialog.TYPE_DANGER,
+        closable: true,
+        draggable: true,
+        btnCancelLabel: 'Não',
+        btnOKLabel: 'Sim, Bloquear Todos',
+        btnOKClass: 'btn btn-danger',
+        btnCancelClass: 'btn btn-secondary',
+        callback: function (result) {
+            if (result) {
+                alterarBloqueioTodos(1);
+            }
+        }
+    });
+});
+$("#btnLiberarTodos").click(function(){
+    BootstrapDialog.confirm({
+        message: 'Confirma a liberação de TODOS os empregadores da divisão?',
+        title: 'Liberar Todos os Empregadores',
+        type: BootstrapDialog.TYPE_SUCCESS,
+        closable: true,
+        draggable: true,
+        btnCancelLabel: 'Não',
+        btnOKLabel: 'Sim, Liberar Todos',
+        btnOKClass: 'btn btn-success',
+        btnCancelClass: 'btn btn-secondary',
+        callback: function (result) {
+            if (result) {
+                alterarBloqueioTodos(0);
+            }
+        }
+    });
+});
 $("#btnSalvar").click(function(event){
 
    event.preventDefault();
@@ -97,102 +136,78 @@ $("#btnSalvar").click(function(event){
    var campo_vazio = validar();
    if (campo_vazio === "validou") {
 
-       if( $('#operation').val() === "Add") {
-
-           $.ajax({
-               url: "pages/empregador/verifica_repitido.php",
-               method: "POST",
-               data: $('#frmFormularioEmpregador').serialize(),
-               success: function (data) {
-
-                   if (data === "nao repitido") {
-
-                       $.ajax({
-                           url: "pages/empregador/salvar.php",
-                           method: "POST",
-                           data: $('#frmFormularioEmpregador').serialize(),
-                           success: function (data) {
-                               $("#frmFormularioEmpregador")[0].reset();
-                               if (data === "atualizado") {
-
-                                    Swal.fire({
-                                        title: "Parabens!",
-                                        text: "Empregador atualizado com sucesso !",
-                                        icon: "success",
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
-
-                               } else if (data === "cadastrado") {
-
-                                    Swal.fire({
-                                        title: "Parabens!",
-                                        text: "Empregador cadastrado com sucesso !",
-                                        icon: "success",
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
-
-                               }
-                               $("#frmFormularioEmpregador")[0].reset();
-                               $("#ModalEditaEmpregador").modal('hide');
-                               tabela_empregador.ajax.reload();
-                               tabela_empregador.columns.adjust().draw();
+       // Verificar duplicidade de usuário e senha antes de salvar
+       $.ajax({
+           url: "pages/empregador/verifica_usuario_senha.php",
+           method: "POST",
+           data: $('#frmFormularioEmpregador').serialize(),
+           dataType: "json",
+           success: function (response) {
+               if (response.status === "erro_usuario") {
+                   BootstrapDialog.show({
+                       closable: false,
+                       title: 'Atenção',
+                       message: 'O usuário "' + $("#C_usuario").val() + '" já está sendo utilizado por outro empregador.',
+                       buttons: [{
+                           cssClass: 'btn-warning',
+                           label: 'Ok',
+                           action: function (dialogItself) {
+                               dialogItself.close();
+                               $("#C_usuario").focus();
                            }
-                       });
-
-                   } else if (data === "repitido") {
-                       BootstrapDialog.show({
-                           closable: false,
-                           title: 'Atenção',
-                           message: 'O empregador : '+$("#C_nome_empregador").val()+' já existe na divisão: '+$( "#C_divisao option:selected" ).text()+'.',
-                           buttons: [{
-                               cssClass: 'btn-warning',
-                               label: 'Ok',
-                               action: function (dialogItself) {
-                                   dialogItself.close();
-                                   $("#C_nome_empregador").focus();
-                               }
-                           }]
-                       });
-                   }
+                       }]
+                   });
+                   return;
+               } else if (response.status === "erro_senha") {
+                   BootstrapDialog.show({
+                       closable: false,
+                       title: 'Atenção',
+                       message: 'A senha "' + $("#C_senha").val() + '" já está sendo utilizada por outro empregador.',
+                       buttons: [{
+                           cssClass: 'btn-warning',
+                           label: 'Ok',
+                           action: function (dialogItself) {
+                               dialogItself.close();
+                               $("#C_senha").focus();
+                           }
+                       }]
+                   });
+                   return;
                }
-           });
-       }else{
-           $.ajax({
-               url: "pages/empregador/salvar.php",
-               method: "POST",
-               data: $('#frmFormularioEmpregador').serialize(),
-               success: function (data) {
-                   $("#frmFormularioEmpregador")[0].reset();
-                   debugger;
-                   if (data === "atualizado") {
 
-                        Swal.fire({
-                            title: "Parabens!",
-                            text: "Empregador atualizado com sucesso !",
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-
-                   } else if (data === "cadastrado") {
-
-                        Swal.fire({
-                            title: "Parabens!",
-                            text: "Empregador cadastrado com sucesso !",
-                            icon: "success",
-                        });
-
-                   }
-                   $("#frmFormularioEmpregador")[0].reset();
-                   $("#ModalEditaEmpregador").modal('hide');
-                   tabela_empregador.ajax.reload();
-                   tabela_empregador.columns.adjust().draw();
+               // Se não houver duplicidade, continua com a verificação do nome (apenas para Add)
+               if ($('#operation').val() === "Add") {
+                   $.ajax({
+                       url: "pages/empregador/verifica_repitido.php",
+                       method: "POST",
+                       data: $('#frmFormularioEmpregador').serialize(),
+                       success: function (data) {
+                           if (data === "nao repitido") {
+                               salvarEmpregador();
+                           } else if (data === "repitido") {
+                               BootstrapDialog.show({
+                                   closable: false,
+                                   title: 'Atenção',
+                                   message: 'O empregador : '+$("#C_nome_empregador").val()+' já existe na divisão: '+$( "#C_divisao option:selected" ).text()+'.',
+                                   buttons: [{
+                                       cssClass: 'btn-warning',
+                                       label: 'Ok',
+                                       action: function (dialogItself) {
+                                           dialogItself.close();
+                                           $("#C_nome_empregador").focus();
+                                       }
+                                   }]
+                               });
+                           }
+                       }
+                   });
+               } else {
+                   salvarEmpregador();
                }
-           });
-       }
-   }else {
+           }
+       });
+
+   } else {
 
        var nome_campo;
        switch (campo_vazio) {
@@ -303,6 +318,40 @@ $('#tabela_empregador').on('click', 'tbody .btnexcluir', function () {
         }
     });
 });
+
+// Função para salvar empregador
+function salvarEmpregador() {
+    $.ajax({
+        url: "pages/empregador/salvar.php",
+        method: "POST",
+        data: $('#frmFormularioEmpregador').serialize(),
+        success: function (data) {
+            $("#frmFormularioEmpregador")[0].reset();
+            if (data === "atualizado") {
+                Swal.fire({
+                    title: "Parabéns!",
+                    text: "Empregador atualizado com sucesso!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else if (data === "cadastrado") {
+                Swal.fire({
+                    title: "Parabéns!",
+                    text: "Empregador cadastrado com sucesso!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+            $("#frmFormularioEmpregador")[0].reset();
+            $("#ModalEditaEmpregador").modal('hide');
+            tabela_empregador.ajax.reload();
+            tabela_empregador.columns.adjust().draw();
+        }
+    });
+}
+
 function validar(){
 
     var nome       = $('#C_nome_empregador').val();
@@ -317,4 +366,59 @@ function validar(){
     }else{
         return "validou";
     }
+}
+// Função para gerar senha aleatória de 6 dígitos numéricos
+function gerarSenhaAleatoria() {
+    var senha = '';
+    for (var i = 0; i < 6; i++) {
+        senha += Math.floor(Math.random() * 10);
+    }
+    return senha;
+}
+
+// Evento do botão de gerar senha
+$("#btnGerarSenha").click(function() {
+    var novaSenha = gerarSenhaAleatoria();
+    $("#C_senha").val(novaSenha);
+});
+
+function alterarBloqueioTodos(bloqueio){
+    waitingDialog.show('Processando, aguarde ...');
+    $.ajax({
+        url: "pages/empregador/alterar_bloqueio_todos.php",
+        method: "POST",
+        data: {
+            'divisao': divisao,
+            'bloqueio': bloqueio
+        },
+        dataType: "json",
+        success: function (data) {
+            waitingDialog.hide();
+            if (data.resultado === "sucesso") {
+                var acao = bloqueio == 1 ? "bloqueados" : "liberados";
+                Swal.fire({
+                    title: "Sucesso!",
+                    text: data.total + " empregadores foram " + acao + " com sucesso!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                tabela_empregador.ajax.reload();
+            } else {
+                Swal.fire({
+                    title: "Erro!",
+                    text: "Erro ao processar a operação: " + data.mensagem,
+                    icon: "error"
+                });
+            }
+        },
+        error: function() {
+            waitingDialog.hide();
+            Swal.fire({
+                title: "Erro!",
+                text: "Erro de comunicação com o servidor.",
+                icon: "error"
+            });
+        }
+    });
 }

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Integração - Sascred Notificações</title>
+    
+    <!-- SweetAlert2 para notificações bonitas (opcional) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .status.conectado { background-color: #d4edda; color: #155724; }
+        .status.erro { background-color: #f8d7da; color: #721c24; }
+        .status.parado { background-color: #d1ecf1; color: #0c5460; }
+        
+        .menu-completo {
+            display: none;
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .menu-completo.ativo {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .form-group {
+            margin: 15px 0;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn.success { background-color: #28a745; }
+        .btn.danger { background-color: #dc3545; }
+        
+        .log {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔔 Sistema de Notificação Sascred</h1>
+        <p>Exemplo de integração para receber notificações em tempo real quando um usuário assinar digitalmente.</p>
+        
+        <div class="form-group">
+            <label for="codigoUsuario">Código do Usuário:</label>
+            <input type="text" id="codigoUsuario" placeholder="Digite o código do usuário" value="12345">
+        </div>
+        
+        <div>
+            <button id="btnIniciar" class="btn">🚀 Iniciar Monitoramento</button>
+            <button id="btnParar" class="btn danger">⏹️ Parar Monitoramento</button>
+            <button id="btnTestar" class="btn success">🧪 Testar Notificação</button>
+        </div>
+        
+        <div id="statusContainer">
+            <h3>Status da Conexão:</h3>
+            <div id="statusDisplay" class="status">Aguardando...</div>
+        </div>
+        
+        <!-- Este div aparecerá quando o menu for habilitado -->
+        <div id="menuCompleto" class="menu-completo">
+            <h2>🎉 Menu Completo do Sascred Habilitado!</h2>
+            <p>O usuário assinou digitalmente e agora tem acesso completo ao Sascred.</p>
+            <p><strong>Usuário:</strong> <span id="nomeUsuario">-</span></p>
+            <p><strong>Código:</strong> <span id="codigoUsuarioDisplay">-</span></p>
+            
+            <!-- Aqui você colocaria os elementos reais do menu do Sascred -->
+            <div style="margin-top: 20px;">
+                <h4>Menu Sascred:</h4>
+                <ul style="text-align: left; display: inline-block;">
+                    <li>💳 Cartão de Crédito</li>
+                    <li>💰 Empréstimos</li>
+                    <li>📊 Relatórios</li>
+                    <li>⚙️ Configurações</li>
+                    <li>📱 Aplicativo Mobile</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="log" id="logContainer">
+            <strong>Log de Eventos:</strong><br>
+            <div id="logContent">Sistema iniciado...<br></div>
+        </div>
+    </div>
+
+    <!-- Incluir o sistema de notificações -->
+    <script src="js/sascred_notificacao_app.js"></script>
+    
+    <script>
+        // Variáveis globais
+        let sascredNotification = null;
+        let isMonitoring = false;
+        
+        // Elementos DOM
+        const btnIniciar = document.getElementById('btnIniciar');
+        const btnParar = document.getElementById('btnParar');
+        const btnTestar = document.getElementById('btnTestar');
+        const codigoUsuarioInput = document.getElementById('codigoUsuario');
+        const statusDisplay = document.getElementById('statusDisplay');
+        const menuCompleto = document.getElementById('menuCompleto');
+        const nomeUsuario = document.getElementById('nomeUsuario');
+        const codigoUsuarioDisplay = document.getElementById('codigoUsuarioDisplay');
+        const logContent = document.getElementById('logContent');
+        
+        // Função para adicionar log
+        function addLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            logContent.innerHTML += `[${timestamp}] ${message}<br>`;
+            document.getElementById('logContainer').scrollTop = document.getElementById('logContainer').scrollHeight;
+        }
+        
+        // Event listeners
+        btnIniciar.addEventListener('click', function() {
+            const codigo = codigoUsuarioInput.value.trim();
+            
+            if (!codigo) {
+                alert('Por favor, digite o código do usuário!');
+                return;
+            }
+            
+            if (isMonitoring) {
+                addLog('⚠️ Monitoramento já está ativo');
+                return;
+            }
+            
+            addLog(`🚀 Iniciando monitoramento para usuário: ${codigo}`);
+            
+            // Criar instância do sistema de notificação
+            sascredNotification = new SascredNotificationApp({
+                debug: true,
+                baseUrl: window.location.origin
+            });
+            
+            // Iniciar monitoramento
+            const success = sascredNotification.iniciarMonitoramento(codigo, {
+                // Callback quando menu for habilitado
+                onMenuHabilitado: function(dadosUsuario) {
+                    addLog('🎉 MENU COMPLETO HABILITADO!');
+                    
+                    // Mostrar o menu completo na interface
+                    if (dadosUsuario) {
+                        nomeUsuario.textContent = dadosUsuario.nome || 'N/A';
+                        codigoUsuarioDisplay.textContent = dadosUsuario.codigo || codigo;
+                    } else {
+                        nomeUsuario.textContent = 'Usuário';
+                        codigoUsuarioDisplay.textContent = codigo;
+                    }
+                    
+                    menuCompleto.classList.add('ativo');
+                    isMonitoring = false;
+                    updateUI();
+                    
+                    // Aqui você implementaria a lógica real do seu app:
+                    // - Mostrar elementos de menu
+                    // - Redirecionar para página principal
+                    // - Atualizar interface
+                    // - Etc.
+                    
+                    addLog('✅ Interface do app atualizada com menu completo');
+                },
+                
+                // Callback para updates de status
+                onStatusUpdate: function(status, mensagem) {
+                    addLog(`📊 Status: ${status} - ${mensagem}`);
+                    updateStatusDisplay(status, mensagem);
+                },
+                
+                // Callback para erros
+                onError: function(tipo, mensagem) {
+                    addLog(`❌ Erro ${tipo}: ${mensagem}`);
+                    updateStatusDisplay('erro', `Erro: ${mensagem}`);
+                }
+            });
+            
+            if (success) {
+                isMonitoring = true;
+                updateUI();
+            } else {
+                addLog('❌ Falha ao iniciar monitoramento');
+            }
+        });
+        
+        btnParar.addEventListener('click', function() {
+            if (!isMonitoring || !sascredNotification) {
+                addLog('⚠️ Nenhum monitoramento ativo');
+                return;
+            }
+            
+            addLog('⏹️ Parando monitoramento...');
+            sascredNotification.pararMonitoramento();
+            sascredNotification = null;
+            isMonitoring = false;
+            updateUI();
+            updateStatusDisplay('parado', 'Monitoramento encerrado');
+        });
+        
+        btnTestar.addEventListener('click', function() {
+            addLog('🧪 Simulando notificação de teste...');
+            
+            // Simular habilitação do menu para teste
+            setTimeout(() => {
+                addLog('🎉 TESTE: Menu habilitado!');
+                nomeUsuario.textContent = 'Usuário Teste';
+                codigoUsuarioDisplay.textContent = codigoUsuarioInput.value || '12345';
+                menuCompleto.classList.add('ativo');
+                
+                // Mostrar notificação
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        title: '🧪 Teste!',
+                        text: 'Menu do Sascred habilitado (simulação)',
+                        icon: 'success',
+                        timer: 3000
+                    });
+                } else {
+                    alert('✅ Teste: Menu do Sascred habilitado!');
+                }
+            }, 1000);
+        });
+        
+        // Função para atualizar UI
+        function updateUI() {
+            btnIniciar.disabled = isMonitoring;
+            btnParar.disabled = !isMonitoring;
+            codigoUsuarioInput.disabled = isMonitoring;
+        }
+        
+        // Função para atualizar display de status
+        function updateStatusDisplay(status, mensagem) {
+            statusDisplay.textContent = mensagem;
+            statusDisplay.className = 'status ' + status;
+        }
+        
+        // Inicializar UI
+        updateUI();
+        updateStatusDisplay('parado', 'Pronto para iniciar monitoramento');
+        
+        // Log inicial
+        addLog('💡 Sistema carregado e pronto para uso');
+        addLog('📋 Para testar: digite um código de usuário e clique em "Iniciar Monitoramento"');
+        
+        // Expor para debug no console
+        window.appDebug = {
+            sascredNotification,
+            addLog,
+            isMonitoring
+        };
+    </script>
+</body>
+</html> 

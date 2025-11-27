@@ -27,10 +27,10 @@ class PDF extends FPDF
         $this->SetFont('Arial','B',12   );
 
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(0,utf8_decode('Cartões bloqueados'));
+        $this->Write(0,mb_convert_encoding('Cartões bloqueados', 'ISO-8859-1', 'UTF-8'));
         $this->Ln(5);
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(0,utf8_decode(self::$RS));
+        $this->Write(0,mb_convert_encoding(self::$RS, 'ISO-8859-1', 'UTF-8'));
 
         $this->Cell(22);//move para direita 20 posiçoes
         $this->Write(0,date('d/m/Y')." - ".date('H:i:s'));
@@ -40,7 +40,7 @@ class PDF extends FPDF
 
         $this->Cell(15,-6,"Codigo",0,0,'L');
 
-        $this->Cell(21,-6,utf8_decode("Cartão"),0,0,'L');
+        $this->Cell(21,-6,mb_convert_encoding("Cartão", 'ISO-8859-1', 'UTF-8'),0,0,'L');
 
         $this->Cell(90,-6,"Nome",0,0,'L');
 

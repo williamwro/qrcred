@@ -11,7 +11,9 @@ $sql = "SELECT codigo,mes FROM sind.controle order by codigo desc limit 3";
 $sql = $pdo->query($sql);
 $i++;
 while($row = $sql->fetch()) {
-    $someArray[$i] = array_map("utf8_encode",$row);
+    $someArray[$i] = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $row);
     $i++;
 }
 echo json_encode($someArray);

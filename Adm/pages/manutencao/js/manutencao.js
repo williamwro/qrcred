@@ -17,7 +17,8 @@ $(document).ready(function(){
             $("#mes_atual").val(data.abreviacao_anterior);
             mes_anterior = data.abreviacao_anterior;
             mes_anterior2 = data.abreviacao_anterior2;
-            if(data.status_admin === "0"){
+            debugger;
+            if(data.status_admin === 0){
                 $("#btnBloquear").text("Liberar");
                 $("#status").text("Bloqueado").addClass('badge badge-danger').css("background-color", "red");
             }else{

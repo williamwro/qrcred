@@ -64,7 +64,7 @@ while($row_assoc = $sql_associado->fetch()) {
         if ($row_assoc['cod_situacaocartao'] == "1" or $row_assoc['cod_situacaocartao'] == "5" or $row_assoc['cod_situacaocartao'] == "4" or $row_assoc['cod_situacaocartao'] == "2" or $row_assoc['cod_situacaocartao'] == "6" or $row_assoc['cod_situacaocartao'] == "7") {
 
             $std->situacao            = 1; //1 = liberado
-            $std->nome                = utf8_encode($row_assoc['nome']);
+            $std->nome                = mb_convert_encoding($row_assoc['nome'], 'UTF-8', 'ISO-8859-1');
             $std->cod_cart            = $row_assoc['cod_verificacao'];
             $std->matricula           = $row_assoc['codigo'];
             $std->empregador          = $row_assoc['empregador'];

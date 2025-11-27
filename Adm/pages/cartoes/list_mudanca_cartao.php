@@ -1,5 +1,5 @@
 <?PHP
-header("Content-type: application/json");
+header('Content-Type: application/json; charset=utf-8');
 include "../../php/banco.php";
 include "../../php/funcoes.php";
 $pdo = Banco::conectar_postgres();
@@ -34,7 +34,9 @@ foreach ($result as $row){
     $sub_array["operador"]        = $row["usuario"];
     $sub_array["obs"]             = $row["obs"];
 
-    $someArray["data"][] = array_map("utf8_encode",$sub_array);
+    $someArray["data"][] = array_map(function($value) {
+        return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
+    }, $sub_array);
 
 }
 if($linhas_filtradas > 0) {

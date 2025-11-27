@@ -3,6 +3,7 @@ require '../../php/banco.php';
 $_codigo = isset($_POST['C_codigo']) ? $_POST['C_codigo'] : 0;
 $_nome   = isset($_POST['C_nome_divisao']) ? strtoupper($_POST['C_nome_divisao']) : "";
 $_cidade = isset($_POST['C_cidade']) ? strtoupper($_POST['C_cidade']) : "";
+$_dia_mes_renovacao = isset($_POST['C_dia_mes_renovacao']) ? $_POST['C_dia_mes_renovacao'] : null;
 
 $stmt = new stdClass();
 $pdo = Banco::conectar_postgres();
@@ -13,7 +14,8 @@ if(isset($_POST["operation"])) {
 
         $sql = "UPDATE sind.divisao SET ";
         $sql .= "nome = :nome, ";
-        $sql .= "cidade = :cidade ";
+        $sql .= "cidade = :cidade, ";
+        $sql .= "dia_mes_renovacao = :dia_mes_renovacao ";
         $sql .= "WHERE id_divisao = " . $_codigo;
 
         $msg_grava_cad = "atualizado";
@@ -21,10 +23,11 @@ if(isset($_POST["operation"])) {
     }elseif($_POST["operation"] == "Add") {
 
         $sql = "INSERT INTO sind.divisao(";
-        $sql .= "nome,cidade) ";
+        $sql .= "nome,cidade,dia_mes_renovacao) ";
         $sql .= "VALUES(";
         $sql .= ":nome, ";
-        $sql .= ":cidade)";
+        $sql .= ":cidade, ";
+        $sql .= ":dia_mes_renovacao)";
 
         $msg_grava_cad = "cadastrado";
 
@@ -38,6 +41,7 @@ if(isset($_POST["operation"])) {
         //}
         $stmt->bindParam(':nome', $_nome, PDO::PARAM_STR);
         $stmt->bindParam(':cidade', $_cidade, PDO::PARAM_STR);
+        $stmt->bindParam(':dia_mes_renovacao', $_dia_mes_renovacao, PDO::PARAM_INT);
 
 
         $stmt->execute();

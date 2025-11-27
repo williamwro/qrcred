@@ -110,8 +110,8 @@ while($row = $sql_conv_vendas->fetch()) {
     $pdf->AddPage();
     $pdf->Ln(5);
 
-    $total = (real)$row["total"];
-    $prolabore = (real)$row["prolabore"];
+    $total = (float)$row["total"];
+    $prolabore = (float)$row["prolabore"];
     $valor_prolabore = ($total * $prolabore)/100;
     $total_liquido = $total - $valor_prolabore;
     $total_liquido = number_format($total_liquido, 2, ',', '.');

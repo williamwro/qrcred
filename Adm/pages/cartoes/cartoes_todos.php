@@ -53,11 +53,13 @@ foreach ($result as $row){
     $sub_array["nome"]                = $row["nome"];
     $sub_array["id_empregador"]       = $row["id_empregador"];
     $sub_array["empregador"]          = $row["nome_empregador"];
-    $sub_array["cod_verificacao"]     = (real)$row["cod_verificacao"];
+    $sub_array["cod_verificacao"]     = (float)$row["cod_verificacao"];
     $sub_array["cod_situacaocartao"]  = $row["cod_situacaocartao"];
     $sub_array["descri_situacao"]     = $row["descri_situacao"];
 
-    $someArray["data"][] = array_map("utf8_encode",$sub_array);
+    $someArray["data"][] = array_map(function($value) {
+        return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+    }, $sub_array);
 
 }
 echo json_encode($someArray);

@@ -13,7 +13,9 @@ $sql = "SELECT * FROM sind.conta WHERE lancamento = ".$lancamento;
 $sql = $pdo->query($sql);
 $i++;
 while($row = $sql->fetch()) {
-        $someArray[$i] = array_map("utf8_encode",$row);
+        $someArray[$i] = array_map(function($value) {
+            return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+        }, $row);
     $i++;
 }
 if(isset($someArray[1]['uuid_conta']) && $someArray[1]['uuid_conta'] != ""){
@@ -26,7 +28,9 @@ if(isset($someArray[1]['uuid_conta']) && $someArray[1]['uuid_conta'] != ""){
 
     $i2++;
     while($row = $stmt->fetch()) {
-        $someArray2[$i2] = array_map("utf8_encode",$row);
+        $someArray2[$i2] = array_map(function($value) {
+            return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+        }, $row);
         $i2++;
     }
 }else{
@@ -41,7 +45,9 @@ if(isset($someArray[1]['uuid_conta']) && $someArray[1]['uuid_conta'] != ""){
 
     $i2++;
     while($row = $stmt->fetch()) {
-        $someArray2[$i2] = array_map("utf8_encode",$row);
+        $someArray2[$i2] = array_map(function($value) {
+            return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+        }, $row);
         $i2++;
     }
 }

@@ -39,7 +39,30 @@ $('#btnAtualizar').click(function () {
                 data_inicial: data_inicial,
                 data_final: data_final
             },
-            "dataType": 'json'
+            "dataType": 'json',
+            "dataSrc": function(json) {
+                // Exibir o total do período na parte superior
+                if (json.total_periodo !== undefined) {
+                    var totalFormatado = parseFloat(json.total_periodo).toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    });
+                    
+                    // Remover qualquer total anterior
+                    $('#total-periodo-info').remove();
+                    
+                    // Adicionar o total na parte superior do relatório
+                    var infoHtml = '<div id="total-periodo-info" class="alert alert-info" style="margin-bottom: 20px; text-align: center; font-size: 18px; font-weight: bold;">' +
+                                  '<i class="fa fa-calculator"></i> ' +
+                                  'Total do Período (' + data_inicial + ' a ' + data_final + '): ' + totalFormatado +
+                                  '</div>';
+                    
+                    $('#tabela_producao_wrapper').before(infoHtml);
+                }
+                
+                // Retornar os dados para a tabela
+                return json.data || [];
+            }
         },
         "order": [[ 1, "asc" ]],
         "columns": [

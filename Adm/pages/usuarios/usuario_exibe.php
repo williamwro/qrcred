@@ -26,10 +26,11 @@ if(isset($_POST["codigo_usuario"])){
         //$std->password        = $row["password"];
         //$std->senha           = $row["senha"];
         $std->email           = $row["email"];
-        $std->lastname        = htmlspecialchars($row["lastname"]);
+        $std->lastname        = htmlspecialchars($row["lastname"] ?? '');
         $std->situacao        = (int)$row["situacao"];
-        $std->nome            = htmlspecialchars($row["nome"]);
+        $std->nome            = htmlspecialchars($row["nome"] ?? '');
         $std->divisao         = (int)$row["divisao"];
+        $std->grupo_id        = (int)$row["grupo_id"];
         $std->descri_situacao = $row["descri_situacao"];
         $std->nome_divisao    = $row["nome_divisao"];
     }

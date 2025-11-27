@@ -9,6 +9,8 @@ if(isset($_POST['cod_associado_senha'])){
     $_Csenha = $_POST['C_Senha_assoc'];
     $_existe_senha = $_POST['existe_senha'];
     $id_empregador = $_POST['id_empregador_senha'];
+    $id_associado = $_POST['id_associado'];
+    $id_divisao = $_POST['id_divisao_senha'];
     $stmt = new stdClass();
     $pdo = Banco::conectar_postgres();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -19,14 +21,16 @@ if(isset($_POST['cod_associado_senha'])){
             if( $_Csenha != "" && $_Csenhaconfirma != "" ) {
                 if ($_Csenha == $_Csenhaconfirma) {
 
-                        $sql = "INSERT INTO sind.c_senhaassociado(cod_associado, senha, id_empregador) ";
-                        $sql .= "VALUES(:codigo_associado, :senha, :id_empregador)";
+                        $sql = "INSERT INTO sind.c_senhaassociado(cod_associado, senha, id_empregador, id_associado, id_divisao) ";
+                        $sql .= "VALUES(:codigo_associado, :senha, :id_empregador, :id_associado, :id_divisao)";
                         $msg_grava_cad = "cadastrado";
 
                         $stmt = $pdo->prepare($sql);
                         $stmt->bindParam(':codigo_associado', $_codigo, PDO::PARAM_STR);
                         $stmt->bindParam(':senha', $_Csenha, PDO::PARAM_STR);
                         $stmt->bindParam(':id_empregador', $id_empregador, PDO::PARAM_INT);
+                        $stmt->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+                        $stmt->bindParam(':id_divisao', $id_divisao, PDO::PARAM_INT);
 
                         $stmt->execute();
                         echo $msg_grava_cad;
@@ -40,17 +44,21 @@ if(isset($_POST['cod_associado_senha'])){
             }
         }else{
             if( $_Csenha != "" && $_Csenhaconfirma != "" ) {
-                if ($_Csenha = $_Csenhaconfirma) {
+                if ($_Csenha == $_Csenhaconfirma) {
                     $sql = "UPDATE sind.c_senhaassociado SET ";
                     $sql .= "senha = :senha ";
                     $sql .= "WHERE cod_associado = :cod_associado ";
-                    $sql .= "AND id_empregador = :id_empregador";
+                    $sql .= "AND id_empregador = :id_empregador ";
+                    $sql .= "AND id_associado = :id_associado ";
+                    $sql .= "AND id_divisao = :id_divisao";
                     $msg_grava_cad = "atualizado";
 
                     $stmt = $pdo->prepare($sql);
                     $stmt->bindParam(':cod_associado', $_codigo, PDO::PARAM_STR);
                     $stmt->bindParam(':senha', $_Csenhaconfirma, PDO::PARAM_STR);
                     $stmt->bindParam(':id_empregador', $id_empregador, PDO::PARAM_INT);
+                    $stmt->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+                    $stmt->bindParam(':id_divisao', $id_divisao, PDO::PARAM_INT);
 
                     $stmt->execute();
                     echo $msg_grava_cad;

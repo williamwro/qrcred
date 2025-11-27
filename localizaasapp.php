@@ -32,24 +32,33 @@ if (!isset($_POST['cartaodigitado'])){
 		$std->email = "";
 		$std->cpf = "";
 		$std->cel = "";
+		$std->id = ""; // CAMPO ADICIONADO
 		$std->endereco  = $_POST;
 		
 }else{			
 	$cartaodigitado  = $_POST['cartaodigitado'];
 	
-    $sql_conv_senha = $pdo->query("SELECT associado.codigo,associado.nome,
+    $sql_conv_senha = $pdo->query("SELECT associado.id,associado.codigo,associado.nome,
                                             associado.empregador,associado.limite,
                                             associado.salario,associado.parcelas_permitidas,
                                             c_cartaoassociado.cod_situacaocartao,
                                             c_cartaoassociado.cod_verificacao,associado.email,
-                                            associado.cel,associado.cpf,associado.token_associado
+                                            associado.cel,associado.cpf,associado.token_associado,
+											associado.id_divisao,
+											empregador.nome as nome_empregador,
+											divisao.nome as nome_divisao
                                        FROM sind.associado 
                                  INNER JOIN sind.c_cartaoassociado 
                                          ON associado.codigo = c_cartaoassociado.cod_associado
-                                        AND associado.empregador = c_cartaoassociado.empregador 
+                                        AND associado.empregador = c_cartaoassociado.empregador
+                                 INNER JOIN sind.empregador
+                                         ON associado.empregador = empregador.id
+                                 INNER JOIN sind.divisao
+                                         ON associado.id_divisao = divisao.id_divisao
                                       WHERE c_cartaoassociado.cod_verificacao='".$cartaodigitado."'");
     while($row_senha = $sql_conv_senha->fetch()) {
         $cod_convenio = 1;
+		$std->id                  = $row_senha['id']; // CAMPO ADICIONADO
 		$std->nome                = $row_senha['nome'];
 		$std->cod_cart            = $row_senha['cod_verificacao'];
 		$std->matricula           = $row_senha['codigo'];
@@ -60,6 +69,9 @@ if (!isset($_POST['cartaodigitado'])){
 		$std->cpf                 = $row_senha["cpf"];
 		$std->cel                 = $row_senha["cel"];
         $std->token_associado     = $row_senha["token_associado"];
+		$std->id_divisao          = $row_senha["id_divisao"];
+		$std->nome_empregador     = $row_senha["nome_empregador"];
+		$std->nome_divisao        = $row_senha["nome_divisao"];
     }
     if( $cod_convenio == 0 ){
 
@@ -73,6 +85,8 @@ if (!isset($_POST['cartaodigitado'])){
 			$std->email = "";
 			$std->cpf = "";
 			$std->cel = "";
+			$std->id = ""; // CAMPO ADICIONADO
+			$std->id_divisao = "";
 		
 	}
 }

@@ -28,12 +28,8 @@ if (isset($_POST["empregador"]) and $_POST["mes"] != "" and $tipo === "" ) {
                WHERE conta.mes = '" . $mes . "'
                  AND conta.empregador = " . $empregador . "
                  AND associado.id_divisao = " . $divisao . "
-                 AND associado.codigo <> '".$card1."' 
-                 AND associado.codigo <> '".$card2."' 
-                 AND associado.codigo <> '".$card3."'
-                 AND associado.codigo <> '".$card4."' 
-                 AND associado.codigo <> '".$card5."'    
-                 AND associado.codigo <> '".$card6."'                    
+                 AND (conta.aprovado = true OR conta.aprovado IS NULL)
+                            
             GROUP BY convenio.tipo, conta.associado, associado.nome, tipoconvenio.nome, tipoconvenio.categoria 
             ORDER BY conta.associado,tipoconvenio.categoria";
 }else{
@@ -51,12 +47,8 @@ if (isset($_POST["empregador"]) and $_POST["mes"] != "" and $tipo === "" ) {
                  AND conta.empregador = " . $empregador . "
                  AND convenio.tipo = " . $tipo . "
                  AND associado.id_divisao = " . $divisao . "
-                 AND associado.codigo <> '".$card1."' 
-                 AND associado.codigo <> '".$card2."' 
-                 AND associado.codigo <> '".$card3."'
-                 AND associado.codigo <> '".$card4."' 
-                 AND associado.codigo <> '".$card5."'      
-                 AND associado.codigo <> '".$card6."'                  
+                 AND (conta.aprovado = true OR conta.aprovado IS NULL)
+                            
             GROUP BY convenio.tipo, conta.associado, associado.nome, tipoconvenio.nome, tipoconvenio.categoria 
             ORDER BY conta.associado,tipoconvenio.categoria";
 }

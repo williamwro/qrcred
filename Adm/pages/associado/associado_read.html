@@ -3,6 +3,8 @@
     <head>
         <title>Associados</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <!-- Select2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     </head>
     <style type="text/css">
         .modal-dialog {
@@ -34,6 +36,39 @@
         }
         #tabela_producao_assoc{
             font-family: "calibri", Trebuchet MS, Arial, Helvetica, sans-serif;
+        }
+        
+        /* Customizar Select2 para ficar igual aos outros campos */
+        .select2-container--default .select2-selection--single {
+            height: 30px !important;
+            border: 1px solid #ccc !important;
+            border-radius: 0 !important;
+            padding: 4px 8px !important;
+            font-size: 12px !important;
+        }
+        
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 20px !important;
+            padding: 0 !important;
+            color: #555 !important;
+        }
+        
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 28px !important;
+            right: 5px !important;
+        }
+        
+        .select2-dropdown {
+            border: 1px solid #ccc !important;
+            border-radius: 0 !important;
+            font-size: 12px !important;
+        }
+        
+        .select2-container--default .select2-search--dropdown .select2-search__field {
+            border: 1px solid #ccc !important;
+            border-radius: 0 !important;
+            padding: 4px 8px !important;
+            font-size: 12px !important;
         }
 </style>
     <body>
@@ -99,6 +134,7 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -137,8 +173,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
-                                    <div class="form-group control-group has-feedback">
-                                        <label class="control-label" for="C_matricula_assoc">Matrícula</label>
+                                    <div class="form-group control-group has-feedback"> 
+                                        <label class="control-label" for="C_matricula_assoc">Matrícula RH</label>
                                         <input type="text" class="form-control input-sm" id="C_matricula_assoc" name="C_matricula_assoc" maxlength="13" placeholder="Matrícula" required>
                                         <input type="hidden" class="form-control input-sm" id="C_matricula_original" name="C_matricula_original">
                                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
@@ -365,54 +401,114 @@
         </div>
         <!-- Modal Edita Senha -->
         <div class="modal fade" id="ModalSenha" name="ModalSenha" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <form class="form-condensed" data-toggle="validator" name="frmSenha_assoc" id="frmSenha_assoc" role="form" method="post" action="#">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="ModalSenhaLabel">Senha do Associado</h4>
+                    <div class="modal-header" style="background-color: #007bff; color: white;">
+                        <h4 class="modal-title" id="ModalSenhaLabel"><i class="glyphicon glyphicon-lock"></i> Senha do Associado</h4>
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
-                                    <span class="badge badge-secondary" id="associado_rotulo"></span>
-                                </div>
-                            </div>
-                            <br />
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
-                            </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
-                                    <div class="form-group control-group">
-                                        <label class="control-label" for="C_Senha_assoc">Senha</label>
-                                        <input type="password" class="form-control input-sm" id="C_Senha_assoc" name="C_Senha_assoc" value="" placeholder="Senha" data-error="Por favor, informe a senha." maxlength="6" required>
-                                        <input type="hidden" name="cod_associado_senha" id="cod_associado_senha">
-                                        <input type="hidden" name="senha_associado" id="senha_associado">
-                                        <input type="hidden" name="id_empregador_senha" id="id_empregador_senha">
-                                        <input type="hidden" name="existe_senha" id="existe_senha">
+                            <!-- Nome do Associado -->
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-12">
+                                    <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; border-left: 4px solid #007bff;">
+                                        <strong>Associado:</strong> <span id="associado_rotulo" style="font-size: 16px; color: #333;"></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6" style="padding-right: 2px;">
-                                    <div class="form-group control-group">
-                                        <label class="control-label" for="C_Confirma_Senha_assoc">Confirma Senha</label>
-                                        <input type="password" class="form-control input-sm" id="C_Confirma_Senha_assoc" name="C_Confirma_Senha_assoc" placeholder="Confirma Senha" data-error="Por favor, confirme a senha." maxlength="6" required>
+                            
+                            <!-- Mensagem de Status da Senha -->
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-12">
+                                    <div id="status_senha_msg" style="padding: 12px; border-radius: 5px; text-align: center; font-weight: bold;">
+                                        <!-- Mensagem será inserida via JavaScript -->
                                     </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Campos Hidden -->
+                            <input type="text" class="form-control input-sm" id="username_hidden" name="username_hidden" style="display:none;" autocomplete="username">
+                            <input type="hidden" name="id_associado" id="id_associado">
+                            <input type="hidden" name="cod_associado_senha" id="cod_associado_senha">
+                            <input type="hidden" name="senha_associado" id="senha_associado">
+                            <input type="hidden" name="id_empregador_senha" id="id_empregador_senha">
+                            <input type="hidden" name="existe_senha" id="existe_senha">
+                            <input type="hidden" name="id_divisao_senha" id="id_divisao_senha">
+                            
+                            <!-- Opção 1: Definir Senha Manualmente -->
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-12">
+                                    <div style="background-color: #e7f3ff; padding: 10px; border-radius: 5px; border-left: 4px solid #28a745;">
+                                        <strong><i class="glyphicon glyphicon-pencil"></i> Opção 1: Definir Senha Manualmente (6 dígitos)</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_Senha_assoc"><strong>Senha</strong></label>
+                                        <input type="text" class="form-control" id="C_Senha_assoc" name="C_Senha_assoc" value="" placeholder="Digite 6 dígitos" data-error="Por favor, informe a senha." maxlength="6" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_Confirma_Senha_assoc"><strong>Confirma Senha</strong></label>
+                                        <input type="text" class="form-control" id="C_Confirma_Senha_assoc" name="C_Confirma_Senha_assoc" placeholder="Confirme a senha" data-error="Por favor, confirme a senha." maxlength="6" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Separador -->
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-12">
+                                    <hr style="border-top: 2px dashed #ccc;">
+                                </div>
+                            </div>
+                            
+                            <!-- Opção 2: Gerar Senha Aleatória -->
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-md-12">
+                                    <div style="background-color: #fff3cd; padding: 10px; border-radius: 5px; border-left: 4px solid #ffc107;">
+                                        <strong><i class="glyphicon glyphicon-random"></i> Opção 2: Gerar Senha Aleatória</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="control-label"><strong>Senha Gerada</strong></label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="senha_gerada_display" placeholder="Clique no botão para gerar" readonly style="font-size: 24px; font-weight: bold; text-align: center; letter-spacing: 5px; background-color: #f9f9f9;">
+                                            <span class="input-group-addon" id="btn_copiar_senha" style="cursor: pointer; background-color: #17a2b8; color: white; border-color: #17a2b8;" title="Copiar senha">
+                                                <i class="glyphicon glyphicon-copy"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="control-label" style="visibility: hidden;">Ação</label>
+                                    <button type="button" class="btn btn-warning btn-block" id="btn_gerar_senha" style="height: 42px;">
+                                        <i class="glyphicon glyphicon-refresh"></i> Gerar Senha
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="btnsalvarsenha">Salvar</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-success" id="btnsalvarsenha"><i class="glyphicon glyphicon-floppy-disk"></i> Salvar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Fechar</button>
                     </div>
                 </div>
                 </form>
             </div>
         </div>
         <script src="../Adm/pages/associado/js/associado_read_script.js"></script>
+        <!-- Select2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        
+        <!-- Select2 inicializado no arquivo JS após carregamento dos dados -->
    </body>
 </html>

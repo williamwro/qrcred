@@ -59,6 +59,7 @@ if (isset($_POST['userconv']) && isset($_POST['passconv'])){
             $std->id_categoria  = $row_conv["id_categoria"];
             $std->senha         = $_POST['passconv'];
             $std->aceita_termo  = $row_conv["aceita_termo"];
+            $std->divisao       = $row_conv["divisao"];
         }
 	}else{
 		$std->tipo_login   = "login incorreto";
@@ -74,6 +75,7 @@ if (isset($_POST['userconv']) && isset($_POST['passconv'])){
         $std->pede_senha   = "";
         $std->latitude     = "";
         $std->longitude    = "";
+        $std->divisao      = "";
 	}
 }else{
 	$std->tipo_login   =  "login vazio";
@@ -89,5 +91,6 @@ if (isset($_POST['userconv']) && isset($_POST['passconv'])){
     $std->pede_senha   = "";
     $std->latitude     = "";
     $std->longitude    = "";
+    $std->divisao      = "";
 }
 echo json_encode($std);

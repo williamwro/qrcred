@@ -24,14 +24,16 @@ foreach ($result as $row){
 
     $sub_array["codigo"]                = $row["codigo"];
     $sub_array["nome"]                  = $row["nome"];
-    $sub_array["cod_verificacao"]       = (real)$row["cod_verificacao"];
+    $sub_array["cod_verificacao"]       = (float)$row["cod_verificacao"];
     $sub_array["cod_situacaocartao"]    = date('d/m/Y', strtotime($row["cod_situacaocartao"]));
     $sub_array["descri_situacao"]       = $row["descri_situacao"];
     $sub_array["motivo_cancela"]        = $row["motivo_cancela"];
     $sub_array["botao"]                 = '<button type="button" name="update" id="'.$row["lancamento"].'" class="btn btn-warning btn-xs update">Alterar</button>';
     $sub_array["botaosenha"]            = '<button type="button" name="btnsenha" id="'.$row["lancamento"].'" class="btn btn-facebook btn-xs btnsenha">Senha</button>';
 
-    $someArray["data"][] = array_map("utf8_encode",$sub_array);
+    $someArray["data"][] = array_map(function($value) {
+        return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+    }, $sub_array);
 
 }
 echo json_encode($someArray);

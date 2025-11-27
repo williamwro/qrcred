@@ -1,6 +1,28 @@
 var table;
 var usuario;
 var senha;
+
+/**
+ * FUNÇÃO DE SEGURANÇA: Limpar dados sensíveis da memória
+ * Evita que senhas e números de cartão fiquem salvos no navegador
+ */
+function limparDadosSensiveis() {
+    // Limpar campos de cartão e senha
+    $("#txtCartao, #cod_cart").val("");
+    $("#txtSenhaCartao, #senhacartao").val("");
+    
+    // Limpar variáveis globais se existirem
+    if (typeof cartao_ !== 'undefined') cartao_ = null;
+    if (typeof senha_ !== 'undefined') senha_ = null;
+    
+    // Forçar garbage collection se suportado
+    if (window.gc && typeof window.gc === 'function') {
+        window.gc();
+    }
+    
+    console.log("🔒 Dados sensíveis limpos da memória por segurança");
+}
+
 $(document).ready(function(){
     var ie = /*@cc_on!@*/false || !!document.documentMode;
     var browser_name;
@@ -15,7 +37,26 @@ $(document).ready(function(){
     $("#userconv").val("");
     $("#passconv").val("");
     $("#txtSenhaCartao").val("");
+    // SEGURANÇA EXTRA: Limpar campos sensíveis da memória
+    $("#txtCartao").val("");
+    // Forçar garbage collection do JavaScript (se suportado)
+    if (window.gc && typeof window.gc === 'function') {
+        window.gc();
+    }
     $("#cod_carteira_login").val("");
+    
+    // MEDIDAS DE SEGURANÇA EXTRAS
+    // Limpar dados sensíveis quando a página for fechada/recarregada
+    $(window).on('beforeunload unload', limparDadosSensiveis);
+    
+    // Limpar dados sensíveis a cada 60 segundos (medida extra de segurança)
+    setInterval(function() {
+        // Só limpar se não há formulário ativo sendo preenchido
+        if (!$('#txtCartao').is(':focus') && !$('#txtSenhaCartao').is(':focus') && 
+            !$('#cod_cart').is(':focus') && !$('#senhacartao').is(':focus')) {
+            limparDadosSensiveis();
+        }
+    }, 60000);
     $("#divLoading").css("display", "none");
 
     $("#btnEntrar").click(function (e) {
@@ -166,6 +207,14 @@ $(document).ready(function(){
                 dataType: 'json',
                 beforeSend: function () {
                     $("#divLoading").css("display", "block");
+                    
+                    // SEGURANÇA: Limpar campos sensíveis imediatamente após serialização
+                    setTimeout(function() {
+                        $("#txtCartao").val("");
+                        $("#txtSenhaCartao").val("");
+                        // Forçar limpeza da memória do formulário
+                        document.getElementById('form_associado').reset();
+                    }, 100);
                 },
                 done: function () {
                     $("#divLoading").css("display", "none");

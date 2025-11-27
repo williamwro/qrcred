@@ -20,16 +20,22 @@ if (isset($_POST['dados'][0]['numerocartao'])){
 
         $msg = "criado";
         $arr = array('cod_verificacao' => $_cartao, 'resultado' => $msg);
-        $someArray = array_map("utf8_encode", $arr);
+        $someArray = array_map(function($value) {
+            return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
+        }, $arr);
     }else{
         $msg = 'nao criado';
         $arr = array('cod_verificacao' => $_cartao, 'resultado' => $msg);
-        $someArray = array_map("utf8_encode",$arr);
+        $someArray = array_map(function($value) {
+            return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
+        }, $arr);
     }
 
 }else{
     $msg = 'nao criado';
     $arr = array('cod_verificacao' =>'','Resultado'=>$msg);
-    $someArray = array_map("utf8_encode",$arr);
+    $someArray = array_map(function($value) {
+        return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
+    }, $arr);
 }
 echo json_encode($someArray);

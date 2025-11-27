@@ -1,0 +1,30 @@
+<?php
+
+header('Content-Type: application/json');
+
+// Database connection
+include "../../php/banco.php";
+$pdo = Banco::conectar_postgres();
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+$query = "SELECT id_tipo_especialidade, nome_tipo FROM sind.tipo_especialidade ORDER BY nome_tipo ASC";
+$result = $pdo->query($query);
+
+$data = array();
+
+while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    $sub_array = array();
+    $sub_array['id_tipo_especialidade'] = $row['id_tipo_especialidade'];
+    $sub_array['nome_tipo'] = $row['nome_tipo'];
+    $sub_array['botao'] = '<button type="button" name="update" id="'.$row['id_tipo_especialidade'].'" class="btn btn-warning btn-xs update_tipo_especialidade">Update</button>';
+    $sub_array['botaoexcluir'] = '<button type="button" name="delete" id="'.$row['id_tipo_especialidade'].'" class="btn btn-danger btn-xs delete_tipo_especialidade">Delete</button>';
+    $data[] = $sub_array;
+}
+
+$output = array(
+    "data" => $data
+);
+
+echo json_encode($output);
+
+?> 

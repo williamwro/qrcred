@@ -47,6 +47,10 @@ function listar_cartoes(idsituacao) {
             {data: "botaoexcluir",
                 orderable: false,
                 "class": "noExl"
+            },
+            {data: "comprovante",
+                orderable: false,
+                "class": "noExl"
             }
         ],
         dom: '<"top"ifl><"clear">rt<"bottom"p><"clear">',
@@ -107,4 +111,24 @@ $("#C_situacaocartao").change(function () {
     listar_cartoes(idsituacao);
     //table.ajax().reload();
     waitingDialog.hide();
+});
+
+// Evento para gerar comprovante PDF
+$(document).on('click', '.btn-comprovante', function() {
+    var codigo = $(this).data('codigo');
+    var nome = $(this).data('nome');
+    var cpf = $(this).data('cpf');
+    var cartao = $(this).data('cartao');
+    var empregador = $(this).data('empregador');
+    
+    // Redireciona para o gerador de PDF com os dados necessários
+    $.redirect('pages/cartoes/comprovante_bloqueio_pdf.php', {
+        codigo: codigo,
+        nome: nome,
+        cpf: cpf,
+        cartao: cartao,
+        empregador: empregador,
+        divisao: divisao,
+        nome_divisao: nome_divisao
+    }, "POST", "_blank");
 });

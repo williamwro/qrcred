@@ -63,7 +63,9 @@ header("Content-type: application/json");
 
     while($row_vendas = $sql_conv_vendas->fetch()) {
 
-        $someArray['data'][] = array_map("utf8_encode",$row_vendas);
+        $someArray['data'][] = array_map(function($value) {
+            return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+        }, $row_vendas);
 
     }
     echo json_encode($someArray);

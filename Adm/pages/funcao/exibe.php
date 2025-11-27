@@ -15,7 +15,7 @@ if(isset($_POST["cod_categoria"])){
 
     foreach ($result as $row){
         $std->codigo = $row["id"];
-        $std->nome   = utf8_encode($row["nome"]);
+        $std->nome   = mb_convert_encoding($row["nome"], 'UTF-8', 'ISO-8859-1');
     }
     echo json_encode($std);
 }

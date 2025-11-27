@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Gerenciar Taxa de Cartão</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+<style type="text/css">
+    body {
+        table-layout: fixed;
+    }
+    th {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    td {
+        font-size: 11px;
+    }
+    .form-control {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    .btn-action {
+        margin: 2px;
+    }
+</style>
+<body>
+    <!-- Content Wrapper -->
+    <div class="container-fluid" style="padding: 0">
+        <!-- Content Header -->
+        <section class="content-header">
+            <h1 style="margin-top: -1px;margin-left: -6px;">
+                Taxa Cartão <small>Configuração de Valor</small>
+            </h1>
+        </section>
+        
+        <section class="content">
+            <!-- Box de Cadastro/Edição -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" id="formTitle">
+                                <i class="fa fa-cog"></i> Configurar Taxa de Cartão
+                            </h3>
+                        </div>
+                        <div class="box-body">
+                            <form id="formValorTaxa">
+                                <input type="hidden" id="operation" name="operation" value="insert">
+                                <input type="hidden" id="id" name="id" value="">
+                                
+                                <div class="row">
+                                    <!-- Valor -->
+                                    <div class="col-xs-12 col-sm-4 col-md-3">
+                                        <div class="form-group">
+                                            <label for="valor"><strong>Valor (R$):</strong></label>
+                                            <input type="text" class="form-control" id="valor" name="valor" 
+                                                   required style="text-align: right;" 
+                                                   placeholder="0,00" maxlength="10">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Descrição -->
+                                    <div class="col-xs-12 col-sm-12 col-md-5">
+                                        <div class="form-group">
+                                            <label for="descricao"><strong>Descrição:</strong></label>
+                                            <input type="text" class="form-control" id="descricao" name="descricao" 
+                                                   required maxlength="255" placeholder="Ex: Taxa de Cartão Mensal">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Botão Salvar -->
+                                    <div class="col-xs-12 col-sm-12 col-md-2">
+                                        <div class="form-group">
+                                            <label>&nbsp;</label>
+                                            <button type="submit" id="btnSalvar" class="btn btn-success btn-block">
+                                                <i class="fa fa-save"></i> <span id="btnTexto">Salvar</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Informação sobre o trigger automático -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="alert alert-info" style="margin-top: 15px;">
+                                            <i class="fa fa-info-circle"></i>
+                                            <strong>Informação:</strong> Esta taxa será utilizada automaticamente pelo sistema 
+                                            quando um lançamento for inserido para cada assocido. O sistema verificará se o 
+                                            associado já possui a taxa de cartão no mês e, caso não tenha, inserirá automaticamente.
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="../Adm/pages/txcartao/valor_taxa_gerenciar.js"></script>
+</body>
+</html>

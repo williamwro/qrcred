@@ -3,6 +3,56 @@ var mes_selecionado;
 var $C_mes = $('#C_mes');
 var $C_empregador = $('#C_empregador');
 var $C_tipo = $('#C_tipo');
+
+// Função para carregar empregadores com base no mês selecionado
+function carregarEmpregadores() {
+    var divisao = sessionStorage.getItem("divisao");
+    $C_empregador.empty();
+    $C_empregador.append('<option data-subtext="" value=""></option>');
+    
+    // Obter o mês selecionado para filtrar empregadores
+    var mesSelecionado = $C_mes.val();
+    var parametros = {"divisao": divisao};
+    if (mesSelecionado) {
+        parametros.mes = mesSelecionado;
+    }
+    
+    // Debug para verificar parâmetros sendo enviados
+    console.log("DEBUG carregarEmpregadores() - Parâmetros enviados:", parametros);
+    console.log("DEBUG carregarEmpregadores() - Mês selecionado:", mesSelecionado);
+    
+    $.getJSON( "../Adm/pages/arquivos/producao_empregador.php", parametros, function( data ) {
+        console.log("DEBUG carregarEmpregadores() - Dados recebidos:", data);
+        console.log("DEBUG carregarEmpregadores() - Tipo de dados:", typeof data);
+        console.log("DEBUG carregarEmpregadores() - Length:", data.length);
+        
+        if (data.error) {
+            console.error("ERROR carregarEmpregadores() - Erro do servidor:", data.error);
+            return;
+        }
+        
+        $.each(data, function (index, value) {
+            // Debug para verificar caracteres especiais
+            if (value.nome && (value.nome.includes('ç') || value.nome.includes('á') || value.nome.includes('ã') || value.nome.includes('í'))) {
+                console.log("DEBUG - Nome com caracteres especiais:", value.nome);
+                console.log("DEBUG - Char codes:", value.nome.split('').map(c => c.charCodeAt(0)));
+            }
+            
+            // Escapar caracteres HTML para evitar problemas na exibição
+            var nomeEscapado = $('<div>').text(value.nome || '').html();
+            var abreviacaoEscapada = $('<div>').text(value.abreviacao || '').html();
+            
+            $C_empregador.append('<option data-subtext="' + abreviacaoEscapada + '" value="' + value.id + '">' + nomeEscapado + '</option>');
+        });
+        // Refresh do selectpicker se estiver sendo usado
+        if ($C_empregador.hasClass('selectpicker')) {
+            $C_empregador.selectpicker('refresh');
+        }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error("ERROR carregarEmpregadores() - Falha na requisição:", textStatus, errorThrown);
+        console.error("ERROR carregarEmpregadores() - Response:", jqXHR.responseText);
+    });
+}
 var mescorrente = "";
 var $tabela_dados = $('#tabela_dados');
 var total_farmacia = 0;
@@ -30,7 +80,7 @@ $(document).ready(function(){
     card6 = sessionStorage.getItem("card6");
 
 
-    $.getJSON( "../Adm/pages/arquivos/meses_conta.php",{ "origem": "convenio" }, function( data ) {
+    $.getJSON( "../Adm/pages/arquivos/meses_conta.php",{ "origem": "convenio", "divisao": divisao }, function( data ) {
         $.each(data, function (index, value) {
             if (value.mes_corrente !== undefined) {
                 mescorrente = value.mes_corrente;
@@ -43,13 +93,8 @@ $(document).ready(function(){
                 }
             }
         });
-    });
-    $C_empregador.empty();
-    $C_empregador.append('<option data-subtext="" value=""></option>');
-    $.getJSON( "../Adm/pages/arquivos/producao_empregador.php",{"divisao": divisao}, function( data ) {
-        $.each(data, function (index, value) {
-            $C_empregador.append('<option data-subtext="' + value.abreviacao + '" value="' + value.id + '">' + value.nome + '</option>');
-        });
+        // Carregar empregadores após carregar os meses (para garantir que o mês esteja selecionado)
+        carregarEmpregadores();
     });
     $C_tipo.attr({"title":"Escollha o tipo"});
     $C_tipo.append('<option value=""></option>');
@@ -61,6 +106,9 @@ $(document).ready(function(){
     waitingDialog.hide();
 });
 $C_mes.change(function () {
+    // Recarregar lista de empregadores quando o mês muda
+    carregarEmpregadores();
+    
     if ($C_mes.val() !== "" && $C_empregador.val() !== ""){
         waitingDialog.show('Carregando, aguarde ...');
         // constroi uma datatabe no primeiro carregamento da tela
@@ -77,6 +125,10 @@ $C_empregador.change(function () {
 
         carregar_grid();
         waitingDialog.hide();
+    } else if ($C_empregador.val() === "") {
+        if ( $.fn.dataTable.isDataTable( '#tabela_dados' ) ) {
+            table.clear().draw();
+        }
     }
 });
 $C_tipo.change(function () {
@@ -265,7 +317,233 @@ $('#relatoriofinal').click(function () {
     var mes_atual  = $('#C_mes').val();
     var empregador = $('#C_empregador').val();
     var tipo = $('#C_tipo').val();
-    $.redirect('../Adm/pages/arquivos/relatorio_final.php',{ mes_atual: mes_atual, empregador: empregador, tipo: tipo, divisao: divisao, card1: card1, card2: card2, card3: card3, card4: card4, card5: card5, card6: card6}, "POST", "_blank");
+    
+    // Validações para relatório individual
+    if (!mes_atual) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um mês.'
+        });
+        return;
+    }
+    
+    if (!empregador) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um empregador.'
+        });
+        return;
+    }
+    
+    var params = { mes_atual: mes_atual, empregador: empregador, divisao: divisao,divisao_nome: divisao_nome };
+    if (tipo && tipo !== '') {
+        params.tipo = tipo;
+    }
+    $.redirect('../Adm/pages/arquivos/relatorio_final.php', params, "POST", "_blank");
+});
+
+// Novo botão para gerar todos os relatórios em um único PDF
+$('#relatorio_todos').click(function () {
+    var mes_atual = $('#C_mes').val();
+    var tipo = $('#C_tipo').val();
+    
+    // Validações
+    if (!mes_atual) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um mês.'
+        });
+        return;
+    }
+    
+    // Confirmação antes de gerar (pode ser um processo longo)
+    Swal.fire({
+        title: 'Confirmar Geração',
+        text: 'Deseja gerar o relatório consolidado com todos os empregadores? Este processo pode levar alguns minutos.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Sim, gerar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Mostrar loading
+            Swal.fire({
+                title: 'Gerando Relatórios...',
+                text: 'Aguarde enquanto todos os relatórios são compilados.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Fazer a requisição para o novo arquivo PHP
+            var params = { mes_atual: mes_atual, divisao: divisao,divisao_nome: divisao_nome };
+            if (tipo && tipo !== '') {
+                params.tipo = tipo;
+            }
+            $.redirect('../Adm/pages/arquivos/relatorio_todos_empregadores.php', params, "POST", "_blank");
+            
+            // Fechar o loading após um tempo (o PDF abrirá em nova aba)
+            setTimeout(() => {
+                Swal.close();
+            }, 3000);
+        }
+    });
+});
+
+// Novo botão para gerar PDFs individuais separados para cada empregador
+$('#relatorio_individuais').click(function () {
+    var mes_atual = $('#C_mes').val();
+    var tipo = $('#C_tipo').val();
+    var divisao = sessionStorage.getItem("divisao");
+    
+    // Validações
+    if (!mes_atual) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um mês.'
+        });
+        return;
+    }
+    
+    if (!divisao) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Erro de Sessão!',
+            text: 'Divisão não encontrada. Por favor, recarregue a página e tente novamente.'
+        });
+        return;
+    }
+    
+    // Confirmação antes de gerar (pode ser um processo longo)
+    Swal.fire({
+        title: 'Confirmar Geração de PDFs Individuais',
+        html: 'Deseja gerar um PDF separado para cada empregador?<br><br>' +
+              '<strong>Cada arquivo terá o nome:</strong><br>' +
+              '<em>Empregador_Mês_DataHora.pdf</em><br><br>' +
+              '<small>Este processo pode levar alguns minutos e irá baixar múltiplos arquivos.</small>',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#17a2b8',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Sim, gerar PDFs!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Primeira requisição: buscar lista de empregadores
+            var ajaxData = {
+                mes_atual: mes_atual,
+                divisao: divisao
+            };
+            if (tipo && tipo !== '') {
+                ajaxData.tipo = tipo;
+            }
+            
+            $.ajax({
+                url: '../Adm/pages/arquivos/buscar_empregadores_mes.php',
+                method: 'POST',
+                data: ajaxData,
+                dataType: 'json',
+                success: function(empregadores) {
+                    if (!empregadores || empregadores.length === 0) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Nenhum Empregador',
+                            text: 'Não foram encontrados empregadores com dados para o mês selecionado.'
+                        });
+                        return;
+                    }
+                    
+                    // Mostrar progresso
+                    let currentIndex = 0;
+                    const totalEmpregadores = empregadores.length;
+                    
+                    Swal.fire({
+                        title: 'Gerando PDFs Individuais...',
+                        html: `Progresso: <strong>0 de ${totalEmpregadores}</strong> empregadores`,
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    // Função para gerar PDF de cada empregador sequencialmente
+                    function gerarProximoPDF() {
+                        if (currentIndex >= totalEmpregadores) {
+                            // Todos os PDFs foram gerados
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Concluído!',
+                                text: `${totalEmpregadores} PDFs foram gerados e baixados com sucesso.`,
+                                timer: 3000
+                            });
+                            return;
+                        }
+                        
+                        const empregador = empregadores[currentIndex];
+                        console.log(`DEBUG: Gerando PDF ${currentIndex + 1}/${totalEmpregadores} para empregador:`, empregador);
+                        
+                        // Atualizar progresso
+                        Swal.update({
+                            html: `Progresso: <strong>${currentIndex + 1} de ${totalEmpregadores}</strong> empregadores<br>
+                                   Gerando: <em>${empregador.nome}</em>`
+                        });
+                        
+                        // Gerar PDF para este empregador
+                        const form = $('<form>', {
+                            'method': 'POST',
+                            'action': '../Adm/pages/arquivos/relatorio_individual_download.php',
+                            'target': '_blank'
+                        });
+                        
+                        form.append($('<input>', {'type': 'hidden', 'name': 'mes_atual', 'value': mes_atual}));
+                        form.append($('<input>', {'type': 'hidden', 'name': 'empregador', 'value': empregador.id}));
+                        if (tipo && tipo !== '') {
+                            form.append($('<input>', {'type': 'hidden', 'name': 'tipo', 'value': tipo}));
+                        }
+                        form.append($('<input>', {'type': 'hidden', 'name': 'divisao', 'value': divisao}));
+                        form.append($('<input>', {'type': 'hidden', 'name': 'divisao_nome', 'value': divisao_nome}));
+                        
+                        console.log(`DEBUG: Submetendo form para empregador ${empregador.nome} (${empregador.id})`);
+                        console.log('DEBUG: Dados do form:', {
+                            mes_atual: mes_atual,
+                            empregador: empregador.id,
+                            tipo: tipo,
+                            divisao: divisao,
+                            divisao_nome: divisao_nome
+                        });
+                        
+                        $('body').append(form);
+                        form.submit();
+                        form.remove();
+                        
+                        // Incrementar apenas após submissão
+                        currentIndex++;
+                        
+                        // Aguardar mais tempo para garantir que o download anterior foi iniciado
+                        setTimeout(gerarProximoPDF, 2500);
+                    }
+                    
+                    // Iniciar geração
+                    gerarProximoPDF();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro ao buscar empregadores:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: 'Erro ao buscar lista de empregadores. Tente novamente.'
+                    });
+                }
+            });
+        }
+    });
 });
 $('#btnImprimirTodosExtratos').click(function () {
     var mes_atual  = $('#C_mes').val();
@@ -328,7 +606,7 @@ function carregar_grid() {
                 {data: "nome_tipo"},
                 {
                     data: "total",
-                    render: $.fn.dataTable.render.number(',', '.', 2),
+                    render: $.fn.dataTable.render.number('.', ',', 2, 'R$ '),
                     className: "text-right"
                 }
             ],
@@ -393,7 +671,7 @@ function carregar_grid() {
                     }, 0 );
                 // Update footer
                 $(  api.column( 3 ).footer() ).html(
-                    total.toLocaleString()
+                    'R$ ' + total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})
                 );
             }
         });
@@ -430,7 +708,7 @@ function carregar_grid() {
                 {data: "nome_tipo"},
                 {
                     data: "total",
-                    render: $.fn.dataTable.render.number(',', '.', 2),
+                    render: $.fn.dataTable.render.number('.', ',', 2, 'R$ '),
                     className: "text-right"
                 },
             ],
@@ -495,7 +773,7 @@ function carregar_grid() {
                     }, 0 );
                 // Update footer
                 $(  api.column( 3 ).footer() ).html(
-                    total.toLocaleString()
+                    'R$ ' + total.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})
                 );
             }
         });

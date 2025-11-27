@@ -10,7 +10,9 @@
     //$sql = $database->query("SELECT * FROM qGRUPOTOTALCONVENIO WHERE MES = '". $mes . "' AND Desativado = false ORDER BY RazaoSocial");
     $sql = $pdo->query("SELECT * FROM sind.convenio ORDER BY razaosocial");
     while($row = $sql->fetch()) {
-        $someArray[$i] = array_map("utf8_encode",$row);
+        $someArray[$i] = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $row);
         $i++;
     }
     echo json_encode($someArray);

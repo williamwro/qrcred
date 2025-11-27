@@ -36,6 +36,18 @@ $Cod_empregador = 0;
 foreach ($result as $row) {
     $Cod_empregador = (int)$row["id"];
 }
+
+// Obter ID do associado baseado na matrícula
+$query_associado = "SELECT id FROM sind.associado WHERE codigo = :matricula AND empregador = :empregador";
+$statment_associado = $pdo->prepare($query_associado);
+$statment_associado->bindParam(':matricula', $_matricula, PDO::PARAM_STR);
+$statment_associado->bindParam(':empregador', $Cod_empregador, PDO::PARAM_INT);
+$statment_associado->execute();
+$result_associado = $statment_associado->fetchAll();
+$Id_associado = 0;
+foreach ($result_associado as $row) {
+    $Id_associado = (int)$row["id"];
+}
 function converte_data($date) {
     return substr($date,6,4).'-'.substr($date,3,2).'-'.substr($date,0,2).' 00:00:00';
 }
@@ -48,6 +60,7 @@ if(isset($_POST["operation"])) {
             $_lancamento  = isset($_POST['inputMatricula_aux']) ? (int)$_POST['inputMatricula_aux'] : "";
             $sql = "UPDATE sind.conta SET ";
             $sql .= "associado = :associado, ";
+            $sql .= "id_associado = :id_associado, ";
             $sql .= "convenio = :convenio, ";
             $sql .= "valor = :valor, ";
             $sql .= "data = :data, ";
@@ -65,6 +78,7 @@ if(isset($_POST["operation"])) {
             $stmt = $pdo->prepare($sql);
 
             $stmt->bindParam(':associado', $_matricula, PDO::PARAM_STR);
+            $stmt->bindParam(':id_associado', $Id_associado, PDO::PARAM_INT);
             $stmt->bindParam(':convenio', $_convenio, PDO::PARAM_STR);
             $stmt->bindParam(':valor', $_valor, PDO::PARAM_STR);
             $stmt->bindParam(':data', $_data, PDO::PARAM_STR);
@@ -83,8 +97,9 @@ if(isset($_POST["operation"])) {
             if($_optarcela == 'unica') {
 
                 $sql = "INSERT INTO sind.conta(";
-                $sql .= "associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao) VALUES( ";
+                $sql .= "associado, id_associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao, divisao) VALUES( ";
                 $sql .= ":associado, ";
+                $sql .= ":id_associado, ";
                 $sql .= ":convenio, ";
                 $sql .= ":valor, ";
                 $sql .= ":data, ";
@@ -95,11 +110,13 @@ if(isset($_POST["operation"])) {
                 $sql .= ":empregador, ";
                 $sql .= ":parcela, ";
                 $sql .= ":tipo, ";
-                $sql .= ":id_situacao)";
+                $sql .= ":id_situacao, ";
+                $sql .= ":divisao)";
 
                 $stmt = $pdo->prepare($sql);
 
                 $stmt->bindParam(':associado', $_matricula, PDO::PARAM_STR);
+                $stmt->bindParam(':id_associado', $Id_associado, PDO::PARAM_INT);
                 $stmt->bindParam(':convenio', $_convenio, PDO::PARAM_INT);
                 $stmt->bindParam(':valor', $_valor , PDO::PARAM_STR);
                 $stmt->bindParam(':data', $_data, PDO::PARAM_STR);
@@ -111,12 +128,15 @@ if(isset($_POST["operation"])) {
                 $stmt->bindParam(':parcela', $_parcela, PDO::PARAM_STR);
                 $stmt->bindParam(':tipo', $_tipo, PDO::PARAM_STR);
                 $stmt->bindParam(':id_situacao', $_situacao, PDO::PARAM_INT);
+                $stmt->bindParam(':divisao', $_divisao, PDO::PARAM_INT);
 
                 $stmt->execute();
 
                 $someArray["Resultado"] = "cadastrado";
-                $arr = array('associado' =>$_matricula,'convenio'=>$_convenio,'valor'=> $_valor,'data'=> $_data,'hora'=> $_hora,'descricao'=> $_obs,'mes'=> $_mes,'empregador'=> $Cod_empregador,'parcela'=> $_parcela,'tipo'=> $_tipo,'nome_convenio'=> $_nome_convenio);
-                $someArray["data"][1] = array_map("utf8_encode",$arr);
+                $arr = array('associado' =>$_matricula,'id_associado'=>$Id_associado,'convenio'=>$_convenio,'valor'=> $_valor,'data'=> $_data,'hora'=> $_hora,'descricao'=> $_obs,'mes'=> $_mes,'empregador'=> $Cod_empregador,'parcela'=> $_parcela,'tipo'=> $_tipo,'nome_convenio'=> $_nome_convenio);
+                $someArray["data"][1] = array_map(function($value) {
+                    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+                }, $arr);
 
 
             }else{
@@ -128,8 +148,9 @@ if(isset($_POST["operation"])) {
                 $someArray["Resultado"] = "cadastrado";
                 for($i = $_parcela1;$i <= $_qtde_parcelas;$i++){
                     $sql = "INSERT INTO sind.conta(";
-                    $sql .= "associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao) VALUES( ";
+                    $sql .= "associado, id_associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao, divisao) VALUES( ";
                     $sql .= ":associado, ";
+                    $sql .= ":id_associado, ";
                     $sql .= ":convenio, ";
                     $sql .= ":valor, ";
                     $sql .= ":data, ";
@@ -140,7 +161,8 @@ if(isset($_POST["operation"])) {
                     $sql .= ":empregador, ";
                     $sql .= ":parcela, ";
                     $sql .= ":tipo, ";
-                    $sql .= ":id_situacao)";
+                    $sql .= ":id_situacao, ";
+                    $sql .= ":divisao)";
 
                     $stmt = $pdo->prepare($sql);
                     if ($i > 1){
@@ -153,6 +175,7 @@ if(isset($_POST["operation"])) {
                     $_result = $_parcela1_string."/".$_qtde_parcelas_string;
 
                     $stmt->bindParam(':associado', $_matricula, PDO::PARAM_STR);
+                    $stmt->bindParam(':id_associado', $Id_associado, PDO::PARAM_INT);
                     $stmt->bindParam(':convenio', $_convenio, PDO::PARAM_INT);
                     $stmt->bindParam(':valor', $_valor , PDO::PARAM_STR);
                     $stmt->bindParam(':data', $_data, PDO::PARAM_STR);
@@ -164,11 +187,14 @@ if(isset($_POST["operation"])) {
                     $stmt->bindParam(':parcela', $_result, PDO::PARAM_STR);
                     $stmt->bindParam(':tipo', $_tipo, PDO::PARAM_STR);
                     $stmt->bindParam(':id_situacao', $_situacao, PDO::PARAM_INT);
+                    $stmt->bindParam(':divisao', $_divisao, PDO::PARAM_INT);
 
                     $stmt->execute();
 
-                    $arr = array('associado' =>$_matricula,'convenio'=>$_convenio,'valor'=> $_valor,'data'=> $_data,'hora'=> $_hora,'descricao'=> $_obs,'mes'=> $_mes,'empregador'=> $Cod_empregador,'parcela'=> $_result,'tipo'=> $_tipo,'nome_convenio'=> $_nome_convenio);
-                    $someArray["data"][$i] = array_map("utf8_encode",$arr);
+                    $arr = array('associado' =>$_matricula,'id_associado'=>$Id_associado,'convenio'=>$_convenio,'valor'=> $_valor,'data'=> $_data,'hora'=> $_hora,'descricao'=> $_obs,'mes'=> $_mes,'empregador'=> $Cod_empregador,'parcela'=> $_result,'tipo'=> $_tipo,'nome_convenio'=> $_nome_convenio);
+                    $someArray["data"][$i] = array_map(function($value) {
+                        return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+                    }, $arr);
 
                     $_mes          = somames_gravar($aux); // soma 1 mes
                     $aux          = $_mes;

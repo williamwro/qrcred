@@ -10,12 +10,7 @@ var empregador;
 var divisao;
 var nome_divisao;
 var idade;
-var card1;
-var card2;
-var card3;
-var card4;
-var card5;
-var card6;
+
 $(document).ready(function() {
     waitingDialog.show('Carregando, aguarde ...');
 
@@ -23,12 +18,7 @@ $(document).ready(function() {
     nome_divisao = sessionStorage.getItem("divisao_nome");
     usuario_global = sessionStorage.getItem("usuario_global");
     usuario_cod = sessionStorage.getItem("usuario_cod");
-    card1 = sessionStorage.getItem("card1");
-    card2 = sessionStorage.getItem("card2");
-    card3 = sessionStorage.getItem("card3");
-    card4 = sessionStorage.getItem("card4");
-    card5 = sessionStorage.getItem("card5");
-    card6 = sessionStorage.getItem("card6");
+   
     var mescorrente = "";
     var lote_aux = "";
 
@@ -47,6 +37,19 @@ $(document).ready(function() {
     });
     waitingDialog.hide();
     table.ajax.reload();
+    // Garantir que os botões de exclusão estejam habilitados após carregamento inicial
+    setTimeout(function(){
+        $('#tabela_dados tbody .btnexcluirCartao').prop('disabled', false).removeClass('disabled').css('pointer-events','auto');
+    }, 0);
+    // Reforço: ao redesenhar a tabela, reabilitar
+    $('#tabela_dados').on('draw.dt', function(){
+        $('#tabela_dados tbody .btnexcluirCartao').prop('disabled', false).removeClass('disabled').css('pointer-events','auto');
+    });
+    document.getElementById("btnCancelar").style.display = "none";
+    document.getElementById("btnEntregue").style.display = "none";
+    document.getElementById("btnBloquearMsg").style.display = "none";
+    document.getElementById("obs_cartao").style.display = "none";
+
 });
 function listar_cartoes() {
     // constroi uma datatabe no primeiro carregamento da tela
@@ -69,16 +72,10 @@ function listar_cartoes() {
                 data: function (data) {
                     data.lote = "aberto";
                     data.divisao = divisao;
-                    data.card1 = card1;
-                    data.card2 = card2;
-                    data.card3 = card3;
-                    data.card4 = card4;
-                    data.card5 = card5;
-                    data.card6 = card6;
                 },
                 dataType: 'json'
             },
-            order: [[2, "asc"]],
+            order: [[1, "asc"]],
             columns: [
                 {data: "cartao"},
                 {data:
@@ -94,7 +91,7 @@ function listar_cartoes() {
                     orderable: false,
                     "class": "noExl"
                 }
-            ],
+            ],            
             dom: '<"top"ifl><"clear">rt<"bottom"p><"clear">',
             stateSave: true,
             pagingType: "full_numbers",
@@ -136,16 +133,11 @@ function listar_cartoes() {
                 data: function (data) {
                     data.lote = "aberto";
                     data.divisao = divisao;
-                    data.card1 = card1;
-                    data.card2 = card2;
-                    data.card3 = card3;
-                    data.card4 = card4;
-                    data.card5 = card5;
-                    data.card6 = card6;
+                  
                 },
                 dataType: 'json'
             },
-            order: [[2, "asc"]],
+            order: [[1, "asc"]],
             columns: [
                 {data: "cartao"},
                 {data:
@@ -161,7 +153,9 @@ function listar_cartoes() {
                     orderable: false,
                     "class": "noExl"
                 }
+                
             ],
+            
             dom: '<"top"ifl><"clear">rt<"bottom"lp><"clear">',
             stateSave: true,
             pagingType: "full_numbers",
@@ -274,20 +268,21 @@ $("#btnConsultar").click(function () {
             ajax: {
                 url: 'pages/cartoes/exibe_todos_associados.php',
                 method: 'POST',
-                data: {"divisao": divisao, 'card1': card1, 'card2': card2, 'card3': card3, 'card4': card4, 'card5': card5, 'card6': card6},
+                data: {"divisao": divisao},
                 dataType: 'json'
             },
             deferRender: true,
-            order: [[1, "asc"]],
+            order: [[1, "desc"]],
             columns: [
                 {data: "codigo"},
                 {data: "nome"},
                 {data: "empregador"},
-                {data: "codempregador"}
+                {data: "codempregador"},
+                {data: "id"}
             ],
             "columnDefs": [
                 {
-                    "targets": [ 3 ],
+                    "targets": [ 3, 4 ],
                     "visible": false,
                     "searchable": false
                 }
@@ -312,52 +307,74 @@ $("#btnConsultar").click(function () {
 $('#tabela_dados').on('click', 'tbody .btnexcluirCartao', function () {
     var data_row = table.row($(this).closest('tr')).data();
     var $button = $(this);
-    BootstrapDialog.confirm({
-        message: '<table style="width: 100%;"><tr><th style="text-align: right;padding: 8px;background-color: #dddddd;">CARTÃO:</th><th style="background-color: #dddddd;"><b>' + data_row.cartao + '</b></th>' +
-            '<tr><th style="text-align: right;padding: 8px;">NOME:</th><th><b>' + data_row.nome + '</th>',
+    Swal.fire({
         title: 'Confirma a exclusão do cartão?',
-        type: BootstrapDialog.TYPE_PRIMARY,
-        closable: true,
-        draggable: true,
-        btnCancelLabel: 'Não',
-        btnOKLabel: 'Sim',
-        btnOKClass: 'btn btn-success',
-        btnCancelClass: 'btn btn-warning',
-        callback: function (result) {
-            if (result) {
-                waitingDialog.show('Excluindo, aguarde ...');
-                $.ajax({
-                    url: "pages/cartoes/cartao_exclui.php",
-                    method: "POST",
-                    dataType: "json",
-                    data: {"cartao": data_row.cartao},
-                    success: function (data) {
-
-                        if (data.resultado === "excluido") {
-                            table.row( $button.parents('tr') ).remove().draw();
-                            waitingDialog.hide();
-                            BootstrapDialog.show({
-                                closable: false,
-                                title: 'Atenção',
-                                message: 'Excluído com Sucesso!!!',
-                                buttons: [{
-                                    cssClass: 'btn-warning',
-                                    label: 'Ok',
-                                    action: function (dialogItself) {
-                                        dialogItself.close();
-                                    }
-                                }]
-                            });
-                            table.ajax.reload();
-                        }else{
-                            alert("Não Excluiu");
-                            waitingDialog.hide();
+        html: '<table style="width: 100%;"><tr><th style="text-align: right;padding: 8px;background-color: #dddddd;">CARTÃO:</th><th style="background-color: #dddddd;"><b>' + data_row.cartao + '</b></th>' +
+              '<tr><th style="text-align: right;padding: 8px;">NOME:</th><th><b>' + data_row.nome + '</b></th></tr></table>',
+        icon: 'question',
+        showCancelButton: true,
+        focusCancel: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não'
+    }).then(function(result){
+        if (result.isConfirmed) {
+            waitingDialog.show('Excluindo, aguarde ...');
+            $.ajax({
+                url: "pages/cartoes/cartao_exclui.php",
+                method: "POST",
+                dataType: "json",
+                data: {"cartao": data_row.cartao, "id": data_row.id},
+                success: function (data) {
+                    waitingDialog.hide();
+                    if (data.resultado === "excluido") {
+                        table.row( $button.parents('tr') ).remove().draw();
+                        Swal.fire({ icon: 'success', title: 'Excluído com Sucesso!!!' });
+                        table.ajax.reload();
+                    } else if (data.resultado === "bloqueado_por_dependencias") {
+                        Swal.fire({ 
+                            icon: 'warning', 
+                            title: 'Não é possível excluir', 
+                            text: data.mensagem || 'Existem lançamentos vinculados (conta/antecipação).' 
+                        });
+                    } else if (data.resultado === "erro_parametros") {
+                        Swal.fire({ 
+                            icon: 'error', 
+                            title: 'Parâmetros inválidos', 
+                            text: data.mensagem || 'Dados insuficientes para exclusão.' 
+                        });
+                    } else if (data.resultado === "erro_banco") {
+                        Swal.fire({ 
+                            icon: 'error', 
+                            title: 'Erro no banco de dados', 
+                            text: data.mensagem || 'Erro ao acessar o banco de dados.' 
+                        });
+                    } else {
+                        Swal.fire({ 
+                            icon: 'error', 
+                            title: 'Erro ao excluir', 
+                            text: data.mensagem || 'Não foi possível excluir o cartão.' 
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    waitingDialog.hide();
+                    var errorMsg = 'Erro de comunicação com o servidor.';
+                    if (xhr.responseText) {
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            errorMsg = response.mensagem || errorMsg;
+                        } catch(e) {
+                            // Se não for JSON, mostra parte do texto de erro
+                            errorMsg += '\n' + xhr.responseText.substring(0, 200);
                         }
                     }
-                });
-            } else {
-                //alert('No');
-            }
+                    Swal.fire({ 
+                        icon: 'error', 
+                        title: 'Erro de comunicação', 
+                        text: errorMsg 
+                    });
+                }
+            });
         }
     });
     $('#tab_matricula_origem tbody').on( 'click', 'tr', function () {
@@ -393,16 +410,11 @@ $("#C_lotes").change(function () {
                     data: function (data) {
                         data.lote = lote;
                         data.divisao = divisao;
-                        data.card1 = card1;
-                        data.card2 = card2;
-                        data.card3 = card3;
-                        data.card4 = card4;
-                        data.card5 = card5;
-                        data.card6 = card6;
+                       
                     },
                     dataType: 'json'
                 },
-                order: [[2, "asc"]],
+                order: [[1, "asc"]],
                 columns: [
                     {data: "cartao"},
                     {data:
@@ -458,25 +470,20 @@ $("#C_lotes").change(function () {
                     data: function (data) {
                         data.lote = lote;
                         data.divisao = divisao;
-                        data.card1 = card1;
-                        data.card2 = card2;
-                        data.card3 = card3;
-                        data.card4 = card4;
-                        data.card5 = card5;
-                        data.card6 = card6;
+                       
                     },
                     dataType: 'json'
                 },
-                order: [[2, "asc"]],
+                order: [[1, "asc"]],
                 columns: [
                     {data: "cartao"},
                     {data:
-                           "codigo",
-                           "class": "noExl"
+                            "codigo",
+                        "class": "noExl"
                     },
                     {data:
-                           "abreviacao",
-                           "class": "noExl"
+                            "abreviacao",
+                        "class": "noExl"
                     },
                     {data: "nome"},
                     {data: "botaoexcluir",
@@ -530,16 +537,11 @@ $("#C_lotes").change(function () {
                     data: function (data) {
                         data.lote = lote;
                         data.divisao = divisao;
-                        data.card1 = card1;
-                        data.card2 = card2;
-                        data.card3 = card3;
-                        data.card4 = card4;
-                        data.card5 = card5;
-                        data.card6 = card6;
+                        
                     },
                     dataType: 'json'
                 },
-                order: [[2, "asc"]],
+                order: [[1, "asc"]],
                 columns: [
                     {data: "cartao"},
                     {data:
@@ -595,16 +597,11 @@ $("#C_lotes").change(function () {
                     data: function (data) {
                         data.lote = lote;
                         data.divisao = divisao;
-                        data.card1 = card1;
-                        data.card2 = card2;
-                        data.card3 = card3;
-                        data.card4 = card4;
-                        data.card5 = card5;
-                        data.card6 = card6;
+                      
                     },
                     dataType: 'json'
                 },
-                order: [[2, "asc"]],
+                order: [[1, "asc"]],
                 columns: [
                     {data: "cartao"},
                     {data:
@@ -652,6 +649,10 @@ $('#tabela_busca_associado').on( 'dblclick', 'tr', function () {
     var data = tableconsulta.row( this ).data();
     matricula  = data["codigo"];
     Codempregador_origem = data["codempregador"];
+    id_associado = data["id"]; // Capturar o ID do associado
+    
+    console.log('📋 Dados capturados:', {matricula: matricula, empregador: Codempregador_origem, id_associado: id_associado});
+    
     $.ajax({
         url: "pages/cartoes/cadastra_cartao.php",
         method: "POST",
@@ -659,7 +660,8 @@ $('#tabela_busca_associado').on( 'dblclick', 'tr', function () {
         data: {
             "matricula": matricula,
             "empregador": Codempregador_origem,
-            "id_divisao": divisao
+            "id_divisao": divisao,
+            "id_associado": id_associado
         },
         success: function (data) {
             if (data.resultado === "cadastrado") {
@@ -696,4 +698,95 @@ $("#btnRelatorio").click(function () {
         lote: lote,
         data: data
     }, "POST", "_blank");
+});
+
+// Adicionar manipulador de evento para o botão "Gerar Cartões para Todos"
+$("#gerarTodosCartoes").click(function() {
+    BootstrapDialog.confirm({
+        message: '<table style="width: 100%;">' +
+                 '<tr><th style="text-align: right;padding: 8px;background-color: #dddddd;">Confirma a geração de cartões para todos os associados?</th></tr>' +
+                 '<tr><td style="text-align: center;padding: 8px;">Esta ação criará números de cartão para todos os associados que ainda não possuem cartão.</td></tr>' +
+                 '</table>',
+        title: 'Geração de Cartões em Massa',
+        type: BootstrapDialog.TYPE_PRIMARY,
+        closable: true,
+        draggable: true,
+        btnCancelLabel: 'Não',
+        btnOKLabel: 'Sim',
+        btnOKClass: 'btn btn-success',
+        btnCancelClass: 'btn btn-warning',
+        callback: function(result) {
+            if (result) {
+                // Mostrar diálogo de espera
+                waitingDialog.show('Gerando cartões para todos os associados, aguarde...');
+                
+                // Chamar a API para gerar os cartões
+                $.ajax({
+                    url: "pages/cartoes/gerar_todos_cartoes.php",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        "divisao": divisao
+                    },
+                    success: function(data) {
+                        waitingDialog.hide();
+                        
+                        if (data.status === "success") {
+                            // Mostrar mensagem de sucesso com estatísticas
+                            BootstrapDialog.show({
+                                closable: false,
+                                title: 'Sucesso',
+                                message: '<strong>' + data.mensagem + '</strong><br><br>' +
+                                         'Total de associados processados: ' + data.total_associados + '<br>' +
+                                         'Cartões gerados com sucesso: ' + data.cartoes_gerados + '<br>' +
+                                         (data.erros > 0 ? 'Erros: ' + data.erros : ''),
+                                buttons: [{
+                                    cssClass: 'btn-success',
+                                    label: 'Ok',
+                                    action: function(dialogItself) {
+                                        dialogItself.close();
+                                        // Recarregar a tabela
+                                        table.ajax.reload();
+                                    }
+                                }]
+                            });
+                        } else {
+                            // Mostrar mensagem de erro
+                            BootstrapDialog.show({
+                                closable: false,
+                                title: 'Erro',
+                                type: BootstrapDialog.TYPE_DANGER,
+                                message: 'Erro ao gerar cartões: ' + data.mensagem,
+                                buttons: [{
+                                    cssClass: 'btn-danger',
+                                    label: 'Ok',
+                                    action: function(dialogItself) {
+                                        dialogItself.close();
+                                    }
+                                }]
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        waitingDialog.hide();
+                        
+                        // Mostrar mensagem de erro na requisição
+                        BootstrapDialog.show({
+                            closable: false,
+                            title: 'Erro',
+                            type: BootstrapDialog.TYPE_DANGER,
+                            message: 'Erro na requisição: ' + error,
+                            buttons: [{
+                                cssClass: 'btn-danger',
+                                label: 'Ok',
+                                action: function(dialogItself) {
+                                    dialogItself.close();
+                                }
+                            }]
+                        });
+                    }
+                });
+            }
+        }
+    });
 });

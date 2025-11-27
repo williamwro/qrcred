@@ -72,6 +72,11 @@ if($_tipo_novo <> $_tipo_original){
 $_rg                = isset($_POST['C_rg_assoc']) ? $_POST['C_rg_assoc'] : "";
 $_cpf               = isset($_POST['C_cpf_assoc']) ? str_replace(".", "", $_POST['C_cpf_assoc']) : "";
 $_cpf               = str_replace("-", "", $_cpf);
+// Remove underscores da máscara e limpa CPF vazio
+$_cpf               = str_replace("_", "", $_cpf);
+if (empty(trim($_cpf)) || $_cpf === "") {
+    $_cpf = "";
+}
 $_funcao_novo       = isset($_POST['C_funcao']) ? (int)$_POST['C_funcao'] : (int)0;
 $_funcao_original   = isset($_POST['C_funcao_original']) ? (int)$_POST['C_funcao_original'] : (int)0;
 if($_funcao_novo <> $_funcao_original){
@@ -120,13 +125,34 @@ if (isset($_POST['C_ultimo_mes'])){
 }
 $_secretaria  = isset($_POST['C_secretaria']) ? (int)$_POST['C_secretaria'] : 0;
 $_local       = $_POST['C_local'];
+
 function converte_data($date) {
-    return substr($date,6,4).'-'.substr($date,3,2).'-'.substr($date,0,2).' 00:00:00';
+    // Remove caracteres não numéricos e verifica se a data está completa
+    $date_clean = preg_replace('/[^0-9]/', '', $date);
+    
+    // Se não tem 8 dígitos ou está vazia, retorna null
+    if (strlen($date_clean) != 8 || empty(trim($date))) {
+        return null;
+    }
+    
+    // Extrai dia, mês e ano
+    $dia = substr($date, 0, 2);
+    $mes = substr($date, 3, 2);
+    $ano = substr($date, 6, 4);
+    
+    // Valida se é uma data válida
+    if (!checkdate($mes, $dia, $ano)) {
+        return null;
+    }
+    
+    return $ano.'-'.$mes.'-'.$dia.' 00:00:00';
 }
+
 $stmt = new stdClass();
 $stmt4 = new stdClass();
 $stmt5 = new stdClass();
 $stmt6 = new stdClass();
+
 $msg_grava_cad="";
 if(isset($_POST["operation"])) {
     if($_POST["operation"] == "Update") {

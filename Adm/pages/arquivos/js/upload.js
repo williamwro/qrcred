@@ -32,7 +32,7 @@ $(document).ready(function(){
     card5        = sessionStorage.getItem("card5");
     card6        = sessionStorage.getItem("card6");
     $('#divisao').val(divisao_nome);
-    $.getJSON( "../Adm/pages/arquivos/meses_conta.php",{ "origem": "convenio" }, function( data ) {
+    $.getJSON( "../Adm/pages/arquivos/meses_conta.php",{ "origem": "convenio", "divisao": divisao }, function( data ) {
         $.each(data, function (index, value) {
             if (value.mes_corrente !== undefined) {
                 mescorrente = value.mes_corrente;
@@ -198,7 +198,7 @@ $("#but_upload").click(function(){
                 $('#tamanho_arquivo').html(tamanho+" bytes");
                 $("#btnExcluirArquivo").attr('disabled', false);
                 path_arquivo = response2;
-                path_arquivo2 = 'C:\\xampp\\htdocs\\sind\\Adm\\pages\\arquivos\\'+vetor[0]+'\\'+vetor[1]+'\\'+vetor[2]+'\\'+vetor[3]+'\\'+arquivo;
+                path_arquivo2 = 'C:\\xampp2\\htdocs\\sind\\Adm\\pages\\arquivos\\'+vetor[0]+'\\'+vetor[1]+'\\'+vetor[2]+'\\'+vetor[3]+'\\'+arquivo;
 
 
             }else{

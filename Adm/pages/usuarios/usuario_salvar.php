@@ -33,6 +33,7 @@ if($_POST['C_senha']  != ""){
 $C_situacao        = isset($_POST['C_situacao']) ? $_POST['C_situacao'] : 0;
 $C_Email              = isset($_POST['C_Email']) ? $_POST['C_Email']: "";
 $C_divisao           = isset($_POST['C_divisao']) ? $_POST['C_divisao'] : 0;
+$C_grupo             = isset($_POST['C_grupo']) ? $_POST['C_grupo'] : 0;
 
 $stmt = new stdClass();
 $stmt_menu = new stdClass();
@@ -50,7 +51,8 @@ if(isset($_POST["operation"])) {
             $sql .= "lastname = :lastname, ";
             $sql .= "situacao = :situacao, ";
             $sql .= "nome = :nome, ";
-            $sql .= "divisao = :divisao ";
+            $sql .= "divisao = :divisao, ";
+            $sql .= "grupo_id = :grupo_id ";
             $sql .= "WHERE codigo = :codigo";
         }else{
             $sql = "UPDATE sind.usuarios SET ";
@@ -59,7 +61,8 @@ if(isset($_POST["operation"])) {
             $sql .= "lastname = :lastname, ";
             $sql .= "situacao = :situacao, ";
             $sql .= "nome = :nome, ";
-            $sql .= "divisao = :divisao ";
+            $sql .= "divisao = :divisao, ";
+            $sql .= "grupo_id = :grupo_id ";
             $sql .= "WHERE codigo = :codigo";
         }
         $stmt = $pdo->prepare($sql);
@@ -73,13 +76,14 @@ if(isset($_POST["operation"])) {
         $stmt->bindParam(':situacao', $C_situacao, PDO::PARAM_INT);
         $stmt->bindParam(':nome', $C_nome, PDO::PARAM_STR);
         $stmt->bindParam(':divisao', $C_divisao, PDO::PARAM_INT);
+        $stmt->bindParam(':grupo_id', $C_grupo, PDO::PARAM_INT);
         $stmt->execute();
         $msg_grava_cad = "atualizado";
         $arr = array('codigo' =>$C_codigo,'resultado'=>$msg_grava_cad);
     }elseif($_POST["operation"] == "Add") {
 
         $sql = "INSERT INTO sind.usuarios( ";
-        $sql .= "username,senha,email,lastname,situacao,nome,divisao) ";
+        $sql .= "username,senha,email,lastname,situacao,nome,divisao,grupo_id) ";
         $sql .= " VALUES(";
         $sql .= ":username, ";
         $sql .= ":senha, ";
@@ -87,7 +91,8 @@ if(isset($_POST["operation"])) {
         $sql .= ":lastname, ";
         $sql .= ":situacao, ";
         $sql .= ":nome, ";
-        $sql .= ":divisao) RETURNING lastval()";
+        $sql .= ":divisao, ";
+        $sql .= ":grupo_id) RETURNING lastval()";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':username', $C_user, PDO::PARAM_STR);
@@ -97,14 +102,20 @@ if(isset($_POST["operation"])) {
         $stmt->bindParam(':situacao', $C_situacao, PDO::PARAM_INT);
         $stmt->bindParam(':nome', $C_nome, PDO::PARAM_STR);
         $stmt->bindParam(':divisao', $C_divisao, PDO::PARAM_INT);
+        $stmt->bindParam(':grupo_id', $C_grupo, PDO::PARAM_INT);
         $stmt->execute();
 
         $ultimo_codigo =  $stmt->fetchColumn();
         $msg_grava_cad = "cadastrado";
 
 
-        //inserir os codigos dos menus para o usuario INICIO
-        $sql_menu = "SELECT * FROM sind.dynamic_menu ORDER BY id";
+        //inserir os codigos dos menus para o usuario INICIO 
+        // exeto as telas abaixo, porque sao do administrador do sistema 
+        //11 - Administrador > Usuarios
+        //19 - Administrador > Divisao
+        //29 - Administrador > Cobranca
+        //34 - Administrador > Cheques
+        $sql_menu = "SELECT * FROM sind.dynamic_menu WHERE id != 11 AND id != 19 AND id != 29 AND id != 34 ORDER BY id";
         $statment_menu = $pdo->prepare($sql_menu);
         $statment_menu->execute();
         $result = $statment_menu->fetchAll();
@@ -138,7 +149,9 @@ if(isset($_POST["operation"])) {
     try {
 
 
-        $someArray = array_map("utf8_encode",$arr);
+        $someArray = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $arr);
         echo json_encode($someArray);
 
     } catch (PDOException $erro) {

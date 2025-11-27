@@ -26,7 +26,7 @@ if(!$mes) {
     $mescorrente = $mes;
 }
 $mescorrente = str_replace('/','-',$mescorrente);
-//$origem = 'C:\xampp\htdocs\sind\Adm\pages\arquivos\\'.str_replace('/','\\',$_POST['origem'].$mescorrente.'\\'.$empregador);
+//$origem = 'C:\xampp2\htdocs\sind\Adm\pages\arquivos\\'.str_replace('/','\\',$_POST['origem'].$mescorrente.'\\'.$empregador);
 $origem = '/home/makecard/public_html/sind/Adm/pages/arquivos/'.$_POST['origem'].$mescorrente.'/'.$empregador;
 $arquivo = getFileNames($origem);
 if ($arquivo){

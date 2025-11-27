@@ -80,6 +80,135 @@ if (isset($_POST['username']) && isset($_POST['password'])){
             $std->divisao_nome = "";
             session_unset();
             session_destroy();
+        } else {
+            // Atualizar ultimo_acesso quando o login é bem-sucedido
+            try {
+                $usuario_ip = $_SERVER['REMOTE_ADDR'] ?? 
+                              $_SERVER['HTTP_X_FORWARDED_FOR'] ?? 
+                              $_SERVER['HTTP_X_REAL_IP'] ?? 
+                              'unknown';
+                
+                // Iniciar sessão PHP para obter session_id
+                $php_session_id = session_id();
+                $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+                
+                // Verificar se as colunas existem, se não, criar
+                $checkColumn = $pdo->prepare("
+                    SELECT column_name 
+                    FROM information_schema.columns 
+                    WHERE table_schema = 'sind' 
+                    AND table_name = 'usuarios' 
+                    AND column_name = 'ultimo_acesso'
+                ");
+                $checkColumn->execute();
+                $columnExists = $checkColumn->fetch();
+                
+                if (!$columnExists) {
+                    $pdo->exec("ALTER TABLE sind.usuarios ADD COLUMN ultimo_acesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
+                    $pdo->exec("ALTER TABLE sind.usuarios ADD COLUMN ip_ultimo_acesso VARCHAR(45)");
+                }
+                
+                // Atualizar ultimo_acesso
+                $updateStmt = $pdo->prepare("
+                    UPDATE sind.usuarios 
+                    SET ultimo_acesso = NOW(), ip_ultimo_acesso = :ip
+                    WHERE codigo = :codigo
+                ");
+                $updateStmt->execute([
+                    ':codigo' => $codigo,
+                    ':ip' => $usuario_ip
+                ]);
+                
+                // Verificar se a tabela de sessões ativas existe
+                $checkTable = $pdo->prepare("
+                    SELECT table_name 
+                    FROM information_schema.tables 
+                    WHERE table_schema = 'sind' 
+                    AND table_name = 'sessoes_ativas'
+                ");
+                $checkTable->execute();
+                $tableExists = $checkTable->fetch();
+                
+                if ($tableExists) {
+                    // FORÇAR: Desativar TODAS as sessões antigas do usuário antes de criar nova
+                    $forceCleanup = $pdo->prepare("
+                        UPDATE sind.sessoes_ativas 
+                        SET is_active = false 
+                        WHERE codigo_usuario = :codigo AND is_active = true
+                    ");
+                    $forceCleanup->execute([':codigo' => $codigo]);
+                    $cleaned = $forceCleanup->rowCount();
+                    error_log("FORÇA LIMPEZA LOGIN: $cleaned sessões antigas desativadas para usuário $codigo");
+                    
+                    // Verificar se já existe uma sessão ativa para este usuário e session_id
+                    $checkSession = $pdo->prepare("
+                        SELECT id FROM sind.sessoes_ativas 
+                        WHERE codigo_usuario = :codigo AND session_id = :session_id
+                    ");
+                    $checkSession->execute([
+                        ':codigo' => $codigo,
+                        ':session_id' => $php_session_id
+                    ]);
+                    
+                    if ($checkSession->fetch()) {
+                        // Atualizar sessão existente
+                        $sessionStmt = $pdo->prepare("
+                            UPDATE sind.sessoes_ativas 
+                            SET last_activity = NOW(), is_active = true, ip_address = :ip, user_agent = :user_agent
+                            WHERE codigo_usuario = :codigo AND session_id = :session_id
+                        ");
+                        $sessionStmt->execute([
+                            ':codigo' => $codigo,
+                            ':session_id' => $php_session_id,
+                            ':ip' => $usuario_ip,
+                            ':user_agent' => $user_agent
+                        ]);
+                        error_log("Sessão atualizada no login: usuário $codigo, session $php_session_id");
+                    } else {
+                        // Inserir nova sessão ativa usando session_id do PHP
+                        // (limpeza já foi feita acima)
+                        $sessionStmt = $pdo->prepare("
+                            INSERT INTO sind.sessoes_ativas 
+                            (codigo_usuario, session_id, ip_address, user_agent, login_time, last_activity, is_active)
+                            VALUES (:codigo, :session_id, :ip, :user_agent, NOW(), NOW(), true)
+                        ");
+                        $sessionStmt->execute([
+                            ':codigo' => $codigo,
+                            ':session_id' => $php_session_id,
+                            ':ip' => $usuario_ip,
+                            ':user_agent' => $user_agent
+                        ]);
+                        error_log("Nova sessão criada no login: usuário $codigo, session $php_session_id");
+                    }
+                }
+                
+                // Delay maior para servidor de produção
+                usleep(500000); // 0.5 segundo - aumentado para produção
+                
+                // Verificar se a sessão foi criada corretamente
+                $verify = $pdo->prepare("
+                    SELECT is_active FROM sind.sessoes_ativas 
+                    WHERE codigo_usuario = :codigo AND session_id = :session_id
+                ");
+                $verify->execute([
+                    ':codigo' => $codigo,
+                    ':session_id' => $php_session_id
+                ]);
+                $sessionStatus = $verify->fetch();
+                
+                if ($sessionStatus) {
+                    error_log("Verificação pós-criação: sessão ativa = " . ($sessionStatus['is_active'] ? 'true' : 'false'));
+                } else {
+                    error_log("AVISO: Sessão não encontrada após criação!");
+                }
+                
+                // Adicionar session_id ao objeto de resposta para o JavaScript usar
+                $std->session_id = $php_session_id;
+                
+            } catch (Exception $e) {
+                // Log do erro mas não interrompe o login
+                error_log("Erro ao atualizar ultimo_acesso no login: " . $e->getMessage());
+            }
         }
     }else{
         $codigo           = 0;

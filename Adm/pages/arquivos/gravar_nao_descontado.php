@@ -118,7 +118,9 @@ if($size === 1) {
 
 
         $arr = array('associado' => $_matricula, 'convenio' => $_convenio, 'valor' => $_valor, 'data' => $_data, 'hora' => $_hora, 'mes' => $_mes, 'empregador' => $Cod_empregador);
-        $someArray["data"][1] = array_map("utf8_encode", $arr);
+        $someArray["data"][1] = array_map(function($value) {
+            return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+        }, $arr);
 
     }
 
@@ -206,7 +208,9 @@ if($size === 1) {
         $stmt->execute();
 
         $arr = array('associado' =>$_matricula,'convenio'=>$_convenio,'valor'=> $_valor,'data'=> $_data,'hora'=> $_hora,'mes'=> $_mes,'empregador'=> $Cod_empregador);
-        $someArray["data"][$i] = array_map("utf8_encode",$arr);
+        $someArray["data"][$i] = array_map(function($value) {
+            return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+        }, $arr);
 
     }
 }

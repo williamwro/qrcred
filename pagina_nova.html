@@ -5,6 +5,8 @@
     <title>Makecard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/flatly/bootstrap.min.css">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
+    <!-- CSS de segurança para formulários sensíveis -->
+    <link rel="stylesheet" href="css/security-forms.css">
     <script data-ad-client="ca-pub-5363338393903919" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <style>
         @font-face {
@@ -392,13 +394,15 @@
                         <br>
                     </div>
                     <!-- Login Form -->
-                    <form id="form_associado">
+                    <form id="form_associado" autocomplete="off" novalidate>
                         <!-- EVITA GRAVAR MEMORIA -->
                         <input type="text" style="display:none">
                         <input type="password" style="display:none">
                         <!-- EVITA GRAVAR MEMORIA  -->
-                        <input type="text" id="txtCartao" class="fadeIn second" value="" name="txtCartao" placeholder="cartão">
-                        <input type="password" id="txtSenhaCartao" class="fadeIn third" value="" name="txtSenhaCartao" placeholder="senha">
+                        <input type="text" id="txtCartao" class="fadeIn second" value="" name="txtCartao" placeholder="cartão" 
+                               autocomplete="off" spellcheck="false" data-form-type="other">
+                        <input type="password" id="txtSenhaCartao" class="fadeIn third" value="" name="txtSenhaCartao" placeholder="senha" 
+                               autocomplete="new-password" spellcheck="false" data-form-type="other">
                         <input type="hidden" value="sim" id="autorizado" name="autorizado">
                         <input type="submit" id="btnEntrarAss" name="btnEntrarAss" class="fadeIn fourth" value="Entrar">
                     </form>

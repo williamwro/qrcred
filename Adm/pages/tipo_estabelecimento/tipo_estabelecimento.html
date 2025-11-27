@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Tipo de Estabelecimento</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    </head>
+    <style type="text/css">
+
+        body {
+            table-layout: fixed;
+        }
+        th {
+        font-size: 12px;
+        white-space: nowrap;
+        }
+        td {
+        font-size: 11px;
+        }
+        tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+        }
+</style>
+    <body>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="container-fluid" style="padding: 0">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1 style="margin-top: -1px;margin-left: -6px;">
+                    Tipo de Estabelecimento <small>Visualização</small> </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+                    </li>
+                    <li>
+                        <a href="#">Tables</a>
+                    </li>
+                    <li class="active">Data tables</li>
+                </ol>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-sx-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <form id="listagem" name="listagem" class="form-inline">
+                                    <input type="button" name="btnInserir" id="btnInserir" class="btn btn-primary" value="Inserir" />
+                                </form>
+                            </div>
+                            <div class="box-body">
+                                <table id="tabela_tipo_estabelecimento" class="display table table-striped table-hover dt-responsive compact nowrap" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nome do Tipo</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- Modal Edita e Cadastra -->
+        <div class="modal fade" id="ModalEditaTipoEstabelecimento" name="ModalEditaTipoEstabelecimento" tabindex="-1" role="dialog" aria-labelledby="ModalEditaLabel" aria-hidden="true">
+            <form data-toggle="validator" role="form" name="frmtipoestabelecimento" id="frmtipoestabelecimento">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalEditaLabel" style="width: 200px;float: left;font-size: x-large;">TIPO ESTABELECIMENTO&nbsp<small id="rotulo_associado">Alterando</small></h5>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        <div class="form-group control-group" style="float: right;padding-right: 5px;">
+                            <button type="submit" class="btn btn-primary" id="btnSalvar">
+                                <span class="glyphicon glyphicon-send"></span>
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_id">ID</label>
+                                        <input type="text" class="form-control input-sm" id="C_id" name="C_id" disabled>
+                                        <input type="hidden" class="form-control input-sm" id="C_idx" name="C_idx">
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-8 col-xs-8 col-sm-8" style="padding-right: 2px;">
+                                    <div class="form-group control-group has-feedback">
+                                        <label class="control-label" for="C_nome_tipo">Nome do Tipo</label>
+                                        <input type="text" class="form-control input-sm" id="C_nome_tipo" name="C_nome_tipo" style="text-transform:uppercase" maxlength="100" placeholder="Nome do Tipo" required>
+                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                        <input type="hidden" name="operation" id="operation">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+        <script src="../Adm/pages/tipo_estabelecimento/js/tipo_estabelecimento.js"></script>
+   </body>
+</html> 

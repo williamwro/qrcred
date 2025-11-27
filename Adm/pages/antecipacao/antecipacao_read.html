@@ -53,6 +53,13 @@
                                     <div class="container">
                                         <div class="row justify-content-md-center">
                                             <div class="col-sm-2" style="padding-top: 6px;">
+                                                <div class="form-group">
+                                                    <label for="C_mes_filtro" style="font-size: 12px; margin-bottom: 2px;">Mês:</label>
+                                                    <select class="form-control input-sm" id="C_mes_filtro" name="C_mes_filtro" style="height: 28px; font-size: 12px;">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2" style="padding-top: 6px;">
                                                 <div class="custom-control custom-radio custom-control-inline">
                                                     <input type="radio" id="RadioAnalisando" name="RadioSituacao" class="custom-control-input" value="null" checked>
                                                     <label class="custom-control-label" for="RadioAnalisando">Analisando</label>
@@ -70,11 +77,21 @@
                                                     <label class="custom-control-label" for="RadioNaoAprovados">Reprovados</label>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-2" style="padding-top: 6px;">
+                                            <div class="col-sm-1" style="padding-top: 6px;">
                                                 <div class="custom-control custom-radio custom-control-inline">
                                                     <input type="radio" id="RadioTodos" name="RadioSituacao" class="custom-control-input" value="0">
                                                     <label class="custom-control-label" for="RadioTodos">Todos</label>
                                                 </div>
+                                            </div>
+                                            <div class="col-sm-4" style="padding-top: 6px;">
+                                                <button type="button" id="btnExportarPDF" class="btn btn-success btn-sm">
+                                                    <span class="glyphicon glyphicon-file"></span>
+                                                    Exportar PDF
+                                                </button>
+                                                <button type="button" id="btnExportarExcel" class="btn btn-info btn-sm" style="margin-left: 12px;">
+                                                    <span class="glyphicon glyphicon-download-alt"></span>
+                                                    Exportar Excel
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -84,20 +101,44 @@
                                 <table id="tabela_antecipacao_assoc" class="table table-striped table-hover compact" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>MATRICULA</th>
+                                            <th style="width: 30px;"></th>
                                             <th>NOME</th>
                                             <th>ID EMPREGADOR</th>
                                             <th>NOME EMPREGADOR</th>
                                             <th>MES</th>
-                                            <th>DATA SOLICITACAO</th>
-                                            <th>VALOR</th>
-                                            <th>APROVADO</th>
+                                            <th style="text-align: center;">DATA SOLICITACAO</th>
+                                            <th style="text-align: center;">HORA</th>
+                                            <th style="text-align: right;">VALOR</th>
+                                            <th style="text-align: right;">VALOR TAXA</th> <!-- Nova coluna -->
+                                            <th style="text-align: right;">VALOR A DESCONTAR</th> <!-- Nova coluna -->
+                                            <th style="text-align: center;">APROVADO</th>
                                             <th>DATA CONCLUSÃO</th>
                                             <th>CELULAR</th>
+                                            <th>CHAVE PIX</th>
                                             <th></th>
                                             <th></th>
                                         </tr>
                                     </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th style="text-align: right; font-weight: bold;">TOTAL:</th>
+                                            <th style="text-align: right; font-weight: bold; color: #007bff;"></th>
+                                            <th style="text-align: right; font-weight: bold; color: #dc3545;"></th>
+                                            <th style="text-align: right; font-weight: bold; color: #28a745;"></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -122,62 +163,99 @@
                     </div>
                     <div class="modal-body">
                         <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-10 col-lg-10 col-xs-10 col-sm-10">
+                            <!-- Campos ocultos -->
+                            <input type="hidden" name="operation" id="operation">
+                            <input type="hidden" name="divisao" id="divisao">
+                            <input type="hidden" name="C_id_empregador_antecipacao" id="C_id_empregador_antecipacao">
+                            <input type="hidden" name="C_id_antecipacao" id="C_id_antecipacao">
+                            <input type="hidden" name="C_associado_id" id="C_associado_id">
+                            <input type="hidden" name="C_associado_id_divisao" id="C_associado_id_divisao">
+                            
+                            <!-- Seção 1: Informações do Associado -->
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-9 col-sm-9 col-lg-9 col-xs-9">
                                     <div class="form-group control-group">
-                                        <label class="control-label" for="C_nome_antecipacao">Nome</label>
-                                        <input type="text" class="form-control input-sm" id="C_nome_antecipacao" name="C_nome_antecipacao" readonly="true" style="text-transform:uppercase" maxlength="50" placeholder="Nome">
-                                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                        <input type="hidden" name="operation" id="operation">
-                                        <input type="hidden" name="divisao" id="divisao">
-                                        <input type="hidden" name="C_id_empregador_antecipacao" id="C_id_empregador_antecipacao">
+                                        <label class="control-label" for="C_nome_antecipacao"><strong>Nome do Associado</strong></label>
+                                        <input type="text" class="form-control input-sm" id="C_nome_antecipacao" name="C_nome_antecipacao" readonly="true" style="text-transform:uppercase; background-color: #f9f9f9;" maxlength="50" placeholder="Nome">
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-sm-2 col-lg-2 col-xs-2" style="padding-left: 2px;">
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3">
                                     <div class="form-group control-group">
-                                        <label class="control-label" for="C_matricula_antecipacao">Matrícula</label>
-                                        <input type="text" class="form-control input-sm" id="C_matricula_antecipacao" readonly="true" name="C_matricula_antecipacao" maxlength="13" placeholder="Matrícula">
+                                        <label class="control-label" for="C_matricula_antecipacao"><strong>Matrícula</strong></label>
+                                        <input type="text" class="form-control input-sm" id="C_matricula_antecipacao" readonly="true" name="C_matricula_antecipacao" style="background-color: #f9f9f9;" maxlength="13" placeholder="Matrícula">
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            
+                            <!-- Seção 2: Informações da Empresa e Período -->
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
                                     <div class="form-group control-group">
-                                        <label class="control-label" for="C_empregador_antecipacao">Empregador</label>
-                                        <input type="text" class="form-control input-sm" id="C_empregador_antecipacao" readonly="true" name="C_empregador_antecipacao">
-                                    
+                                        <label class="control-label" for="C_empregador_antecipacao"><strong>Empregador</strong></label>
+                                        <input type="text" class="form-control input-sm" id="C_empregador_antecipacao" readonly="true" name="C_empregador_antecipacao" style="background-color: #f9f9f9;">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3">
                                     <div class="form-group control-group">
-                                        <label class="control-label" for="C_mes">Mes</label>
-                                        <input type="text" class="form-control input-sm" id="C_mes" name="C_mes" readonly="true" maxlength="10" placeholder="Mes desconto">
+                                        <label class="control-label" for="C_mes"><strong>Mês Desconto</strong></label>
+                                        <input type="text" class="form-control input-sm" id="C_mes" name="C_mes" readonly="true" style="background-color: #f9f9f9;" maxlength="10" placeholder="Mês">
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3">
                                     <div class="form-group control-group">
-                                        <label class="control-label" for="C_datasolicitacao">Data Solicitação</label>
-                                        <input type="text" class="form-control input-sm" id="C_datasolicitacao" readonly="true" name="C_datasolicitacao" tabindex="-1">
-                                    </div>  
-                                </div>
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <div class="form-group control-group">
-                                        <label class="control-label" for="C_valor_antecipacao">Valor</label>
-                                        <input type="text" class="form-control input-sm" id="C_valor_antecipacao" readonly="true" name="C_valor_antecipacao" style="text-transform:uppercase" placeholder="Valor" maxlength="20">
+                                        <label class="control-label" for="C_datasolicitacao"><strong>Data Solicitação</strong></label>
+                                        <input type="text" class="form-control input-sm" id="C_datasolicitacao" readonly="true" name="C_datasolicitacao" style="background-color: #f9f9f9;" tabindex="-1">
                                     </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Seção 3: Valores Financeiros -->
+                            <div class="row" style="margin-bottom: 15px;">
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_valor_antecipacao"><strong>Valor Solicitado</strong></label>
+                                        <input type="text" class="form-control input-sm text-right real-mask" id="C_valor_antecipacao" readonly="true" name="C_valor_antecipacao" style="background-color: #f9f9f9; color: #007bff; font-weight: bold;" placeholder="R$ 0,00" maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_valor_taxa"><strong>Valor Taxa</strong></label>
+                                        <input type="text" class="form-control input-sm text-right real-mask" id="C_valor_taxa" readonly="true" name="C_valor_taxa" style="background-color: #f9f9f9; color: #dc3545; font-weight: bold;" placeholder="R$ 0,00" maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_valor_a_descontar"><strong>Valor a Descontar</strong></label>
+                                        <input type="text" class="form-control input-sm text-right real-mask" id="C_valor_a_descontar" readonly="true" name="C_valor_a_descontar" style="background-color: #f9f9f9; color: #28a745; font-weight: bold;" placeholder="R$ 0,00" maxlength="20">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Seção 4: Contato e Configurações (Campos Editáveis) -->
+                            <div class="row" style="margin-bottom: 10px; padding-top: 15px; border-top: 2px solid #e9ecef;">
+                                <div class="col-md-12">
+                                    <h6 style="color: #495057; font-weight: bold; margin-bottom: 15px;">
+                                        <i class="glyphicon glyphicon-edit"></i> Campos Editáveis
+                                    </h6>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3">
                                     <div class="form-group control-group">
-                                        <label class="control-label" for="C_cel_antecipacao">Celular contato</label>
-                                        <input type="text" class="form-control input-sm" id="C_cel_antecipacao" readonly="true" name="C_cel_antecipacao" maxlength="10" placeholder="Mes desconto">
+                                        <label class="control-label" for="C_cel_antecipacao"><strong>Celular Contato</strong></label>
+                                        <input type="text" class="form-control input-sm" id="C_cel_antecipacao" readonly="true" name="C_cel_antecipacao" style="background-color: #f9f9f9;" maxlength="15" placeholder="(00) 00000-0000">
                                     </div>
                                 </div>
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="padding-left: 2px;padding-right: 2px;">
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6">
                                     <div class="form-group control-group">
-                                        <label class="control-label" for="C_aprovado">Aprovado</label>
-                                        <select class="custom-select form-control input-sm" id="C_aprovado" name="C_aprovado">
+                                        <label class="control-label" for="C_chave_pix_antecipacao"><strong>Chave PIX</strong> <small class="text-muted">(Editável)</small></label>
+                                        <input type="text" class="form-control input-sm" id="C_chave_pix_antecipacao" name="C_chave_pix_antecipacao" style="border: 2px solid #007bff; background-color: #fff;" maxlength="100" placeholder="Digite a chave PIX (CPF, e-mail, telefone ou chave aleatória)">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-xs-3">
+                                    <div class="form-group control-group">
+                                        <label class="control-label" for="C_aprovado"><strong>Status</strong> <small class="text-muted">(Editável)</small></label>
+                                        <select class="custom-select form-control input-sm" id="C_aprovado" name="C_aprovado" style="border: 2px solid #007bff; background-color: #fff;">
                                         </select>
                                     </div>
                                 </div>
@@ -188,6 +266,569 @@
             </div>
         </form>
         </div>
+        
+        <!-- Modal para visualização do PDF -->
+        <div class="modal fade" id="ModalPDF" tabindex="-1" role="dialog" aria-labelledby="ModalPDFLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document" style="max-width: 90%; width: 90%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalPDFLabel">Relatório de Antecipações - PDF</h5>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="float: right;">Fechar</button>
+                        <div class="form-group control-group" style="float: right; padding-right: 5px;">
+                            <button type="button" class="btn btn-primary" id="btnBaixarPDF">
+                                <span class="glyphicon glyphicon-download"></span>
+                                Baixar PDF
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body" style="padding: 0;">
+                        <iframe id="pdfViewer" style="width: 100%; height: 600px; border: none;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <script src="../Adm/pages/antecipacao/js/antecipacao_read_script.js"></script>
+        
+        <!-- jsPDF CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        
+        <!-- SheetJS (XLSX) CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+        
+        <script>
+        $('#ModalEditaAntecipado').on('shown.bs.modal', function () {
+            $('.real-mask').each(function(){
+                let val = $(this).val().replace(/\./g,'').replace(',','.');
+                if(!isNaN(val) && val !== '') {
+                    let num = parseFloat(val);
+                    $(this).val(num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }));
+                }
+            });
+        });
+        
+        // Evento de clique para gerar relatório PDF de antecipação
+        $('#btnExportarPDF').click(function() {
+            // Verificar se as bibliotecas necessárias estão carregadas
+            if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Biblioteca jsPDF não está carregada. Por favor, recarregue a página e tente novamente.'
+                });
+                return;
+            }
+            
+            // Mostrar indicador de carregamento inicial
+            Swal.fire({
+                title: 'Preparando dados...',
+                text: 'Aguarde enquanto carregamos todos os registros',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Buscar todos os dados incluindo chave_pix
+            var situacaoSelecionada = $('input[name="RadioSituacao"]:checked').val();
+            
+            $.ajax({
+                url: "pages/antecipacao/antecipacao_export_pdf.php",
+                method: "POST",
+                data: { situacao: situacaoSelecionada },
+                dataType: "json",
+                success: function(data) {
+                    console.log('🔍 Dados recebidos do PHP:', data);
+                    if (data.length > 0) {
+                        console.log('📊 Primeiro item de exemplo:', data[0]);
+                    }
+                    gerarPDFAntecipacao(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro na exportação:', xhr.responseText);
+                    var mensagemErro = 'Erro ao buscar dados para exportação';
+                    
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.error) {
+                            mensagemErro = response.error;
+                        }
+                    } catch (e) {
+                        console.log('Resposta do servidor:', xhr.responseText);
+                    }
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro',
+                        text: mensagemErro
+                    });
+                }
+            });
+        });
+        
+        function gerarPDFAntecipacao(dados) {
+            console.log("Iniciando geração de PDF de Antecipação...");
+            
+            // Verificar se o jsPDF está disponível
+            if (typeof window.jspdf === 'undefined') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Biblioteca não encontrada',
+                    text: 'Biblioteca jsPDF não está carregada. Por favor, recarregue a página e tente novamente.'
+                });
+                return;
+            }
+            
+            // Carregar logo antes de gerar o PDF
+            var logoBase64 = null;
+            var img = new Image();
+            img.crossOrigin = 'anonymous';
+            
+
+            
+            // Tentar carregar a logo - testando diferentes caminhos
+            var caminhosPossiveis = [
+                'pictures_site-sind/logo_sasp.jpeg',
+                '../pictures_site-sind/logo_sasp.jpeg',
+                '../../pictures_site-sind/logo_sasp.jpeg',
+                '/qrcred/pictures_site-sind/logo_sasp.jpeg'
+            ];
+            
+            var tentarProximoCaminho = function(index) {
+                if (index >= caminhosPossiveis.length) {
+                    console.error('❌ Nenhum caminho da logo funcionou, gerando PDF sem logo');
+                    gerarPDFComLogo(dados, null);
+                    return;
+                }
+                
+                var caminho = caminhosPossiveis[index];
+                console.log('🔄 Tentativa', index + 1, '- Carregando logo de:', caminho);
+                
+                img.onload = function() {
+                    console.log('📸 Logo carregada com sucesso do caminho:', caminho);
+                    console.log('📏 Dimensões:', img.width + 'x' + img.height);
+                    // Converter imagem para base64
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    logoBase64 = canvas.toDataURL('image/jpeg');
+                    console.log('✅ Logo convertida para base64');
+                    
+                    // Gerar PDF com logo
+                    gerarPDFComLogo(dados, logoBase64);
+                };
+                
+                img.onerror = function() {
+                    console.warn('⚠️ Caminho', index + 1, 'falhou:', caminho);
+                    tentarProximoCaminho(index + 1);
+                };
+                
+                img.src = caminho;
+            };
+            
+            tentarProximoCaminho(0);
+        }
+        
+        function gerarPDFComLogo(dados, logoBase64) {
+            
+            // Mostrar indicador de carregamento para geração do PDF
+            Swal.fire({
+                title: 'Processando...',
+                text: 'Gerando PDF para visualização',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            setTimeout(function() {
+                try {
+                    // Configurações do PDF - orientação paisagem
+                    var pdf = new window.jspdf.jsPDF('l', 'pt', 'a4'); // 'l' = landscape (paisagem)
+                    var pageWidth = pdf.internal.pageSize.width;
+                    var pageHeight = pdf.internal.pageSize.height;
+                    var margins = { top: 40, bottom: 40, left: 40, right: 40 };
+
+                    // Configurações de fonte
+                    pdf.setFont("helvetica");
+                    pdf.setFontSize(12);
+
+                    // Cabeçalho do relatório
+                    var situacaoTexto = '';
+                    var situacaoSelecionada = $('input[name="RadioSituacao"]:checked').val();
+                    if (situacaoSelecionada === 'true') situacaoTexto = 'Aprovados';
+                    else if (situacaoSelecionada === 'false') situacaoTexto = 'Reprovados';
+                    else if (situacaoSelecionada === 'null') situacaoTexto = 'Analisando';
+                    else situacaoTexto = 'Todos';
+                    
+                    var titulo = 'Relatório de Antecipações';
+                    var subtitulo = 'Situação: ' + situacaoTexto;
+
+                    // Configurações da tabela
+                    var startY = margins.top + 110;
+                    var rowHeight = 20;
+                    var headerHeight = 30;
+                    var cellPadding = 3;
+                    var fontSize = 8;
+
+                    // Headers da tabela
+                    var headers = [
+                        'Matrícula', 'Nome', 'Nome Empregador', 
+                        'Data Sol.', 'Valor', 'V. Taxa', 'V. Desc.', 'Chave PIX'
+                    ];
+
+                    // Calcular larguras das colunas (total = 95% para margem de segurança)
+                    var tableWidth = pageWidth - margins.left - margins.right;
+                    var columnWidths = [
+                        tableWidth * 0.09, // Matrícula
+                        tableWidth * 0.20, // Nome
+                        tableWidth * 0.20, // Nome Empregador
+                        tableWidth * 0.10, // Data Sol.
+                        tableWidth * 0.10, // Valor
+                        tableWidth * 0.10, // V. Taxa
+                        tableWidth * 0.10, // V. Desc.
+                        tableWidth * 0.11  // Chave PIX
+                    ];
+
+                    // Função para quebrar texto em múltiplas linhas
+                    function quebrarTexto(texto, larguraMaxima, pdf) {
+                        if (!texto || texto.toString().trim() === '') {
+                            return [''];
+                        }
+                        
+                        var textoStr = texto.toString();
+                        var palavras = textoStr.split(' ');
+                        var linhas = [];
+                        var linhaAtual = '';
+                        
+                        for (var i = 0; i < palavras.length; i++) {
+                            var palavraAtual = palavras[i];
+                            var testeTexto = linhaAtual ? linhaAtual + ' ' + palavraAtual : palavraAtual;
+                            var larguraTexto = pdf.getTextWidth(testeTexto);
+                            
+                            if (larguraTexto <= larguraMaxima - (cellPadding * 2)) {
+                                linhaAtual = testeTexto;
+                            } else {
+                                if (linhaAtual) {
+                                    linhas.push(linhaAtual);
+                                    linhaAtual = palavraAtual;
+                                } else {
+                                    linhas.push(palavraAtual);
+                                }
+                            }
+                        }
+                        
+                        if (linhaAtual) {
+                            linhas.push(linhaAtual);
+                        }
+                        
+                        return linhas.length > 0 ? linhas : [''];
+                    }
+
+                    // Função para adicionar cabeçalho da página
+                    function addHeader(pageNumber) {
+                        // Adicionar logo no lado esquerdo (se disponível)
+                        console.log('🔍 Debug addHeader - logoBase64 disponível:', !!logoBase64);
+                        if (logoBase64) {
+                            try {
+                                var logoWidth = 60;  // Largura da logo
+                                var logoHeight = 40; // Altura da logo
+                                var logoX = margins.left;
+                                var logoY = margins.top;
+                                
+                                console.log('📍 Posicionando logo em:', logoX, logoY, 'tamanho:', logoWidth + 'x' + logoHeight);
+                                
+                                // Adicionar imagem ao PDF
+                                pdf.addImage(logoBase64, 'JPEG', logoX, logoY, logoWidth, logoHeight);
+                                console.log('✅ Logo adicionada ao PDF na página', pageNumber);
+                            } catch (error) {
+                                console.error('❌ Erro ao adicionar logo ao PDF:', error);
+                            }
+                        } else {
+                            console.log('⚠️ Logo não disponível para adicionar ao PDF');
+                        }
+                        
+                        // Texto da instituição - sempre centralizado na página
+                        pdf.setFontSize(10);
+                        pdf.setFont("helvetica", "bold");
+                        var textoInstituicao = "Sistema de Antecipações - Relatório Gerencial";
+                        // Centralizar sempre no meio da página, independente da logo
+                        pdf.text(textoInstituicao, pageWidth/2, margins.top + 15, { align: 'center' });
+                        
+                        // Ajustar espaçamento vertical considerando a logo
+                        var yOffset = logoBase64 ? 45 : 35; // Mais espaço se houver logo
+                        
+                        pdf.setFontSize(16);
+                        pdf.setFont("helvetica", "bold");
+                        pdf.text(titulo, pageWidth/2, margins.top + yOffset, { align: 'center' });
+                        
+                        pdf.setFontSize(12);
+                        pdf.setFont("helvetica", "normal");
+                        pdf.text(subtitulo, pageWidth/2, margins.top + yOffset + 20, { align: 'center' });
+                        
+                        // Adicionar data e hora atual
+                        var agora = new Date();
+                        var dataHora = agora.toLocaleDateString('pt-BR') + ' às ' + agora.toLocaleTimeString('pt-BR');
+                        pdf.setFontSize(10);
+                        pdf.text('Gerado em: ' + dataHora, pageWidth/2, margins.top + yOffset + 40, { align: 'center' });
+                        
+                        // Adicionar número de registros
+                        var totalRegistros = dados.length;
+                        var textoRegistros = 'Total de registros: ' + totalRegistros.toLocaleString('pt-BR');
+                        pdf.setFontSize(10);
+                        pdf.setFont("helvetica", "bold");
+                        pdf.text(textoRegistros, pageWidth/2, margins.top + yOffset + 55, { align: 'center' });
+                        
+                        pdf.setFontSize(10);
+                        pdf.text('Página ' + pageNumber, pageWidth - margins.right, pageHeight - margins.bottom, { align: 'right' });
+
+                        // Adicionar cabeçalhos da tabela
+                        pdf.setFontSize(fontSize);
+                        pdf.setFont("helvetica", "bold");
+                        
+                        // Ajustar posição da tabela baseado no espaçamento do cabeçalho
+                        var headerY = margins.top + yOffset + 75;
+                        
+                        // Calcular largura real da tabela baseada nas colunas
+                        var larguraRealTabela = columnWidths.reduce(function(sum, width) { return sum + width; }, 0);
+                        
+                        // Fundo cinza apenas para a área real da tabela
+                        pdf.setFillColor(240, 240, 240);
+                        pdf.rect(margins.left, headerY, larguraRealTabela, headerHeight, 'F');
+
+                        var x = margins.left;
+                        headers.forEach(function(header, i) {
+                            pdf.setDrawColor(200, 200, 200);
+                            // Desenhar borda apenas para a área real da coluna
+                            pdf.rect(x, headerY, columnWidths[i], headerHeight);
+                            pdf.text(header, x + (columnWidths[i]/2), headerY + 20, { align: 'center' });
+                            x += columnWidths[i];
+                        });
+
+                        return headerY + headerHeight;
+                    }
+
+                    // Iniciar primeira página
+                    var currentY = addHeader(1);
+                    var pageNumber = 1;
+
+                    // Inicializar acumuladores para totais
+                    var totalValor = 0;
+                    var totalValorTaxa = 0;
+                    var totalValorDescontar = 0;
+                    
+                    // Adicionar linhas de dados
+                    pdf.setFont("helvetica", "normal");
+                    dados.forEach(function(item, rowIndex) {
+                        var alturaLinhaNecessaria = rowHeight;
+                        
+                        if (currentY + alturaLinhaNecessaria > pageHeight - margins.bottom - 40) { // Reservar espaço para totais
+                            pdf.addPage();
+                            pageNumber++;
+                            currentY = addHeader(pageNumber);
+                        }
+
+                        if (rowIndex % 2 === 1) {
+                            pdf.setFillColor(249, 249, 249);
+                            // Usar largura real da tabela para linhas zebradas
+                            var larguraRealTabela = columnWidths.reduce(function(sum, width) { return sum + width; }, 0);
+                            pdf.rect(margins.left, currentY, larguraRealTabela, alturaLinhaNecessaria, 'F');
+                        }
+
+                        // Calcular totais - limpar formatação antes do parseFloat
+                        var valorLimpo = (item.valor || '').replace(/[R$\s]/g, '').replace(/\./g, '').replace(',', '.');
+                        var taxaLimpa = (item.valor_taxa || '').replace(/[R$\s]/g, '').replace(/\./g, '').replace(',', '.');
+                        var descontarLimpo = (item.valor_a_descontar || '').replace(/[R$\s]/g, '').replace(/\./g, '').replace(',', '.');
+                        
+                        var valorNumerico = parseFloat(valorLimpo) || 0;
+                        var valorTaxaNumerico = parseFloat(taxaLimpa) || 0;
+                        var valorDescontarNumerico = parseFloat(descontarLimpo) || 0;
+                        
+                        // Debug individual de cada item
+                        if (rowIndex < 3) { // Debug apenas os primeiros 3 para não poluir o console
+                            console.log(`🔍 Item ${rowIndex}:`, {
+                                valor_original: item.valor,
+                                valor_limpo: valorLimpo,
+                                valor_parseado: valorNumerico,
+                                taxa_original: item.valor_taxa,
+                                taxa_limpa: taxaLimpa,
+                                taxa_parseada: valorTaxaNumerico,
+                                descontar_original: item.valor_a_descontar,
+                                descontar_limpo: descontarLimpo,
+                                descontar_parseado: valorDescontarNumerico
+                            });
+                        }
+                        
+                        totalValor += valorNumerico;
+                        totalValorTaxa += valorTaxaNumerico;
+                        totalValorDescontar += valorDescontarNumerico;
+
+                        var x = margins.left;
+                        var linha = [
+                            item.matricula || '',
+                            (item.nome || '').substring(0, 30),
+                            (item.nome_empregador || '').substring(0, 30),
+                            item.data_solicitacao || '',
+                            item.valor || '',
+                            item.valor_taxa || '',
+                            item.valor_a_descontar || '',
+                            (item.chave_pix || '').substring(0, 20)
+                        ];
+                        
+                        linha.forEach(function(cell, i) {
+                            var cellText = cell.toString();
+                            if (i === 0) { // Matrícula - centralizado
+                                pdf.text(cellText, x + (columnWidths[i]/2), currentY + (alturaLinhaNecessaria/2) + 3, { align: 'center' });
+                            } else if (i === 4 || i === 5 || i === 6) { // Valores monetários (Valor, V. Taxa, V. Desc.) - alinhados à direita
+                                pdf.text(cellText, x + columnWidths[i] - cellPadding, currentY + (alturaLinhaNecessaria/2) + 3, { align: 'right' });
+                            } else { // Outros campos (Nome, Nome Empregador, Data Sol., Chave PIX) - alinhados à esquerda
+                                pdf.text(cellText, x + cellPadding, currentY + (alturaLinhaNecessaria/2) + 3, { align: 'left' });
+                            }
+                            x += columnWidths[i];
+                        });
+                        
+                        currentY += alturaLinhaNecessaria;
+                    });
+                    
+                    // Adicionar linha de totais
+                    if (currentY + rowHeight > pageHeight - margins.bottom) {
+                        pdf.addPage();
+                        pageNumber++;
+                        currentY = addHeader(pageNumber);
+                    }
+                    
+                    // Calcular largura real da tabela para totais
+                    var larguraRealTabela = columnWidths.reduce(function(sum, width) { return sum + width; }, 0);
+                    
+                    // Linha separadora antes dos totais
+                    pdf.setDrawColor(0, 0, 0);
+                    pdf.line(margins.left, currentY + 5, margins.left + larguraRealTabela, currentY + 5);
+                    currentY += 10;
+
+                    // Fundo cinza para linha de totais (apenas na área real da tabela)
+                    pdf.setFillColor(230, 230, 230);
+                    pdf.rect(margins.left, currentY, larguraRealTabela, rowHeight, 'F');
+
+                    // Debug dos totais antes de exibir
+                    console.log('📊 Debug Totais PDF:', {
+                        totalValor: totalValor,
+                        totalValorTaxa: totalValorTaxa,
+                        totalValorDescontar: totalValorDescontar,
+                        totalRegistros: dados.length
+                    });
+                    
+                    // Texto "TOTAIS"
+                    pdf.setFont("helvetica", "bold");
+                    pdf.setFontSize(fontSize + 1);
+                    
+                    var x = margins.left;
+                    var valorFormatado = 'R$ ' + totalValor.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    var taxaFormatada = 'R$ ' + totalValorTaxa.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    var descontarFormatado = 'R$ ' + totalValorDescontar.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    
+                    console.log('💰 Valores formatados:', {
+                        valor: valorFormatado,
+                        taxa: taxaFormatada,
+                        descontar: descontarFormatado
+                    });
+                    
+                    var linhaTotais = [
+                        '', // Matrícula - vazio
+                        'TOTAIS', // Nome - texto "TOTAIS"
+                        '', // Nome Empregador - vazio
+                        '', // Data Sol. - vazio
+                        valorFormatado, // Total Valor
+                        taxaFormatada, // Total V. Taxa
+                        descontarFormatado, // Total V. Desc.
+                        '' // Chave PIX - vazio
+                    ];
+                    
+                    linhaTotais.forEach(function(cell, i) {
+                        var cellText = cell.toString();
+                        
+                        // Desenhar borda da célula para debug
+                        pdf.setDrawColor(200, 200, 200);
+                        pdf.rect(x, currentY, columnWidths[i], rowHeight);
+                        
+                        if (i === 1) { // Texto "TOTAIS" - centralizado
+                            console.log('📋 Renderizando TOTAIS na posição:', x + (columnWidths[i]/2));
+                            pdf.text(cellText, x + (columnWidths[i]/2), currentY + (rowHeight/2) + 3, { align: 'center' });
+                        } else if (i === 4 || i === 5 || i === 6) { // Valores dos totais - alinhados à direita
+                            console.log(`💰 Renderizando valor coluna ${i}:`, cellText, 'na posição:', x + columnWidths[i] - cellPadding);
+                            pdf.text(cellText, x + columnWidths[i] - cellPadding, currentY + (rowHeight/2) + 3, { align: 'right' });
+                        }
+                        x += columnWidths[i];
+                    });
+
+                    console.log("PDF gerado com sucesso");
+                    
+                    var pdfBlob = pdf.output('blob');
+                    console.log("Blob criado:", pdfBlob.size, "bytes");
+                    
+                    var pdfUrl = URL.createObjectURL(pdfBlob);
+                    console.log("URL criada:", pdfUrl);
+                    
+                    // Armazenar dados do PDF para download
+                    window.pdfGerado = {
+                        blob: pdfBlob,
+                        url: pdfUrl,
+                        filename: 'Relatorio_Antecipacoes_' + new Date().toISOString().slice(0,10) + '.pdf'
+                    };
+                    
+                    Swal.close();
+                    
+                    // Abrir PDF no modal centralizado
+                    $('#pdfViewer').attr('src', pdfUrl);
+                    $('#ModalPDF').modal('show');
+
+                } catch (error) {
+                    console.error('Erro ao gerar PDF:', error);
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro ao gerar PDF',
+                        text: 'Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.',
+                        footer: 'Detalhes do erro: ' + error.message
+                    });
+                }
+            }, 1000);
+        }
+        
+        // Função para baixar o PDF
+        $('#btnBaixarPDF').click(function() {
+            if (window.pdfGerado && window.pdfGerado.blob) {
+                var link = document.createElement('a');
+                link.href = window.pdfGerado.url;
+                link.download = window.pdfGerado.filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Download iniciado',
+                    text: 'O arquivo PDF está sendo baixado.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Nenhum PDF foi gerado ainda. Por favor, gere o relatório primeiro.'
+                });
+            }
+        });
+        
+        // Limpar URL do PDF quando modal for fechado
+        $('#ModalPDF').on('hidden.bs.modal', function () {
+            if (window.pdfGerado && window.pdfGerado.url) {
+                URL.revokeObjectURL(window.pdfGerado.url);
+                $('#pdfViewer').attr('src', '');
+            }
+        });
+        </script>
    </body>
 </html>

@@ -59,7 +59,7 @@
                 min-height: 100%;
                 padding: 20px;
             }
-            #formContent, #formContentAssociado, #formContentadministrativo {
+            #formContent, #formContentAssociado, #formContentadministrativo, #formContentEmpregador {
                 -webkit-border-radius: 10px 10px 10px 10px;
                 border-radius: 10px 10px 10px 10px;
                 background: #fff;
@@ -274,7 +274,7 @@
                 margin-right: 0px;
                 margin-left: 20px;
                 margin-top: -5px;
-                width:170px;
+                width:60px;
                 height: 45px;
             }
             #imgcartao {
@@ -323,27 +323,25 @@
     <body>
     <div class="wrapper">
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-            <div class="container">
-                <div class="row justify-content-md-center">
-                    <button class="navbar-toggler" type="button" id="botao_menu" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <a class="nav navbar-brand" href="#home" aria-controls="home" role="tab" data-toggle="tab">
-                        <img src="pictures_site-sind\logo.png" id="icon" alt="User Icon"/>
-                    </a>
-                    <div class="navbar-collapse collapse" id="navbarSupportedContent">
-                        <ul class="nav navbar-nav">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" id="botao_menu" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto text-center">
+                            <li class="nav-item">
+                                <a class="navbar-brand" href="#home" aria-controls="home" role="tab" data-toggle="tab">
+                                    <img src="pictures_site-sind\logo_saspng.png" id="icon" alt="User Icon"/>
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#home" aria-controls="home"data-toggle="tab" aria-selected="false" style="padding-right: 30px;font-size: 16px;">Início </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#convenio" aria-controls="convenio"data-toggle="tab" aria-selected="false" style="padding-right: 30px;font-size: 16px;">Convenio </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#associado" data-toggle="tab" aria-selected="false" style="padding-right: 30px;font-size: 16px;">Associado</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" href="#rede_conveniada" data-toggle="tab" aria-selected="false" style="padding-right: 30px;font-size: 16px;">Rede conveniada</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#empregador" data-toggle="tab" aria-selected="false" style="padding-right: 30px;font-size: 16px;">Empregador</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#contato" data-toggle="tab" aria-selected="false" style="padding-right: 30px;font-size: 16px;">Contato</a>
@@ -352,7 +350,6 @@
                                 <a class="nav-link" href="#administrativo" data-toggle="tab" aria-selected="false" style="padding-right: 30px;font-size: 16px;">Administração</a>
                             </li>
                         </ul>
-                    </div>
                 </div>
             </div>
         </nav>
@@ -438,6 +435,28 @@
                         <!--<div id="formFooterAssociado">
                             <a class="underlineHover" href="#">Esqueceu a senha?</a>
                         </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="empregador">
+                <div class="wrapper fadeInDown">
+                    <div id="formContentEmpregador">
+                        <!-- Icon -->
+                        <div class="fadeIn first">
+                            <br>
+                            <p><h5>Login empregador</h5></p>
+                            <br>
+                        </div>
+                        <!-- Login Form -->
+                        <form id="loginEmpregadorForm" autocomplete="off">
+                            <!-- EVITA GRAVAR MEMORIA -->
+                            <input type="text" style="display:none">
+                            <input type="password" style="display:none">
+                            <!-- EVITA GRAVAR MEMORIA  -->
+                            <input type="text" id="userEmpregador" class="fadeIn second" autocomplete="off" value="" name="userEmpregador" placeholder="usuário">
+                            <input type="password" id="passwordEmpregador" class="fadeIn third" autocomplete="off" value="" name="passwordEmpregador" placeholder="senha">
+                            <input type="button" id="btn-login-empregador" name="btn-login-empregador" class="fadeIn fourth" value="Entrar">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -532,6 +551,7 @@
             </div>
         </footer>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

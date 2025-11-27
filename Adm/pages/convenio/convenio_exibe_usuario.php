@@ -1,4 +1,5 @@
 <?PHP
+require_once '../../../functions.php';
 include "../../php/banco.php";
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

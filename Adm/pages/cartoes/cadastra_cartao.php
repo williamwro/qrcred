@@ -10,6 +10,7 @@ $_codsituacao = 4;
 $_matricula   = $_POST['matricula'];
 $_empregador  = $_POST['empregador'];
 $id_divisao   = $_POST['id_divisao'];
+$id_associado = $_POST['id_associado'] ?? null; // Novo campo
 $data2 = new DateTime();
 $data3 = $data2->format('d-m-Y');
 $data4 = new DateTime($data3);
@@ -49,7 +50,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $msg_grava_cad = "";
 
-$sql = "INSERT INTO sind.c_cartaoassociado(cod_situacaocartao,cod_associado,cod_verificacao,empregador,data_pedido,cod_situacao2,id_divisao)";
+$sql = "INSERT INTO sind.c_cartaoassociado(cod_situacaocartao,cod_associado,cod_verificacao,empregador,data_pedido,cod_situacao2,id_divisao,id_associado)";
 $sql .= " VALUES(";
 $sql .= ":cod_situacaocartao, ";
 $sql .= ":cod_associado, ";
@@ -57,7 +58,8 @@ $sql .= ":cod_verificacao, ";
 $sql .= ":empregador, ";
 $sql .= ":data_pedido, ";
 $sql .= ":cod_situacao2, ";
-$sql .= ":id_divisao)";
+$sql .= ":id_divisao, ";
+$sql .= ":id_associado)";
 $stmt = $pdo->prepare($sql);
 $stmt->bindParam(':cod_situacaocartao', $_codsituacao, PDO::PARAM_INT);
 $stmt->bindParam(':cod_associado', $_matricula, PDO::PARAM_STR);
@@ -66,6 +68,7 @@ $stmt->bindParam(':empregador', $_empregador, PDO::PARAM_INT);
 $stmt->bindParam(':data_pedido', $data, PDO::PARAM_STR);
 $stmt->bindParam(':cod_situacao2', $_codsituacao, PDO::PARAM_INT);
 $stmt->bindParam(':id_divisao', $id_divisao, PDO::PARAM_INT);
+$stmt->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
 
     $msg_grava_cad = "cadastrado";
 

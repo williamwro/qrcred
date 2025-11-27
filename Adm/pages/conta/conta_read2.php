@@ -31,7 +31,9 @@ FROM sind.associado RIGHT JOIN (sind.c_situacaocartao RIGHT JOIN sind.c_cartaoas
         $sub_array["botao"]                 = '<button type="button" name="update" id="'.$row["cod_verificacao"].'" class="btn btn-warning btn-xs update">Alterar</button>';
         $sub_array["botaosenha"]            = '<button type="button" name="btnsenha" id="'.$row["cod_verificacao"].'" class="btn btn-facebook btn-xs btnsenha">Senha</button>';
 
-        $someArray["data"][] = array_map("utf8_encode",$sub_array);
+        $someArray["data"][] = array_map(function($value) {
+            return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+        }, $sub_array);
 
     }
     $teste = json_encode($someArray);

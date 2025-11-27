@@ -1,15 +1,24 @@
 <?PHP
-    header("Content-type: application/json");
+    header("Content-type: application/json; charset=utf-8");
     include "../../php/banco.php";
     include "../../php/funcoes.php";
     $pdo = Banco::conectar_postgres();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $someArray = array();
     $i=1;
-    $divisao = $_GET["divisaox"];
-    $sql = $pdo->query("SELECT * FROM sind.empregador WHERE divisao = ".$divisao." ORDER BY nome ");
+    $divisao = isset($_GET["divisaox"]) ? (int)$_GET["divisaox"] : null;
+    
+    if($divisao !== null && $divisao > 0) {
+        $sql = $pdo->prepare("SELECT * FROM sind.empregador WHERE divisao = :divisao ORDER BY nome");
+        $sql->bindParam(':divisao', $divisao, PDO::PARAM_INT);
+        $sql->execute();
+    } else {
+        $sql = $pdo->prepare("SELECT * FROM sind.empregador ORDER BY nome");
+        $sql->execute();
+    }
+    
     while($row = $sql->fetch()) {
-        $someArray[$i] = array_map("utf8_encode",$row);
+        $someArray[$i] = $row;
         $i++;
     }
-    echo json_encode($someArray);
+    echo json_encode($someArray, JSON_UNESCAPED_UNICODE);

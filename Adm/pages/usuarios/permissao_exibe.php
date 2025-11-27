@@ -33,7 +33,7 @@ if(isset($_POST["codigo_menu"])){
     foreach ($result as $row){
 
         $std->menu_item_id   = $row["menu_item_id"];
-        $std->menu_item_name = htmlspecialchars($row["menu_item_name"]);
+        $std->menu_item_name = htmlspecialchars($row["menu_item_name"] ?? '');
         $std->status_usuario = $row["status_usuario"];
         $std->codigo_usuario = $row["codigo_usuario"];
 

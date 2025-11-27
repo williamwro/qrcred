@@ -9,40 +9,38 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $someArray = array();
     $i=0;
     
-    $query = "SELECT convenio.codigo, convenio.razaosocial, 
-                                       convenio.nomefantasia, convenio.endereco, convenio.numero, 
-                                       convenio.bairro, convenio.cidade, 
-                                       convenio.cep, convenio.telefone, convenio.cel,convenio.latitude,convenio.longitude,
-                                       convenio.email, categoriaconvenio.nome AS nome_categoria, 
-                                       categoriaconvenio.codigo AS codigo_categoria
-                                  FROM sind.categoriaconvenio 
-                            INNER JOIN sind.convenio 
-                                    ON categoriaconvenio.codigo = convenio.id_categoria 
-                                 WHERE lista_site = true
-                              ORDER BY categoriaconvenio.nome ASC,convenio.nomefantasia ASC;";
+    $query = "SELECT distinct
+                    c.razaosocial AS convenio_nome,
+                    e.nome_especialidade AS especialidade,
+                    p.nome_profissional AS profissional,
+                    COALESCE(te.nome_tipo, 'Não informado') AS tipo_estabelecimento
+                
+                FROM 
+                    sind.convenio_especialidades ce
+                JOIN 
+                    sind.convenio c ON ce.cod_convenio = c.codigo
+                JOIN 
+                    sind.profissionais p ON ce.cod_profissional = p.id_profissional
+                JOIN 
+                    sind.profissionais_especialidade pe ON p.id_profissional = pe.id_profissional
+                JOIN 
+                    sind.especialidade e ON pe.id_especialidade = e.id_especialidade
+                LEFT JOIN 
+                    sind.tipo_especialidade te ON e.id_tipo_especialidade = te.id_tipo_especialidade
+                ORDER BY 
+                    c.razaosocial, e.nome_especialidade, p.nome_profissional;";
     $sql = $pdo->query($query);   
 
     while($row_conv = $sql->fetch()) {
 
         $sub_array = array();
 
-        $sub_array["codigo"]           = $row_conv["codigo"];
-        $sub_array["razaosocial"]      = htmlspecialchars($row_conv["razaosocial"]);
-        $sub_array["nomefantasia"]     = htmlspecialchars($row_conv["nomefantasia"]);
-        $sub_array["endereco"]         = htmlspecialchars($row_conv["endereco"]);
-        $sub_array["bairro"]           = htmlspecialchars($row_conv["bairro"]);
-        $sub_array["cidade"]           = htmlspecialchars($row_conv["cidade"]);
-        $sub_array["numero"]           = $row_conv["numero"];
-        $sub_array["cep"]              = $row_conv["cep"];
-        $sub_array["telefone"]         = $row_conv["telefone"];
-        $sub_array["cel"]              = $row_conv["cel"];
-        $sub_array["latitude"]         = $row_conv["latitude"];
-        $sub_array["longitude"]        = $row_conv["longitude"];
-        $sub_array["email"]            = $row_conv["email"];
-        $sub_array["nome_categoria"]   = $row_conv["nome_categoria"];
-        $sub_array["codigo_categoria"] = $row_conv["codigo_categoria"];
-      
-        $someArray[]        = $sub_array;
+        $sub_array["convenio_nome"]        = $row_conv["convenio_nome"];
+        $sub_array["especialidade"]        = $row_conv["especialidade"];
+        $sub_array["profissional"]         = $row_conv["profissional"];
+        $sub_array["tipo_estabelecimento"] = $row_conv["tipo_estabelecimento"];
+
+        $someArray[] = $sub_array;
    
     }
     echo json_encode($someArray);

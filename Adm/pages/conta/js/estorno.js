@@ -13,16 +13,9 @@ $(document).ready(function(){
     var detailRows = [];
     todos = "Todos";
     divisao = sessionStorage.getItem("divisao");
-    card1 = sessionStorage.getItem("card1");
-    card2 = sessionStorage.getItem("card2");
-    card3 = sessionStorage.getItem("card3");
-    card4 = sessionStorage.getItem("card4");
-    card5 = sessionStorage.getItem("card5");
-    card6 = sessionStorage.getItem("card6");
-
 
     $('#C_mes').append('<option selected value="' + todos + '">' + todos + '</option>');
-    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio" }, function( data ) {
+    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio", "divisao": divisao }, function( data ) {
         $.each(data, function (index, value) {
             if(value.abreviacao !== undefined) {
                 $('#C_mes').append('<option value="' + value.abreviacao + '">' + value.abreviacao + '</option>');
@@ -45,12 +38,6 @@ $(document).ready(function(){
             "data":  function(data) {
                 data.mes = $("#C_mes").val();
                 data.divisao = divisao;
-                data.card1 = card1;
-                data.card2 = card2;
-                data.card3 = card3;
-                data.card4 = card4;
-                data.card5 = card5;
-                data.card6 = card6;
             },
             "dataType": 'json'
         },

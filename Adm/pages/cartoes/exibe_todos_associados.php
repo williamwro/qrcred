@@ -11,12 +11,7 @@ function unicode_decode($str) {
     return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'replace_unicode_escape_sequence', $str);
 }
 $divisao = $_POST["divisao"];
-$card1 = $_POST["card1"];
-$card2 = $_POST["card2"];
-$card3 = $_POST["card3"];
-$card4 = $_POST["card4"];
-$card5 = $_POST["card5"];
-$card6 = $_POST["card6"];
+
 
 $query = "SELECT associado.codigo, 
                  associado.nome, 
@@ -35,17 +30,12 @@ $query = "SELECT associado.codigo,
                  associado.cidade,
                  associado.id_situacao,
                  associado.id_divisao,
+                 associado.id,
 				 empregador.divisao,
                  empregador.nome AS empregador, 
                  empregador.abreviacao
             FROM sind.empregador RIGHT JOIN sind.associado ON empregador.id = associado.empregador 
-           WHERE associado.id_divisao = ".$divisao ." 
-             AND associado.codigo <> '".$card1."' 
-             AND associado.codigo <> '".$card2."' 
-             AND associado.codigo <> '".$card3."'
-             AND associado.codigo <> '".$card4."' 
-             AND associado.codigo <> '".$card5."'  
-             AND associado.codigo <> '".$card6."'";
+           WHERE associado.id_divisao = ".$divisao ."";
 $someArray = array();
 
 $statment = $pdo->prepare($query);
@@ -59,10 +49,10 @@ foreach ($result as $row){
     $sub_array = array();
 
     $sub_array["codigo"]        = $row["codigo"];
-    $sub_array["nome"]          = utf8_encode($row["nome"]);
-    $sub_array["endereco"]      = utf8_encode($row["endereco"]);
+    $sub_array["nome"]          = mb_convert_encoding($row["nome"], 'UTF-8', 'ISO-8859-1');
+    $sub_array["endereco"]      = mb_convert_encoding($row["endereco"], 'UTF-8', 'ISO-8859-1');
     $sub_array["numero"]        = $row["numero"];
-    $sub_array["bairro"]        = utf8_encode($row["bairro"]);
+    $sub_array["bairro"]        = mb_convert_encoding($row["bairro"], 'UTF-8', 'ISO-8859-1');
     $sub_array["nascimento"]    = date('d/m/Y', strtotime($row["nascimento"]));
     $sub_array["salario"]       = (float)str_replace('.',',',$row["salario"]);
     $sub_array["limite"]        = (float)str_replace('.',',',$row["limite"]);
@@ -72,11 +62,26 @@ foreach ($result as $row){
     $sub_array["telres"]        = $row["telres"];
     $sub_array["telcom"]        = $row["telcom"];
     $sub_array["cel"]           = $row["cel"];
-    $sub_array["complemento"]   = utf8_encode($row["complemento"]);
+    $sub_array["complemento"]   = mb_convert_encoding($row["complemento"], 'UTF-8', 'ISO-8859-1');
     $sub_array["cidade"]        = $row["cidade"];
     $sub_array["id_situacao"]   = (int)$row["id_situacao"];
+    $sub_array["id"]            = (int)$row["id"];
     $sub_array["abreviacao"]    = $row["abreviacao"];
 
-    $someArray["data"][] = array_map("utf8_encode",$sub_array);
+    // Preservar campos numéricos antes da conversão
+    $id_preservado = $sub_array["id"];
+    $codempregador_preservado = $sub_array["codempregador"];
+    $id_situacao_preservado = $sub_array["id_situacao"];
+    
+    $sub_array_convertido = array_map(function($value) {
+        return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+    }, $sub_array);
+    
+    // Restaurar campos numéricos
+    $sub_array_convertido["id"] = $id_preservado;
+    $sub_array_convertido["codempregador"] = $codempregador_preservado;
+    $sub_array_convertido["id_situacao"] = $id_situacao_preservado;
+    
+    $someArray["data"][] = $sub_array_convertido;
 }
 echo json_encode($someArray);

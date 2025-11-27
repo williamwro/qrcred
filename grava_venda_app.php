@@ -29,32 +29,44 @@ if ( isset($_POST['valor_pedido']) ) {
     // VARIAVEIS ------------------------------------
     $std              = array();
     //$std->parcelas    = new stdClass();
-    $codigo_convenio  	  = $_POST['cod_convenio'];
-    $matricula        	  = $_POST['matricula'];
-    $senha             	  = $_POST['pass'];
-    $nome             	  = $_POST['nome'];
-    $cartao     	  	  = $_POST['cartao'];
-    $empregador       	  = $_POST['empregador'];
-    $valor_pedido     	  = $_POST['valor_pedido'];
+    $codigo_convenio      = $_POST['cod_convenio'];
+    $matricula            = $_POST['matricula'];
+    $senha                = $_POST['pass'];
+    $nome                 = $_POST['nome'];
+    $cartao               = $_POST['cartao'];
+    $empregador           = $_POST['empregador'];
+    $valor_pedido         = $_POST['valor_pedido'];
     $valor_parcela_string = $_POST['valor_parcela'];
     $valor_parcela_float  = tofloat($valor_parcela_string);
-    $aux              	  = $_POST['mes_corrente'];
-    $m_p              	  = $_POST['mes_corrente'];
-    $mes_inicial      	  = $_POST['mes_corrente'];
-    $primeiro_mes      	  = $_POST['primeiro_mes'];
+    $aux                  = $_POST['mes_corrente'];
+    $m_p                  = $_POST['mes_corrente'];
+    $mes_inicial          = $_POST['mes_corrente'];
+    $primeiro_mes         = $_POST['primeiro_mes'];
     $valor_pedido_float   = tofloat($valor_pedido);
-    $mes_pedido       	  = explode("/", $_POST['mes_corrente']);
-    $qtde_parcelas    	  = (int)$_POST['qtde_parcelas'];
-    $evetivar         	  = false;
-    $cont_senha_assoc 	  = 0;
-    $pede_senha       	  = "";
-    $registrolan      	  = "";
-    $datay            	  = "";
-    $hora             	  = date("H:i:s");
-    $data            	  = date("Y-m-d");
-    $uri_cupom        	  = $_POST['uri_cupom'];
-    $descricao        	  = $_POST['descricao'];
+    $mes_pedido           = explode("/", $_POST['mes_corrente']);
+    $qtde_parcelas        = (int)$_POST['qtde_parcelas'];
+    $evetivar             = false;
+    $cont_senha_assoc     = 0;
+    $pede_senha           = "";
+    $registrolan          = "";
+    $datay                = "";
+    $hora                 = date("H:i:s");
+    $data                 = date("Y-m-d");
+    $uri_cupom            = $_POST['uri_cupom'];
+    $descricao            = $_POST['descricao'];
     $datafatura = data_fatura($mes_pedido[0]);
+    $parcela              = ""; // Initialize parcela variable to avoid undefined variable error
+    
+    // RECEBER ID DO ASSOCIADO DIRETAMENTE (mais eficiente) ********************************************************************************************************************************************
+    $id_associado = isset($_POST['id_associado']) && $_POST['id_associado'] !== '' && $_POST['id_associado'] !== 'null' ? (int)$_POST['id_associado'] : null;
+    
+    // NOVO: RECEBER CAMPO DIVISAO ********************************************************************************************************************************************
+    $divisao = isset($_POST['divisao']) && $_POST['divisao'] !== '' && $_POST['divisao'] !== 'null' ? (int)$_POST['divisao'] : null;
+    
+    // Log para debug
+    error_log("ID do associado recebido: " . ($id_associado !== null ? $id_associado : 'NULL'));
+    error_log("Divisao recebida: " . ($divisao !== null ? $divisao : 'NULL'));
+    
     try {
         // -----------------------------------------------------------
         $sql_pede_senha = $pdo->query("SELECT * FROM sind.convenio WHERE codigo = " .  $codigo_convenio);
@@ -66,8 +78,6 @@ if ( isset($_POST['valor_pedido']) ) {
             $parcela_conv   = $row_convenio['n_parcelas'];
             $pede_senha     = $row_convenio['pede_senha'];
             $id_categoria   = $row_convenio['id_categoria'];
-
-
 
             if ($pede_senha == 1) {
                 $sql_pede_senha = $pdo->query("SELECT * FROM sind.c_senhaassociado WHERE cod_associado = '" . $matricula . "' AND id_empregador = ".$empregador." AND senha = '" . $senha . "'");
@@ -86,7 +96,6 @@ if ( isset($_POST['valor_pedido']) ) {
                 $dataNull = null;
                 if ($qtde_parcelas > 1) {
 
-
                     $std["situacao"]     = 1; /*1 - sucesso*/
                     $std["registrolan"]  = "";
                     $std["matricula"]    = $matricula;
@@ -96,8 +105,9 @@ if ( isset($_POST['valor_pedido']) ) {
                     $uuid = UUID::v4();
                     for ($as = 1; $as <= $qtde_parcelas; $as++) {
 
-                        $sql = "INSERT INTO sind.conta (associado,convenio,valor,data,hora,mes,empregador,parcela,uri_cupom,data_fatura,uuid_conta,descricao) ";
-                        $sql .= "VALUES (:associado,:convenio,:valor,:data,:hora,:mes,:empregador,:parcela,:uri_cupom,:data_fatura,:uuid_conta,:descricao) RETURNING lastval()";
+                        // ATUALIZADO: Incluir campo divisao no INSERT
+                        $sql = "INSERT INTO sind.conta (associado,convenio,valor,data,hora,mes,empregador,parcela,uri_cupom,data_fatura,uuid_conta,descricao,id_associado,divisao) ";
+                        $sql .= "VALUES (:associado,:convenio,:valor,:data,:hora,:mes,:empregador,:parcela,:uri_cupom,:data_fatura,:uuid_conta,:descricao,:id_associado,:divisao) RETURNING lastval()";
                         $parcela = "";
                         $parcela = str_pad($as, 2, "0", STR_PAD_LEFT) . "/" . str_pad($qtde_parcelas, 2, "0", STR_PAD_LEFT);
 
@@ -113,6 +123,21 @@ if ( isset($_POST['valor_pedido']) ) {
                         $stmt->bindParam(':data_fatura', $datafatura, PDO::PARAM_STR);
                         $stmt->bindParam(':uuid_conta', $uuid, PDO::PARAM_STR);
                         $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
+                        
+                        // Usar ID do associado recebido diretamente (mais eficiente)
+                        if ($id_associado !== null) {
+                            $stmt->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+                        } else {
+                            $stmt->bindValue(':id_associado', null, PDO::PARAM_NULL);
+                        }
+                        
+                        // NOVO: Bind do campo divisao
+                        if ($divisao !== null) {
+                            $stmt->bindParam(':divisao', $divisao, PDO::PARAM_INT);
+                        } else {
+                            $stmt->bindValue(':divisao', null, PDO::PARAM_NULL);
+                        }
+                        
                         if($as == 1){
                             $stmt->bindParam(':uri_cupom', $uri_cupom, PDO::PARAM_STR);
                         }else{
@@ -127,7 +152,6 @@ if ( isset($_POST['valor_pedido']) ) {
                         $std["parcelas"][$as]["registrolan"]   = $registrolan;
                         $std["parcelas"][$as]["mes_seq"]       = $aux;
                         
-
                         $m_p          = somames_gravar($aux); // soma 1 mes
                         $mes_pedido   = explode("/", $m_p);
                         $aux          = $m_p;
@@ -152,8 +176,9 @@ if ( isset($_POST['valor_pedido']) ) {
                 } else {
                     $uuid = UUID::v4();
                     $count = 0;
-                    $sql = "INSERT INTO sind.conta (associado,convenio,valor,data,hora,mes,empregador,uri_cupom,data_fatura,uuid_conta,descricao) ";
-                    $sql .= "VALUES (:associado,:convenio,:valor,:data,:hora,:mes,:empregador,:uri_cupom,:data_fatura,:uuid_conta,:descricao) RETURNING lastval()";
+                    // ATUALIZADO: Incluir campo divisao no INSERT para parcela única
+                    $sql = "INSERT INTO sind.conta (associado,convenio,valor,data,hora,mes,empregador,uri_cupom,data_fatura,uuid_conta,descricao,id_associado,divisao) ";
+                    $sql .= "VALUES (:associado,:convenio,:valor,:data,:hora,:mes,:empregador,:uri_cupom,:data_fatura,:uuid_conta,:descricao,:id_associado,:divisao) RETURNING lastval()";
 
                     $stmt = $pdo->prepare($sql);
                     $stmt->bindParam(':associado', $matricula, PDO::PARAM_STR);
@@ -167,6 +192,21 @@ if ( isset($_POST['valor_pedido']) ) {
                     $stmt->bindParam(':data_fatura', $datafatura, PDO::PARAM_STR);
                     $stmt->bindParam(':uuid_conta', $uuid, PDO::PARAM_STR);
                     $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
+                    
+                    // Usar ID do associado recebido diretamente (mais eficiente)
+                    if ($id_associado !== null) {
+                        $stmt->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
+                    } else {
+                        $stmt->bindValue(':id_associado', null, PDO::PARAM_NULL);
+                    }
+                    
+                    // NOVO: Bind do campo divisao para parcela única
+                    if ($divisao !== null) {
+                        $stmt->bindParam(':divisao', $divisao, PDO::PARAM_INT);
+                    } else {
+                        $stmt->bindValue(':divisao', null, PDO::PARAM_NULL);
+                    }
+                    
                     $stmt->execute();
 
                     $registrolan = $stmt->fetchColumn();
@@ -191,7 +231,6 @@ if ( isset($_POST['valor_pedido']) ) {
                     $std["pede_senha"]   = $pede_senha;
                     $std["id_categoria"] = $id_categoria;
                     $std["descricao"]    = $descricao;
-
 
                 }
             }else{
@@ -225,3 +264,4 @@ if ( isset($_POST['valor_pedido']) ) {
     }
 
 }
+?>

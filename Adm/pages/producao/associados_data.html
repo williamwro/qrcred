@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Associados por Data</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <style type="text/css">
+        th, td { white-space: nowrap; }
+        div.dataTables_wrapper {
+            margin: 0 auto;
+        }
+
+        div.container {
+            width: 80%;
+        }
+        th {
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        td {
+            font-size: 11px;
+        }
+        .modal-dialog {
+            position: relative;
+            display: table;
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 400px;
+        }
+        .form-group {
+            margin-bottom: 2px;
+        }
+        thead input {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<section class="content-header">
+    <h1 style="margin-top: -1px;margin-left: -6px;">
+        Associados por Data <small>Visualização</small> </h1>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-sx-12">
+            <div class="box">
+                <div class="box-header">
+                    <form id="listagem" name="listagem" role="form">
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label for="C_mes">Mês</label>
+                                <select class="form-control i_bd" id="C_mes" name="C_mes">
+                                    <option value="">Todos os meses</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="C_data_inicial">Data Inicial</label>
+                                <input type="date" class="form-control" id="C_data_inicial" name="C_data_inicial">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="C_data_final">Data Final</label>
+                                <input type="date" class="form-control" id="C_data_final" name="C_data_final">
+                            </div>
+                            <div class="col-md-1" style="padding-top: 24px;">
+                                <input type="button" name="btnExibir" id="btnExibir" class="btn btn-primary" value="Exibir" />
+                            </div>
+                            <div class="col-md-2" style="padding-top: 24px;">
+                                <input type="button" name="gerarpdf" id="gerarpdf" class="btn btn-primary" value="Relatório PDF" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-body">
+                    <table id="tabela_associados_data" class="display table table-striped table-hover dt-responsive compact nowrap" width="100%">
+                        <thead>
+                            <tr>
+                             
+                                <th>NOME</th>
+                                <th>ABREVIAÇÃO</th>
+                                <th>RAZÃO SOCIAL</th>
+                                <th>MÊS</th>
+                                <th>DATA</th>
+                                <th>TOTAL(R$)</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th colspan="5" style="text-align:right">Total:</th>
+                                <th style="text-align:right"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="../Adm/pages/producao/js/associados_data_script.js"></script>
+</body>
+</html>

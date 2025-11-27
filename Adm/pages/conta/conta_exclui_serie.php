@@ -51,12 +51,12 @@ if (isset($_POST['registro'])){
     $qtde_deletados = $stmt->execute();
 
     $arr = array('Resultado'=>$msg);
-    $someArray = array_map("utf8_encode",$arr);
+    $someArray = array_map(function($value) { return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1'); }, $arr);
 
 }else{
     $msg = 'nao excluido';
     $arr = array('lancamento' =>'','Resultado'=>$msg);
-    $someArray = array_map("utf8_encode",$arr);
+    $someArray = array_map(function($value) { return mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1'); }, $arr);
 }
 echo json_encode($someArray);
 

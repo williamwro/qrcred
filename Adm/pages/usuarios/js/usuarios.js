@@ -24,6 +24,20 @@ $(document).ready(function(){
             $('#C_divisao').append('<option value="' + value.id_divisao + '">' + value.nome + '</option>');
         });
     });
+    $.ajax({
+        url: "pages/usuarios/grupos.php",
+        method: "GET",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+            $.each(data, function (index, value) {
+                var option = $('<option></option>').attr('value', value.id).text(value.nome);
+                $('#C_grupo').append(option);
+            });
+            // Marca que os grupos foram carregados
+            $('#C_grupo').data('loaded', true);
+        }
+    });
     $('#C_status').append("<option value=1>LIBERADO</option>");
     $('#C_status').append("<option value=0>BLOQUEADO</option>");
     $('#tabela_usuario tfoot th').each( function () {
@@ -33,6 +47,7 @@ $(document).ready(function(){
         }
     } );
     usuario_global = sessionStorage.getItem("usuario_global");
+    usuario_cod = sessionStorage.getItem("usuario_cod");
     // econstroi uma datatabe no primeiro carregamento da tela
     table_usuario = $('#tabela_usuario').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "todos"]],
@@ -45,12 +60,13 @@ $(document).ready(function(){
         "ajax": {
             "url": 'pages/usuarios/usuarios.php',
             "method": 'POST',
-            "data":  { 'usuario_global': usuario_global, 'divisao': divisao },
+            "data":  { 'usuario_global': usuario_global, 'divisao': divisao, 'usuario_cod': usuario_cod },
             "dataType": 'json'
         },
         "deferRender": true,
-        "order": [[ 2, "asc" ]],
+        "order": [[ 3, "asc" ]],
         "columns": [
+            { "data": "status_online" },
             { "data": "codigo" },
             { "data": "username" },
             { "data": "nome" },
@@ -68,6 +84,23 @@ $(document).ready(function(){
         },
         "pagingType": "full_numbers"
     });
+    
+    // Aguardar carregamento da tabela e então iniciar atualização de status
+    table_usuario.on('draw', function() {
+        setTimeout(function() {
+            if (typeof userManager !== 'undefined' && userManager.updateOnlineStatus) {
+                userManager.updateOnlineStatus();
+            }
+        }, 1000);
+    });
+    
+    // Atualizar status online a cada 30 segundos
+    setInterval(function() {
+        if (typeof userManager !== 'undefined' && userManager.updateOnlineStatus) {
+            userManager.updateOnlineStatus();
+        }
+    }, 30000);
+    
     waitingDialog.hide();
 });
 function tabledependentes() {
@@ -81,9 +114,9 @@ function tabledependentes() {
             "responsive": true,
             "autoWidth": true,
             "bJQueryUI": true,
-            "bAutoWidth": false,
-            "paging":false,
-            "searching":false,
+            "bAutoWidth": true,
+            "paging":true,
+            "searching":true,
             "fixedColumns": true,
             "ajax": {
                 "url": 'pages/usuarios/usuarios_permissoes.php',
@@ -122,9 +155,9 @@ function tabledependentes() {
             "responsive": true,
             "autoWidth": true,
             "bJQueryUI": true,
-            "bAutoWidth": false,
-            "paging":false,
-            "searching":false,
+            "bAutoWidth": true,
+            "paging":true,
+            "searching":true,
             "fixedColumns": true,
             "ajax": {
                 "url": 'pages/usuarios/usuarios_permissoes.php',
@@ -157,7 +190,7 @@ function tabledependentes() {
 }
 $(document).on('click','.update',function () {
     var linha      = $(this).closest('tr').find('td');
-    cod_usuario     = linha[0].innerHTML;
+    cod_usuario     = linha[1].innerHTML;
     $("#rotulo_associado").html("Alterando");
 
     $.ajax({
@@ -180,6 +213,8 @@ $(document).on('click','.update',function () {
             $("#C_Email").val(data.email);
             $("#C_situacao").val(data.situacao);
             $("#C_divisao").val(data.divisao);
+            $("#C_grupo").val(data.grupo_id);
+            
             cod_caserv = data.codigo_isa;
             $('#operation').val("Update");
             $('#frmusuarios').validator('validate');
@@ -348,6 +383,9 @@ $("#btnSalvar").click(function(event){
             case 'C_Email':
                 nome_campo = "Email";
                 break;
+            case 'C_grupo':
+                nome_campo = "Grupo";
+                break;
         }
         BootstrapDialog.show({
             closable: false,
@@ -450,31 +488,55 @@ $('#tabela_usuario').on('click', 'tbody .btnexcluir', function () {
 });
 // Array to track the ids of the details displayed rows
 var detailRows = [];
-$(document).on('click','.update2',function () {
-    var linha    = $(this).closest('tr').find('td');
-    codigo_menu  = linha[0].innerHTML;
-    menu         = linha[1].innerText;
-    status_user  = linha[2].innerText;
-    $("#C_codigo_menu").prop( "disabled", true );
-    $('#operationdep').val("Update");
-    //$("#rotulo_associado").html("Alterando");
+$(document).on('change','.status-checkbox',function () {
+    var checkbox = $(this);
+    var codigo_menu = checkbox.data('menu-id');
+    var status = checkbox.is(':checked') ? 1 : 0;
+    
     $.ajax({
-        url: "pages/usuarios/permissao_exibe.php",
+        url: "pages/usuarios/permissao_salvar.php",
         method: "POST",
-        data: {"codigo_menu" : codigo_menu, 'status': status_user, 'codigo_ususario': cod_usuario, 'menu': menu},
+        data: {"codigo_menu": codigo_menu, "status": status, "codigo_usuario": cod_usuario},
         dataType: "json",
-        success:function (data) {
-            $.fn.modal.Constructor.prototype.enforceFocus = function() {};
-
-            $("#ModalPermissao").modal("show");
-            $("#C_codigo_menu").val(data.menu_item_id);
-            $("#C_menu").val(data.menu_item_name);
-            if(data.status_usuario === false){
-                $("#C_status").val("0").change();
-            }else{
-                $("#C_status").val("1").change();
+        success: function (data) {
+            if (data.resultado === "atualizado") {
+                // Atualiza o badge na mesma linha - busca pela coluna que contém badge
+                var row = checkbox.closest('tr');
+                var badgeCell = row.find('td').filter(function() {
+                    return $(this).find('.badge').length > 0 || $(this).html().includes('badge') || $(this).html().includes('span');
+                }).first();
+                
+                // Se não encontrou pela busca, usa o índice das colunas visíveis (3ª coluna visível)
+                if (badgeCell.length === 0) {
+                    badgeCell = row.find('td:visible').eq(2);
+                }
+                
+                if (status == 0) {
+                    badgeCell.html('<span class="badge badge-pill badge-danger" style="background-color: red">Bloqueado</span>');
+                } else {
+                    badgeCell.html('<span class="badge badge-pill badge-success" style="background-color: green">Liberado</span>');
+                }
+                
+                // Mostra notificação de sucesso
+                Swal.fire({
+                    title: "Sucesso!",
+                    text: "Status atualizado com sucesso!",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
-            $("#C_cod_usuario_hiden").val(data.codigo_usuario);
+        },
+        error: function() {
+            // Reverte o checkbox em caso de erro
+            checkbox.prop('checked', !checkbox.is(':checked'));
+            Swal.fire({
+                title: "Erro!",
+                text: "Erro ao atualizar status!",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 1500
+            });
         }
     });
 });
@@ -517,6 +579,7 @@ function validar(){
     var sobrenome = $('#C_sobrenome').val();
     var user      = $('#C_user').val();
     var email     = $('#C_Email').val();
+    var grupo     = $('#C_grupo').val();
     if (nome === ""){
         return $('#C_nome').attr('name');
     }else if (sobrenome === "") {
@@ -525,6 +588,8 @@ function validar(){
         return $('#C_user').attr('name');
     }else if (email === "") {
         return $('#C_Email').attr('name');
+    }else if (grupo === "" || grupo === null) {
+        return $('#C_grupo').attr('name');
     }else{
         return "validou";
     }

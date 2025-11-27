@@ -12,7 +12,9 @@ $someArray = array();
 $i=0;
 $sql = $pdo->query("SELECT codigo, nome FROM sind.categoriaconvenio ORDER BY nome asc;");
 while($row = $sql->fetch()) {
-    $someArray[$i] = array_map("utf8_encode",$row);
+    $someArray[$i] = array_map(function($value) {
+        return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+    }, $row);
     $i++;
 }
 //print_r($someArray);

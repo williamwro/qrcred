@@ -51,9 +51,10 @@ try {
                 e.hora_estorno, 
                 e.id, 
                 e.func_estorno, 
-                e.id_divisao, 
+                e.divisao, 
                 e.data_fatura, 
-                e.uuid_conta
+                e.uuid_conta,
+                e.id_associado
             FROM sind.estornos e
             INNER JOIN sind.associado a ON e.associado = a.codigo
             INNER JOIN sind.empregador emp ON e.empregador = emp.id
@@ -93,9 +94,10 @@ try {
             'data_estorno' => $estorno['data_estorno'],
             'hora_estorno' => $estorno['hora_estorno'],
             'func_estorno' => $estorno['func_estorno'],
-            'id_divisao' => $estorno['id_divisao'],
+            'divisao' => $estorno['divisao'],
             'data_fatura' => $estorno['data_fatura'],
-            'uuid_conta' => $estorno['uuid_conta']
+            'uuid_conta' => $estorno['uuid_conta'],
+            'id_associado' => $estorno['id_associado']
         ];
     }, $estornos);
 

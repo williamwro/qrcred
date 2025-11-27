@@ -26,7 +26,10 @@ try {
     $arr = array('codigo_usuario' =>$_codigo_usuario,'id_menu'=>$_codigo_menu,'resultado'=>$msg_grava_cad);
     $stmt->execute();
 
-    $someArray = array_map("utf8_encode",$arr);
+    $someArray = // Substituir utf8_encode() depreciado por mb_convert_encoding()
+array_map(function($value) {
+    return is_string($value) ? (mb_check_encoding($value, 'UTF-8') ? $value : mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1')) : $value;
+}, $arr);
     echo json_encode($someArray);
 
 } catch (PDOException $erro) {

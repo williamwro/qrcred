@@ -59,8 +59,17 @@ try{
             $stmt->execute();
         }
     }
-    $arr = array('resultado' =>$msg_grava_cad);
-    $someArray = array_map("utf8_encode",$arr);
+    $arr = array('resultado' => $msg_grava_cad);
+    
+    // Substituir utf8_encode() depreciado por mb_convert_encoding()
+    $someArray = array_map(function($value) {
+        if (is_string($value)) {
+            // Verificar se já está em UTF-8, se não, converter de ISO-8859-1 para UTF-8
+            return mb_check_encoding($value, 'UTF-8') ? $value : mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
+        }
+        return $value;
+    }, $arr);
+    
     echo json_encode($someArray);
 } catch (PDOException $erro) {
    //echo "Não foi possivel inserir os dados no banco: " . $erro->getMessage();

@@ -23,6 +23,7 @@ if(isset($_GET['cod_convenio'])){
 
 $item  = 0;
 $total = 0;
+$total_periodo = 0; // Total do período filtrado
 $someArray = array();
 $query = "SELECT conta.lancamento, 
                      conta.associado AS matricula, 
@@ -59,6 +60,7 @@ while($row = $sql_conv_vendas->fetch()) {
             $val_parcela = $row['valor'];
             $total_aux = $val_parcela * $qtde;
             $sub_array["valor_total"]   = $total_aux;
+            $total_periodo += $total_aux; // Somar ao total do período
             $total_aux = 0;
             $sub_array["lancamento"]    = $row['lancamento'];
             $sub_array["associado"]     = $row['associado'];
@@ -67,10 +69,13 @@ while($row = $sql_conv_vendas->fetch()) {
             $sub_array["mes"]           = $row['mes'];
             $sub_array["valor_parcela"] = $row['valor'];
             $sub_array["parcela"]       = '('.$row['parcela'].')';
-            $someArray["data"][]        = array_map("utf8_encode",$sub_array);
+            $someArray["data"][]        = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $sub_array);
         }
     }else{
         $sub_array["valor_total"]   = $row['valor'];
+        $total_periodo += $row['valor']; // Somar ao total do período
         $sub_array["lancamento"]    = $row['lancamento'];
         $sub_array["associado"]     = $row['associado'];
         $sub_array["data"]          = $row['data'];
@@ -78,9 +83,17 @@ while($row = $sql_conv_vendas->fetch()) {
         $sub_array["mes"]           = $row['mes'];
         $sub_array["valor_parcela"] = $row['valor'];
         $sub_array["parcela"]       = '';
-        $someArray["data"][]        = array_map("utf8_encode",$sub_array);
+        $someArray["data"][]        = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $sub_array);
     }
 }
+
+// Adicionar o total do período ao array de resposta
+$someArray["total_periodo"] = $total_periodo;
+$someArray["data_inicial"] = $data_inicial;
+$someArray["data_final"] = $data_final;
+
 echo json_encode($someArray);
 
 

@@ -51,5 +51,7 @@ $stmt->execute();
 
 $msg = 'cadastrado';
 $arr = array('Resultado'=>$msg);
-$someArray = array_map("utf8_encode",$arr);
+$someArray = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $arr);
 echo json_encode($someArray);

@@ -94,7 +94,9 @@ if(!$arr) {
     $arrx = array('resultado' => 'jaimportou');
 }
 
-$someArray = array_map("utf8_encode",$arrx);
+$someArray = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $arrx);
 
 $aux = json_encode($someArray);
 echo $aux;

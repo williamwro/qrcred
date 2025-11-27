@@ -37,9 +37,11 @@ $statment = $pdo->query($query);
 while($row = $statment->fetch()) {
     $sub_array = array();
     $sub_array["descricao"]     = $row["descri"];
-    $sub_array["total"]         = (real)$row["total"];
+    $sub_array["total"]         = (float)$row["total"];
 
-    $someArray["data"][] = array_map("utf8_encode",$sub_array);
+    $someArray["data"][] = array_map(function($value) {
+    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+}, $sub_array);
 
 }
 $aux = json_encode($someArray);

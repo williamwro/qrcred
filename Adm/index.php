@@ -1,7 +1,16 @@
 <?PHP
+require_once '../functions.php';
 include "php/banco.php";
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Verificar se o usuário está autenticado
+if(!isset($_POST['Username']) || !isset($_POST['codigo'])){
+    // Redirecionar para a página principal se não estiver autenticado
+    header("Location: https://sas.makecard.com.br/");
+    exit();
+}
+
 if(isset($_POST['Username'])){
     $usuario = $_POST['Username'];
 }
@@ -50,7 +59,7 @@ if (isset($_POST['passuser'])){
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
-    <!-- Ionicons sind/Adm/ -->
+    <!-- Ionicons -->
     <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.2/css/rowGroup.dataTables.min.css"/>
@@ -59,13 +68,10 @@ if (isset($_POST['passuser'])){
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css"/>
-    <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
-    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css" />
-    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css" />
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css" />
+    <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/css/dataTables.checkboxes.css" rel="stylesheet" />
     <style type="text/css">
         th {
             font-size: 12px;
@@ -82,6 +88,7 @@ if (isset($_POST['passuser'])){
         .i_bd {
             /* Disable vendor-specific appearance */
             -webkit-appearance: none;
+            appearance: none;
             /* Use triangle background as arrow */
             background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTcgMTBsNSA1IDUtNXoiLz48L3N2Zz4=);
             background-size: 24px 24px;
@@ -92,6 +99,7 @@ if (isset($_POST['passuser'])){
         #tabela_producao_length select {
             /* Disable vendor-specific appearance */
             -webkit-appearance: none;
+            appearance: none;
             /* Use triangle background as arrow */
             background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTcgMTBsNSA1IDUtNXoiLz48L3N2Zz4=);
             background-size: 24px 24px;
@@ -164,9 +172,9 @@ if (isset($_POST['passuser'])){
         <!-- Logo -->
         <a href="#" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b><span id="logo1"></span></b><span id="logo2"></span></span>
+            <!--<span class="logo-mini"><b><span id="logo1"></span></b><span id="logo2"></span></span>-->
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b><span id="logo3"></span></b><span id="logo4"></span></span>
+            <span><img src="../pictures_site-sind/image6.png" alt="Qrcred" style="height: 40px; width: 120px; " onerror="this.src='../pictures_site-sind/image6.png'"/></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -320,6 +328,7 @@ if (isset($_POST['passuser'])){
 <script src="../js/validator.min.js"></script>
 <script src="dist/js/adminlte.min.js"></script>
 <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
+<script src="pages/usuarios/js/user-manager.js"></script>
 <script src="index.js"></script>
 
 </body>

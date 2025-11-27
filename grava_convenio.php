@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 include "Adm/php/banco.php";
 include "Adm/php/funcoes.php";
 
+
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $std = new stdClass();
@@ -45,6 +46,7 @@ $_situacao        = "S";
 $_existe_cpf      = false;
 $_existe_cnpj     = false;
 
+
 if($_tipoempresa === 1) {
     $row_conv = $pdo->query("SELECT codigo, cpf
                                        FROM sind.convenio 
@@ -75,14 +77,19 @@ if($_existe_cpf == false && $_existe_cnpj == false) {
     $_ususarioconvenio = str_replace('-', '', $_ususarioconvenio);
     $_ususarioconvenio = str_replace('/', '', $_ususarioconvenio);
 
+
     $_senhaconvenio_crypto = md5($_senhaconvenio);
     $_ususarioconvenio_crypto = md5($_ususarioconvenio);
 
+
     if ($_RazaoSocial != "") {
+
 
         $std = new stdClass();
 
+
         $count = 0;
+
 
         $sql = "INSERT INTO sind.convenio (";
         $sql .= "razaosocial, ";
@@ -118,6 +125,7 @@ if($_existe_cpf == false && $_existe_cnpj == false) {
         $sql .= "situacao, ";
         $sql .= "app, ";
         $sql .= "lista_site) ";
+
 
         $sql .= "VALUES (";
         $sql .= ":RazaoSocial, ";
@@ -185,14 +193,16 @@ if($_existe_cpf == false && $_existe_cnpj == false) {
             $stmt->bindParam(':cobranca', $_cobranca, PDO::PARAM_INT);
             $stmt->bindParam(':desativado', $_desativado, PDO::PARAM_INT);
             $stmt->bindParam(':divulga', $_divulga, PDO::PARAM_STR);
-            $stmt->bindParam(':situacao', $_divulga, PDO::PARAM_STR);
+            $stmt->bindParam(':situacao', $_situacao, PDO::PARAM_STR);
             $stmt->bindParam(':app', $_app, PDO::PARAM_INT);
             $stmt->bindParam(':lista_site', $_lista_site, PDO::PARAM_INT);
 
+
             $stmt->execute();
             $codigo_convenio = $stmt->fetchColumn();
-            $std->situacao = 1;/*2- gravado com sucesso*/
+            $std->situacao = 1;/*1- gravado com sucesso*/
             $std->cel = $_cel;
+
 
             // grava usuario e senha convenio
             $sql = "INSERT INTO sind.c_senhaconvenio(";
@@ -204,6 +214,7 @@ if($_existe_cpf == false && $_existe_cnpj == false) {
             $sql .= ":usuario_texto, ";
             $sql .= ":password)";
 
+
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':cod_convenio', $codigo_convenio, PDO::PARAM_INT);
             $stmt->bindParam(':usuario', $_ususarioconvenio_crypto, PDO::PARAM_STR);
@@ -211,6 +222,7 @@ if($_existe_cpf == false && $_existe_cnpj == false) {
             $stmt->bindParam(':usuario_texto', $_ususarioconvenio, PDO::PARAM_STR);
             $stmt->bindParam(':password', $_senhaconvenio, PDO::PARAM_STR);
             $stmt->execute();
+
 
             $std->cod_convenio = $codigo_convenio;
             $std->usuario = $_ususarioconvenio;
@@ -225,14 +237,15 @@ if($_existe_cpf == false && $_existe_cnpj == false) {
             } else {
                 $msg_grava_cad = "Não foi possivel inserir os dados no banco: " . $erro->getMessage();
             }
-            $std->situacao = $erro->getMessage(); /*2- erro*/
+            $std->situacao = $erro->getMessage(); /*erro*/
         }
     }
 }else if($_existe_cpf == true && $_existe_cnpj == false) {
     $std->situacao = 2; // existe cpf
     $std->cpf = $_cpf;
 }else if($_existe_cpf == false && $_existe_cnpj == true) {
-    $std->situacao = 3; // existe cnpf
+    $std->situacao = 3; // existe cnpj
     $std->cnpj = $_cnpj;
 }
 echo json_encode($std);
+?>

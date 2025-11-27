@@ -35,18 +35,18 @@ class PDF extends FPDF
         $this->SetFont('Arial','B',12   );
 
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(0,utf8_decode('Relatório de produção do convenio Sindserva'));
+        $this->Write(0,mb_convert_encoding('Relatório de produção do convenio Sindserva', 'ISO-8859-1', 'UTF-8'));
 
         $this->Cell(22);//move para direita 20 posiçoes
         $this->Write(0,date('d/m/Y')." - ".date('H:i:s'));
 
         $this->Ln();//pula linha
         $this->Cell(22);//move para direita 20 posiçoes
-        $this->Write(12,"Estabelecimento: ".utf8_decode(self::$RS));// razao social
+        $this->Write(12,"Estabelecimento: ".mb_convert_encoding(self::$RS, 'ISO-8859-1', 'UTF-8'));// razao social
 
         $this->Ln();//pula linha
         $this->Cell(22);
-        $this->Write(0,utf8_decode("Mês: ").self::$MS);
+        $this->Write(0,mb_convert_encoding("Mês: ", 'ISO-8859-1', 'UTF-8').self::$MS);
 
         $this->Ln(8);//pula linha
         $this->SetFont('Arial','B',8);

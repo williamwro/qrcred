@@ -1,12 +1,49 @@
 <?PHP
+require_once '../../../functions.php';
 header("Content-type: application/json");
 include "../../php/banco.php";
 include "../../php/funcoes.php";
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $someArray = array();
-$query = 'SELECT codigo,razaosocial,nomefantasia,endereco,bairro,telefone,data_cadastro,cidade,cnpj,email,contato,registro,cpf,cel,contrato,desativado,divulga,aceita_parce_individ FROM sind.convenio';
+
+// Debug: Log all received parameters
+error_log("convenio_read2.php - POST data: " . print_r($_POST, true));
+error_log("convenio_read2.php - GET data: " . print_r($_GET, true));
+
+// Capture division parameter from POST or GET request
+$divisao = null;
+$divisao_nome = null;
+
+if (isset($_POST['divisao']) && !empty($_POST['divisao'])) {
+    $divisao = $_POST['divisao'];
+    error_log("convenio_read2.php - Found divisao in POST: " . $divisao);
+}
+if (isset($_GET['divisao']) && !empty($_GET['divisao'])) {
+    $divisao = $_GET['divisao'];
+    error_log("convenio_read2.php - Found divisao in GET: " . $divisao);
+}
+if (isset($_POST['divisao_nome']) && !empty($_POST['divisao_nome'])) {
+    $divisao_nome = $_POST['divisao_nome'];
+    error_log("convenio_read2.php - Found divisao_nome in POST: " . $divisao_nome);
+}
+if (isset($_GET['divisao_nome']) && !empty($_GET['divisao_nome'])) {
+    $divisao_nome = $_GET['divisao_nome'];
+    error_log("convenio_read2.php - Found divisao_nome in GET: " . $divisao_nome);
+}
+
+// Build query with optional division filter
+$query = 'SELECT codigo,razaosocial,nomefantasia,endereco,bairro,telefone,data_cadastro,cidade,cnpj,email,contato,registro,cpf,cel,contrato,desativado,divulga,aceita_parce_individ,divisao FROM sind.convenio';
+
+if ($divisao !== null && $divisao !== '') {
+    $query .= ' WHERE divisao = :divisao';
+}
+
 $statment = $pdo->prepare($query);
+
+if ($divisao !== null && $divisao !== '') {
+    $statment->bindParam(':divisao', $divisao);
+}
 
 $statment->execute();
 
@@ -16,20 +53,44 @@ $data = array();
 
 $linhas_filtradas = $statment->rowCount();
 
+// Verificar se não há dados para a divisão informada
+if ($linhas_filtradas == 0 && $divisao !== null && $divisao !== '') {
+    // Buscar nome da divisão para mensagem personalizada
+    $divisao_query = "SELECT nome FROM sind.divisao WHERE id_divisao = :divisao";
+    $divisao_stmt = $pdo->prepare($divisao_query);
+    $divisao_stmt->bindParam(':divisao', $divisao);
+    $divisao_stmt->execute();
+    $divisao_info = $divisao_stmt->fetch();
+    
+    $divisao_nome_msg = $divisao_info ? $divisao_info['nome'] : "Divisão " . $divisao;
+    
+    // Retornar resposta com mensagem personalizada
+    $someArray = array(
+        "data" => array(),
+        "recordsTotal" => 0,
+        "recordsFiltered" => 0,
+        "message" => "A " . $divisao_nome_msg . " não possui estabelecimentos cadastrados.",
+        "empty_division" => true
+    );
+    
+    echo json_encode($someArray);
+    exit;
+}
+
 foreach ($result as $row){
     $sub_array = array();
 
     $sub_array["codigo"]        = $row["codigo"];
-    $sub_array["razaosocial"]   = htmlspecialchars(substr($row["razaosocial"],0,30));
-    $sub_array["nomefantasia"]  = htmlspecialchars(substr($row["nomefantasia"],0,30));
-    $sub_array["endereco"]      = htmlspecialchars(substr($row["endereco"],0,30));
-    $sub_array["bairro"]        = htmlspecialchars($row["bairro"]);
+    $sub_array["razaosocial"]   = htmlspecialchars(substr($row["razaosocial"] ?? '',0,50));
+    $sub_array["nomefantasia"]  = htmlspecialchars(substr($row["nomefantasia"] ?? '',0,50));
+    $sub_array["endereco"]      = htmlspecialchars(substr($row["endereco"] ?? '',0,30));
+    $sub_array["bairro"]        = htmlspecialchars($row["bairro"] ?? '');
     $sub_array["telefone"]      = $row["telefone"];
     $sub_array["data_cadastro"] = $row["data_cadastro"];
-    $sub_array["cidade"]        = htmlspecialchars($row["cidade"]);
+    $sub_array["cidade"]        = htmlspecialchars($row["cidade"] ?? '');
     $sub_array["cnpj"]          = $row["cnpj"];
     $sub_array["email"]         = $row["email"];
-    $sub_array["contato"]       = htmlspecialchars($row["contato"]);
+    $sub_array["contato"]       = htmlspecialchars($row["contato"] ?? '');
     $sub_array["registro"]      = $row["registro"];
     $sub_array["cpf"]           = $row["cpf"];
     $sub_array["cel"]           = $row["cel"];

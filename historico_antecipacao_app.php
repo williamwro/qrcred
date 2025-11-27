@@ -51,7 +51,7 @@ if(isset($_POST['matricula']) && isset($_POST['empregador'])) {
             // Codificar para UTF-8 se necessário
             foreach($resultados as &$row) {
                 $row = array_map(function($item) {
-                    return is_string($item) ? utf8_encode($item) : $item;
+                    return is_string($item) ? mb_convert_encoding($item, 'UTF-8', 'ISO-8859-1') : $item;
                 }, $row);
             }
             
@@ -65,13 +65,17 @@ if(isset($_POST['matricula']) && isset($_POST['empregador'])) {
     } catch (PDOException $e) {
         // Em caso de erro, retornando mensagem
         $response = array("error" => "Erro ao consultar banco de dados: " . $e->getMessage());
-        $response = array_map("utf8_encode", $response);
+        $response = array_map(function($value) {
+            return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+        }, $response);
         echo json_encode($response);
     }
 } else {
     // Se os parâmetros não foram enviados
     $response = array("error" => "Matrícula e empregador são obrigatórios");
-    $response = array_map("utf8_encode", $response);
+    $response = array_map(function($value) {
+        return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
+    }, $response);
     echo json_encode($response);
 }
 ?>

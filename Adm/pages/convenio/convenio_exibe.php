@@ -1,5 +1,6 @@
 <?PHP
-header("Content-type: application/json");
+require_once '../../../functions.php';
+header("Content-type: application/json; charset=utf-8");
 include "../../php/banco.php";
 include "../../php/funcoes.php";
 $pdo = Banco::conectar_postgres();
@@ -15,19 +16,19 @@ if(isset($_POST["cod_convenio"])){
     foreach ($result as $row){
         $sub_array = array();
         $std->codigo          = (int)$row["codigo"];
-        $std->razaosocial     = htmlspecialchars($row["razaosocial"]);
-        $std->nomefantasia    = htmlspecialchars($row["nomefantasia"]);
-        $std->endereco        = htmlspecialchars($row["endereco"]);
-        $std->numero          = htmlspecialchars($row["numero"]);
-        $std->bairro          = htmlspecialchars($row["bairro"]);
+        $std->razaosocial     = $row["razaosocial"] ?? '';
+        $std->nomefantasia    = $row["nomefantasia"] ?? '';
+        $std->endereco        = $row["endereco"] ?? '';
+        $std->numero          = $row["numero"] ?? '';
+        $std->bairro          = $row["bairro"] ?? '';
         $std->telefone        = $row["telefone"];
         $std->data_cadastro   = $row["data_cadastro"];
-        $std->cidade          = htmlspecialchars($row["cidade"]);
+        $std->cidade          = $row["cidade"] ?? '';
         $std->uf              = $row["uf"];
         $std->cep             = $row["cep"];
         $std->fax             = $row["fax"];
         $std->cel             = $row["cel"];
-        $std->contato         = htmlspecialchars($row["contato"]);
+        $std->contato         = $row["contato"] ?? '';
         $std->prolabore       = $row["prolabore"];
         $std->prolabore2      = $row["prolabore2"];
         $std->cnpj            = $row["cnpj"];
@@ -66,5 +67,5 @@ if(isset($_POST["cod_convenio"])){
         $std->lista_site     = $row['lista_site'];
 
     }
-    echo json_encode($std);
+    echo json_encode($std, JSON_UNESCAPED_UNICODE);
 }

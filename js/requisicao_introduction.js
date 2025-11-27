@@ -38,7 +38,7 @@ $(document).ready(function(){
     //debugger;
     $('#cod_convenio').val(cod_convenio);
     mescorrente = mes_atual;
-    $.getJSON( "meses_conta.php",{ "origem": "convenio" }, function( data ) {
+    $.getJSON( "meses_conta.php",{ "origem": "convenio", "divisao": divisao }, function( data ) {
         $.each(data, function (index, value) {
             if (value.abreviacao !== undefined) {
                 if (mescorrente === value.abreviacao) {

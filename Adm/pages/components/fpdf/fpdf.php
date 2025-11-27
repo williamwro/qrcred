@@ -2,10 +2,15 @@
 /*******************************************************************************
 * FPDF                                                                         *
 *                                                                              *
-* Version: 1.82                                                                *
-* Date:    2019-12-07                                                          *
+* Version: 1.85                                                                *
+* Date:    2022-07-18                                                          *
 * Author:  Olivier PLATHEY                                                     *
 *******************************************************************************/
+
+// Define FPDF_FONTPATH constant to specify font directory
+if (!defined('FPDF_FONTPATH')) {
+    define('FPDF_FONTPATH', dirname(__FILE__) . '/font/');
+}
 
 define('FPDF_VERSION','1.82');
 
@@ -1208,6 +1213,14 @@ protected function _UTF8toUTF16($s)
 protected function _escape($s)
 {
 	// Escape special characters
+	// Verificar se o parâmetro não é null
+	if($s === null || $s === '') {
+		return '';
+	}
+	
+	// Convert to string to ensure strpos works properly
+	$s = (string)$s;
+	
 	if(strpos($s,'(')!==false || strpos($s,')')!==false || strpos($s,'\\')!==false || strpos($s,"\r")!==false)
 		return str_replace(array('\\','(',')',"\r"), array('\\\\','\\(','\\)','\\r'), $s);
 	else

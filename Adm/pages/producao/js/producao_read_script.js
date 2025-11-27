@@ -12,12 +12,7 @@ var parcela;
 $C_parcela = $('#C_parcela');
 $C_empregador = $('#C_empregador');
 $C_convenio = $('#cod_convenio');
-var card1;
-var card2;
-var card3;
-var card4;
-var card5;
-var card6;
+
 
 $(document).ready(function() {
     divisao = sessionStorage.getItem("divisao");
@@ -25,19 +20,12 @@ $(document).ready(function() {
     usuario_global = sessionStorage.getItem("usuario_global");
     usuario_cod = sessionStorage.getItem("usuario_cod");
 
-    card1 = sessionStorage.getItem("card1");
-    card2 = sessionStorage.getItem("card2");
-    card3 = sessionStorage.getItem("card3");
-    card4 = sessionStorage.getItem("card4");
-    card5 = sessionStorage.getItem("card5");
-    card6 = sessionStorage.getItem("card6");
-    $("#fechar_colapse").on('click',function(){
+     $("#fechar_colapse").on('click',function(){
         $('.collapse').collapse('hide');
     });
     var mescorrente = "";
-    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio" },function( data ) {
+    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio", "divisao": divisao, "divisao_nome": divisao_nome },function( data ) {
         $.each(data, function (index, value) {
-            debugger;
             if (value.mes_corrente !== undefined) {
                 mescorrente = value.mes_corrente;
             }
@@ -52,10 +40,9 @@ $(document).ready(function() {
         $C_convenio.html("<option></option>");
         $C_convenio.attr({"title":"Escolha o convenio"});
     });
-    debugger;
     $C_empregador.empty();
     $C_empregador.append('<option value=""></option>');
-    $.getJSON( "../Adm/pages/producao/producao_empregador.php",{ "divisao": divisao }, function( data ) {
+    $.getJSON( "../Adm/pages/producao/producao_empregador.php",{ "divisao": divisao, "divisao_nome": divisao_nome }, function( data ) {
         $.each(data, function (index, value) {
             $C_empregador.append('<option data-subtext="' + value.abreviacao + '" value="' + value.id + '">' + value.nome + '</option>');
         });
@@ -105,7 +92,6 @@ $('#btnExibir').click(function () {
     waitingDialog.show('Carregando, aguarde ...',);
     $("#tabela_producao").show();
     // constroi uma datatabe no primeiro carregamento da tela
-    debugger;
     carrega_dados('');
     tipo           = "E";
     mes            = $('#C_mes').val();
@@ -161,8 +147,7 @@ $('#gerarpdf').click(function () {
     if (selected.length > 0) {
         ordem = selected.val();
     }
-    debugger;
-    $.redirect('../Adm/pages/producao/producao_gerador_pdf.php',{ cod_convenio: cod_convenio, mes_atual: mes_atual, ano: ano,  ordem: ordem, empregador: empregador, parcela: parcela, divisao : divisao, 'card1': card1, 'card2': card2, 'card3': card3, 'card4': card4, 'card5': card5, 'card6': card6}, "POST", "_blank");
+    $.redirect('../Adm/pages/producao/producao_gerador_pdf.php',{ cod_convenio: cod_convenio, mes_atual: mes_atual, ano: ano,  ordem: ordem, empregador: empregador, parcela: parcela, divisao : divisao,divisao_nome: divisao_nome }, "POST", "_blank");
 });// .update é o botão alterar
 $("#btnInserir").click(function(){
     $("#frmconvenio")[0].reset();
@@ -185,11 +170,9 @@ $("#btnBuscaConvenio").click(function () {
     cod_empregador = $('#C_empregador').val();
     parcela        = $('#C_parcela').val();
     carrega_convenios(mes);
-    debugger;
     grava_log(convenio,mes,cod_empregador,parcela,tipo,usuario_cod,usuario_global);
 });
 $('#chkTodos').click(function () {
-    debugger;
     convenio = $('#C_nome_convenio').val();
     var codigo = $('#cod_convenio').val();
     if ($("#chkTodos").prop("checked")) {
@@ -209,7 +192,6 @@ $('#tabela_busca_convenio').on( 'dblclick', 'tr', function () {
     var data = tableconsultaconv.row( this ).data();
     cod_convenio = data["codigo"];
     nome_convenio = data["razaosocial"];
-    debugger;
     $('#cod_convenio').val(cod_convenio);
     $('#C_nome_convenio').val(nome_convenio);
     $("#ModalBuscaConvenio").modal("hide");
@@ -231,7 +213,6 @@ function format ( d ) {
         '<b>Descricao  : </b><i>'+d.descricao+'</i><br>';
 }
 function carrega_convenios(mes){
-    debugger;
     $('#mes_rotulo').text(mes);
     if ( $.fn.dataTable.isDataTable( '#tabela_busca_convenio' ) ) {
         tableconsultaconv.destroy();
@@ -310,12 +291,6 @@ function carrega_dados(todos){
                     data.parcela = $("#C_parcela").val();
                     data.divisao = divisao;
                     data.todos = todos;
-                    data.card1 = card1;
-                    data.card2 = card2;
-                    data.card3 = card3;
-                    data.card4 = card4;
-                    data.card5 = card5;
-                    data.card6 = card6;
                 },
                 dataType: 'json'
             },

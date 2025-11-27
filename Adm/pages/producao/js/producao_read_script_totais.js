@@ -1,22 +1,12 @@
 var divisao;
-var card1;
-var card2;
-var card3;
-var card4;
-var card5;
-var card6;
+var divisao_nome;
 $(document).ready(function(){
 
     var mescorrente = "";
     divisao = sessionStorage.getItem("divisao");
-    card1 = sessionStorage.getItem("card1");
-    card2 = sessionStorage.getItem("card2");
-    card3 = sessionStorage.getItem("card3");
-    card4 = sessionStorage.getItem("card4");
-    card5 = sessionStorage.getItem("card5");
-    card6 = sessionStorage.getItem("card6");
+    divisao_nome = sessionStorage.getItem("divisao_nome");
     $('#C_empregador').html("<option> Carregando ... </option>");
-    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio" }, function( data ) {
+    $.getJSON( "../Adm/pages/producao/meses_conta.php",{ "origem": "convenio", "divisao": divisao }, function( data ) {
         $.each(data, function (index, value) {
 
              if (value.mes_corrente !== undefined) {
@@ -56,6 +46,7 @@ $(document).ready(function(){
 $('#btnExibir').click(function () {
     $("#tabela_producao").show();
     var table;
+    debugger;
     // constroi uma datatabe no primeiro carregamento da tela
     table = $('#tabela_producao').DataTable({
         "destroy": true,
@@ -140,7 +131,7 @@ $('#gerarpdf').click(function () {
     var mes_atual  = $('#C_mes').val();
     var empregador = $('#C_empregador').val();
     var subtipo    = $('#C_subtipo').val();
-    $.redirect('../Adm/pages/producao/producao_gerador_pdf_totais.php',{ cod_tipo: cod_tipo, mes_atual: mes_atual, empregador: empregador, subtipo: subtipo, divisao: divisao, 'card1': card1, 'card2': card2, 'card3': card3, 'card4': card4, 'card5': card5}, "POST", "_blank");
+    $.redirect('../Adm/pages/producao/producao_gerador_pdf_totais.php',{ cod_tipo: cod_tipo, mes_atual: mes_atual, empregador: empregador, subtipo: subtipo, divisao: divisao, divisao_nome: divisao_nome}, "POST", "_blank");
 });// .update é o botão alterar
 function moedaParaNumero(valor)
 {

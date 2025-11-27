@@ -1,0 +1,73 @@
+/**
+ * CSS DE SEGURANÇA PARA FORMULÁRIOS SENSÍVEIS
+ * Evita que dados sensíveis sejam salvos pelo navegador
+ */
+
+/* Desabilitar autocomplete e sugestões para campos sensíveis */
+input[data-form-type="other"],
+input[name*="cartao"],
+input[name*="senha"],
+input[id*="cartao"],
+input[id*="senha"] {
+    /* Desabilitar autocomplete */
+    -webkit-autocomplete: off !important;
+    -moz-autocomplete: off !important;
+    autocomplete: off !important;
+    
+    /* Desabilitar spellcheck */
+    spellcheck: false !important;
+    
+    /* Desabilitar sugestões do navegador */
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    
+    /* Evitar que o campo seja "lembrado" */
+    -webkit-user-modify: read-write-plaintext-only !important;
+    
+    /* Desabilitar drag and drop */
+    -webkit-user-drag: none !important;
+    -moz-user-drag: none !important;
+    user-drag: none !important;
+    
+    /* Evitar seleção de texto (para senhas) */
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Especificamente para campos de senha */
+input[type="password"][data-form-type="other"] {
+    /* Mascarar entrada imediatamente */
+    font-family: 'Courier New', monospace !important;
+    letter-spacing: 2px !important;
+    
+    /* Evitar copy/paste */
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Formulários com dados sensíveis */
+form[autocomplete="off"] {
+    /* Evitar que o formulário seja lembrado */
+    -webkit-autocomplete: off !important;
+    -moz-autocomplete: off !important;
+    autocomplete: off !important;
+}
+
+/* Ocultar campos quando não estão em foco (medida extra) */
+input[data-form-type="other"]:not(:focus) {
+    /* Pode ser usado para mascarar campos quando não estão ativos */
+}
+
+/* Media query para dispositivos móveis (segurança extra) */
+@media screen and (max-width: 768px) {
+    input[data-form-type="other"] {
+        /* Desabilitar zoom em dispositivos móveis para evitar screenshots acidentais */
+        -webkit-user-scalable: no !important;
+        user-scalable: no !important;
+    }
+}
