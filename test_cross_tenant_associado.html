@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Cross-Tenant - Associados</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 { color: #667eea; }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        button {
+            padding: 12px 24px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .result.warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Teste de Segurança Cross-Tenant - Associados</h1>
+        
+        <div class="info">
+            <strong>ℹ️ Instruções:</strong><br>
+            1. Faça login no sistema primeiro<br>
+            2. Clique nos botões abaixo para testar<br>
+            3. Verifique os resultados e logs
+        </div>
+        
+        <div class="test-section">
+            <h2>Teste 1: Acesso Normal (Divisão Autenticada)</h2>
+            <p>Tenta acessar dados da própria divisão (deve funcionar)</p>
+            <button class="btn-success" onclick="testarAcessoNormal()">
+                ✅ Testar Acesso Normal
+            </button>
+            <div id="resultado1"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Teste 2: Tentativa Cross-Tenant (Divisão 2)</h2>
+            <p>Tenta acessar dados de outra divisão (deve ser bloqueado)</p>
+            <button class="btn-danger" onclick="testarCrossTenant(2)">
+                🚫 Testar Cross-Tenant (Divisão 2)
+            </button>
+            <div id="resultado2"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Teste 3: Tentativa Cross-Tenant (Divisão 3)</h2>
+            <p>Tenta acessar dados de outra divisão (deve ser bloqueado)</p>
+            <button class="btn-danger" onclick="testarCrossTenant(3)">
+                🚫 Testar Cross-Tenant (Divisão 3)
+            </button>
+            <div id="resultado3"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>Verificar Logs de Segurança</h2>
+            <p>Consulta os logs de tentativas de acesso</p>
+            <button class="btn-info" onclick="verificarLogs()">
+                📊 Ver Logs de Segurança
+            </button>
+            <div id="resultado4"></div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+        // Obter dados da sessão (divisão autenticada)
+        const divisaoAutenticada = sessionStorage.getItem('divisao') || '1';
+        const usuarioCod = sessionStorage.getItem('usuario_cod') || '1';
+        const usuarioGlobal = sessionStorage.getItem('user_name') || 'adm';
+        
+        function testarAcessoNormal() {
+            const resultDiv = $('#resultado1');
+            resultDiv.html('<p>⏳ Testando acesso normal...</p>');
+            
+            $.ajax({
+                url: 'Adm/pages/associado/associado_read2.php',
+                method: 'POST',
+                data: {
+                    usuario_cod: usuarioCod,
+                    divisao: divisaoAutenticada, // Divisão autenticada
+                    usuario_global: usuarioGlobal,
+                    cod_situacao: 1,
+                    start: 0,
+                    length: 10,
+                    draw: 1
+                },
+                success: function(response) {
+                    resultDiv.html(
+                        '<div class="result success">' +
+                        '<strong>✅ SUCESSO - Acesso permitido</strong><br><br>' +
+                        '<strong>Divisão solicitada:</strong> ' + divisaoAutenticada + '<br>' +
+                        '<strong>Registros retornados:</strong> ' + (response.recordsTotal || 0) + '<br><br>' +
+                        '<strong>Resposta completa:</strong><br>' +
+                        JSON.stringify(response, null, 2) +
+                        '</div>'
+                    );
+                },
+                error: function(xhr, status, error) {
+                    resultDiv.html(
+                        '<div class="result error">' +
+                        '<strong>❌ ERRO</strong><br><br>' +
+                        error + '<br><br>' +
+                        xhr.responseText +
+                        '</div>'
+                    );
+                }
+            });
+        }
+        
+        function testarCrossTenant(divisaoTentada) {
+            const resultDiv = $('#resultado' + divisaoTentada);
+            resultDiv.html('<p>⏳ Testando tentativa cross-tenant...</p>');
+            
+            $.ajax({
+                url: 'Adm/pages/associado/associado_read2.php',
+                method: 'POST',
+                data: {
+                    usuario_cod: usuarioCod,
+                    divisao: divisaoTentada, // Divisão DIFERENTE da autenticada
+                    usuario_global: usuarioGlobal,
+                    cod_situacao: 1,
+                    start: 0,
+                    length: 10,
+                    draw: 1
+                },
+                success: function(response) {
+                    // Verificar se retornou dados da divisão autenticada (fallback seguro)
+                    const mensagem = response.recordsTotal > 0 
+                        ? '⚠️ Sistema retornou dados da divisão autenticada (' + divisaoAutenticada + ') - FALLBACK SEGURO'
+                        : '✅ Nenhum dado retornado - BLOQUEADO';
+                    
+                    resultDiv.html(
+                        '<div class="result warning">' +
+                        '<strong>' + mensagem + '</strong><br><br>' +
+                        '<strong>Divisão solicitada (manipulada):</strong> ' + divisaoTentada + '<br>' +
+                        '<strong>Divisão autenticada:</strong> ' + divisaoAutenticada + '<br>' +
+                        '<strong>Registros retornados:</strong> ' + (response.recordsTotal || 0) + '<br><br>' +
+                        '<strong>⚠️ IMPORTANTE:</strong> Verifique os logs para confirmar que a tentativa foi registrada!<br><br>' +
+                        '<strong>Resposta completa:</strong><br>' +
+                        JSON.stringify(response, null, 2) +
+                        '</div>'
+                    );
+                },
+                error: function(xhr, status, error) {
+                    resultDiv.html(
+                        '<div class="result error">' +
+                        '<strong>❌ ERRO (pode ser esperado se houver bloqueio)</strong><br><br>' +
+                        error + '<br><br>' +
+                        xhr.responseText +
+                        '</div>'
+                    );
+                }
+            });
+        }
+        
+        function verificarLogs() {
+            const resultDiv = $('#resultado4');
+            resultDiv.html('<p>⏳ Consultando logs...</p>');
+            
+            // Criar uma query SQL para exibir
+            const sqlQuery = `
+SELECT 
+    data_hora,
+    username,
+    divisao_usuario,
+    divisao_tentada,
+    bloqueado,
+    motivo,
+    endpoint
+FROM sind.tenant_security_log
+WHERE endpoint LIKE '%associado_read2%'
+  AND data_hora > NOW() - INTERVAL '1 hour'
+ORDER BY data_hora DESC
+LIMIT 20;
+            `;
+            
+            resultDiv.html(
+                '<div class="result warning">' +
+                '<strong>📊 Consulta SQL para verificar logs:</strong><br><br>' +
+                '<p>Execute esta query no pgAdmin ou psql:</p>' +
+                '<pre style="background: #f8f9fa; padding: 10px; border-radius: 5px;">' +
+                sqlQuery +
+                '</pre>' +
+                '<br><strong>Ou acesse:</strong> <a href="test_tenant_security.php" target="_blank">test_tenant_security.php</a>' +
+                '</div>'
+            );
+        }
+        
+        // Exibir informações da sessão
+        console.log('Divisão Autenticada:', divisaoAutenticada);
+        console.log('Usuário Código:', usuarioCod);
+        console.log('Usuário Global:', usuarioGlobal);
+    </script>
+</body>
+</html>

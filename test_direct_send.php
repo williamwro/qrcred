@@ -93,8 +93,8 @@ echo "=====================================\n";
 
 // Definir as constantes manualmente e testar
 if (!defined('MANUAL_VAPID_PUBLIC_KEY')) {
-    define('MANUAL_VAPID_PUBLIC_KEY', 'BJJmOHkytqi0v_7sfKNkxjt1ID_w9nGpra4SHpi_Eu_qgdc9W5SDjkTwr7l_fa-TE6D53VfXs_S3cBSeq2OrF4o');
-    define('MANUAL_VAPID_PRIVATE_KEY', 'gdc9W5SDjkTwr7l_fa-TE6D53VfXs_S3cBSeq2OrF4o');
+    define('MANUAL_VAPID_PUBLIC_KEY', 'BM7z6QhdLZUACWiMZvwVb6JL2Qtvr2zFOOFqqi5E5yhFeZWj2k1YewWgAxXidqbGmcznD5LcfRComGe8h6TOAHM');
+    define('MANUAL_VAPID_PRIVATE_KEY', 'MSA8Clt7h_bbUhLq9Sbh6zPjXCzwZvecNHCqexeJPu8');
     echo "✅ Constantes manuais definidas com sucesso\n";
 }
 

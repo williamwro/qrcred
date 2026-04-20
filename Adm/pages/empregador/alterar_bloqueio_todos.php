@@ -10,7 +10,7 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 try {
     // Atualiza todos os empregadores da divisão
-    $sql = "UPDATE sind.empregador SET bloqueio = :bloqueio WHERE divisao = :divisao";
+    $sql = "UPDATE sind.empregador SET bloqueio = :bloqueio WHERE id_divisao = :divisao";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':bloqueio', $bloqueio, PDO::PARAM_INT);
     $stmt->bindParam(':divisao', $divisao, PDO::PARAM_INT);

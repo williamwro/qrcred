@@ -13,9 +13,9 @@ $someArray[$i]["mes_corrente"] = $row["abreviacao"];
 if($origem === "admin"){
     $sql = "SELECT * FROM sind.meses_conta WHERE status_admin = 1 AND divisao = ? ORDER BY data";
 }elseif($origem === "convenio"){
-    $sql = "SELECT * FROM sind.meses_conta WHERE  status_convenio = 1 AND divisao = ? ORDER BY data";
+    $sql = "SELECT * FROM sind.meses_conta WHERE status_convenio = 1 AND divisao = ? ORDER BY data";
 }elseif($origem === "relatorio"){
-    $sql = "SELECT * FROM sind.meses_conta WHERE  status_relatorio = 1 AND divisao = ? ORDER BY data";
+    $sql = "SELECT * FROM sind.meses_conta WHERE status_relatorio = 1 AND divisao = ? ORDER BY data";
 }
 $stmt = $pdo->prepare($sql);
 $stmt->execute(array($divisao));

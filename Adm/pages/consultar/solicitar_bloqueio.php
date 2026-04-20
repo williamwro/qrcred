@@ -46,7 +46,7 @@ try {
     $cod_verificacao = $cartao['cod_verificacao'];
 
     // Inserir na tabela sind.solicitacao_bloqueio
-    $sql = "INSERT INTO sind.solicitacao_bloqueio (id_empregador, id_associado, cod_verificacao, data_hora, divisao) 
+    $sql = "INSERT INTO sind.solicitacao_bloqueio (id_empregador, id_associado, cod_verificacao, data_hora, id_divisao) 
             VALUES (:id_empregador, :id_associado, :cod_verificacao, NOW(), :divisao)
             RETURNING id";
 

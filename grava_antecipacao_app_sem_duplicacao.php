@@ -86,8 +86,8 @@ try {
         exit;
     }
     
-    // VERIFICAR SENHA: Validar a senha do associado
-    $sql_senha = "SELECT senha FROM sind.associado 
+    // VERIFICAR SENHA: Validar a senha do associado e buscar id_divisao e id
+    $sql_senha = "SELECT senha, id_divisao, id FROM sind.associado 
                   WHERE codigo = :matricula AND empregador = :empregador";
     
     $stmt_senha = $pdo->prepare($sql_senha);
@@ -104,6 +104,10 @@ try {
         exit;
     }
     
+    // Capturar id_divisao e id_associado
+    $divisao = $associado['id_divisao'];
+    $id_associado = $associado['id'];
+    
     // Verificar senha (assumindo que pode ser MD5 ou texto limpo)
     $senha_correta = ($associado['senha'] === $pass || $associado['senha'] === md5($pass));
     
@@ -116,9 +120,9 @@ try {
     
     // INSERIR NOVA SOLICITAÇÃO
     $sql_insert = "INSERT INTO sind.antecipacao 
-                   (matricula, empregador, mes, data_solicitacao, valor, aprovado, celular, valor_taxa, valor_a_descontar, chave_pix) 
+                   (matricula, empregador, mes, data_solicitacao, valor, aprovado, celular, valor_taxa, valor_a_descontar, chave_pix, id_divisao, id_associado) 
                    VALUES 
-                   (:matricula, :empregador, :mes, NOW(), :valor, false, '', :taxa, :valor_descontar, :chave_pix)
+                   (:matricula, :empregador, :mes, NOW(), :valor, false, '', :taxa, :valor_descontar, :chave_pix, :divisao, :id_associado)
                    RETURNING id";
     
     $stmt_insert = $pdo->prepare($sql_insert);
@@ -129,6 +133,8 @@ try {
     $stmt_insert->bindParam(':taxa', $taxa, PDO::PARAM_STR);
     $stmt_insert->bindParam(':valor_descontar', $valor_descontar, PDO::PARAM_STR);
     $stmt_insert->bindParam(':chave_pix', $chave_pix, PDO::PARAM_STR);
+    $stmt_insert->bindParam(':divisao', $divisao, PDO::PARAM_INT);
+    $stmt_insert->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
     
     $stmt_insert->execute();
     $novo_id = $stmt_insert->fetchColumn();

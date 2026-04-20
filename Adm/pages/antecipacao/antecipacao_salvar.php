@@ -3,6 +3,10 @@ error_reporting(E_ALL ^ E_NOTICE);
 setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 date_default_timezone_set('America/Sao_Paulo');
 
+// ✅ Criar arquivo de log personalizado nesta pasta
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/debug_antecipacao.log');
+
 require "../../php/banco.php";
 include "../../php/funcoes.php";
 $pdo = Banco::conectar_postgres();
@@ -184,7 +188,7 @@ $msg_grava_cad="";
                             WHERE associado = :associado 
                             AND mes = :mes 
                             AND empregador = :empregador 
-                            AND divisao = :divisao
+                            AND id_divisao = :divisao
                             AND id_associado = :id_associado
                             AND valor = :valor
                             AND tipo = 'ANTECIPACAO'";

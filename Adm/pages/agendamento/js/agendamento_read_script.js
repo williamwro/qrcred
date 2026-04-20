@@ -387,13 +387,20 @@ function abrirModalEdicao(id_agendamento) {
     $('#C_id_agendamento').val(id_agendamento);
     
     // Buscar dados do agendamento
+    console.log(' Iniciando AJAX para buscar dados do ID:', id_agendamento);
     $.ajax({
         url: "pages/agendamento/agendamento_exibe.php",
         method: "POST",
         data: {id_agendamento: id_agendamento},
         dataType: "json",
+        beforeSend: function() {
+            console.log(' Enviando requisição para agendamento_exibe.php...');
+        },
         success: function(data) {
-            console.log('📊 Dados do agendamento recebidos:', data);
+            console.log(' Resposta recebida do servidor');
+            console.log(' Dados do agendamento recebidos:', data);
+            console.log(' Tipo de dados:', typeof data);
+            console.log(' Data agendada recebida:', data.data_agendada);
             
             if (data) {
                 // Preencher campos do formulário
@@ -403,6 +410,7 @@ function abrirModalEdicao(id_agendamento) {
                 $('#C_nome_empregador_agendamento').val(data.nome_empregador || data.abreviacao_empregador || '');
                 $('#C_data_solicitacao_agendamento').val(data.data_solicitacao || '');
                 $('#C_data_agendada_agendamento').val(data.data_agendada || '');
+                $('#C_data_pretendida_agendamento').val(data.data_pretendida || '');
                 $('#C_cod_convenio_agendamento').val(data.cod_convenio || '');
                 $('#C_status_agendamento').val(data.status || '1');
                 $('#C_profissional_agendamento').val(data.profissional || '');

@@ -54,7 +54,7 @@ try {
         $stmtConta->execute([':id_associado' => $idAssociado, ':divisao' => $idDivisao]);
         $temConta = (bool)$stmtConta->fetchColumn();
 
-        $sqlAnt = "SELECT 1 FROM sind.antecipacao WHERE id_associado = :id_associado AND divisao = :divisao LIMIT 1";
+        $sqlAnt = "SELECT 1 FROM sind.antecipacao WHERE id_associado = :id_associado AND id_divisao = :divisao LIMIT 1";
         $stmtAnt = $pdo->prepare($sqlAnt);
         $stmtAnt->execute([':id_associado' => $idAssociado, ':divisao' => $idDivisao]);
         $temAntecipacao = (bool)$stmtAnt->fetchColumn();

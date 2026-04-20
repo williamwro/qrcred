@@ -34,7 +34,7 @@ $query = $pdo->query("SELECT DISTINCT associado.codigo AS associado, associado.n
                                    ON convenio.codigo = conta.convenio) 
                                    ON (conta.empregador = empregador.id) 
                                   AND (empregador.id = associado.empregador)) 
-                                   ON divisao.id_divisao = empregador.divisao
+                                   ON divisao.id_divisao = empregador.id_divisao
                                 WHERE conta.convenio = ".$convenio." AND conta.mes = '".$mes."' ORDER BY associado.nome ASC, conta.lancamento ASC");
 while($row = $query->fetch()) {
     $someArray[] = array_map(function($value) {

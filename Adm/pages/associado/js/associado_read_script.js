@@ -42,6 +42,27 @@ $(document).ready(function(){
             var formattedCPF = cleanCPF.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
             $(this).val(formattedCPF);
             e.preventDefault();
+            
+            // Copiar apenas os 13 últimos dígitos do CPF para Matricula RH ao cadastrar novo associado
+            if ($('#operation').val() === "Add") {
+                var ultimos13 = cleanCPF.slice(-13);
+                $('#C_matricula_assoc').val(ultimos13);
+            }
+        }
+    });
+    
+    // Copiar apenas os 13 últimos dígitos do CPF para Matricula RH ao digitar (apenas em novo cadastro)
+    $('#C_cpf_assoc').on('blur', function() {
+        // Apenas copia se estiver cadastrando novo associado
+        if ($('#operation').val() === "Add") {
+            var cpf = $(this).val();
+            if (cpf && cpf !== '') {
+                // Remove caracteres não numéricos do CPF
+                var cpfLimpo = cpf.replace(/\D/g, '');
+                // Pega apenas os 13 últimos dígitos e copia para o campo Matricula RH
+                var ultimos13 = cpfLimpo.slice(-13);
+                $('#C_matricula_assoc').val(ultimos13);
+            }
         }
     });
     $('#C_nascimento').mask('99/99/9999');
@@ -387,6 +408,9 @@ $(document).on('click','.update_assoc',function () {
             $.fn.modal.Constructor.prototype.enforceFocus = function() {};
             $("#ModalEdita").modal("show");
             
+            // Tornar Matrícula RH somente leitura ao editar
+            $("#C_matricula_assoc").prop('readonly', true);
+            
             $("#C_nome_assoc").val(data.nome);
             $("#C_endereco_assoc").val(data.endereco);
             if(data.data_filiacao){
@@ -475,7 +499,8 @@ $("#btnInserir").click(function(){
     $('#C_datacadastro_assoc').val(d2);
     $('#C_uf_assoc').val($('#C_uf_assoc option').eq(11).val());
     $('#C_cidade_assoc').val($('#C_cidade_assoc option').eq(835).val());
-    $("#C_matricula_assoc").removeAttr('disabled');
+    // Tornar Matrícula RH somente leitura ao cadastrar
+    $("#C_matricula_assoc").prop('readonly', true);
 });
 $("#btnSalvar").click(function(event){
    waitingDialog.show('Gravando, aguarde ...');
@@ -673,6 +698,9 @@ $("#btnSalvar").click(function(event){
                break;
            case 'C_limite_assoc':
                nome_campo = "Limite";
+               break;
+           case 'C_cpf_assoc':
+               nome_campo = "CPF";
                break;
        }
        BootstrapDialog.show({
@@ -1255,6 +1283,7 @@ function validar(){
     var nascimento = $('#C_nascimento').val();
     var salario    = $('#C_salario').val();
     var limite     = $('#C_limite_assoc').val();
+    var cpf        = $('#C_cpf_assoc').val();
     if (nome === ""){
         return $('#C_nome_assoc').attr('name');
     }else if (matricula === "") {
@@ -1275,6 +1304,8 @@ function validar(){
         return $('#C_salario').attr('name');
     }else if (limite === "") {
         return $('#C_limite_assoc').attr('name');
+    }else if (cpf === "") {
+        return $('#C_cpf_assoc').attr('name');
     }else{
         return "validou";
     }

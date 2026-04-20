@@ -72,7 +72,7 @@
                         ON convenio.codigo = conta.convenio) 
                         ON (conta.empregador = empregador.id) 
                        AND (empregador.id = associado.empregador)) 
-                        ON divisao.id_divisao = empregador.divisao
+                        ON divisao.id_divisao = empregador.id_divisao
                 WHERE associado.codigo = :matricula 
                   AND associado.empregador = :empregador 
                   AND conta.mes = :mes 

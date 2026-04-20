@@ -1,5 +1,5 @@
 -- Fix for the sind.insert_estorno() trigger
--- The trigger was trying to access old.id_divisao but the field in sind.conta is named 'divisao'
+-- The trigger copies data from sind.conta (uses 'divisao') to sind.estornos (uses 'id_divisao')
 
 -- First, let's drop the existing trigger and function
 DROP TRIGGER IF EXISTS trigger_insert_estorno ON sind.conta;
@@ -21,7 +21,7 @@ BEGIN
         OLD.descricao, OLD.mes, OLD.empregador, OLD.funcionario, OLD.parcela, 
         OLD.ip_convenio, OLD.mac_adress, OLD.exclui, OLD.user_exclui, OLD.uri_cupom, 
         OLD.tipo, OLD.id_situacao, CURRENT_DATE, CURRENT_TIME, OLD.data_fatura, 
-        OLD.uuid_conta, OLD.divisao  -- Changed from OLD.id_divisao to OLD.divisao
+        OLD.uuid_conta, OLD.divisao  -- OLD.divisao from conta table goes to id_divisao column in estornos table
     );
     
     RETURN OLD;

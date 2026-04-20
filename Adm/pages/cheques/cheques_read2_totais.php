@@ -2,9 +2,14 @@
 header("Content-type: application/json");
 include "../../php/banco.php";
 include "../../php/funcoes.php";
+include "../../php/tenant_security.php";
+
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$divisao = $_POST['divisao'];
+
+// SEGURANÇA MULTI-TENANT: Validar divisão
+$tenantSec = new TenantSecurity($pdo);
+$divisao = $tenantSec->getSecureDivisao($_POST['divisao'] ?? null);
 
 if ($_POST["cod_tipo"] != "" and $_POST["empregador"] != "" ) {
 

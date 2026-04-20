@@ -92,11 +92,11 @@ if (isset($_POST["mes"])) {
             RIGHT JOIN (
                 sind.controle 
                 INNER JOIN sind.conta 
-                    ON conta.divisao = controle.divisao
+                    ON conta.id_divisao = controle.divisao
                     AND controle.codigo = (
                         SELECT MAX(c2.codigo) 
                         FROM sind.controle c2 
-                        WHERE c2.divisao = conta.divisao
+                        WHERE c2.divisao = conta.id_divisao
                     )
             ) ON conta.id_situacao = situacao_conta.id_situacao OR conta.id_situacao IS NULL
             ) ON empregador.id = conta.empregador

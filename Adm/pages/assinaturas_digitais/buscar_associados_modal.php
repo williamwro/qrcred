@@ -28,11 +28,11 @@ try {
                      associado.cidade,
                      associado.cpf,
                      associado.id_situacao,
-                     empregador.divisao,
+                     empregador.id_divisao,
                      empregador.nome AS empregador, 
                      empregador.abreviacao
                 FROM sind.empregador RIGHT JOIN sind.associado ON empregador.Id = associado.empregador 
-               WHERE empregador.divisao = :divisao 
+               WHERE empregador.id_divisao = :divisao 
                ORDER BY associado.nome";
     
     $someArray = array('data' => array());

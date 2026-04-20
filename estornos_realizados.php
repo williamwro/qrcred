@@ -51,7 +51,7 @@ try {
                 e.hora_estorno, 
                 e.id, 
                 e.func_estorno, 
-                e.divisao, 
+                e.id_divisao, 
                 e.data_fatura, 
                 e.uuid_conta,
                 e.id_associado
@@ -94,7 +94,7 @@ try {
             'data_estorno' => $estorno['data_estorno'],
             'hora_estorno' => $estorno['hora_estorno'],
             'func_estorno' => $estorno['func_estorno'],
-            'divisao' => $estorno['divisao'],
+            'divisao' => $estorno['id_divisao'],
             'data_fatura' => $estorno['data_fatura'],
             'uuid_conta' => $estorno['uuid_conta'],
             'id_associado' => $estorno['id_associado']

@@ -1,10 +1,15 @@
 <?php
 /**
  * Webhook ZapSign para Adesão SasCred
- * Versão ATUALIZADA - Busca divisão correta na tabela adesoes_pendentes
+ * Versão FINAL CORRIGIDA - Com UPSERT para evitar race condition
  * 
- * Resolve problema: Associado pode ter múltiplos registros com divisões diferentes
- * Solução: Busca id_associado e id_divisao corretos da sessão ativa do usuário
+ * Resolve problemas:
+ * 1. Associado pode ter múltiplos registros com divisões diferentes
+ * 2. Race condition em webhooks simultâneos (erro duplicate key)
+ * 
+ * Soluções:
+ * 1. Busca id_associado e id_divisao corretos da tabela adesoes_pendentes
+ * 2. Usa UPSERT (INSERT ... ON CONFLICT) para operação atômica
  */
 
 header('Content-Type: application/json; charset=utf-8');
@@ -218,117 +223,70 @@ try {
     $valor_aprovado = '550.00'; // Valor fixo de aprovação
     $data_pgto = date('Y-m-d H:i:s'); // Data/hora atual
     
-    // Verificar se já existe registro na tabela associados_sasmais
-    // ✅ IMPORTANTE: Verificar também o TIPO para permitir múltiplos registros (adesão + antecipação)
-    error_log("🔍 Verificando se já existe registro em associados_sasmais...");
-    error_log("   Buscando por: id_associado=$id_associado, id_divisao=$id_divisao, tipo=$tipo");
+    // ✅ USAR UPSERT (INSERT ... ON CONFLICT) para evitar race condition
+    error_log("📝 Executando UPSERT em associados_sasmais...");
+    error_log("   ID Associado: $id_associado");
+    error_log("   ID Divisão: $id_divisao");
+    error_log("   Tipo: $tipo");
     
-    $sqlVerifica = "SELECT id FROM sind.associados_sasmais 
-                    WHERE id_associado = :id_associado 
-                    AND id_divisao = :id_divisao
-                    AND tipo = :tipo
-                    LIMIT 1";
+    // UPSERT: Inserir ou atualizar se já existir (baseado em id_associado + id_divisao + tipo)
+    $sqlUpsert = "INSERT INTO sind.associados_sasmais 
+                  (codigo, nome, email, cpf, celular, id_associado, id_divisao, 
+                   has_signed, signed_at, doc_token, doc_name, event, name, cel_informado,
+                   limite, valor_aprovado, data_pgto, tipo, reprovado, chave_pix,
+                   aceitou_termo, data_hora, autorizado)
+                  VALUES 
+                  (:codigo, :nome, :email, :cpf, :celular, :id_associado, :id_divisao,
+                   't', :signed_at, :doc_token, :doc_name, 'doc_signed', :name, :cel_informado,
+                   :limite, :valor_aprovado, :data_pgto, :tipo, 'f', '',
+                   't', NOW(), 't')
+                  ON CONFLICT (id_associado, id_divisao, tipo) 
+                  DO UPDATE SET
+                      nome = EXCLUDED.nome,
+                      email = EXCLUDED.email,
+                      celular = EXCLUDED.celular,
+                      has_signed = 't',
+                      signed_at = EXCLUDED.signed_at,
+                      doc_token = EXCLUDED.doc_token,
+                      doc_name = EXCLUDED.doc_name,
+                      event = 'doc_signed',
+                      name = EXCLUDED.name,
+                      cel_informado = EXCLUDED.cel_informado,
+                      limite = EXCLUDED.limite,
+                      valor_aprovado = EXCLUDED.valor_aprovado,
+                      data_pgto = EXCLUDED.data_pgto,
+                      tipo = EXCLUDED.tipo,
+                      autorizado = 't',
+                      data_hora = NOW()
+                  RETURNING id, (xmax = 0) AS inserted";
     
-    $stmtVerifica = $pdo->prepare($sqlVerifica);
-    $stmtVerifica->execute([
+    $stmtUpsert = $pdo->prepare($sqlUpsert);
+    $stmtUpsert->execute([
+        ':codigo' => $codigo,
+        ':nome' => $nome,
+        ':email' => $email,
+        ':cpf' => $cpf,
+        ':celular' => $celular,
         ':id_associado' => $id_associado,
         ':id_divisao' => $id_divisao,
+        ':signed_at' => $signed_at,
+        ':doc_token' => $doc_token,
+        ':doc_name' => $doc_name,
+        ':name' => $nome,
+        ':cel_informado' => $celular,
+        ':limite' => $limite,
+        ':valor_aprovado' => $valor_aprovado,
+        ':data_pgto' => $data_pgto,
         ':tipo' => $tipo
     ]);
     
-    $registroExistente = $stmtVerifica->fetch();
+    $resultado = $stmtUpsert->fetch(PDO::FETCH_ASSOC);
+    $registroId = $resultado['id'];
+    $foiInserido = $resultado['inserted'];
     
-    if ($registroExistente) {
-        error_log("⚠️ Registro já existe na tabela associados_sasmais (ID: " . $registroExistente['id'] . ")");
-        error_log("⚠️ Atualizando registro existente...");
-        
-        // Atualizar registro existente COM TODOS OS CAMPOS
-        $sqlUpdate = "UPDATE sind.associados_sasmais 
-                      SET nome = :nome,
-                          email = :email,
-                          celular = :celular,
-                          has_signed = 't',
-                          signed_at = :signed_at,
-                          doc_token = :doc_token,
-                          doc_name = :doc_name,
-                          event = 'doc_signed',
-                          name = :name,
-                          cel_informado = :cel_informado,
-                          limite = :limite,
-                          valor_aprovado = :valor_aprovado,
-                          data_pgto = :data_pgto,
-                          tipo = :tipo,
-                          autorizado = 't',
-                          data_hora = NOW()
-                      WHERE id = :id";
-        
-        $stmtUpdate = $pdo->prepare($sqlUpdate);
-        $stmtUpdate->execute([
-            ':nome' => $nome,
-            ':email' => $email,
-            ':celular' => $celular,
-            ':signed_at' => $signed_at,
-            ':doc_token' => $doc_token,
-            ':doc_name' => $doc_name,
-            ':name' => $nome,
-            ':cel_informado' => $celular,
-            ':limite' => $limite,
-            ':valor_aprovado' => $valor_aprovado,
-            ':data_pgto' => $data_pgto,
-            ':tipo' => $tipo,
-            ':id' => $registroExistente['id']
-        ]);
-        
-        error_log("✅ Registro atualizado com sucesso (ID: " . $registroExistente['id'] . ")");
-        
-        echo json_encode([
-            'status' => 'sucesso',
-            'mensagem' => 'Registro atualizado com sucesso',
-            'id' => $registroExistente['id'],
-            'acao' => 'atualizado'
-        ]);
-        
-    } else {
-        // Inserir novo registro com divisão correta
-        error_log("📝 Inserindo novo registro em associados_sasmais...");
-        
-        $sqlInsert = "INSERT INTO sind.associados_sasmais 
-                      (codigo, nome, email, cpf, celular, id_associado, id_divisao, 
-                       has_signed, signed_at, doc_token, doc_name, event, name, cel_informado,
-                       limite, valor_aprovado, data_pgto, tipo, reprovado, chave_pix,
-                       aceitou_termo, data_hora, autorizado)
-                      VALUES 
-                      (:codigo, :nome, :email, :cpf, :celular, :id_associado, :id_divisao,
-                       't', :signed_at, :doc_token, :doc_name, 'doc_signed', :name, :cel_informado,
-                       :limite, :valor_aprovado, :data_pgto, :tipo, 'f', '',
-                       't', NOW(), 't')
-                      RETURNING id";
-        
-        $stmtInsert = $pdo->prepare($sqlInsert);
-        $stmtInsert->execute([
-            ':codigo' => $codigo,
-            ':nome' => $nome,
-            ':email' => $email,
-            ':cpf' => $cpf,
-            ':celular' => $celular,
-            ':id_associado' => $id_associado,
-            ':id_divisao' => $id_divisao,
-            ':signed_at' => $signed_at,
-            ':doc_token' => $doc_token,
-            ':doc_name' => $doc_name,
-            ':name' => $nome,
-            ':cel_informado' => $celular,
-            ':limite' => $limite,
-            ':valor_aprovado' => $valor_aprovado,
-            ':data_pgto' => $data_pgto,
-            ':tipo' => $tipo
-        ]);
-        
-        $resultado = $stmtInsert->fetch(PDO::FETCH_ASSOC);
-        $novoId = $resultado['id'];
-        
+    if ($foiInserido) {
         error_log("✅ Novo registro inserido com sucesso:");
-        error_log("   ID: $novoId");
+        error_log("   ID: $registroId");
         error_log("   Código: $codigo");
         error_log("   ID Associado: $id_associado");
         error_log("   ID Divisão: $id_divisao (✅ DIVISÃO CORRETA)");
@@ -344,10 +302,23 @@ try {
         echo json_encode([
             'status' => 'sucesso',
             'mensagem' => 'Adesão registrada com sucesso',
-            'id' => $novoId,
+            'id' => $registroId,
             'acao' => 'inserido',
             'id_associado' => $id_associado,
             'id_divisao' => $id_divisao
+        ]);
+    } else {
+        error_log("✅ Registro atualizado com sucesso:");
+        error_log("   ID: $registroId");
+        error_log("   ID Associado: $id_associado");
+        error_log("   ID Divisão: $id_divisao");
+        error_log("   Tipo: $tipo");
+        
+        echo json_encode([
+            'status' => 'sucesso',
+            'mensagem' => 'Registro atualizado com sucesso',
+            'id' => $registroId,
+            'acao' => 'atualizado'
         ]);
     }
     

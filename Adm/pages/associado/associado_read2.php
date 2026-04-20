@@ -14,12 +14,17 @@ ob_start();
 try {
     include "../../php/banco.php";
     include "../../php/funcoes.php";
+    include "../../php/tenant_security.php";
+    
     $pdo = Banco::conectar_postgres();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // SEGURANÇA MULTI-TENANT: Validar divisão
+    $tenantSec = new TenantSecurity($pdo);
+    
     // Obter parâmetros do POST (enviados pelo JavaScript)
     $usuario_cod = isset($_POST['usuario_cod']) ? $_POST['usuario_cod'] : null;
-    $divisao = isset($_POST['divisao']) ? $_POST['divisao'] : null;
+    $divisao = $tenantSec->getSecureDivisao($_POST['divisao'] ?? null);
     $usuario_global = isset($_POST['usuario_global']) ? $_POST['usuario_global'] : null;
     $cod_situacao = isset($_POST['cod_situacao']) ? $_POST['cod_situacao'] : null;
     

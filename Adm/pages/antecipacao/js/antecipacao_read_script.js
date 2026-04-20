@@ -43,16 +43,8 @@ $(document).ready(function(){
     usuario_global = sessionStorage.getItem("usuario_global");
     usuario_cod = sessionStorage.getItem("usuario_cod");
     
-    // Carregar meses no select
+    // Carregar meses no select e depois filtrar
     carregarMeses();
-    
-    debugger;
-    if(divisao === "1"){ //QRCRED
-        // Aguardar um pouco para os meses carregarem, então filtrar
-        setTimeout(function() {
-            filtra_antecipacao(null,divisao);// filtra todos
-        }, 500);
-    }
    
     $('#tabela_antecipacao_assoc tbody').on('click', 'tr', function () {
         if ($(this).hasClass('selected')) {
@@ -95,6 +87,13 @@ function carregarMeses() {
                 }
             }
         });
+        
+        // Após carregar os meses, aplicar o filtro inicial com o mês corrente
+        if(divisao === "1"){ //QRCRED
+            var mesSelecionado = $('#C_mes_filtro').val() || 'todos';
+            console.log('DEBUG: Mês selecionado após carregar meses:', mesSelecionado);
+            filtra_antecipacao(null, divisao, mesSelecionado);
+        }
     });
 }
 

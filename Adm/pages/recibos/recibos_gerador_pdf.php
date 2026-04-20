@@ -24,7 +24,8 @@ if (isset($_POST['categoria'])){
 }
 $data = substr($_POST['data'],-4)."-".substr($_POST['data'],3,2)."-".substr($_POST['data'],0,2);
 $data = strtotime($data);
-$data = strftime('%A, %d de %B de %Y',$data);
+$formatter = new IntlDateFormatter('pt_BR', IntlDateFormatter::FULL, IntlDateFormatter::NONE, 'America/Sao_Paulo', IntlDateFormatter::GREGORIAN, 'EEEE, dd \'de\' MMMM \'de\' yyyy');
+$data = $formatter->format($data);
 
 $divisao = $_POST['divisao'];
 

@@ -97,9 +97,8 @@ $aux = 0;
 $total_paginas = 0;
 PDF::setPG($pagina);
 
-setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-date_default_timezone_set('America/Sao_Paulo');
-$date = strftime('%A, %d de %B de %Y', strtotime('today'));
+$formatter = new IntlDateFormatter('pt_BR', IntlDateFormatter::FULL, IntlDateFormatter::NONE, 'America/Sao_Paulo', IntlDateFormatter::GREGORIAN, 'EEEE, dd \'de\' MMMM \'de\' yyyy');
+$date = $formatter->format(new DateTime('today'));
 
 $pdf = new PDF();
 $pdf->SetFont('Arial','B',8);

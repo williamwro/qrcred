@@ -1,7 +1,7 @@
 <?php
 // Suprimir exibição de erros para não quebrar o JSON
-error_reporting(0);
-ini_set('display_errors', 0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -16,6 +16,9 @@ try {
 
     $situacao = isset($_POST["situacao"]) ? $_POST["situacao"] : 'todos';
     $divisao = isset($_POST["divisao"]) ? (int)$_POST["divisao"] : 0;
+    
+    // Debug temporário
+    error_log("DEBUG BLOQUEIOS: situacao=$situacao, divisao=$divisao");
 
     // Busca as solicitações de bloqueio com filtro por situação e divisão
     $sql = "SELECT 
@@ -30,7 +33,7 @@ try {
             FROM sind.solicitacao_bloqueio sb
             LEFT JOIN sind.associado a ON sb.id_associado = a.id
             LEFT JOIN sind.empregador e ON a.empregador = e.id
-            WHERE sb.divisao = :divisao";
+            WHERE sb.id_divisao = :divisao";
     
     // Filtrar por situação
     if ($situacao !== 'todos') {
@@ -51,8 +54,15 @@ try {
         $stmt->bindParam(':situacao', $situacao, PDO::PARAM_INT);
     }
     
+    // Debug SQL
+    error_log("DEBUG SQL: " . $sql);
+    error_log("DEBUG PARAMS: divisao=$divisao");
+    
     $stmt->execute();
     $result = $stmt->fetchAll();
+    
+    // Debug resultado
+    error_log("DEBUG RESULT COUNT: " . count($result));
 
     if ($result) {
         foreach ($result as $row) {
@@ -84,8 +94,13 @@ try {
     }
 } catch (Exception $e) {
     $someArray["data"] = array();
-    // Descomentar para debug:
-    // $someArray["error"] = $e->getMessage();
+    $someArray["error"] = $e->getMessage();
+    $someArray["debug"] = [
+        'situacao' => $situacao ?? 'N/A',
+        'divisao' => $divisao ?? 'N/A',
+        'sql' => $sql ?? 'N/A'
+    ];
+    error_log("ERRO BLOQUEIOS: " . $e->getMessage());
 }
 
 echo json_encode($someArray, JSON_UNESCAPED_UNICODE);

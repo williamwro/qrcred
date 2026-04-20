@@ -195,7 +195,9 @@ if (isset($_POST["matricula"]) and $_POST["matricula"] != "") {
         ON associado.codigo = conta.associado AND associado.empregador = conta.empregador) 
         ON tipoconvenio.codigo = convenio.Tipo 
         WHERE conta.associado = '" . $_POST["matricula"] . "' AND conta.mes = '" . $_POST["mes"] . "'
-        AND associado.empregador =" . $_POST["cod_empregador"] . " ORDER BY conta.lancamento;";
+        AND associado.empregador =" . $_POST["cod_empregador"] . " 
+        AND (conta.aprovado = true OR conta.aprovado IS NULL)
+        ORDER BY conta.lancamento;";
 }
 
 PDF::setMS($mes);

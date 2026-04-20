@@ -31,7 +31,7 @@ $query = "SELECT associado.codigo,
                  associado.id_situacao,
                  associado.id_divisao,
                  associado.id,
-				 empregador.divisao,
+				 empregador.id_divisao,
                  empregador.nome AS empregador, 
                  empregador.abreviacao
             FROM sind.empregador RIGHT JOIN sind.associado ON empregador.id = associado.empregador 

@@ -33,7 +33,7 @@ if(isset($_POST["cod_associado"])){
 
     // Verificar tabela antecipacao
     $sql_antecipacao = "SELECT COUNT(*) as total FROM sind.antecipacao 
-                        WHERE matricula = :cod_associado AND empregador = :empregador AND divisao = :divisao";
+                        WHERE matricula = :cod_associado AND empregador = :empregador AND id_divisao = :divisao";
     $stmt_antecipacao = $pdo->prepare($sql_antecipacao);
     $stmt_antecipacao->bindParam(':cod_associado', $cod_associado, PDO::PARAM_STR);
     $stmt_antecipacao->bindParam(':empregador', $empregador, PDO::PARAM_INT);

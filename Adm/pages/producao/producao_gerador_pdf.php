@@ -126,7 +126,12 @@ class PDF extends FPDF
         // Endereço
         if (!empty(self::$EMPRESA_ENDERECO)) {
             $this->Cell(22);
-            $this->Write(0, mb_convert_encoding('Endereço: ', 'ISO-8859-1', 'UTF-8') . mb_convert_encoding(self::$EMPRESA_ENDERECO, 'ISO-8859-1', 'UTF-8'));
+            // Limitar tamanho do endereço para evitar overflow (aproximadamente 100 caracteres)
+            $endereco_limitado = self::$EMPRESA_ENDERECO;
+            if (strlen($endereco_limitado) > 64) {
+                $endereco_limitado = substr($endereco_limitado, 0, 64) . '...';
+            }
+            $this->Write(0, mb_convert_encoding('Endereço: ', 'ISO-8859-1', 'UTF-8') . mb_convert_encoding($endereco_limitado, 'ISO-8859-1', 'UTF-8'));
             $this->Ln(5);
         }
         $this->Cell(22);
@@ -353,7 +358,7 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
                       AND conta.mes = '" . $_POST["mes_atual"] . "'
                       AND empregador.id =" . $_POST["empregador"] . " 
                       AND left(conta.parcela,2) ='" . $_POST["parcela"] . "'
-                      AND empregador.divisao = " . $divisao . " 
+                      AND empregador.id_divisao = " . $divisao . " 
                    
                       ORDER BY convenio.razaosocial, " . $ordem . ";";
         }else{
@@ -366,7 +371,7 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
                       ON empregador.id = conta.empregador) 
                       ON associado.codigo = conta.associado AND associado.empregador = conta.empregador
                       WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes_atual"] . "'
-                      AND empregador.id =" . $_POST["empregador"] . " AND empregador.divisao = " . $divisao . " ORDER BY convenio.razaosocial, " . $ordem . ";";
+                      AND empregador.id =" . $_POST["empregador"] . " AND empregador.id_divisao = " . $divisao . " ORDER BY convenio.razaosocial, " . $ordem . ";";
         }
     } else {
         if (isset($_POST["parcela"]) and $_POST["parcela"] != "") {
@@ -381,7 +386,7 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
             WHERE convenio.codigo = " . $_POST["cod_convenio"] . " 
             AND conta.mes = '" . $_POST["mes_atual"] . "' 
             AND left(conta.parcela,2) ='" . $_POST["parcela"] . "'
-            AND empregador.divisao = " . $divisao . " 
+            AND empregador.id_divisao = " . $divisao . " 
            
             ORDER BY convenio.razaosocial, " . $ordem . ";";
         }else{
@@ -393,7 +398,7 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
             ON convenio.codigo = conta.convenio) 
             ON empregador.id = conta.empregador) 
             ON associado.codigo = conta.associado AND associado.empregador = conta.empregador
-            WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.divisao = " . $divisao . " 
+            WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.id_divisao = " . $divisao . " 
          
             ORDER BY convenio.razaosocial, " . $ordem . ";";
         }
@@ -410,7 +415,7 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
         ON convenio.codigo = conta.convenio) 
         ON empregador.id = conta.empregador) 
         ON associado.codigo = conta.associado AND associado.empregador = conta.empregador
-        WHERE empregador.id =" . $_POST["empregador"] . " AND conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.divisao = ".$divisao."  
+        WHERE empregador.id =" . $_POST["empregador"] . " AND conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.id_divisao = ".$divisao."  
         
         ORDER BY convenio.razaosocial, ".$ordem.";";
 
@@ -423,7 +428,7 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
         ON convenio.codigo = conta.convenio) 
         ON empregador.id = conta.empregador) 
         ON associado.codigo = conta.associado AND associado.empregador = conta.empregador
-        WHERE conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.divisao = ".$divisao."
+        WHERE conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.id_divisao = ".$divisao."
          
         ORDER BY convenio.razaosocial ASC, ".$ordem." ASC;";
     }
@@ -438,7 +443,7 @@ $grupo_todos_convenios = "SELECT empregador.nome, sum(conta.valor) as total
                       RIGHT JOIN sind.empregador
                               ON empregador.id = conta.empregador 
                            WHERE (((conta.mes)='" . $mes_atual . "') 
-                             AND empregador.divisao = ".$divisao.")
+                             AND empregador.id_divisao = ".$divisao.")
                         GROUP BY empregador.id;";
 
 PDF::setMS($mes_atual);
@@ -472,7 +477,7 @@ while($row = $sql_conv_vendas->fetch()) {
                               RIGHT JOIN sind.empregador
                                       ON empregador.id = conta.empregador 
                                    WHERE (((conta.mes)='" . $mes_atual . "') 
-                                     AND empregador.divisao = " . $divisao . " 
+                                     AND empregador.id_divisao = " . $divisao . " 
                                      AND convenio.codigo = " . $cod_convenio . ")
                                 GROUP BY empregador.id;";
         $convenio_aux = $row['convenio'];
@@ -561,7 +566,13 @@ if (ob_get_length()) {
 
 // Ensure no whitespace or other output
 if($todos === 0){
-    $pdf->Output('I',$convenio_aux."-".$mes_atual."-".$divisao_nome.".pdf");
+    // Forçar download com nome: NomeEmpresa-Mes-Data.pdf
+    $data_atual = date('d-m-Y');
+    $nome_arquivo = $convenio_aux."-".$mes_atual."-".$data_atual.".pdf";
+    // Limpar nome do arquivo de caracteres inválidos
+    $nome_arquivo = preg_replace('/[^A-Za-z0-9\-_.]/', '_', $nome_arquivo);
+    $pdf->Output('D', $nome_arquivo);
 }else{
-    $pdf->Output('I',"TODOS_CONVENIOS-".$mes_atual."-".$divisao_nome.".pdf");
+    $data_atual = date('d-m-Y');
+    $pdf->Output('D', "TODOS_CONVENIOS-".$mes_atual."-".$data_atual.".pdf");
 }

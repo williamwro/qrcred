@@ -4,6 +4,11 @@
         <title>Associados</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <!-- DataTables Buttons -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <style type="text/css">
         th, td { white-space: nowrap; }
         div.dataTables_wrapper {
@@ -55,10 +60,9 @@
                                 <input type="hidden" id="cod_convenio" name="cod_convenio" value="">
                             </div>
                             <div class="col-md-2" style="padding-top: 24px;">
-                                <div class="form-group form-check">
-                                    <input type="checkbox" class="form-check-input" id="chkTodos">
-                                    <label class="form-check-label" for="chkTodos">Imprimir todos</label>
-                                </div>
+                                <button type="button" id="btnLimparConvenio" class="btn btn-warning btn-block" title="Limpar seleção do convênio">
+                                    <i class="fa fa-eraser"></i> Limpar Convênio
+                                </button>
                             </div>
                             <div class="col-md-2" style="padding-top: 24px;">
                                 <input type="button" name="btnBuscaConvenio" id="btnBuscaConvenio" class="btn btn-primary" value="Consultar" />
@@ -66,27 +70,84 @@
 
                         </div>
                         <div class="form-group row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label for="C_mes">Mês</label>
                                 <select class="form-control i_bd" id="C_mes" name="C_mes">
                                 </select>
                                 <input type="hidden" name="C_mes_hidden" id="C_mes_hidden" value=""/>
                             </div>
-                            <div class="col-md-4">
-                                <label for="C_empregador">Empregador</label>
-                                <select class="form-control i_bd" id="C_empregador" name="C_empregador">
-                                </select>
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label for="C_parcela">Parcela</label>
                                 <select class="form-control i_bd" id="C_parcela" name="C_parcela">
                                 </select>
                             </div>
-                            <div class="col-md-1" style="padding-top: 24px;">
-                                <input type="button" name="btnExibir" id="btnExibir" class="btn btn-primary" value="Exibir" />
+                            <div class="col-md-3" style="padding-top: 24px;">
+                                <input type="button" name="btnExibir" id="btnExibir" class="btn btn-primary btn-block" value="Exibir Dados" />
                             </div>
-                            <div class="col-md-1" style="padding-top: 24px;">
-                                <input type="button" name="gerarpdf" id="gerarpdf" class="btn btn-primary" value="Relatório" />
+                        </div>
+                        
+                        <div class="form-group row" style="margin-top: 10px;">
+                            <div class="col-md-3">
+                                <div class="btn-group btn-block">
+                                    <button type="button" class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Relatório Individual <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" style="width: 100%;">
+                                        <li style="background-color: #e3f2fd;">
+                                            <a href="#" id="relatorio_producao_somente" style="color: #1976d2; font-weight: 500; padding: 10px 15px; display: block;">
+                                                <i class="fa fa-file-text-o"></i> Somente Relatório
+                                            </a>
+                                        </li>
+                                        <li style="background-color: #fff3e0;">
+                                            <a href="#" id="relatorio_producao_oficio" style="color: #f57c00; font-weight: 500; padding: 10px 15px; display: block;">
+                                                <i class="fa fa-file-pdf-o"></i> Ofício
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="btn-group btn-block">
+                                    <button type="button" class="btn btn-success dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Todos em 1 PDF <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" style="width: 100%;">
+                                        <li style="background-color: #e8f5e9;">
+                                            <a href="#" id="relatorio_producao_todos" style="color: #2e7d32; font-weight: 500; padding: 10px 15px; display: block;">
+                                                <i class="fa fa-file-text-o"></i> Somente Relatório
+                                            </a>
+                                        </li>
+                                        <li style="background-color: #fff3e0;">
+                                            <a href="#" id="relatorio_producao_todos_oficio" style="color: #f57c00; font-weight: 500; padding: 10px 15px; display: block;">
+                                                <i class="fa fa-file-pdf-o"></i> Ofício
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="btn-group btn-block">
+                                    <button type="button" class="btn btn-info dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        PDFs Separados <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" style="width: 100%;">
+                                        <li style="background-color: #e1f5fe;">
+                                            <a href="#" id="relatorio_producao_individuais" style="color: #0277bd; font-weight: 500; padding: 10px 15px; display: block;">
+                                                <i class="fa fa-file-text-o"></i> Somente Relatório
+                                            </a>
+                                        </li>
+                                        <li style="background-color: #fff3e0;">
+                                            <a href="#" id="relatorio_producao_individuais_oficio" style="color: #f57c00; font-weight: 500; padding: 10px 15px; display: block;">
+                                                <i class="fa fa-file-pdf-o"></i> Ofício
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" id="exportarExcel" class="btn btn-warning btn-block">
+                                    <i class="fa fa-file-excel-o"></i> Exportar Excel
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -100,6 +161,7 @@
                                 <th>MATRICULA</th>
                                 <th>VALOR</th>
                                 <th>DATA</th>
+                                <th>HORA</th>
                                 <th>ASSOCIADO</th>
                                 <th>CONVENIO</th>
                                 <th>EMPREGADOR</th>

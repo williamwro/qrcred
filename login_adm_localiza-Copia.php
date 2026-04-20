@@ -1,15 +1,17 @@
 <?PHP
+session_start();
 $userconv="";
 $passconv="";
 include "Adm/php/banco.php";
 if (isset($_POST['login-username']) && isset($_POST['password'])){
-    $username = $_POST['login-username'];
+    $username = trim($_POST['login-username']); // Remove espaços em branco do início e fim do usuário
     $passuser = $_POST['password'];
     $cod_convenio = 0;
     $codigo = 0;
     $existe_senha = false;
     $std = new stdClass();
     $pdo = Banco::conectar_postgres();
+    // VERIFICA SENHA **************************************************************************************************************************************************
     // VERIFICA SENHA ******************************************************************************************************************************************************
     $stmt = $pdo->prepare("SELECT codigo,senha,email FROM sind.usuarios WHERE username = :username");
     $stmt->bindParam(':username', $username, PDO::PARAM_STR);
@@ -37,6 +39,12 @@ if (isset($_POST['login-username']) && isset($_POST['password'])){
             $std->nome = $row["nome"];
             $std->divisao = $row["divisao"];
             $std->divisao_nome = $row["divisao_nome"];
+            
+            // SEGURANÇA MULTI-TENANT: Armazenar divisão em $_SESSION
+            $_SESSION['usuario_cod'] = $codigo;
+            $_SESSION['divisao'] = $row["divisao"];
+            $_SESSION['user_name'] = $username;
+            
             if($row["situacao"] == 2){
                 $std->tipo_login = "login bloqueado";
             }

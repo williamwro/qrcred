@@ -72,7 +72,8 @@ if(isset($_POST['email'])) {
 }
 if(isset($_POST['data_cadastro'])) {
     //$data_cadastro =  date("d", strtotime($_POST['data_cadastro']))." de ".date("F", strtotime($_POST['data_cadastro']))." de ".date("Y", strtotime($_POST['data_cadastro']));
-    $data_cadastro = strftime('%A, %d de %B de %Y',strtotime($_POST['data_cadastro']));
+    $formatter = new IntlDateFormatter('pt_BR', IntlDateFormatter::FULL, IntlDateFormatter::NONE, 'America/Sao_Paulo', IntlDateFormatter::GREGORIAN, 'EEEE, dd \'de\' MMMM \'de\' yyyy');
+    $data_cadastro = $formatter->format(new DateTime($_POST['data_cadastro']));
 }else{
     $data_cadastro = "";
 }

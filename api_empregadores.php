@@ -62,7 +62,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Consultar dados
-    $stmt = $pdo->query("SELECT id, nome, responsavel, telefone, abreviacao, divisao FROM sind.empregador");
+    $stmt = $pdo->query("SELECT id, nome, responsavel, telefone, abreviacao, id_divisao FROM sind.empregador");
     $empregadores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Registrar sucesso

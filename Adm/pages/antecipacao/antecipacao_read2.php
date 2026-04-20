@@ -5,15 +5,20 @@ error_reporting(E_ALL);
 /* cSpell:disable */
 include "../../php/banco.php";
 include "../../php/funcoes.php";
+include "../../php/tenant_security.php";
+
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// SEGURANÇA MULTI-TENANT: Validar divisão
+$tenantSec = new TenantSecurity($pdo);
+$divisao = $tenantSec->getDivisaoAutenticada();
+
 $someArray = array();
-// Obter divisão da sessão
-$divisao = $_SESSION["divisao"] ?? 1;
 
 // Construir filtros
 $filtros = array();
-$filtros[] = "emp.divisao = :divisao";
+$filtros[] = "emp.id_divisao = :divisao";
 
 if($_POST['id_situacao'] == "true" || $_POST['id_situacao'] == "false" ){
     $filtros[] = "ant.aprovado = ".$_POST['id_situacao'];
@@ -156,7 +161,7 @@ foreach ($result as $row){
     $sub_array["cel"]             = $row["cel"];
     $sub_array["hora"]            = $row["hora"];
     $sub_array["botao"]           = '<button type="button" name="update_antecipacao" id="'.$row["matricula"].'" class="btn btn-warning glyphicon glyphicon-edit btn-xs update_antecipacao" data-toggle="tooltip" data-placement="top" title="Alterar"></button>';
-    $sub_array["botaoexcluir"]    = '<button type="button" name="btnexcluir" data-id="'.$row["id"].'" data-matricula="'.$row["matricula"].'" data-empregador="'.$row["id_empregador"].'" data-mes="'.$row["mes"].'" class="btn btn-danger glyphicon glyphicon-trash btn-xs btnexcluir" data-toggle="tooltip" data-placement="top" title="Excluir"></button>';
+    $sub_array["botaoexcluir"]    = '<button type="button" name="btnexcluir" data-id="'.$row["id"].'" data-matricula="'.$row["matricula"].'" data-empregador="'.$row["id_empregador"].'" data-mes="'.$row["mes"].'" class="btn btn-danger glyphicon glyphicon-trash btn-xs btnexcluir" data-toggle="tooltip" data-placement="top" title="Excluir" disabled></button>';
     $someArray['data'][] = $sub_array;
 }
 $pp = json_encode($someArray);

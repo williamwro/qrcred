@@ -19,7 +19,7 @@ try {
     }
 
     // Buscar empregador pelo usuário e senha
-    $sql = "SELECT id, nome, divisao, usuario, bloqueio 
+    $sql = "SELECT id, nome, id_divisao, usuario, bloqueio 
             FROM sind.empregador 
             WHERE usuario = :usuario AND senha = :senha";
     
@@ -39,7 +39,7 @@ try {
             $response['status'] = 'sucesso';
             $response['id'] = $empregador['id'];
             $response['nome'] = $empregador['nome'];
-            $response['divisao'] = $empregador['divisao'];
+            $response['divisao'] = $empregador['id_divisao'];
             $response['usuario'] = $empregador['usuario'];
             $response['message'] = 'Login realizado com sucesso!';
         }

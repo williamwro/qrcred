@@ -28,10 +28,11 @@ try {
                 ant.aprovado,
                 ant.data_aprovacao AS data_conclusao,
                 ant.celular,
-                ant.chave_pix
+                ant.chave_pix,
+                ant.id_divisao
             FROM sind.antecipacao ant
             JOIN sind.empregador emp ON emp.id = ant.empregador
-            WHERE emp.divisao = :divisao";
+            WHERE emp.id_divisao = :divisao";
     
     // Adicionar filtro baseado na situação
     if ($situacao === "true") {

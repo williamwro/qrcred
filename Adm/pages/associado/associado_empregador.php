@@ -9,7 +9,7 @@
     $divisao = isset($_GET["divisaox"]) ? (int)$_GET["divisaox"] : null;
     
     if($divisao !== null && $divisao > 0) {
-        $sql = $pdo->prepare("SELECT * FROM sind.empregador WHERE divisao = :divisao ORDER BY nome");
+        $sql = $pdo->prepare("SELECT * FROM sind.empregador WHERE id_divisao = :divisao ORDER BY nome");
         $sql->bindParam(':divisao', $divisao, PDO::PARAM_INT);
         $sql->execute();
     } else {

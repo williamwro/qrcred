@@ -66,12 +66,16 @@ try {
             // Situação: 1-Pendente, 2-Aprovado, 3-Reprovado
             $id_situacao = $row['id_situacao'];
             if ($id_situacao == 1 || $id_situacao === null) {
+                $sub_array["cod_situacao"] = 1;
                 $sub_array["situacao"] = "<span class='label label-warning'>Pendente</span>";
             } elseif ($id_situacao == 2) {
+                $sub_array["cod_situacao"] = 2;
                 $sub_array["situacao"] = "<span class='label label-success'>Aprovado</span>";
             } elseif ($id_situacao == 3) {
+                $sub_array["cod_situacao"] = 3;
                 $sub_array["situacao"] = "<span class='label label-danger'>Reprovado</span>";
             } else {
+                $sub_array["cod_situacao"] = 0;
                 $sub_array["situacao"] = "<span class='label label-default'>-</span>";
             }
 

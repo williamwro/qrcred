@@ -28,7 +28,7 @@ $_qtde_parcelas = 0;
 $_parcela1      = 0;
 $someArray = array();
 
-$query = "SELECT * FROM sind.empregador WHERE abreviacao = '".$_empregador."' AND divisao = ".$_divisao;
+$query = "SELECT * FROM sind.empregador WHERE abreviacao = '".$_empregador."' AND id_divisao = ".$_divisao;
 $statment = $pdo->prepare($query);
 $statment->execute();
 $result = $statment->fetchAll();

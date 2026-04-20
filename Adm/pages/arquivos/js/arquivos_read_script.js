@@ -86,10 +86,14 @@ $(document).ready(function(){
                 mescorrente = value.mes_corrente;
             }
             if (value.abreviacao !== undefined) {
+                var textoOpcao = value.abreviacao;
+                if (value.periodo !== undefined && value.periodo !== null && value.periodo !== '') {
+                    textoOpcao = value.abreviacao + ' - ' + value.periodo;
+                }
                 if (mescorrente === value.abreviacao) {
-                    $C_mes.append('<option selected value="' + value.abreviacao + '">' + value.abreviacao + '</option>');
+                    $C_mes.append('<option selected value="' + value.abreviacao + '">' + textoOpcao + '</option>');
                 } else {
-                    $C_mes.append('<option value="' + value.abreviacao + '">' + value.abreviacao + '</option>');
+                    $C_mes.append('<option value="' + value.abreviacao + '">' + textoOpcao + '</option>');
                 }
             }
         });
@@ -342,6 +346,80 @@ $('#relatoriofinal').click(function () {
         params.tipo = tipo;
     }
     $.redirect('../Adm/pages/arquivos/relatorio_final.php', params, "POST", "_blank");
+});
+
+// Opção 1: Somente Relatório (relatório original)
+$('#relatorio_somente').click(function (e) {
+    e.preventDefault();
+    var mes_atual  = $('#C_mes').val();
+    var empregador = $('#C_empregador').val();
+    var tipo = $('#C_tipo').val();
+    
+    if (!mes_atual) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um mês.'
+        });
+        return;
+    }
+    
+    if (!empregador) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um empregador.'
+        });
+        return;
+    }
+    
+    var params = { mes_atual: mes_atual, empregador: empregador, divisao: divisao, divisao_nome: divisao_nome };
+    if (tipo && tipo !== '') {
+        params.tipo = tipo;
+    }
+    $.redirect('../Adm/pages/arquivos/relatorio_final.php', params, "POST", "_blank");
+});
+
+// Opção 2: Ofício (novo relatório com formato de ofício)
+$('#relatorio_oficio').click(function (e) {
+    e.preventDefault();
+    var mes_atual  = $('#C_mes').val();
+    var empregador = $('#C_empregador').val();
+    var tipo = $('#C_tipo').val();
+    var data_vencimento = $('#C_data_vencimento').val();
+    
+    if (!mes_atual) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um mês.'
+        });
+        return;
+    }
+    
+    if (!empregador) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um empregador.'
+        });
+        return;
+    }
+    
+    if (!data_vencimento) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, informe a data de vencimento para o ofício.'
+        });
+        return;
+    }
+    
+    var params = { mes_atual: mes_atual, empregador: empregador, divisao: divisao, divisao_nome: divisao_nome, data_vencimento: data_vencimento };
+    if (tipo && tipo !== '') {
+        params.tipo = tipo;
+    }
+    $.redirect('../Adm/pages/arquivos/relatorio_oficio.php', params, "POST", "_blank");
 });
 
 // Novo botão para gerar todos os relatórios em um único PDF

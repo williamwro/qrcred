@@ -23,10 +23,10 @@ error_log("DEBUG producao_empregador.php - QUERY_STRING: " . ($_SERVER['QUERY_ST
 // Se o mês foi fornecido, filtrar apenas empregadores que tenham valores em conta nesse mês
 if (!empty($mes)) {
     $sql = $pdo->prepare("
-        SELECT DISTINCT e.id, e.nome, e.responsavel, e.telefone, e.abreviacao, e.divisao
+        SELECT DISTINCT e.id, e.nome, e.responsavel, e.telefone, e.abreviacao, e.id_divisao
         FROM sind.empregador e
         INNER JOIN sind.conta c ON c.empregador = e.id
-        WHERE e.divisao = :divisao 
+        WHERE e.id_divisao = :divisao 
         AND c.mes = :mes
         AND c.valor > 0
         AND (c.aprovado = true OR c.aprovado IS NULL)
@@ -37,9 +37,9 @@ if (!empty($mes)) {
 } else {
     // Se não há mês especificado, retornar todos os empregadores da divisão (comportamento original)
     $sql = $pdo->prepare("
-        SELECT id, nome, responsavel, telefone, abreviacao, divisao 
+        SELECT id, nome, responsavel, telefone, abreviacao, id_divisao 
         FROM sind.empregador 
-        WHERE divisao = :divisao 
+        WHERE id_divisao = :divisao 
         ORDER BY nome
     ");
     $sql->bindParam(':divisao', $divisao, PDO::PARAM_INT);

@@ -26,7 +26,7 @@ $query = "SELECT CASE WHEN left(conta.mes,3) = 'JAN' THEN right(conta.mes,4) || 
                       ON convenio.codigo = conta.convenio
               INNER JOIN sind.empregador
 			  		  ON conta.empregador = empregador.id
-                   WHERE (convenio.cobranca = true AND empregador.divisao = ".$divisao.")
+                   WHERE (convenio.cobranca = true AND empregador.id_divisao = ".$divisao.")
                 GROUP BY conta.mes
                 ORDER BY data;";
 

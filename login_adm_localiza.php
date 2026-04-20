@@ -5,7 +5,7 @@ session_start();
 $userconv="";
 $passconv="";
 include "Adm/php/banco.php";
-$username = $_POST['username'];
+$username = trim($_POST['username']); // Remove espaços em branco do início e fim do usuário
 $passuser = $_POST['password'];
 $_SESSION["user_name"]=$username;
 $cod_convenio = 0;
@@ -50,6 +50,12 @@ if (isset($_POST['username']) && isset($_POST['password'])){
             $std->divisao = $row["divisao"];
             $std->descricao = $row["descricao"];
             $std->divisao_nome = $row["divisao_nome"];
+            
+            // SEGURANÇA MULTI-TENANT: Armazenar divisão em $_SESSION
+            $_SESSION['usuario_cod'] = $codigo;
+            $_SESSION['divisao'] = $row["divisao"];
+            $_SESSION['user_name'] = $username;
+            
             if($row["situacao"] == 2){
                 $std->tipo_login = "login bloqueado";
                 session_unset();

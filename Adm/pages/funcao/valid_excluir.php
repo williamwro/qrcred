@@ -8,7 +8,7 @@ if(isset($_POST["cod_categoria"])){
     $std = new stdClass();
     $cod_categoria = $_POST["cod_categoria"];
 
-    $sql = "SELECT associado.codigo, empregador.divisao
+    $sql = "SELECT associado.codigo, empregador.id_divisao
               FROM sind.associado INNER JOIN sind.empregador ON associado.empregador = empregador.id
              WHERE empregador.id =  = ".$cod_empregador;
     $statment = $database->prepare($sql);

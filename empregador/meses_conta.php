@@ -25,7 +25,7 @@ try {
     // Buscar todos os meses disponíveis
     $sql = "SELECT DISTINCT mes as abreviacao 
             FROM sind.conta 
-            WHERE divisao = :divisao 
+            WHERE id_divisao = :divisao 
             ORDER BY mes DESC";
     
     $stmt = $pdo->prepare($sql);

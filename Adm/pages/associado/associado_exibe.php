@@ -55,7 +55,7 @@ if(isset($_POST["cod_associado"])){
                      funcao.nome AS funcao, 
                      funcao.id AS id_funcao,
                      empregador.abreviacao, 
-                     empregador.divisao
+                     empregador.id_divisao
                 FROM sind.empregador RIGHT JOIN (sind.funcao 
                                      RIGHT JOIN sind.associado ON funcao.id = associado.funcao) 
                                      ON empregador.id = associado.empregador 

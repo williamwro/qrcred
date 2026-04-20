@@ -24,21 +24,25 @@
                         <form id="listagem" name="listagem" role="form">
                             <!-- Primeira linha: Campos de seleção -->
                             <div class="form-group row">
-                                <div class="col-md-3" style="width: 150px">
+                                <div class="col-md-3" style="width: 280px">
                                     <label for="C_mes">Mês</label>
                                     <select class="form-control i_bd" id="C_mes" name="C_mes">
                                     </select>
                                     <input type="hidden" name="C_mes_hidden" id="C_mes_hidden" value=""/>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label for="C_empregador">Empregador</label>
                                     <select class="form-control i_bd" id="C_empregador" name="C_empregador">
                                     </select>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-1">
                                     <label for="C_tipo">Tipo</label>
                                     <select class="form-control i_bd" id="C_tipo" name="C_tipoconvenio">
                                     </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="C_data_vencimento">Data Vencimento (Ofício)</label>
+                                    <input type="date" class="form-control i_bd" id="C_data_vencimento" name="C_data_vencimento" />
                                 </div>
                             </div>
                             
@@ -48,7 +52,23 @@
                                     <input type="button" name="gerararquivo" id="gerararquivo" class="btn btn-primary btn-block" value="Gerar Arquivo" />
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="button" name="relatoriofinal" id="relatoriofinal" class="btn btn-primary btn-block" value="Relatório Individual" title="Gerar relatório para o empregador selecionado" />
+                                    <div class="btn-group btn-block">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Relatório Individual <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" style="width: 100%;">
+                                            <li style="background-color: #e3f2fd;">
+                                                <a href="#" id="relatorio_somente" style="color: #1976d2; font-weight: 500; padding: 10px 15px; display: block;">
+                                                    <i class="fa fa-file-text-o"></i> Somente Relatório
+                                                </a>
+                                            </li>
+                                            <li style="background-color: #fff3e0;">
+                                                <a href="#" id="relatorio_oficio" style="color: #f57c00; font-weight: 500; padding: 10px 15px; display: block;">
+                                                    <i class="fa fa-file-pdf-o"></i> Ofício
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="col-md-3">
                                     <input type="button" name="relatorio_todos" id="relatorio_todos" class="btn btn-success btn-block" value="Todos em 1 PDF" title="Gerar relatório com todos os empregadores em páginas separadas" />

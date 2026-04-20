@@ -31,11 +31,11 @@ $query = "SELECT associado.codigo,
                  associado.id_situacao,
                  associado.id_divisao,
                  associado.id as id_associado,
-			 empregador.divisao,
+			 empregador.id_divisao,
                  empregador.nome AS empregador, 
                  empregador.abreviacao
             FROM sind.empregador RIGHT JOIN sind.associado ON empregador.id = associado.empregador 
-           WHERE empregador.divisao = :divisao ";
+           WHERE empregador.id_divisao = :divisao ";
 $someArray = array();
 
 $statment = $pdo->prepare($query);

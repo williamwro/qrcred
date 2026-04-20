@@ -153,7 +153,7 @@ class PDF extends PDF_Rotate
 $sql_empregadores = "SELECT DISTINCT e.id, e.nome 
                      FROM sind.empregador e
                      INNER JOIN sind.qrelatoriofinal q ON q.empregador = e.id
-                     WHERE e.divisao = :divisao 
+                     WHERE e.id_divisao = :divisao 
                      AND (q.aprovado = true OR q.aprovado IS NULL)
                      AND q.mes = :mes_atual";
 

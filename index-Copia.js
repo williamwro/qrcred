@@ -342,7 +342,7 @@ $(document).ready(function(){
         var tipo_loginx;
       
         // Pegar valores dos campos do layout moderno
-        usuario = $("#userAdmin").val();
+        usuario = $("#userAdmin").val().trim(); // Remove espaços em branco do início e fim do usuário
         senha = $("#passwordAdmin").val();
         
         if (usuario === "" && senha === "") {
@@ -483,7 +483,7 @@ $(document).ready(function(){
         var userElement = $("#login-username").length ? $("#login-username") : $("#userAdmin");
         var passElement = $("#login-password").length ? $("#login-password") : $("#passwordAdmin");
         
-        usuario = userElement.val();
+        usuario = userElement.val().trim(); // Remove espaços em branco do início e fim do usuário
         senha = passElement.val();
         var divisao = $("#divisao").val();
         var divisao_nome = $("#divisao_nome").val();

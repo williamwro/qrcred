@@ -7,7 +7,7 @@ if(isset($_POST["cod_empregador"])){
     $cod_empregador = $_POST["cod_empregador"];
     $std = new stdClass();
 
-    $query = "SELECT id,nome,responsavel,telefone,abreviacao,divisao,bloqueio,usuario,senha
+    $query = "SELECT id,nome,responsavel,telefone,abreviacao,id_divisao,bloqueio,usuario,senha
                 FROM sind.empregador WHERE id = ".$cod_empregador;
     $statment = $pdo->prepare($query);
     $statment->execute();
@@ -19,7 +19,7 @@ if(isset($_POST["cod_empregador"])){
         $std->responsavel = $row["responsavel"];
         $std->telefone    = $row["telefone"];
         $std->abreviacao  = $row["abreviacao"];
-        $std->divisao     = $row["divisao"];
+        $std->divisao     = $row["id_divisao"];
         $std->bloqueio    = $row["bloqueio"];
         $std->usuario     = isset($row["usuario"]) ? $row["usuario"] : "";
         $std->senha       = isset($row["senha"]) ? $row["senha"] : "";

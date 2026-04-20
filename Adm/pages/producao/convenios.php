@@ -25,7 +25,7 @@ $query = "SELECT E.codigo,
                  E.desativado
             FROM sind.conta AS C 
       INNER JOIN sind.empregador as S ON C.empregador = S.id
-	  INNER JOIN sind.divisao as D ON S.divisao = D.id_divisao
+	  INNER JOIN sind.divisao as D ON S.id_divisao = D.id_divisao
 	  INNER JOIN sind.convenio AS E ON C.convenio = E.codigo
            WHERE C.mes = '".$mes."'
              AND D.id_divisao = ".$divisao."

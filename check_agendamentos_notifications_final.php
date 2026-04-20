@@ -1,237 +1,316 @@
 <?php
 /**
- * Check Agendamentos Notifications - VERSÃO FINAL CORRIGIDA
- * CORREÇÃO FINAL: JOIN triplo para pegar cod_verificacao da tabela sind.c_cartaoassociado
+ * Check Agendamentos Notifications - Versão Corrigida
+ * 
+ * CORREÇÕES:
+ * 1. Marca flag ANTES de enviar notificação (evita duplicação)
+ * 2. Grava logs na tabela notification_log
+ * 3. Usa transação para garantir atomicidade
+ * 4. Proteção contra execução simultânea
  */
-
-require_once 'Adm/php/banco.php';
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
 
-function logMessage($message) {
-    $timestamp = date('Y-m-d H:i:s');
-    error_log("[AGENDAMENTO_NOTIFICATIONS_FINAL] [{$timestamp}] {$message}");
-    
-    if (php_sapi_name() === 'cli') {
-        echo "[{$timestamp}] {$message}\n";
-    }
-}
+error_log("=== INÍCIO CHECK_AGENDAMENTOS_NOTIFICATIONS ===");
 
-function sendAgendamentoNotification($agendamento) {
-    logMessage("Enviando notificação para agendamento ID: {$agendamento['id']} - Cartão: {$agendamento['numero_cartao']}");
-    
-    // Preparar dados da notificação
-    $data_agendada = new DateTime($agendamento['data_agendada']);
-    $data_formatada = $data_agendada->format('d/m/Y \à\s H:i');
-    
-    $titulo = "📅 Agendamento Confirmado!";
-    $mensagem = "Seu agendamento foi confirmado para {$data_formatada}";
-    
-    if (!empty($agendamento['profissional'])) {
-        $mensagem .= " - {$agendamento['profissional']}";
-    }
-    
-    if (!empty($agendamento['especialidade'])) {
-        $mensagem .= " ({$agendamento['especialidade']})";
-    }
-    
-    // Dados para o push notification - USANDO COD_VERIFICACAO CORRETO
-    $pushData = [
-        'user_card' => $agendamento['numero_cartao'], // ← CORREÇÃO FINAL: usar cod_verificacao
-        'titulo' => $titulo,
-        'mensagem' => $mensagem,
-        'tipo_notificacao' => 'agendamento_confirmado',
-        'agendamento_id' => $agendamento['id'],
-        'data_agendada' => $agendamento['data_agendada'],
-        'profissional' => $agendamento['profissional'] ?? '',
-        'especialidade' => $agendamento['especialidade'] ?? '',
-        'convenio_nome' => $agendamento['convenio_nome'] ?? ''
-    ];
-    
-    logMessage("Dados do push: " . json_encode($pushData));
-    
-    // Enviar para send_push_fixed.php
-    $url = 'https://sas.makecard.com.br/send_push_fixed.php';
-    
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($pushData));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        'Accept: application/json'
-    ]);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    
-    $result = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-    
-    if ($result === false) {
-        logMessage("ERRO: Falha ao chamar send_push_fixed.php");
-        return false;
-    }
-    
-    $response = json_decode($result, true);
-    logMessage("Resposta do push (HTTP {$httpCode}): " . json_encode($response));
-    
-    return $response['success'] ?? false;
-}
+require_once 'Adm/php/banco.php';
+require_once 'send_push_notification_app.php';
 
 try {
-    logMessage("=== INICIANDO VERIFICAÇÃO DE AGENDAMENTOS (VERSÃO FINAL CORRIGIDA) ===");
-    
-    // Conectar ao banco
-    /** @noinspection PhpUndefinedClassInspection */
     $pdo = Banco::conectar_postgres();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-    // QUERY FINAL CORRIGIDA: JOIN TRIPLO para pegar cod_verificacao
-    $sql = "
-        SELECT 
-            a.id, 
-            a.cod_associado, 
-            a.id_empregador, 
-            a.data_solicitacao, 
-            a.cod_convenio, 
-            a.status, 
-            a.profissional, 
-            a.especialidade, 
-            a.convenio_nome, 
-            a.data_agendada, 
-            a.notification_sent_confirmado,
-            a.notification_sent_24h, 
-            a.notification_sent_1h,
-            s.nome as nome_associado,
-            s.email,
-            s.cel,
-            c.cod_verificacao as numero_cartao  -- ← CAMPO CORRETO DO NÚMERO DO CARTÃO
-        FROM sind.agendamento a
-        INNER JOIN sind.associado s ON (
-            a.cod_associado = s.codigo 
-            AND a.id_empregador = s.empregador
-        )
-        INNER JOIN sind.c_cartaoassociado c ON (
-            s.codigo = c.cod_associado 
-            AND s.empregador = c.empregador
-        )
-        WHERE 
-            a.data_agendada IS NOT NULL 
-            AND (a.notification_sent_confirmado IS NULL OR a.notification_sent_confirmado = false)
-            AND a.status = 2                   -- Apenas agendamentos CONFIRMADOS
-            AND c.cod_verificacao IS NOT NULL  -- Garantir que tem número do cartão
-            AND c.cod_situacaocartao = 1       -- Apenas cartões ativos
-        ORDER BY a.data_agendada ASC
-        LIMIT 50
-    ";
-    
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    $agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-    logMessage("Encontrados " . count($agendamentos) . " agendamentos para notificar");
-    
-    if (empty($agendamentos)) {
-        echo json_encode([
-            'success' => true,
-            'message' => 'Nenhum agendamento pendente de notificação',
-            'total_processed' => 0,
-            'notifications_sent' => 0,
-            'errors' => 0
-        ]);
-        exit;
-    }
-    
     $results = [
-        'total_processed' => count($agendamentos),
+        'total_processed' => 0,
         'notifications_sent' => 0,
         'errors' => 0,
         'details' => []
     ];
     
-    // Processar cada agendamento
+    // BUSCAR AGENDAMENTOS CONFIRMADOS QUE AINDA NÃO FORAM NOTIFICADOS
+    // IMPORTANTE: Usar FOR UPDATE SKIP LOCKED para evitar race condition
+    $stmt = $pdo->prepare("
+        SELECT 
+            a.id,
+            a.cod_associado,
+            a.profissional,
+            a.especialidade,
+            a.convenio_nome,
+            a.data_agendada,
+            a.data_pretendida,
+            a.notification_sent_confirmado,
+            ass.cartao as user_card
+        FROM sind.agendamento a
+        INNER JOIN sind.associado ass ON a.cod_associado = ass.codigo
+        WHERE a.status = '2'
+          AND a.notification_sent_confirmado = false
+          AND a.data_agendada IS NOT NULL
+        ORDER BY a.data_agendada ASC
+        FOR UPDATE SKIP LOCKED
+        LIMIT 50
+    ");
+    
+    $stmt->execute();
+    $agendamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    error_log("📋 Total de agendamentos encontrados: " . count($agendamentos));
+    
     foreach ($agendamentos as $agendamento) {
+        $results['total_processed']++;
+        $agendamentoId = $agendamento['id'];
+        $userCard = $agendamento['user_card'];
+        
+        error_log("🔄 Processando agendamento ID: {$agendamentoId} - Usuário: {$userCard}");
+        
         try {
-            logMessage("Processando agendamento ID: {$agendamento['id']} - Associado: {$agendamento['cod_associado']} - Cartão: {$agendamento['numero_cartao']}");
+            // INICIAR TRANSAÇÃO
+            $pdo->beginTransaction();
             
-            // Enviar push notification
-            $pushSuccess = sendAgendamentoNotification($agendamento);
+            // MARCAR FLAG COMO TRUE **ANTES** DE ENVIAR NOTIFICAÇÃO
+            // Isso evita que execuções simultâneas enviem duplicadas
+            $updateStmt = $pdo->prepare("
+                UPDATE sind.agendamento
+                SET notification_sent_confirmado = true
+                WHERE id = ?
+                  AND notification_sent_confirmado = false
+            ");
             
-            if ($pushSuccess) {
-                // Marcar como notificação enviada
-                $updateSql = "
-                    UPDATE sind.agendamento 
-                    SET notification_sent_confirmado = true
-                    WHERE id = ?
-                ";
-                $updateStmt = $pdo->prepare($updateSql);
-                $updateStmt->execute([$agendamento['id']]);
+            $updateStmt->execute([$agendamentoId]);
+            $rowsAffected = $updateStmt->rowCount();
+            
+            if ($rowsAffected === 0) {
+                // Outro processo já marcou esta flag - pular
+                $pdo->rollBack();
+                error_log("⚠️ Agendamento {$agendamentoId} já foi processado por outro processo");
+                continue;
+            }
+            
+            // COMMIT DA TRANSAÇÃO (flag marcada com sucesso)
+            $pdo->commit();
+            
+            error_log("✅ Flag marcada para agendamento {$agendamentoId}");
+            
+            // BUSCAR SUBSCRIPTIONS ATIVAS DO USUÁRIO
+            $subsStmt = $pdo->prepare("
+                SELECT id, endpoint, p256dh, auth, settings
+                FROM sind.push_subscriptions
+                WHERE user_card = ?
+                  AND is_active = true
+            ");
+            
+            $subsStmt->execute([$userCard]);
+            $subscriptions = $subsStmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            if (empty($subscriptions)) {
+                error_log("⚠️ Usuário {$userCard} não tem subscriptions ativas");
                 
+                // Gravar log de erro
+                $logStmt = $pdo->prepare("
+                    INSERT INTO sind.notification_log (
+                        user_card,
+                        agendamento_id,
+                        tipo_notificacao,
+                        titulo,
+                        mensagem,
+                        status,
+                        error_message,
+                        profissional,
+                        especialidade,
+                        convenio_nome,
+                        data_agendada
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                
+                $logStmt->execute([
+                    $userCard,
+                    $agendamentoId,
+                    'agendamento_confirmado',
+                    'Agendamento Confirmado',
+                    'Seu agendamento foi confirmado',
+                    'failed',
+                    'Usuário não tem subscriptions ativas',
+                    $agendamento['profissional'],
+                    $agendamento['especialidade'],
+                    $agendamento['convenio_nome'],
+                    $agendamento['data_agendada']
+                ]);
+                
+                $results['errors']++;
+                continue;
+            }
+            
+            // VERIFICAR SE USUÁRIO TEM NOTIFICAÇÕES HABILITADAS
+            $settings = json_decode($subscriptions[0]['settings'], true);
+            if (!$settings['agendamentoConfirmado']) {
+                error_log("⚠️ Usuário {$userCard} desabilitou notificações de agendamento confirmado");
+                continue;
+            }
+            
+            // PREPARAR DADOS DA NOTIFICAÇÃO
+            $dataFormatada = date('d/m/Y', strtotime($agendamento['data_agendada']));
+            $horaFormatada = date('H:i', strtotime($agendamento['data_agendada']));
+            
+            $titulo = "Agendamento Confirmado! ✅";
+            $mensagem = "{$agendamento['profissional']} - {$agendamento['especialidade']}\n{$dataFormatada} às {$horaFormatada}";
+            
+            $notificationData = [
+                'title' => $titulo,
+                'body' => $mensagem,
+                'icon' => '/icon-192x192.png',
+                'badge' => '/icon-192x192.png',
+                'data' => [
+                    'url' => '/convenio/dashboard/agendamentos',
+                    'agendamento_id' => $agendamentoId,
+                    'tipo' => 'agendamento_confirmado'
+                ]
+            ];
+            
+            // ENVIAR NOTIFICAÇÃO PARA CADA SUBSCRIPTION
+            $notificationSent = false;
+            $lastError = null;
+            
+            foreach ($subscriptions as $subscription) {
+                try {
+                    error_log("📤 Enviando notificação para subscription ID: {$subscription['id']}");
+                    
+                    $pushSubscription = [
+                        'endpoint' => $subscription['endpoint'],
+                        'keys' => [
+                            'p256dh' => $subscription['p256dh'],
+                            'auth' => $subscription['auth']
+                        ]
+                    ];
+                    
+                    $result = sendPushNotification($pushSubscription, $notificationData);
+                    
+                    if ($result['success']) {
+                        error_log("✅ Notificação enviada com sucesso para subscription {$subscription['id']}");
+                        $notificationSent = true;
+                        
+                        // GRAVAR LOG DE SUCESSO
+                        $logStmt = $pdo->prepare("
+                            INSERT INTO sind.notification_log (
+                                user_card,
+                                agendamento_id,
+                                tipo_notificacao,
+                                titulo,
+                                mensagem,
+                                status,
+                                subscription_id,
+                                profissional,
+                                especialidade,
+                                convenio_nome,
+                                data_agendada,
+                                response_data
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ");
+                        
+                        $logStmt->execute([
+                            $userCard,
+                            $agendamentoId,
+                            'agendamento_confirmado',
+                            $titulo,
+                            $mensagem,
+                            'sent',
+                            $subscription['id'],
+                            $agendamento['profissional'],
+                            $agendamento['especialidade'],
+                            $agendamento['convenio_nome'],
+                            $agendamento['data_agendada'],
+                            json_encode($result)
+                        ]);
+                        
+                    } else {
+                        error_log("❌ Erro ao enviar notificação: {$result['error']}");
+                        $lastError = $result['error'];
+                        
+                        // GRAVAR LOG DE ERRO
+                        $logStmt = $pdo->prepare("
+                            INSERT INTO sind.notification_log (
+                                user_card,
+                                agendamento_id,
+                                tipo_notificacao,
+                                titulo,
+                                mensagem,
+                                status,
+                                subscription_id,
+                                error_message,
+                                profissional,
+                                especialidade,
+                                convenio_nome,
+                                data_agendada
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ");
+                        
+                        $logStmt->execute([
+                            $userCard,
+                            $agendamentoId,
+                            'agendamento_confirmado',
+                            $titulo,
+                            $mensagem,
+                            'failed',
+                            $subscription['id'],
+                            $result['error'],
+                            $agendamento['profissional'],
+                            $agendamento['especialidade'],
+                            $agendamento['convenio_nome'],
+                            $agendamento['data_agendada']
+                        ]);
+                    }
+                    
+                } catch (Exception $e) {
+                    error_log("❌ Exceção ao enviar notificação: " . $e->getMessage());
+                    $lastError = $e->getMessage();
+                }
+            }
+            
+            if ($notificationSent) {
                 $results['notifications_sent']++;
                 $results['details'][] = [
-                    'agendamento_id' => $agendamento['id'],
-                    'cod_associado' => $agendamento['cod_associado'],
-                    'user_card' => $agendamento['numero_cartao'], // ← Número do cartão correto
-                    'nome_associado' => $agendamento['nome_associado'],
-                    'success' => true,
-                    'message' => 'Notificação enviada e marcada como enviada'
+                    'agendamento_id' => $agendamentoId,
+                    'user_card' => $userCard,
+                    'profissional' => $agendamento['profissional'],
+                    'status' => 'sent'
                 ];
-                
-                logMessage("✅ Sucesso: Agendamento {$agendamento['id']} notificado para cartão {$agendamento['numero_cartao']}");
-                
             } else {
                 $results['errors']++;
                 $results['details'][] = [
-                    'agendamento_id' => $agendamento['id'],
-                    'cod_associado' => $agendamento['cod_associado'],
-                    'user_card' => $agendamento['numero_cartao'],
-                    'nome_associado' => $agendamento['nome_associado'],
-                    'success' => false,
-                    'message' => 'Falha ao enviar push notification'
+                    'agendamento_id' => $agendamentoId,
+                    'user_card' => $userCard,
+                    'profissional' => $agendamento['profissional'],
+                    'status' => 'failed',
+                    'error' => $lastError
                 ];
-                
-                logMessage("❌ Erro: Falha ao notificar agendamento {$agendamento['id']} para cartão {$agendamento['numero_cartao']}");
             }
             
         } catch (Exception $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            error_log("❌ Erro ao processar agendamento {$agendamentoId}: " . $e->getMessage());
             $results['errors']++;
-            $results['details'][] = [
-                'agendamento_id' => $agendamento['id'],
-                'cod_associado' => $agendamento['cod_associado'],
-                'user_card' => $agendamento['numero_cartao'] ?? 'N/A',
-                'success' => false,
-                'message' => 'Erro: ' . $e->getMessage()
-            ];
-            
-            logMessage("❌ Erro ao processar agendamento {$agendamento['id']}: " . $e->getMessage());
         }
     }
     
-    logMessage("=== PROCESSAMENTO CONCLUÍDO (VERSÃO FINAL CORRIGIDA) ===");
-    logMessage("Total processados: {$results['total_processed']}");
-    logMessage("Notificações enviadas: {$results['notifications_sent']}");
-    logMessage("Erros: {$results['errors']}");
+    error_log("=== FIM CHECK_AGENDAMENTOS_NOTIFICATIONS ===");
+    error_log("📊 Resumo: {$results['notifications_sent']} enviadas, {$results['errors']} erros");
     
     echo json_encode([
         'success' => true,
-        'message' => "Processados {$results['total_processed']} agendamentos (versão final corrigida)",
-        'results' => $results,
-        'version' => 'final_with_triple_join'
+        'message' => "Processadas {$results['total_processed']} notificações",
+        'results' => $results
     ]);
     
 } catch (Exception $e) {
-    logMessage("ERRO CRÍTICO: " . $e->getMessage());
+    error_log("❌ Erro fatal: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
     
     http_response_code(500);
     echo json_encode([
         'success' => false,
-        'message' => 'Erro interno do servidor',
-        'error' => $e->getMessage(),
-        'version' => 'final_with_triple_join'
+        'message' => 'Erro ao processar notificações',
+        'error' => $e->getMessage()
     ]);
 }
-?> 
+?>

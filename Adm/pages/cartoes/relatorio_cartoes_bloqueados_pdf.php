@@ -83,9 +83,9 @@ $sql_conv_vendas = $pdo->query("SELECT c_cartaoassociado.cod_verificacao, associ
       INNER JOIN sind.empregador 
               ON associado.empregador = empregador.id
       INNER JOIN sind.divisao
-              ON empregador.divisao = divisao.id_divisao
+              ON empregador.id_divisao = divisao.id_divisao
            WHERE c_cartaoassociado.cod_situacaocartao = 2 
-             AND empregador.divisao = ".$divisao."
+             AND empregador.id_divisao = ".$divisao."
         ORDER BY nome");
 $pdf->Ln(1);
 while($row = $sql_conv_vendas->fetch()) {

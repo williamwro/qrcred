@@ -12,7 +12,7 @@ function logDebug($message, $data = null) {
         $logMessage .= " - " . json_encode($data, JSON_UNESCAPED_UNICODE);
     }
     error_log($logMessage);
-    echo "<!-- DEBUG: $logMessage -->\n";
+    // REMOVIDO echo para não contaminar resposta JSON
 }
 
 try {
@@ -103,7 +103,8 @@ try {
         exit();
     }
     
-    // Query com TODOS os filtros para garantir o associado correto
+    // ✅ CORREÇÃO APLICADA: Query simplificada sem validação por matrícula
+    // Busca apenas por ID, empregador e divisão (mais confiável)
     $sql_associado = "
         SELECT 
             a.nome,
@@ -114,21 +115,30 @@ try {
             a.id_divisao
         FROM sind.associado a
         LEFT JOIN sind.empregador e ON a.empregador = e.id
-        WHERE a.codigo = ?
-        AND a.id = ?
+        WHERE a.id = ?
         AND a.empregador = ?
         AND a.id_divisao = ?
         LIMIT 1
     ";
     
-    $params_associado = [$matricula, $id_associado_post, $empregador_post, $id_divisao_post];
+    $params_associado = [$id_associado_post, $empregador_post, $id_divisao_post];
+    
+    logDebug("🔍 [SQL] Query do associado simplificada (sem matrícula)", [
+        'id' => $id_associado_post,
+        'empregador' => $empregador_post,
+        'id_divisao' => $id_divisao_post
+    ]);
     
     $stmt_associado = $pdo->prepare($sql_associado);
     $stmt_associado->execute($params_associado);
     $associado = $stmt_associado->fetch(PDO::FETCH_ASSOC);
     
     if (!$associado) {
-        logDebug("❌ [ERRO] Associado não encontrado", ['matricula' => $matricula]);
+        logDebug("❌ [ERRO] Associado não encontrado", [
+            'id' => $id_associado_post,
+            'empregador' => $empregador_post,
+            'id_divisao' => $id_divisao_post
+        ]);
         echo json_encode([
             'success' => false,
             'error' => 'Associado não encontrado',
@@ -137,7 +147,7 @@ try {
         exit();
     }
 
-    logDebug("✅ Associado encontrado COM TODOS OS FILTROS", [
+    logDebug("✅ Associado encontrado (query simplificada)", [
         'nome' => $associado['nome'],
         'codigo' => $associado['codigo'],
         'empregador' => $associado['empregador_nome'],
@@ -173,7 +183,7 @@ try {
     $taxa = $_POST['taxa'] ?? '0';
     $valor_descontar = $_POST['valor_descontar'] ?? '0';
     $chave_pix = $_POST['chave_pix'] ?? '';
-    $convenio = $_POST['convenio'] ?? '1';
+    $convenio = $_POST['convenio'] ?? '221';  // Corrigido: convenio padrão 221
     $id_associado = $_POST['id'] ?? $associado['id'];
     $id_divisao = $_POST['id_divisao'] ?? $associado['id_divisao'];
 
@@ -197,7 +207,7 @@ try {
     logDebug("🔄 [TRANSAÇÃO] Iniciada - Request ID: $request_id");
 
     try {
-        // ✅ CORREÇÃO 1: INSERT com RETURNING para PostgreSQL
+        // INSERT antecipacao com RETURNING - USA id_divisao
         $stmt = $pdo->prepare("
             INSERT INTO sind.antecipacao (
                 matricula,
@@ -210,7 +220,7 @@ try {
                 valor_taxa,
                 valor_a_descontar,
                 chave_pix,
-                divisao,
+                id_divisao,
                 id_associado,
                 hora
             ) VALUES (?, ?, ?, CURRENT_DATE, ?, null, ?, ?, ?, ?, ?, ?, CAST(CURRENT_TIME AS TIME(0)))
@@ -239,7 +249,7 @@ try {
             $taxa,
             $valor_descontar,
             $chave_pix,
-            $id_divisao,
+            $id_divisao,  // id_divisao (CORRIGIDO)
             $id_associado
         ]);
 
@@ -247,13 +257,13 @@ try {
             throw new Exception('Erro ao inserir na tabela antecipacao: ' . implode(', ', $stmt->errorInfo()));
         }
 
-        // ✅ CORREÇÃO: Pegar ID do RETURNING
+        // Pegar ID do RETURNING
         $antecipacao_result = $stmt->fetch(PDO::FETCH_ASSOC);
         $antecipacao_id = $antecipacao_result['id'];
         
         logDebug("✅ [SUCESSO] Inserção na tabela antecipacao - ID: $antecipacao_id - Request ID: $request_id");
 
-        // ✅ CORREÇÃO 2: INSERT conta com RETURNING
+        // INSERT conta com RETURNING - USA divisao (NÃO RENOMEADA)
         $stmt_conta = $pdo->prepare("
             INSERT INTO sind.conta (
                 associado,
@@ -292,7 +302,7 @@ try {
             $mes_corrente,
             $empregador,
             'ANTECIPACAO',
-            $id_divisao,
+            $id_divisao,  // divisao (NÃO RENOMEADA)
             $id_associado
         ]);
 
@@ -300,7 +310,7 @@ try {
             throw new Exception('Erro ao inserir na tabela conta: ' . implode(', ', $stmt_conta->errorInfo()));
         }
 
-        // ✅ CORREÇÃO: Pegar ID do RETURNING
+        // Pegar ID do RETURNING
         $conta_result = $stmt_conta->fetch(PDO::FETCH_ASSOC);
         $conta_id = $conta_result['lancamento'];
         
@@ -310,7 +320,7 @@ try {
         $pdo->commit();
         logDebug("✅ [TRANSAÇÃO] Confirmada com sucesso - Request ID: $request_id");
 
-        // ✅ CORREÇÃO 3: Verificação com campos corretos
+        // Verificação com campos corretos
         $stmt_verificacao = $pdo->prepare("SELECT COUNT(*) as total FROM sind.antecipacao WHERE id = ?");
         $stmt_verificacao->execute([$antecipacao_id]);
         $verificacao_antecipacao = $stmt_verificacao->fetch(PDO::FETCH_ASSOC);
@@ -342,7 +352,8 @@ try {
                 'verificacao_gravacao' => [
                     'antecipacao_inserida' => $verificacao_antecipacao['total'] > 0,
                     'conta_inserida' => $verificacao_conta['total'] > 0
-                ]
+                ],
+                'correcao_aplicada' => 'Query simplificada sem validação por matrícula'
             ]
         ], JSON_UNESCAPED_UNICODE);
 

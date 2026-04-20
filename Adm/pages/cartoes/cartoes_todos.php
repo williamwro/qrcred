@@ -24,9 +24,9 @@ INNER JOIN sind.c_cartaoassociado
         ON (associado.codigo = c_cartaoassociado.cod_associado) 
        AND (associado.empregador = c_cartaoassociado.empregador)) 
         ON c_situacaocartao.id = c_cartaoassociado.cod_situacaocartao) 
-        ON empregador.id = associado.empregador) ON divisao.id_divisao = empregador.divisao
+        ON empregador.id = associado.empregador) ON divisao.id_divisao = empregador.id_divisao
        AND divisao.id_divisao=".$divisao."
-     WHERE empregador.divisao = ".$divisao ."
+     WHERE empregador.id_divisao = ".$divisao ."
        AND associado.codigo <> '".$card1."' 
        AND associado.codigo <> '".$card2."' 
        AND associado.codigo <> '".$card3."'

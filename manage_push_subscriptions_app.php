@@ -76,52 +76,103 @@ function registerSubscription($pdo) {
     error_log("Registrando subscription - User: {$userCard}, Endpoint: " . substr($endpoint, 0, 50) . ", P256dh: " . substr($p256dhKey, 0, 20) . ", Auth: " . substr($authKey, 0, 20));
     
     try {
-        // Desativar subscriptions antigas do usuário
+        // VERIFICAR SE JÁ EXISTE SUBSCRIPTION COM MESMO ENDPOINT
         $stmt = $pdo->prepare("
-            UPDATE sind.push_subscriptions 
-            SET is_active = false, updated_at = CURRENT_TIMESTAMP
-            WHERE user_card = ? AND is_active = true
+            SELECT id, is_active 
+            FROM sind.push_subscriptions 
+            WHERE user_card = ? AND endpoint = ?
+            LIMIT 1
         ");
-        $stmt->execute([$userCard]);
+        $stmt->execute([$userCard, $endpoint]);
+        $existingSubscription = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // Inserir nova subscription
-        $stmt = $pdo->prepare("
-            INSERT INTO sind.push_subscriptions (
-                user_card, 
-                endpoint, 
-                p256dh_key, 
-                auth_key, 
-                p256dh, 
-                auth, 
-                settings, 
-                is_active,
-                created_at,
-                updated_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-            RETURNING id
-        ");
-        
-        $stmt->execute([
-            $userCard,
-            $endpoint,
-            $p256dhKey,  // Gravando TAMBÉM no campo p256dh_key
-            $authKey,    // Gravando TAMBÉM no campo auth_key
-            $p256dhKey,  // Gravando no campo p256dh
-            $authKey,    // Gravando no campo auth
-            $settings
-        ]);
-        
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $subscriptionId = $result['id'];
-        
-        echo json_encode([
-            'success' => true,
-            'message' => 'Subscription registrada com sucesso',
-            'subscription_id' => $subscriptionId,
-            'user_card' => $userCard
-        ]);
-        
-        error_log("Subscription registrada com sucesso - ID: {$subscriptionId}");
+        if ($existingSubscription) {
+            // JÁ EXISTE - APENAS REATIVAR E ATUALIZAR
+            $subscriptionId = $existingSubscription['id'];
+            
+            $stmt = $pdo->prepare("
+                UPDATE sind.push_subscriptions 
+                SET 
+                    p256dh_key = ?,
+                    auth_key = ?,
+                    p256dh = ?,
+                    auth = ?,
+                    settings = ?,
+                    is_active = true,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+            ");
+            
+            $stmt->execute([
+                $p256dhKey,
+                $authKey,
+                $p256dhKey,
+                $authKey,
+                $settings,
+                $subscriptionId
+            ]);
+            
+            echo json_encode([
+                'success' => true,
+                'message' => 'Subscription reativada com sucesso',
+                'subscription_id' => $subscriptionId,
+                'user_card' => $userCard,
+                'action' => 'reactivated'
+            ]);
+            
+            error_log("Subscription reativada - ID: {$subscriptionId}, User: {$userCard}");
+            
+        } else {
+            // NÃO EXISTE - DESATIVAR OUTRAS E INSERIR NOVA
+            
+            // Desativar outras subscriptions ativas do usuário (endpoints diferentes)
+            $stmt = $pdo->prepare("
+                UPDATE sind.push_subscriptions 
+                SET is_active = false, updated_at = CURRENT_TIMESTAMP
+                WHERE user_card = ? AND is_active = true
+            ");
+            $stmt->execute([$userCard]);
+            
+            // Inserir nova subscription
+            $stmt = $pdo->prepare("
+                INSERT INTO sind.push_subscriptions (
+                    user_card, 
+                    endpoint, 
+                    p256dh_key, 
+                    auth_key, 
+                    p256dh, 
+                    auth, 
+                    settings, 
+                    is_active,
+                    created_at,
+                    updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+                RETURNING id
+            ");
+            
+            $stmt->execute([
+                $userCard,
+                $endpoint,
+                $p256dhKey,
+                $authKey,
+                $p256dhKey,
+                $authKey,
+                $settings
+            ]);
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $subscriptionId = $result['id'];
+            
+            echo json_encode([
+                'success' => true,
+                'message' => 'Subscription registrada com sucesso',
+                'subscription_id' => $subscriptionId,
+                'user_card' => $userCard,
+                'action' => 'created'
+            ]);
+            
+            error_log("Subscription criada - ID: {$subscriptionId}, User: {$userCard}");
+        }
         
     } catch (Exception $e) {
         error_log("Erro ao registrar subscription: " . $e->getMessage());

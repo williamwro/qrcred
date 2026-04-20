@@ -2,8 +2,14 @@
 header('Content-Type: application/json; charset=utf-8');
 include "../../php/banco.php";
 include "../../php/funcoes.php";
+include "../../php/tenant_security.php";
+
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// SEGURANÇA MULTI-TENANT: Validar divisão
+$tenantSec = new TenantSecurity($pdo);
+
 $someArray = array();
 $sub_arrayli = array();
 $tem_cadastro_conta = false;
@@ -16,7 +22,7 @@ if(isset($_POST["mes"])) {
     $matricula = $_POST["matricula"];
     $codempregador = $_POST["codempregador"];
     $id_associado_origem = isset($_POST["id_associado"]) ? $_POST["id_associado"] : null;
-    $id_divisao_origem = isset($_POST["id_divisao"]) ? $_POST["id_divisao"] : null;
+    $id_divisao_origem = $tenantSec->getSecureDivisao($_POST["id_divisao"] ?? null);
     
     // Obter ID do associado baseado na matrícula e empregador e id_associado e id_divisao
     $query_associado = "SELECT id FROM sind.associado WHERE codigo = :matricula AND empregador = :empregador";

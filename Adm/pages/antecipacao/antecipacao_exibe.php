@@ -12,7 +12,9 @@ if(isset($_POST["cod_associado"])){
     $empregador = $_POST["empregador"];
     $id_entecipacao = $_POST["id_entecipacao"];
 
-    $query = "SELECT ant.*, ass.nome as nome_associado, emp.nome as nome_empregador
+    $query = "SELECT ant.id, ant.matricula, ant.empregador, ant.mes, ant.data_solicitacao, ant.valor, ant.aprovado, 
+		ant.data_aprovacao, ant.celular, ant.valor_taxa, ant.valor_a_descontar, ant.chave_pix, 
+		ant.id_divisao, ant.hora, ass.nome as nome_associado, emp.nome as nome_empregador, ass.id as id_associado
                 FROM sind.antecipacao ant
                 JOIN sind.associado ass ON ass.codigo = ant.matricula
                 JOIN sind.empregador emp ON emp.id = ant.empregador

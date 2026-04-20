@@ -1,22 +1,28 @@
 <?PHP
 header('Content-Type: application/json; charset=utf-8');
 include "../../php/banco.php";
+include "../../php/tenant_security.php";
+
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// SEGURANÇA MULTI-TENANT: Validar divisão
+$tenantSec = new TenantSecurity($pdo);
+$divisao = $tenantSec->getSecureDivisao($_POST['divisao'] ?? null);
+
 $someArray = array();
-$divisao = $_POST['divisao'];
 $query = "SELECT empregador.id, 
                  empregador.nome, 
                  empregador.responsavel,
                  empregador.telefone,
                  empregador.abreviacao,
-                 empregador.divisao,
+                 empregador.id_divisao,
                  empregador.bloqueio,
                  divisao.nome as nome_divisao,
                  divisao.cidade
             FROM sind.empregador INNER JOIN sind.divisao 
-              ON empregador.divisao = divisao.id_divisao
-           WHERE empregador.divisao = ".$divisao." ORDER BY id";
+              ON empregador.id_divisao = divisao.id_divisao
+           WHERE empregador.id_divisao = ".$divisao." ORDER BY id";
 $statment = $pdo->prepare($query);
 $statment->execute();
 $result = $statment->fetchAll();

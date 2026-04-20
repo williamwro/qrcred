@@ -33,7 +33,7 @@ if(isset($_POST['mes'])) {
                               ON convenio.codigo = conta.convenio) 
                               ON (conta.empregador = empregador.id) 
                              AND (empregador.id = associado.empregador)) 
-                              ON divisao.id_divisao = empregador.divisao
+                              ON divisao.id_divisao = empregador.id_divisao
                            WHERE conta.convenio = ".$codconvenio." AND conta.mes = '".$mes."' ORDER BY conta.lancamento ASC");
     while($row = $query->fetch()) {
         $someArray[] = array_map(function($value) {

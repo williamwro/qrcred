@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AllowDynamicProperties' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/AllowDynamicProperties.php',
     'Base64Url\\Base64Url' => $vendorDir . '/spomky-labs/base64url/src/Base64Url.php',
     'Brick\\Math\\BigDecimal' => $vendorDir . '/brick/math/src/BigDecimal.php',
     'Brick\\Math\\BigInteger' => $vendorDir . '/brick/math/src/BigInteger.php',
@@ -376,6 +377,14 @@ return array(
     'Psr\\Log\\LoggerInterface' => $vendorDir . '/psr/log/src/LoggerInterface.php',
     'Psr\\Log\\LoggerTrait' => $vendorDir . '/psr/log/src/LoggerTrait.php',
     'Psr\\Log\\NullLogger' => $vendorDir . '/psr/log/src/NullLogger.php',
+    'Random\\BrokenRandomEngineError' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/Random/BrokenRandomEngineError.php',
+    'Random\\CryptoSafeEngine' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/Random/CryptoSafeEngine.php',
+    'Random\\Engine' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/Random/Engine.php',
+    'Random\\Engine\\Secure' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/Random/Engine/Secure.php',
+    'Random\\RandomError' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/Random/RandomError.php',
+    'Random\\RandomException' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/Random/RandomException.php',
+    'SensitiveParameter' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameter.php',
+    'SensitiveParameterValue' => $vendorDir . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameterValue.php',
     'SpomkyLabs\\Pki\\ASN1\\Component\\Identifier' => $vendorDir . '/spomky-labs/pki-framework/src/ASN1/Component/Identifier.php',
     'SpomkyLabs\\Pki\\ASN1\\Component\\Length' => $vendorDir . '/spomky-labs/pki-framework/src/ASN1/Component/Length.php',
     'SpomkyLabs\\Pki\\ASN1\\DERData' => $vendorDir . '/spomky-labs/pki-framework/src/ASN1/DERData.php',
@@ -904,4 +913,8 @@ return array(
     'Symfony\\Polyfill\\Intl\\Grapheme\\Grapheme' => $vendorDir . '/symfony/polyfill-intl-grapheme/Grapheme.php',
     'Symfony\\Polyfill\\Intl\\Normalizer\\Normalizer' => $vendorDir . '/symfony/polyfill-intl-normalizer/Normalizer.php',
     'Symfony\\Polyfill\\Mbstring\\Mbstring' => $vendorDir . '/symfony/polyfill-mbstring/Mbstring.php',
+    'Symfony\\Polyfill\\Php82\\NoDynamicProperties' => $vendorDir . '/symfony/polyfill-php82/NoDynamicProperties.php',
+    'Symfony\\Polyfill\\Php82\\Php82' => $vendorDir . '/symfony/polyfill-php82/Php82.php',
+    'Symfony\\Polyfill\\Php82\\Random\\Engine\\Secure' => $vendorDir . '/symfony/polyfill-php82/Random/Engine/Secure.php',
+    'Symfony\\Polyfill\\Php82\\SensitiveParameterValue' => $vendorDir . '/symfony/polyfill-php82/SensitiveParameterValue.php',
 );

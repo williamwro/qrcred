@@ -17,7 +17,7 @@ try {
           INNER JOIN sind.empregador 
                   ON associado.empregador = empregador.id
           INNER JOIN sind.divisao
-                  ON empregador.divisao = divisao.id_divisao
+                  ON empregador.id_divisao = divisao.id_divisao
                WHERE c_cartaoassociado.cod_situacaocartao = :idsituacao
                  AND associado.id_divisao = :divisao
             ORDER BY nome";

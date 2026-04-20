@@ -116,6 +116,37 @@ if (isset($_POST['C_data_agendada_agendamento'])) {
     error_log("Campo data_agendada não foi enviado, mantendo como NULL");
 }
 
+// TRATAMENTO ESPECÍFICO PARA CAMPO DATETIME-LOCAL data_pretendida
+$_data_pretendida = null;
+if (isset($_POST['C_data_pretendida_agendamento'])) {
+    $data_pretendida_raw = trim($_POST['C_data_pretendida_agendamento']);
+    
+    if (!empty($data_pretendida_raw)) {
+        // CONVERSÃO PARA FORMATO TIMESTAMP
+        if (strpos($data_pretendida_raw, 'T') !== false) {
+            $data_pretendida_formatted = str_replace('T', ' ', $data_pretendida_raw);
+            if (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $data_pretendida_formatted)) {
+                $data_pretendida_formatted .= ':00';
+            }
+        } else {
+            $data_pretendida_formatted = $data_pretendida_raw;
+        }
+        
+        try {
+            $datetime = new DateTime($data_pretendida_formatted);
+            $_data_pretendida = $datetime->format('Y-m-d H:i:s');
+            error_log("Data pretendida formatada: '" . $_data_pretendida . "'");
+        } catch (Exception $e) {
+            error_log("Erro ao formatar data_pretendida: " . $e->getMessage());
+            $_data_pretendida = null;
+        }
+    } else {
+        $_data_pretendida = null;
+    }
+} else {
+    $_data_pretendida = null;
+}
+
 // Log dos valores recebidos
 error_log("DEBUG AGENDAMENTO SALVAR - Valores recebidos:");
 error_log("ID: " . $_id);
@@ -123,6 +154,7 @@ error_log("Cod Associado: " . $_cod_associado);
 error_log("ID Empregador: " . $_id_empregador);
 error_log("Data Solicitação: " . $_data_solicitacao);
 error_log("Data Agendada: " . $_data_agendada);
+error_log("Data Pretendida: " . $_data_pretendida);
 error_log("Cod Convênio: " . $_cod_convenio);
 error_log("Status: " . $_status);
 error_log("Profissional: " . $_profissional);
@@ -137,17 +169,21 @@ try {
     // Verificar se é operação de salvar (update)
     if ($_operation == "salvar" && !empty($_id)) {
         
-        // Preparar query de UPDATE
+        // Preparar query de UPDATE - Resetar flags de notificação quando data_agendada for alterada
         $query = "UPDATE sind.agendamento SET 
                     cod_associado = :cod_associado,
                     id_empregador = :id_empregador,
                     data_solicitacao = :data_solicitacao,
                     data_agendada = :data_agendada,
+                    data_pretendida = :data_pretendida,
                     cod_convenio = :cod_convenio,
                     status = :status,
                     profissional = :profissional,
                     especialidade = :especialidade,
-                    convenio_nome = :convenio_nome
+                    convenio_nome = :convenio_nome,
+                    notification_sent_confirmado = false,
+                    notification_sent_24h = false,
+                    notification_sent_1h = false
                   WHERE id = :id";
         
         error_log("DEBUG AGENDAMENTO - Query UPDATE: " . $query);
@@ -159,6 +195,7 @@ try {
         $stmt->bindParam(':id_empregador', $_id_empregador, PDO::PARAM_INT);
         $stmt->bindParam(':data_solicitacao', $_data_solicitacao, PDO::PARAM_STR);
         $stmt->bindParam(':data_agendada', $_data_agendada, PDO::PARAM_STR);
+        $stmt->bindParam(':data_pretendida', $_data_pretendida, PDO::PARAM_STR);
         $stmt->bindParam(':cod_convenio', $_cod_convenio, PDO::PARAM_STR);
         $stmt->bindParam(':status', $_status, PDO::PARAM_INT);
         $stmt->bindParam(':profissional', $_profissional, PDO::PARAM_STR);
@@ -173,6 +210,39 @@ try {
             $response['success'] = true;
             $response['message'] = 'Agendamento atualizado com sucesso!';
             error_log("DEBUG AGENDAMENTO - UPDATE executado com sucesso para ID: " . $_id);
+            
+            // NOTIFICAÇÃO PUSH IMEDIATA - Se data_agendada foi definida e status = 2 (confirmado)
+            if (!empty($_data_agendada) && $_status == 2) {
+                error_log(" Disparando notificação push imediata para agendamento ID: " . $_id);
+                
+                try {
+                    // Chamar check_agendamentos_notifications_final.php via cURL
+                    $notificationUrl = 'https://sas.makecard.com.br/check_agendamentos_notifications_final.php';
+                    
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $notificationUrl);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                    
+                    $notificationResponse = curl_exec($ch);
+                    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                    curl_close($ch);
+                    
+                    if ($httpCode === 200) {
+                        error_log(" Sistema de notificação chamado com sucesso (HTTP 200)");
+                        $response['notification_triggered'] = true;
+                    } else {
+                        error_log(" Sistema de notificação retornou HTTP {$httpCode}");
+                        $response['notification_triggered'] = false;
+                    }
+                    
+                } catch (Exception $e) {
+                    error_log(" Erro ao chamar sistema de notificação: " . $e->getMessage());
+                    $response['notification_error'] = $e->getMessage();
+                }
+            }
+            
         } else {
             $response['success'] = false;
             $response['message'] = 'Nenhuma alteração foi feita no agendamento.';
@@ -183,9 +253,9 @@ try {
         
         // Preparar query de INSERT
         $query = "INSERT INTO sind.agendamento 
-                    (cod_associado, id_empregador, data_solicitacao, data_agendada, cod_convenio, status, profissional, especialidade, convenio_nome) 
+                    (cod_associado, id_empregador, data_solicitacao, data_agendada, data_pretendida, cod_convenio, status, profissional, especialidade, convenio_nome) 
                   VALUES 
-                    (:cod_associado, :id_empregador, :data_solicitacao, :data_agendada, :cod_convenio, :status, :profissional, :especialidade, :convenio_nome)";
+                    (:cod_associado, :id_empregador, :data_solicitacao, :data_agendada, :data_pretendida, :cod_convenio, :status, :profissional, :especialidade, :convenio_nome)";
         
         error_log("DEBUG AGENDAMENTO - Query INSERT: " . $query);
         
@@ -196,6 +266,7 @@ try {
         $stmt->bindParam(':id_empregador', $_id_empregador, PDO::PARAM_INT);
         $stmt->bindParam(':data_solicitacao', $_data_solicitacao, PDO::PARAM_STR);
         $stmt->bindParam(':data_agendada', $_data_agendada, PDO::PARAM_STR);
+        $stmt->bindParam(':data_pretendida', $_data_pretendida, PDO::PARAM_STR);
         $stmt->bindParam(':cod_convenio', $_cod_convenio, PDO::PARAM_STR);
         $stmt->bindParam(':status', $_status, PDO::PARAM_INT);
         $stmt->bindParam(':profissional', $_profissional, PDO::PARAM_STR);

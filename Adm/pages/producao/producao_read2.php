@@ -9,114 +9,62 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 if($_POST["todos"] === "") {
     if (isset($_POST["parcela"]) and $_POST["parcela"] != "") {
         if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
-            if (isset($_POST["empregador"]) and $_POST["empregador"] != "") {
-                $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
-                            FROM sind.associado 
-                            RIGHT JOIN (sind.empregador 
-                            RIGHT JOIN (sind.convenio 
-                            RIGHT JOIN sind.conta ON convenio.codigo = conta.convenio) 
-                            ON empregador.id = conta.empregador) 
-                            ON associado.codigo = conta.associado and associado.empregador = conta.empregador 
-                            WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes"] . "'
-                            AND empregador.id =" . $_POST["empregador"] . " AND left(conta.parcela,2) ='" . $_POST["parcela"] . "' 
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL) OR
-                            convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes"] . "'
-                            AND empregador.id =" . $_POST["empregador"] . " AND empregador.divisao =" . $_POST["divisao"] . "
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL)   
-                            AND conta.parcela ISNULL;";
-            } else {
-                $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
-                            FROM sind.associado 
-                            RIGHT JOIN (sind.empregador 
-                            RIGHT JOIN (sind.convenio 
-                            RIGHT JOIN sind.conta 
-                            ON convenio.codigo = conta.convenio) 
-                            ON empregador.id = conta.empregador) 
-                            ON associado.codigo = conta.associado and associado.empregador = conta.empregador  
-                            WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes"] . "'
-                            AND left(conta.parcela,2) ='" . $_POST["parcela"] . "' 
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL) OR
-                            convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes"] . "' AND empregador.divisao =" . $_POST["divisao"] . "
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL)
-                            AND conta.parcela ISNULL;";
-            }
+            // Com convênio e parcela
+            $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
+                        FROM sind.associado 
+                        RIGHT JOIN (sind.empregador 
+                        RIGHT JOIN (sind.convenio 
+                        RIGHT JOIN sind.conta 
+                        ON convenio.codigo = conta.convenio) 
+                        ON empregador.id = conta.empregador) 
+                        ON associado.codigo = conta.associado and associado.empregador = conta.empregador  
+                        WHERE convenio.codigo = " . $_POST["cod_convenio"] . " 
+                        AND conta.mes = '" . $_POST["mes"] . "'
+                        AND left(conta.parcela,2) ='" . $_POST["parcela"] . "' 
+                        AND empregador.id_divisao =" . $_POST["divisao"] . "
+                        AND (conta.aprovado = true OR conta.aprovado IS NULL)
+                        OR (convenio.codigo = " . $_POST["cod_convenio"] . " 
+                        AND conta.mes = '" . $_POST["mes"] . "' 
+                        AND empregador.id_divisao =" . $_POST["divisao"] . "
+                        AND (conta.aprovado = true OR conta.aprovado IS NULL)
+                        AND conta.parcela IS NULL);";
         } else {
-            if (isset($_POST["empregador"]) and $_POST["empregador"] != "") {
-                $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
-                            FROM sind.associado 
-                            RIGHT JOIN (sind.empregador 
-                            RIGHT JOIN (sind.convenio 
-                            RIGHT JOIN sind.conta 
-                            ON convenio.codigo = conta.convenio) 
-                            ON empregador.id = conta.empregador) 
-                            ON associado.codigo = conta.associado and associado.empregador = conta.empregador 
-                            WHERE empregador.id =" . $_POST["empregador"] . " AND conta.mes = '" . $_POST["mes"] . "'
-                            AND left(conta.parcela,2) ='" . $_POST["parcela"] . "' 
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL) OR 
-                            AND conta.mes = '" . $_POST["mes"] . "'
-                            AND empregador.id =" . $_POST["empregador"] . " AND empregador.divisao =" . $_POST["divisao"] . "
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL)
-                            AND conta.parcela ISNULL;";
-            } else {
-                $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
-                            FROM sind.associado 
-                            RIGHT JOIN (sind.empregador 
-                            RIGHT JOIN (sind.convenio 
-                            RIGHT JOIN sind.conta 
-                            ON convenio.codigo = conta.convenio) 
-                            ON empregador.id = conta.empregador) 
-                            ON associado.codigo = conta.associado and associado.empregador = conta.empregador 
-                            WHERE conta.mes = '" . $_POST["mes"] . "'
-                            AND left(conta.parcela,2) ='" . $_POST["parcela"] . "' 
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL) OR
-                            AND conta.mes = '" . $_POST["mes"] . "' AND empregador.divisao =" . $_POST["divisao"] . "
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL)
-                            AND conta.parcela ISNULL;";
-            }
+            // Apenas com parcela (sem convênio)
+            $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
+                        FROM sind.associado 
+                        RIGHT JOIN (sind.empregador 
+                        RIGHT JOIN (sind.convenio 
+                        RIGHT JOIN sind.conta 
+                        ON convenio.codigo = conta.convenio) 
+                        ON empregador.id = conta.empregador) 
+                        ON associado.codigo = conta.associado and associado.empregador = conta.empregador 
+                        WHERE conta.mes = '" . $_POST["mes"] . "'
+                        AND left(conta.parcela,2) ='" . $_POST["parcela"] . "' 
+                        AND empregador.id_divisao =" . $_POST["divisao"] . "
+                        AND (conta.aprovado = true OR conta.aprovado IS NULL)
+                        OR (conta.mes = '" . $_POST["mes"] . "' 
+                        AND empregador.id_divisao =" . $_POST["divisao"] . "
+                        AND (conta.aprovado = true OR conta.aprovado IS NULL)
+                        AND conta.parcela IS NULL);";
         }
     } else {
         if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
-            if ($_POST["empregador"] == "") {
-                $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
-                            FROM sind.associado 
-                            RIGHT JOIN (sind.empregador 
-                            RIGHT JOIN (sind.convenio 
-                            RIGHT JOIN sind.conta 
-                            ON convenio.codigo = conta.convenio) 
-                            ON empregador.id = conta.empregador) 
-                            ON associado.codigo = conta.associado and associado.empregador = conta.empregador 
-                            WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes"] . "'
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL)
-                            AND empregador.divisao =" . $_POST["divisao"] . ";";
-
-            } else {
-                $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
-                            FROM sind.associado 
-                            RIGHT JOIN (sind.empregador 
-                            RIGHT JOIN (sind.convenio 
-                            RIGHT JOIN sind.conta 
-                            ON convenio.codigo = conta.convenio) 
-                            ON empregador.id = conta.empregador) 
-                            ON associado.codigo = conta.associado  and associado.empregador = conta.empregador 
-                            WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes"] . "'
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL)
-                            AND empregador.id =" . $_POST["empregador"] . " AND empregador.divisao =" . $_POST["divisao"] . ";";
-            }
+            // Apenas com convênio (sem parcela)
+            $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
+                        FROM sind.associado 
+                        RIGHT JOIN (sind.empregador 
+                        RIGHT JOIN (sind.convenio 
+                        RIGHT JOIN sind.conta 
+                        ON convenio.codigo = conta.convenio) 
+                        ON empregador.id = conta.empregador) 
+                        ON associado.codigo = conta.associado and associado.empregador = conta.empregador 
+                        WHERE convenio.codigo = " . $_POST["cod_convenio"] . " 
+                        AND conta.mes = '" . $_POST["mes"] . "'
+                        AND empregador.id_divisao =" . $_POST["divisao"] . "
+                        AND (conta.aprovado = true OR conta.aprovado IS NULL);";
         } else {
-            if (isset($_POST["empregador"]) and $_POST["empregador"] != "") {
-                $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
-                            FROM sind.associado 
-                            RIGHT JOIN (sind.empregador 
-                            RIGHT JOIN (sind.convenio 
-                            RIGHT JOIN sind.conta 
-                            ON convenio.codigo = conta.convenio) 
-                            ON empregador.id = conta.empregador) 
-                            ON associado.codigo = conta.associado and associado.empregador = conta.empregador 
-                            WHERE empregador.id =" . $_POST["empregador"] . "
-                            AND (conta.aprovado = true OR conta.aprovado IS NULL)
-                            AND conta.mes = '" . $_POST["mes"] . "' AND empregador.divisao =" . $_POST["divisao"] . ";";
-            } else {
-                $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
+            // Sem convênio e sem parcela
+            $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
                 FROM sind.associado 
                 RIGHT JOIN (sind.empregador 
                 RIGHT JOIN (sind.convenio 
@@ -124,13 +72,13 @@ if($_POST["todos"] === "") {
                 ON convenio.codigo = conta.convenio) 
                 ON empregador.id = conta.empregador) 
                 ON associado.codigo = conta.associado and associado.empregador = conta.empregador 
-             WHERE conta.mes = '" . $_POST["mes"] . "'
-               AND (conta.aprovado = true OR conta.aprovado IS NULL)
-               AND empregador.divisao =" . $_POST["divisao"] . ";";
-            }
+                WHERE conta.mes = '" . $_POST["mes"] . "'
+                AND empregador.id_divisao =" . $_POST["divisao"] . "
+                AND (conta.aprovado = true OR conta.aprovado IS NULL);";
         }
     }
-}else{
+} else {
+    // Todos os registros
     $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
                 FROM sind.associado 
                 RIGHT JOIN (sind.empregador 
@@ -139,9 +87,9 @@ if($_POST["todos"] === "") {
                 ON convenio.codigo = conta.convenio) 
                 ON empregador.id = conta.empregador) 
                 ON associado.codigo = conta.associado and associado.empregador = conta.empregador 
-             WHERE conta.mes = '" . $_POST["mes"] . "'
-               AND (conta.aprovado = true OR conta.aprovado IS NULL)
-               AND empregador.divisao =" . $_POST["divisao"] . ";";
+                WHERE conta.mes = '" . $_POST["mes"] . "'
+                AND empregador.id_divisao =" . $_POST["divisao"] . "
+                AND (conta.aprovado = true OR conta.aprovado IS NULL);";
 }
 
 $i=1;
@@ -167,9 +115,7 @@ while($row = $statment->fetch()) {
         $sub_array["botao"]       = '<button type="button" name="update" id="'.$row["lancamento"].'" class="btn btn-warning btn-xs update">Alterar</button>';
         $sub_array["botaosenha"]  = '<button type="button" name="btnsenha" id="'.$row["lancamento"].'" class="btn btn-facebook btn-xs btnsenha">Senha</button>';
 
-        $someArray["data"][] = array_map(function($value) {
-    return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
-}, $sub_array);
+        $someArray["data"][] = $sub_array;
   
 }
 $aux = json_encode($someArray);

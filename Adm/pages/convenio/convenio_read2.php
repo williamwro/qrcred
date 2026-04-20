@@ -3,25 +3,31 @@ require_once '../../../functions.php';
 header("Content-type: application/json");
 include "../../php/banco.php";
 include "../../php/funcoes.php";
+include "../../php/tenant_security.php";
+
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// SEGURANÇA MULTI-TENANT: Validar divisão
+$tenantSec = new TenantSecurity($pdo);
+
 $someArray = array();
 
 // Debug: Log all received parameters
 error_log("convenio_read2.php - POST data: " . print_r($_POST, true));
 error_log("convenio_read2.php - GET data: " . print_r($_GET, true));
 
-// Capture division parameter from POST or GET request
+// Capture division parameter from POST or GET request - COM VALIDAÇÃO DE SEGURANÇA
 $divisao = null;
 $divisao_nome = null;
 
 if (isset($_POST['divisao']) && !empty($_POST['divisao'])) {
-    $divisao = $_POST['divisao'];
-    error_log("convenio_read2.php - Found divisao in POST: " . $divisao);
+    $divisao = $tenantSec->getSecureDivisao($_POST['divisao']);
+    error_log("convenio_read2.php - Found divisao in POST (validated): " . $divisao);
 }
 if (isset($_GET['divisao']) && !empty($_GET['divisao'])) {
-    $divisao = $_GET['divisao'];
-    error_log("convenio_read2.php - Found divisao in GET: " . $divisao);
+    $divisao = $tenantSec->getSecureDivisao($_GET['divisao']);
+    error_log("convenio_read2.php - Found divisao in GET (validated): " . $divisao);
 }
 if (isset($_POST['divisao_nome']) && !empty($_POST['divisao_nome'])) {
     $divisao_nome = $_POST['divisao_nome'];

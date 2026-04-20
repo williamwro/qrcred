@@ -12,15 +12,17 @@ class ComposerStaticInit6fde59c6359f93bb8cea061075204027
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         'e69f7f6ee287b969198c3c9d6777bd38' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/bootstrap.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '5897ea0ac4cccf14d323035e65887801' => __DIR__ . '/..' . '/symfony/polyfill-php82/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
+            'Symfony\\Polyfill\\Php82\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
             'Symfony\\Polyfill\\Intl\\Grapheme\\' => 31,
@@ -69,6 +71,10 @@ class ComposerStaticInit6fde59c6359f93bb8cea061075204027
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Php82\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php82',
+        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
@@ -177,6 +183,7 @@ class ComposerStaticInit6fde59c6359f93bb8cea061075204027
     );
 
     public static $classMap = array (
+        'AllowDynamicProperties' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/AllowDynamicProperties.php',
         'Base64Url\\Base64Url' => __DIR__ . '/..' . '/spomky-labs/base64url/src/Base64Url.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
         'Brick\\Math\\BigInteger' => __DIR__ . '/..' . '/brick/math/src/BigInteger.php',
@@ -547,6 +554,14 @@ class ComposerStaticInit6fde59c6359f93bb8cea061075204027
         'Psr\\Log\\LoggerInterface' => __DIR__ . '/..' . '/psr/log/src/LoggerInterface.php',
         'Psr\\Log\\LoggerTrait' => __DIR__ . '/..' . '/psr/log/src/LoggerTrait.php',
         'Psr\\Log\\NullLogger' => __DIR__ . '/..' . '/psr/log/src/NullLogger.php',
+        'Random\\BrokenRandomEngineError' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/BrokenRandomEngineError.php',
+        'Random\\CryptoSafeEngine' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/CryptoSafeEngine.php',
+        'Random\\Engine' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/Engine.php',
+        'Random\\Engine\\Secure' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/Engine/Secure.php',
+        'Random\\RandomError' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/RandomError.php',
+        'Random\\RandomException' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/Random/RandomException.php',
+        'SensitiveParameter' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameter.php',
+        'SensitiveParameterValue' => __DIR__ . '/..' . '/symfony/polyfill-php82/Resources/stubs/SensitiveParameterValue.php',
         'SpomkyLabs\\Pki\\ASN1\\Component\\Identifier' => __DIR__ . '/..' . '/spomky-labs/pki-framework/src/ASN1/Component/Identifier.php',
         'SpomkyLabs\\Pki\\ASN1\\Component\\Length' => __DIR__ . '/..' . '/spomky-labs/pki-framework/src/ASN1/Component/Length.php',
         'SpomkyLabs\\Pki\\ASN1\\DERData' => __DIR__ . '/..' . '/spomky-labs/pki-framework/src/ASN1/DERData.php',
@@ -1075,6 +1090,10 @@ class ComposerStaticInit6fde59c6359f93bb8cea061075204027
         'Symfony\\Polyfill\\Intl\\Grapheme\\Grapheme' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/Grapheme.php',
         'Symfony\\Polyfill\\Intl\\Normalizer\\Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Normalizer.php',
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
+        'Symfony\\Polyfill\\Php82\\NoDynamicProperties' => __DIR__ . '/..' . '/symfony/polyfill-php82/NoDynamicProperties.php',
+        'Symfony\\Polyfill\\Php82\\Php82' => __DIR__ . '/..' . '/symfony/polyfill-php82/Php82.php',
+        'Symfony\\Polyfill\\Php82\\Random\\Engine\\Secure' => __DIR__ . '/..' . '/symfony/polyfill-php82/Random/Engine/Secure.php',
+        'Symfony\\Polyfill\\Php82\\SensitiveParameterValue' => __DIR__ . '/..' . '/symfony/polyfill-php82/SensitiveParameterValue.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -889,7 +889,7 @@ $(document).ready(function(){
                 'overflow-x': 'auto',
                 'overflow-y': 'visible'
             });
-            // Garantir que o campo de busca fique visível
+            // Garantir que o campo de busca fique visível e aumentar tamanho em 50%
             $('#tabela_busca_associado_filter').css({
                 'position': 'sticky',
                 'top': '0',
@@ -897,6 +897,49 @@ $(document).ready(function(){
                 'z-index': '10',
                 'padding': '10px 0'
             });
+            
+            // Aumentar tamanho do input de pesquisa em 50% e adicionar ícone X para limpar
+            // Ajustar o container do filtro para alinhar à direita
+            $('#tabela_busca_associado_filter').css({
+                'text-align': 'right',
+                'overflow': 'visible'
+            });
+            
+            $('#tabela_busca_associado_filter label').css({
+                'display': 'inline-flex',
+                'align-items': 'center',
+                'width': 'auto'
+            });
+            
+            $('#tabela_busca_associado_filter input[type="search"]').css({
+                'width': '300px',
+                'padding-right': '30px',
+                'position': 'relative',
+                'margin-left': '10px'
+            });
+            
+            // Adicionar wrapper com ícone X se ainda não existir
+            if ($('#tabela_busca_associado_filter .search-wrapper').length === 0) {
+                var searchInput = $('#tabela_busca_associado_filter input[type="search"]');
+                searchInput.wrap('<div class="search-wrapper" style="position: relative; display: inline-block;"></div>');
+                searchInput.after('<span class="clear-search" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 16px; display: none;">&times;</span>');
+                
+                // Mostrar/ocultar o ícone X baseado no conteúdo do input
+                searchInput.on('keyup', function() {
+                    if ($(this).val().length > 0) {
+                        $(this).siblings('.clear-search').show();
+                    } else {
+                        $(this).siblings('.clear-search').hide();
+                    }
+                });
+                
+                // Limpar o input ao clicar no X
+                $('#tabela_busca_associado_filter').on('click', '.clear-search', function() {
+                    searchInput.val('').trigger('keyup');
+                    tableconsulta.search('').draw();
+                    $(this).hide();
+                });
+            }
             // Ajustar colunas após a animação do modal
             setTimeout(function(){
                 if ($.fn.dataTable.isDataTable('#tabela_busca_associado')) {

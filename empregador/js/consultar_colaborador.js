@@ -539,7 +539,22 @@ $(document).ready(function(){
                 { data: "matricula" },
                 { data: "data_hora" },
                 { data: "data_hora_resposta" },
-                { data: "situacao" }
+                { data: "situacao" },
+                { 
+                    data: null,
+                    orderable: false,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        // Mostrar botão de cancelar apenas se a situação for "Pendente" (cod_situacao = 1)
+                        if (row.cod_situacao == 1) {
+                            return '<button class="btn btn-sm btn-danger-modern btn-cancelar-bloqueio" data-id="' + row.id + '" data-cod="' + row.cod_verificacao + '" data-nome="' + row.nome_associado + '" title="Cancelar Solicitação">' +
+                                   '<i class="fas fa-times"></i> Cancelar' +
+                                   '</button>';
+                        } else {
+                            return '<span class="text-muted" style="font-size: 0.75rem;">-</span>';
+                        }
+                    }
+                }
             ],
             language: {
                 decimal: ",",
@@ -561,4 +576,74 @@ $(document).ready(function(){
             }
         });
     }
+
+    // Evento de clique no botão Cancelar Solicitação de Bloqueio
+    $(document).on('click', '.btn-cancelar-bloqueio', function() {
+        var id_solicitacao = $(this).data('id');
+        var cod_verificacao = $(this).data('cod');
+        var nome_associado = $(this).data('nome');
+
+        Swal.fire({
+            title: 'Cancelar Solicitação de Bloqueio?',
+            html: '<p>Deseja realmente cancelar a solicitação de bloqueio do cartão?</p>' +
+                  '<p><strong>Associado:</strong> ' + nome_associado + '</p>' +
+                  '<p><strong>Código:</strong> ' + cod_verificacao + '</p>' +
+                  '<p class="text-danger mt-3"><small><i class="fas fa-exclamation-triangle"></i> Esta ação não poderá ser desfeita.</small></p>',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: '<i class="fas fa-check"></i> Sim, Cancelar Solicitação',
+            cancelButtonText: '<i class="fas fa-times"></i> Não'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Processando...',
+                    allowOutsideClick: false,
+                    didOpen: () => { Swal.showLoading(); }
+                });
+
+                $.ajax({
+                    url: "cancelar_solicitacao_bloqueio.php",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        id_solicitacao: id_solicitacao,
+                        empregador_id: empregador_id
+                    },
+                    success: function(response) {
+                        Swal.close();
+                        
+                        if (response.status === "success") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Solicitação Cancelada!',
+                                html: '<p>A solicitação de bloqueio foi cancelada com sucesso.</p>' +
+                                      '<p><strong>Código:</strong> ' + cod_verificacao + '</p>',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                // Recarregar a tabela de solicitações
+                                carrega_solicitacoes_bloqueio($('#filtro_situacao_bloqueio').val());
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro',
+                                text: response.message || 'Erro ao cancelar a solicitação.'
+                            });
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.close();
+                        console.error("Erro:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erro',
+                            text: 'Erro ao processar o cancelamento. Tente novamente.'
+                        });
+                    }
+                });
+            }
+        });
+    });
 });

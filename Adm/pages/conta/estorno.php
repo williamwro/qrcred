@@ -7,11 +7,38 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $divisao = $_POST["divisao"];
 
 if($_POST["mes"] == "Todos") {
-    $sql = "Where id_divisao = ".$divisao;
+    $sql = "WHERE est.id_divisao = ".$divisao;
 }else{
-    $sql = "Where mes = '".$_POST["mes"]."' AND id_divisao ".$divisao;
+    $sql = "WHERE est.mes = '".$_POST["mes"]."' AND est.id_divisao = ".$divisao;
 }
-$query = "Select * From sind.\"qEstornos\" " . $sql ." order by lancamento";
+$query = "SELECT DISTINCT est.lancamento,
+                 est.associado AS matricula,
+                 associado.nome,
+                 convenio.codigo AS cod_convenio,
+                 convenio.razaosocial,
+                 est.empregador AS cod_empregador,
+                 empregador.nome AS nome_empregador,
+                 est.valor,
+                 est.data,
+                 est.hora,
+                 est.descricao,
+                 est.mes,
+                 est.parcela,
+                 est.funcionario,
+                 user1.username,
+                 est.data_estorno,
+                 est.hora_estorno,
+                 empregador.id_divisao AS id_divisao_emp,
+                 est.id_divisao,
+                 user2.username AS username_estornado
+          FROM sind.estornos est
+          JOIN sind.associado ON est.associado::text = associado.codigo::text AND est.empregador = associado.empregador
+          JOIN sind.convenio ON est.convenio = convenio.codigo
+          JOIN sind.empregador ON est.empregador = empregador.id
+          LEFT JOIN sind.usuarios user1 ON est.funcionario = user1.codigo
+          LEFT JOIN sind.usuarios user2 ON est.func_estorno = user2.codigo
+          " . $sql ." 
+          ORDER BY est.lancamento DESC";
 
 $someArray = array();
 $statment = $pdo->query($query);

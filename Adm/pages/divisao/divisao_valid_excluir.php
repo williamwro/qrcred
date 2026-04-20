@@ -8,9 +8,9 @@ if(isset($_POST["cod_divisao"])){
     $std = new stdClass();
     $cod_divisao = $_POST["cod_divisao"];
 
-    $sql = "SELECT associado.codigo, empregador.divisao
+    $sql = "SELECT associado.codigo, empregador.id_divisao
               FROM sind.associado INNER JOIN sind.empregador ON associado.empregador = empregador.id
-             WHERE empregador.divisao =  = ".$cod_divisao;
+             WHERE empregador.id_divisao =  = ".$cod_divisao;
     $statment = $pdo->prepare($sql);
     $statment->execute();
     $result = $statment->fetchAll();

@@ -32,11 +32,11 @@ try {
     }
 
     // Buscar dados da solicitação com informações do cartão e associado
-    $sqlBusca = "SELECT sb.id_associado, sb.divisao, sb.cod_verificacao,
+    $sqlBusca = "SELECT sb.id_associado, sb.id_divisao, sb.cod_verificacao,
                         ca.id as id_cartao, 
                         a.codigo as matricula, a.empregador as id_empregador
                  FROM sind.solicitacao_bloqueio sb
-                 LEFT JOIN sind.c_cartaoassociado ca ON ca.id_associado = sb.id_associado AND ca.id_divisao = sb.divisao
+                 LEFT JOIN sind.c_cartaoassociado ca ON ca.id_associado = sb.id_associado AND ca.id_divisao = sb.id_divisao
                  LEFT JOIN sind.associado a ON a.id = sb.id_associado
                  WHERE sb.id = :id";
     $stmtBusca = $pdo->prepare($sqlBusca);
