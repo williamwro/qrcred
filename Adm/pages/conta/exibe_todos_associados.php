@@ -55,9 +55,9 @@ foreach ($result as $row){
     $sub_array["endereco"]        = $row["endereco"];
     $sub_array["numero"]          = $row["numero"];
     $sub_array["bairro"]          = $row["bairro"];
-    $sub_array["nascimento"]      = date('d/m/Y', strtotime($row["nascimento"]));
-    $sub_array["salario"]         = (float)str_replace('.',',',$row["salario"]);
-    $sub_array["limite"]          = (float)str_replace('.',',',$row["limite"]);
+    $sub_array["nascimento"]      = $row["nascimento"] ? date('d/m/Y', strtotime($row["nascimento"])) : '';
+    $sub_array["salario"]         = (float)str_replace('.',',', $row["salario"] ?? '0');
+    $sub_array["limite"]          = (float)str_replace('.',',', $row["limite"] ?? '0');
     $sub_array["empregador"]      = $row["empregador"];
     $sub_array["codempregador"]   = (int)$row["id_empregador"];
     $sub_array["cep"]             = $row["cep"];

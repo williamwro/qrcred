@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>Seguro Beneficiários</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    </head>
+    <style type="text/css">
+        .modal-dialog {
+            position: relative;
+            display: table;
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 300px;
+        }
+        .pendente {
+            background-color: #fff3cd !important;
+            font-weight: bold;
+        }
+        .assinado {
+            background-color: #d4edda !important;
+            font-weight: bold;
+        }
+        .cancelado {
+            background-color: #f8d7da !important;
+            font-weight: bold;
+        }
+        @font-face {
+            font-family: "TomaSans-Regular";
+            src: local(Raleway), url(../../../fonte/TTF/TomaSans-Regular.ttf);
+        }
+        #tabela_seguro_beneficiarios{
+            font-family: "calibri", Trebuchet MS, Arial, Helvetica, sans-serif;
+        }
+        .box-body .dataTables_wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+    <body>
+        <!-- Content Wrapper. Contains page content -->
+        <div class="container-fluid" style="padding: 0">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1 style="margin-top: -1px;margin-left: -6px;">
+                Seguro Beneficiários<small>Gerenciamento</small> </h1>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-sx-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">Lista de Beneficiários</h3>
+                            </div>
+                            <div class="box-body">
+                                <table id="tabela_seguro_beneficiarios" class="table display table-striped table-hover compact" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>ID</th>
+                                            <th>Associado</th>
+                                            <th>CPF Associado</th>
+                                            <th>Nome Beneficiário</th>
+                                            <th>CPF Beneficiário</th>
+                                            <th>Parentesco</th>
+                                            <th>Data Nascimento</th>
+                                            <th>Status</th>
+                                            <th>Data Cadastro</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Modal Editar Beneficiário -->
+        <div class="modal fade" id="ModalEditaBeneficiario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Beneficiário</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form_beneficiario">
+                            <input type="hidden" id="id_beneficiario" name="id_beneficiario">
+                            <input type="hidden" id="id_associado" name="id_associado">
+                            <input type="hidden" id="id_divisao" name="id_divisao">
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="nome_associado"><strong>Associado</strong></label>
+                                        <input type="text" class="form-control" id="nome_associado" readonly style="background-color: #f9f9f9;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nome_beneficiario"><strong>Nome do Beneficiário</strong></label>
+                                        <input type="text" class="form-control" id="nome_beneficiario" name="nome" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="cpf_beneficiario"><strong>CPF</strong></label>
+                                        <input type="text" class="form-control" id="cpf_beneficiario" name="cpf" maxlength="14">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="parentesco"><strong>Parentesco</strong></label>
+                                        <select class="form-control" id="parentesco" name="parentesco">
+                                            <option value="">Selecione...</option>
+                                            <option value="Cônjuge">Cônjuge</option>
+                                            <option value="Filho(a)">Filho(a)</option>
+                                            <option value="Pai">Pai</option>
+                                            <option value="Mãe">Mãe</option>
+                                            <option value="Irmão(ã)">Irmão(ã)</option>
+                                            <option value="Outro">Outro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="data_nascimento"><strong>Data de Nascimento</strong></label>
+                                        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="status_beneficiario"><strong>Status</strong></label>
+                                        <select class="form-control" id="status_beneficiario" name="status">
+                                            <option value="pendente">Pendente</option>
+                                            <option value="assinado">Assinado</option>
+                                            <option value="cancelado">Cancelado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" id="btn_salvar_beneficiario">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="../Adm/pages/seguro-beneficiarios/js/seguro_beneficiarios_script.js"></script>
+    </body>
+</html>

@@ -16,7 +16,7 @@ $std->existe_cartao = false;
 if(isset($_POST['cartao']))
 {
     $cartao = $_POST['cartao'];
-    $stmt = $pdo->query("SELECT c.id, s.senha, a.email, c.cod_situacaocartao, c.cod_associado, c.cod_verificacao, 
+    $stmt = $pdo->prepare("SELECT c.id, s.senha, a.email, c.cod_situacaocartao, c.cod_associado, c.cod_verificacao, 
                                 c.motivo_cancela, c.empregador, c.id_divisao, c.cod_situacao2, a.nome
                            FROM sind.c_cartaoassociado c
                            JOIN sind.c_senhaassociado s 
@@ -25,7 +25,9 @@ if(isset($_POST['cartao']))
                            JOIN sind.associado a
                              ON a.codigo = c.cod_associado 
                             AND a.empregador = c.empregador 
-                          WHERE c.cod_verificacao = '".$cartao."'");
+                          WHERE c.cod_verificacao = :cartao");
+    $stmt->bindParam(':cartao', $cartao, PDO::PARAM_STR);
+    $stmt->execute();
                         
     while ($row = $stmt->fetch()) {
 

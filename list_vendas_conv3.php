@@ -46,9 +46,13 @@ $query = "SELECT conta.lancamento,
           ON convenio.codigo = conta.convenio) 
           ON empregador.id = conta.empregador) 
           ON associado.codigo = conta.associado AND associado.empregador = conta.empregador 
-          WHERE conta.data between '" . $data_inicial . "' AND '" . $data_final . "' AND convenio.codigo = ".$cod_convenio." ORDER BY conta.lancamento DESC";
+          WHERE conta.data between :data_inicial AND :data_final AND convenio.codigo = :cod_convenio ORDER BY conta.lancamento DESC";
 
-$sql_conv_vendas = $pdo->query($query);
+$sql_conv_vendas = $pdo->prepare($query);
+$sql_conv_vendas->bindParam(':data_inicial', $data_inicial, PDO::PARAM_STR);
+$sql_conv_vendas->bindParam(':data_final', $data_final, PDO::PARAM_STR);
+$sql_conv_vendas->bindParam(':cod_convenio', $cod_convenio, PDO::PARAM_INT);
+$sql_conv_vendas->execute();
 
 while($row = $sql_conv_vendas->fetch()) {
     $sub_array = array();

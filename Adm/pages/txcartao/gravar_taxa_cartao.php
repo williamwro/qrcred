@@ -45,7 +45,8 @@ try {
         empregador,
         divisao,
         id_associado,
-        uuid_conta
+        uuid_conta,
+        aprovado
     )
     SELECT
         s.codigo::varchar,
@@ -64,7 +65,8 @@ try {
             substring(s.h, 13, 4) || '-' ||
             substring(s.h, 17, 4) || '-' ||
             substring(s.h, 21, 12)
-        )::uuid
+        )::uuid,
+        TRUE
     FROM (
         SELECT a.*, md5(random()::text || clock_timestamp()::text) AS h
         FROM sind.associado a

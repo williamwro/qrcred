@@ -84910,3 +84910,5 @@ Stack trace:
 [25-Dec-2022 12:49:00 America/Sao_Paulo] PHP Notice:  Undefined index: cidade in /home/makecard/public_html/sind/pagina_principal.php on line 25
 [25-Dec-2022 12:49:00 America/Sao_Paulo] PHP Notice:  Undefined index: pede_senha in /home/makecard/public_html/sind/pagina_principal.php on line 28
 [25-Dec-2022 12:49:00 America/Sao_Paulo] PHP Notice:  Undefined index: aceita_parce_individ in /home/makecard/public_html/sind/pagina_principal.php on line 61
+[18-Feb-2026 14:20:18 UTC] PHP Warning:  copy(): https:// wrapper is disabled in the server configuration by allow_url_fopen=0 in Command line code on line 1
+[18-Feb-2026 14:20:18 UTC] PHP Warning:  copy(https://getcomposer.org/installer): Failed to open stream: no suitable wrapper could be found in Command line code on line 1

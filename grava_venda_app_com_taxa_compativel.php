@@ -60,9 +60,11 @@ if (isset($_POST['valor_pedido'])) {
     
     try {
         // Buscar dados do convênio
-        $sql_pede_senha = $pdo->query("SELECT * FROM sind.convenio WHERE codigo = " . $codigo_convenio);
-        
-        while ($row_convenio = $sql_pede_senha->fetch()) {
+        $stmt_convenio = $pdo->prepare("SELECT * FROM sind.convenio WHERE codigo = :codigo");
+        $stmt_convenio->bindParam(':codigo', $codigo_convenio, PDO::PARAM_INT);
+        $stmt_convenio->execute();
+
+        while ($row_convenio = $stmt_convenio->fetch()) {
             $nomefantasia = $row_convenio["nomefantasia"];
             $razaosocial = $row_convenio["razaosocial"];
             $endereco = $row_convenio["endereco"];

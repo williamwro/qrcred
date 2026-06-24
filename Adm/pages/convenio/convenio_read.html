@@ -114,6 +114,11 @@
            font-style: italic;
            padding: 8px;
        }
+       .box-body .dataTables_wrapper {
+           width: 100%;
+           overflow-x: auto;
+           -webkit-overflow-scrolling: touch;
+       }
  </style>
  <body>
  <!-- Content Wrapper. Contains page content -->
@@ -140,7 +145,7 @@
                         </form>
                     </div>
                     <div class="box-body">
-                        <table id="tabela_producao" class="display table table-striped table-hover dt-responsive compact">
+                        <table id="tabela_producao" class="table display table-striped table-hover compact" style="width:100%">
                             <thead>
                                 <tr>
                                     <th></th>

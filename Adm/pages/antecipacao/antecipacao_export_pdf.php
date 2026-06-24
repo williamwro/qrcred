@@ -8,7 +8,8 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     $situacao = $_POST["situacao"] ?? "null";
-    $divisao = $_SESSION["divisao"] ?? 1;
+    $mes      = $_POST["mes"] ?? "todos";
+    $divisao  = $_SESSION["divisao"] ?? 1;
     
     // Construir query baseada na situação selecionada (usando estrutura correta da tabela)
     $sql = "SELECT DISTINCT
@@ -43,11 +44,19 @@ try {
         $sql .= " AND ant.aprovado IS NULL";
     }
     // Se situacao == "0" (Todos), não adiciona filtro
+
+    // Adicionar filtro de mês
+    if ($mes !== "todos" && $mes !== "" && $mes !== null) {
+        $sql .= " AND ant.mes = :mes";
+    }
     
     $sql .= " ORDER BY ant.data_solicitacao DESC";
     
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':divisao', $divisao, PDO::PARAM_INT);
+    if ($mes !== "todos" && $mes !== "" && $mes !== null) {
+        $stmt->bindParam(':mes', $mes, PDO::PARAM_STR);
+    }
     $stmt->execute();
     
     $dados = $stmt->fetchAll(PDO::FETCH_ASSOC);

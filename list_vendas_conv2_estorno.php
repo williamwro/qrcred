@@ -47,12 +47,15 @@ $query = "SELECT estornos.lancamento,
       ON empregador.id = estornos.empregador) 
       ON associado.codigo = estornos.associado AND associado.empregador = estornos.empregador)
       ON divisao.id_divisao = associado.id_divisao
-      WHERE convenio.codigo = " . $cod_convenio . " 
-      AND estornos.mes = '" . $mes_atual . "' 
+      WHERE convenio.codigo = :cod_convenio 
+      AND estornos.mes = :mes_atual 
       AND convenio.desativado = false 
       ORDER BY estornos.lancamento DESC";
 
-$sql_conv_vendas = $pdo->query($query);
+$sql_conv_vendas = $pdo->prepare($query);
+$sql_conv_vendas->bindParam(':cod_convenio', $cod_convenio, PDO::PARAM_INT);
+$sql_conv_vendas->bindParam(':mes_atual', $mes_atual, PDO::PARAM_STR);
+$sql_conv_vendas->execute();
 
 while($row_vendas = $sql_conv_vendas->fetch()) {
 

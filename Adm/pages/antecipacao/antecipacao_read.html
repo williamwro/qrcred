@@ -35,6 +35,11 @@
         #tabela_antecipacao_assoc{
             font-family: "calibri", Trebuchet MS, Arial, Helvetica, sans-serif;
         }
+        .box-body .dataTables_wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 </style>
     <body>
         <!-- Content Wrapper. Contains page content -->
@@ -331,11 +336,12 @@
 
             // Buscar todos os dados incluindo chave_pix
             var situacaoSelecionada = $('input[name="RadioSituacao"]:checked').val();
+            var mesSelecionado = $('#C_mes_filtro').val() || 'todos';
             
             $.ajax({
                 url: "pages/antecipacao/antecipacao_export_pdf.php",
                 method: "POST",
-                data: { situacao: situacaoSelecionada },
+                data: { situacao: situacaoSelecionada, mes: mesSelecionado },
                 dataType: "json",
                 success: function(data) {
                     console.log('🔍 Dados recebidos do PHP:', data);
@@ -464,7 +470,9 @@
                     else situacaoTexto = 'Todos';
                     
                     var titulo = 'Relatório de Antecipações';
-                    var subtitulo = 'Situação: ' + situacaoTexto;
+                    var mesValor = $('#C_mes_filtro').val() || 'todos';
+                    var mesTexto = (mesValor === 'todos' || mesValor === '') ? 'Todos os meses' : mesValor;
+                    var subtitulo = 'Situação: ' + situacaoTexto + '   |   Mês: ' + mesTexto;
 
                     // Configurações da tabela
                     var startY = margins.top + 110;

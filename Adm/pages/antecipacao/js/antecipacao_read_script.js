@@ -386,140 +386,26 @@ function numeroParaMoeda(n, c, d, t)
     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 }
 function format ( d ) {
-    // Função para formatar valores monetários em Real brasileiro
-    function formatarMoeda(valor) {
-        if (!valor || valor === '' || valor === null || valor === undefined) {
-            return 'R$ 0,00';
-        }
-        
-        // Converter para número se for string
-        var numero = typeof valor === 'string' ? parseFloat(valor.replace(/[^0-9.,]/g, '').replace(',', '.')) : parseFloat(valor);
-        
-        if (isNaN(numero)) {
-            return 'R$ 0,00';
-        }
-        
-        return numero.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-    }
-    
-    // Função para formatar telefone
     function formatarTelefone(telefone) {
         if (!telefone || telefone === '' || telefone === null) {
             return 'Não informado';
         }
-        
-        // Remove caracteres não numéricos
         var numeros = telefone.toString().replace(/\D/g, '');
-        
         if (numeros.length === 11) {
             return numeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
         } else if (numeros.length === 10) {
             return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
         }
-        
         return telefone;
     }
-    
-    // Função para formatar CPF
-    function formatarCPF(cpf) {
-        if (!cpf || cpf === '' || cpf === null) {
-            return 'Não informado';
-        }
-        
-        var numeros = cpf.toString().replace(/\D/g, '');
-        
-        if (numeros.length === 11) {
-            return numeros.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-        }
-        
-        return cpf;
-    }
-    
-    return '<div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px; border-radius: 8px; margin: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-family: \'Segoe UI\', Tahoma, Geneva, Verdana, sans-serif;">'+
-           '<div style="border-bottom: 2px solid #007bff; margin-bottom: 15px; padding-bottom: 8px;">'+
-           '<h6 style="color: #007bff; font-weight: bold; margin: 0; font-size: 14px;">'+
-           '<i class="glyphicon glyphicon-user" style="margin-right: 8px;"></i>Detalhes do Associado'+
-           '</h6>'+
-           '</div>'+
-           
-           '<div style="display: flex; flex-wrap: wrap; gap: 15px;">'+
-           
-           '<!-- Seção Financeira -->'+
-           '<div style="flex: 1; min-width: 200px; background: #fff; padding: 12px; border-radius: 6px; border-left: 4px solid #28a745;">'+
-           '<h6 style="color: #28a745; font-weight: bold; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase;">💰 Informações Financeiras</h6>'+
-           '<div style="margin-bottom: 8px;">'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">Salário:</span><br>'+
-           '<span style="color: #28a745; font-weight: bold; font-size: 13px; text-align: right; display: block;">'+formatarMoeda(d.salario)+'</span>'+
-           '</div>'+
-           '<div>'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">Limite:</span><br>'+
-           '<span style="color: #007bff; font-weight: bold; font-size: 13px; text-align: right; display: block;">'+formatarMoeda(d.limite)+'</span>'+
-           '</div>'+
-           '</div>'+
-           
-           '<!-- Seção Localização -->'+
-           '<div style="flex: 1; min-width: 200px; background: #fff; padding: 12px; border-radius: 6px; border-left: 4px solid #17a2b8;">'+
-           '<h6 style="color: #17a2b8; font-weight: bold; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase;">📍 Localização</h6>'+
-           '<div style="margin-bottom: 8px;">'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">Cidade:</span><br>'+
-           '<span style="color: #495057; font-size: 12px;">'+(d.cidade || 'Não informado')+'</span>'+
-           '</div>'+
-           '<div>'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">UF:</span><br>'+
-           '<span style="color: #495057; font-size: 12px; text-transform: uppercase;">'+(d.uf || 'Não informado')+'</span>'+
-           '</div>'+
-           '</div>'+
-           
-           '<!-- Seção Empregador -->'+
-           '<div style="flex: 1; min-width: 200px; background: #fff; padding: 12px; border-radius: 6px; border-left: 4px solid #fd7e14;">'+
-           '<h6 style="color: #fd7e14; font-weight: bold; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase;">🏢 Empregador</h6>'+
-           '<div>'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">Empresa:</span><br>'+
-           '<span style="color: #495057; font-size: 12px; font-weight: bold;">'+(d.nome_empregador || 'Não informado')+'</span>'+
-           '</div>'+
-           '</div>'+
-           
-           '<!-- Seção Contatos -->'+
-           '<div style="flex: 1; min-width: 250px; background: #fff; padding: 12px; border-radius: 6px; border-left: 4px solid #ffc107;">'+
-           '<h6 style="color: #ffc107; font-weight: bold; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase;">📞 Contatos</h6>'+
-           '<div style="margin-bottom: 6px;">'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">Comercial:</span> '+
-           '<span style="color: #495057; font-size: 12px;">'+formatarTelefone(d.telcom)+'</span>'+
-           '</div>'+
-           '<div style="margin-bottom: 6px;">'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">Residencial:</span> '+
-           '<span style="color: #495057; font-size: 12px;">'+formatarTelefone(d.telres)+'</span>'+
-           '</div>'+
-           '<div>'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">Celular:</span> '+
-           '<span style="color: #495057; font-size: 12px; font-weight: bold;">'+formatarTelefone(d.cel)+'</span>'+
-           '</div>'+
-           '</div>'+
-           
-           '<!-- Seção Documentos -->'+
-           '<div style="flex: 1; min-width: 200px; background: #fff; padding: 12px; border-radius: 6px; border-left: 4px solid #6f42c1;">'+
-           '<h6 style="color: #6f42c1; font-weight: bold; margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase;">📄 Documentos</h6>'+
-           '<div style="margin-bottom: 8px;">'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">Matrícula:</span><br>'+
-           '<span style="color: #495057; font-size: 12px; font-family: monospace;">'+(d.matricula || 'Não informado')+'</span>'+
-           '</div>'+
-           '<div style="margin-bottom: 8px;">'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">CPF:</span><br>'+
-           '<span style="color: #495057; font-size: 12px; font-family: monospace;">'+formatarCPF(d.cpf)+'</span>'+
-           '</div>'+
-           '<div>'+
-           '<span style="font-weight: bold; color: #495057; font-size: 11px;">RG:</span><br>'+
-           '<span style="color: #495057; font-size: 12px; font-family: monospace;">'+(d.rg || 'Não informado')+'</span>'+
-           '</div>'+
-           '</div>'+
-           
-           '</div>'+
-           '</div>';
+
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+        '<tr><td><strong>ID Empregador:</strong></td><td>' + (d.id_empregador || 'Não informado') + '</td></tr>' +
+        '<tr><td><strong>Empregador:</strong></td><td>' + (d.nome_empregador || 'Não informado') + '</td></tr>' +
+        '<tr><td><strong>Data Conclusão:</strong></td><td>' + (d.data_aprovacao || 'Não informado') + '</td></tr>' +
+        '<tr><td><strong>Celular:</strong></td><td>' + formatarTelefone(d.celular) + '</td></tr>' +
+        '<tr><td><strong>Chave PIX:</strong></td><td>' + (d.chave_pix || 'Não informado') + '</td></tr>' +
+        '</table>';
 }
 function validar(){
 

@@ -23,14 +23,20 @@ if (isset($_POST['login-username']) && isset($_POST['password'])){
     }
 
     $senha_crypto = sha1($passuser);
-    $sql_senha = $pdo->query("SELECT * FROM sind.usuarios WHERE senha='".$senha_crypto."' AND username = '".$username."'");
-    while($row = $sql_senha->fetch()) {
+    $stmt_senha = $pdo->prepare("SELECT * FROM sind.usuarios WHERE senha = :senha AND username = :username");
+    $stmt_senha->bindParam(':senha', $senha_crypto, PDO::PARAM_STR);
+    $stmt_senha->bindParam(':username', $username, PDO::PARAM_STR);
+    $stmt_senha->execute();
+    while($row = $stmt_senha->fetch()) {
         $existe_senha = true;
     }
     if($existe_senha) {
-        $sql_conv_senha = $pdo->query("SELECT usuarios.codigo, usuarios.username, usuarios.password, usuarios.senha, usuarios.email, usuarios.lastname, usuarios.situacao, usuarios.nome, usuarios.divisao, divisao.nome AS divisao_nome
-        FROM sind.divisao RIGHT JOIN sind.usuarios ON divisao.id_divisao = usuarios.divisao WHERE usuarios.username='" . $username . "' AND usuarios.senha='" . $senha_crypto . "'");
-        while ($row = $sql_conv_senha->fetch()) {
+        $stmt_conv_senha = $pdo->prepare("SELECT usuarios.codigo, usuarios.username, usuarios.password, usuarios.senha, usuarios.email, usuarios.lastname, usuarios.situacao, usuarios.nome, usuarios.divisao, divisao.nome AS divisao_nome
+        FROM sind.divisao RIGHT JOIN sind.usuarios ON divisao.id_divisao = usuarios.divisao WHERE usuarios.username = :username AND usuarios.senha = :senha");
+        $stmt_conv_senha->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt_conv_senha->bindParam(':senha', $senha_crypto, PDO::PARAM_STR);
+        $stmt_conv_senha->execute();
+        while ($row = $stmt_conv_senha->fetch()) {
             $codigo = $row["codigo"];
             $std->tipo_login = "login sucesso";
             $std->codigo = $codigo;

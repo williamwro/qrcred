@@ -23,7 +23,7 @@ $std = new stdClass();
 
 $contador=0;
 
-$row_assoc = $pdo->query("SELECT associado.codigo,associado.nome,
+$stmt_assoc = $pdo->prepare("SELECT associado.codigo,associado.nome,
                                     associado.empregador,associado.limite,
                                     associado.salario,associado.parcelas_permitidas,
                                     associado.endereco,associado.numero, 
@@ -37,7 +37,11 @@ $row_assoc = $pdo->query("SELECT associado.codigo,associado.nome,
                                FROM sind.associado 
                          INNER JOIN sind.c_cartaoassociado 
                                  ON associado.codigo = c_cartaoassociado.cod_associado 
-                              WHERE associado.codigo='".$codigo."' AND associado.empregador=".$empregador)->fetch();
+                              WHERE associado.codigo = :codigo AND associado.empregador = :empregador");
+$stmt_assoc->bindParam(':codigo', $codigo, PDO::PARAM_STR);
+$stmt_assoc->bindValue(':empregador', (int)$empregador, PDO::PARAM_INT);
+$stmt_assoc->execute();
+$row_assoc = $stmt_assoc->fetch();
 if ($row_assoc) {
 	
 	$std->nome = $row_assoc['nome'];

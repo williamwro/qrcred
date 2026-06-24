@@ -39,7 +39,7 @@ $contador=0;
 $l_c=0;
 $temdebito=false;
 
-$sql_associado = $pdo->query("SELECT associado.codigo, associado.nome, associado.empregador, 
+$sql_associado = $pdo->prepare("SELECT associado.codigo, associado.nome, associado.empregador, 
                                              associado.limite, associado.salario, associado.parcelas_permitidas, 
                                              c_cartaoassociado.cod_situacaocartao, c_cartaoassociado.cod_verificacao 
                                         FROM sind.associado 
@@ -48,10 +48,17 @@ $sql_associado = $pdo->query("SELECT associado.codigo, associado.nome, associado
                                        INNER JOIN sind.empregador 
                                           ON associado.empregador = empregador.id
                                          AND associado.empregador = c_cartaoassociado.empregador
-                                       WHERE ((c_cartaoassociado.cod_verificacao)='".$cod_cartao."')");
+                                       WHERE ((c_cartaoassociado.cod_verificacao) = :cod_cartao)");
+$sql_associado->bindParam(':cod_cartao', $cod_cartao, PDO::PARAM_STR);
+$sql_associado->execute();
 while($row_assoc = $sql_associado->fetch()) {
     // VERIFICA SE A SENHA ESTA CORRETA ******
-    $sql_pede_senhax = $pdo->query("SELECT * FROM sind.c_senhaassociado WHERE cod_associado = '" . $row_assoc['codigo'] . "' and id_empregador=".$row_assoc['empregador']." and senha='".$SenhaCartao."'")->fetch();
+    $stmt_senha = $pdo->prepare("SELECT * FROM sind.c_senhaassociado WHERE cod_associado = :cod_associado AND id_empregador = :id_empregador AND senha = :senha");
+    $stmt_senha->bindParam(':cod_associado', $row_assoc['codigo'], PDO::PARAM_STR);
+    $stmt_senha->bindValue(':id_empregador', (int)$row_assoc['empregador'], PDO::PARAM_INT);
+    $stmt_senha->bindParam(':senha', $SenhaCartao, PDO::PARAM_STR);
+    $stmt_senha->execute();
+    $sql_pede_senhax = $stmt_senha->fetch();
     $contador=1;
     if ($sql_pede_senhax) {
         //SENHA CORRETA
@@ -73,7 +80,10 @@ while($row_assoc = $sql_associado->fetch()) {
             $std->autorizado          = $autorizado;
             $std->senhacartao         = $SenhaCartao;
 
-            $sql_debito_associado = $pdo->query("SELECT SUM(valor) AS valor1, mes FROM sind.conta WHERE mes='" . $m_p . "' AND associado='" . $row_assoc['codigo'] . "' GROUP BY mes");
+            $sql_debito_associado = $pdo->prepare("SELECT SUM(valor) AS valor1, mes FROM sind.conta WHERE mes = :mes AND associado = :associado GROUP BY mes");
+            $sql_debito_associado->bindParam(':mes', $m_p, PDO::PARAM_STR);
+            $sql_debito_associado->bindParam(':associado', $row_assoc['codigo'], PDO::PARAM_STR);
+            $sql_debito_associado->execute();
             while ($row_debito = $sql_debito_associado->fetch()) {
                 $l_c    = floatval($row_debito["valor1"]);
                 $temdebito=true;

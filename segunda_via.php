@@ -25,7 +25,9 @@ $total_parcelas  = 0;
 $sub_array = array();
 $someArray = array();
 $std = new stdClass();
-$sql = $pdo->query("SELECT * FROM sind.conta WHERE lancamento = ".$lancamento);
+$sql = $pdo->prepare("SELECT * FROM sind.conta WHERE lancamento = :lancamento");
+$sql->bindParam(':lancamento', $lancamento, PDO::PARAM_INT);
+$sql->execute();
 while ($row_registro = $sql->fetch()) {
 
     $registrolan        = $row_registro['lancamento'];
@@ -60,7 +62,9 @@ while ($row_registro = $sql->fetch()) {
     $std->hora          = $hora;
     $codigo_convenio    = $row_registro['convenio'];
 }
-$sql = $pdo->query("SELECT * FROM sind.convenio WHERE codigo = ".$codigo_convenio);
+$sql = $pdo->prepare("SELECT * FROM sind.convenio WHERE codigo = :codigo_convenio");
+$sql->bindParam(':codigo_convenio', $codigo_convenio, PDO::PARAM_INT);
+$sql->execute();
 while ($row_convenio = $sql->fetch()) {
     $std->razaosocial   = $row_convenio['razaosocial'];
     $std->nomefantasia  = $row_convenio['nomefantasia'];
@@ -70,17 +74,29 @@ while ($row_convenio = $sql->fetch()) {
     $std->cnpj          = $row_convenio['cnpj'];
     $std->cidade        = $row_convenio['cidade'];
 }
-$sql = $pdo->query("SELECT codigo, nome, empregador FROM sind.associado WHERE codigo = '" . $matricula . "' and empregador = ".$empregador);
+$sql = $pdo->prepare("SELECT codigo, nome, empregador FROM sind.associado WHERE codigo = :matricula AND empregador = :empregador");
+$sql->bindParam(':matricula', $matricula, PDO::PARAM_STR);
+$sql->bindParam(':empregador', $empregador, PDO::PARAM_INT);
+$sql->execute();
 while ($row_associado = $sql->fetch()) {
     $std->nome          = $row_associado['nome'];
 }
-$sql = $pdo->query("SELECT cod_verificacao, empregador FROM sind.c_cartaoassociado WHERE cod_associado = '" . $matricula . "' and empregador = ".$empregador);
+$sql = $pdo->prepare("SELECT cod_verificacao, empregador FROM sind.c_cartaoassociado WHERE cod_associado = :matricula AND empregador = :empregador");
+$sql->bindParam(':matricula', $matricula, PDO::PARAM_STR);
+$sql->bindParam(':empregador', $empregador, PDO::PARAM_INT);
+$sql->execute();
 while ($row_cartao = $sql->fetch()) {
     $std->codcarteira   = $row_cartao['cod_verificacao'];
 }
 $as = 1;
 if($parcelas > 0) {
-    $sql = $pdo->query("SELECT * FROM sind.conta WHERE associado = '".$matricula."' AND data = '".$data."' AND hora = '".$hora."' AND convenio = ".$codigo_convenio."  AND empregador = ".$cod_empregador. "ORDER BY lancamento");
+    $sql = $pdo->prepare("SELECT * FROM sind.conta WHERE associado = :matricula AND data = :data AND hora = :hora AND convenio = :codigo_convenio AND empregador = :cod_empregador ORDER BY lancamento");
+    $sql->bindParam(':matricula', $matricula, PDO::PARAM_STR);
+    $sql->bindParam(':data', $data, PDO::PARAM_STR);
+    $sql->bindParam(':hora', $hora, PDO::PARAM_STR);
+    $sql->bindParam(':codigo_convenio', $codigo_convenio, PDO::PARAM_INT);
+    $sql->bindParam(':cod_empregador', $cod_empregador, PDO::PARAM_INT);
+    $sql->execute();
     while ($row_parcelas = $sql->fetch()) {
         $std->$as = new stdClass();
         $std->$as->numero = $as;

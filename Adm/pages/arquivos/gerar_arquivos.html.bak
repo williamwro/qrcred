@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <style type="text/css">
+        tfoot input {
+            width: 100%;
+            padding: 3px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <section class="content-header">
+        <h1 style="margin-top: -1px;margin-left: -6px;">
+            Arquivos <small>desconto em folha</small> </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-sx-12">
+                <div class="box">
+                    <div class="box-header">
+                        <form id="listagem" name="listagem" role="form">
+                            <!-- Primeira linha: Campos de seleção -->
+                            <div class="form-group row">
+                                <div class="col-md-3" style="width: 280px">
+                                    <label for="C_mes">Mês</label>
+                                    <select class="form-control i_bd" id="C_mes" name="C_mes">
+                                    </select>
+                                    <input type="hidden" name="C_mes_hidden" id="C_mes_hidden" value=""/>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="C_empregador">Empregador</label>
+                                    <select class="form-control i_bd" id="C_empregador" name="C_empregador">
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <label for="C_tipo">Tipo</label>
+                                    <select class="form-control i_bd" id="C_tipo" name="C_tipoconvenio">
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="C_data_vencimento">Data Vencimento (Ofício)</label>
+                                    <input type="date" class="form-control i_bd" id="C_data_vencimento" name="C_data_vencimento" />
+                                </div>
+                            </div>
+                            
+                            <!-- Segunda linha: Botões de ação -->
+                            <div class="form-group row" style="margin-top: 15px;">
+                                <div class="col-md-3">
+                                    <input type="button" name="gerararquivo" id="gerararquivo" class="btn btn-primary btn-block" value="Gerar Arquivo" />
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="btn-group btn-block">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Relatório Individual <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" style="width: 100%;">
+                                            <li style="background-color: #e3f2fd;">
+                                                <a href="#" id="relatorio_somente" style="color: #1976d2; font-weight: 500; padding: 10px 15px; display: block;">
+                                                    <i class="fa fa-file-text-o"></i> Somente Relatório
+                                                </a>
+                                            </li>
+                                            <li style="background-color: #fff3e0;">
+                                                <a href="#" id="relatorio_oficio" style="color: #f57c00; font-weight: 500; padding: 10px 15px; display: block;">
+                                                    <i class="fa fa-file-pdf-o"></i> Ofício pdf
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="button" name="relatorio_todos" id="relatorio_todos" class="btn btn-success btn-block" value="Todos em 1 PDF" title="Gerar relatório com todos os empregadores em páginas separadas" />
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="button" name="relatorio_individuais" id="relatorio_individuais" class="btn btn-info btn-block" value="PDFs Separados" title="Gerar um PDF individual para cada empregador" />
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    <div class="box-body">
+                        <table id="tabela_dados" class="display table table-striped table-hover dt-responsive compact nowrap" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>MATRICULA</th>
+                                    <th>NOME</th>
+                                    <th>TIPO</th>
+                                    <th>TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            <tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="../Adm/pages/arquivos/js/FileSaver.js"></script>
+    <script src="../Adm/pages/arquivos/js/arquivos_read_script.js"></script>
+</body>
+</html>

@@ -392,7 +392,7 @@ $("#btnBuscaConvenio").click(function () {
     mes            = $('#C_mes').val();
     convenio       = $('#C_nome_convenio').val();
     parcela        = $('#C_parcela').val();
-    carrega_convenios(mes);
+    carrega_convenios(mes, true); // true = ignora filtro de convênio, exibe todos
     grava_log(convenio,mes,'',parcela,tipo,usuario_cod,usuario_global);
 });
 
@@ -436,11 +436,13 @@ function format ( d ) {
         '<b>Parcela    : </b><i>'+d.parcela+'</i><br>'+
         '<b>Descricao  : </b><i>'+d.descricao+'</i><br>';
 }
-function carrega_convenios(mes){
+function carrega_convenios(mes, ignorarFiltroConvenio){
     $('#mes_rotulo').text(mes);
     if ( $.fn.dataTable.isDataTable( '#tabela_busca_convenio' ) ) {
         tableconsultaconv.destroy();
     }
+    // Limpa o input de busca que permanece no DOM após destroy()
+    $('#tabela_busca_convenio').closest('.dataTables_wrapper').find('input[type="search"]').val('');
     tableconsultaconv = $('#tabela_busca_convenio').DataTable({
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "todos"]],
         processing: false,
@@ -449,10 +451,22 @@ function carrega_convenios(mes){
         autoWidth: true,
         JQueryUI: true,
         searching: true,
+        search: { search: '' },
         ajax: {
             url: 'pages/producao/convenios.php',
             method: 'POST',
-            data: {"mes" : mes,"divisao" : divisao},
+            data: function(d) {
+                d.mes     = mes;
+                d.divisao = divisao;
+                // Só filtra por convênio específico quando NÃO for abertura do modal de busca
+                if (!ignorarFiltroConvenio) {
+                    var codConv = $C_convenio.val();
+                    if (codConv && codConv !== '') {
+                        d.cod_convenio = codConv;
+                    }
+                }
+                return d;
+            },
             dataType: 'json'
         },
         deferRender: true,

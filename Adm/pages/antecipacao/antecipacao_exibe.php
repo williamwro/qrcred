@@ -16,7 +16,7 @@ if(isset($_POST["cod_associado"])){
 		ant.data_aprovacao, ant.celular, ant.valor_taxa, ant.valor_a_descontar, ant.chave_pix, 
 		ant.id_divisao, ant.hora, ass.nome as nome_associado, emp.nome as nome_empregador, ass.id as id_associado
                 FROM sind.antecipacao ant
-                JOIN sind.associado ass ON ass.codigo = ant.matricula
+                JOIN sind.associado ass ON ass.codigo = ant.matricula AND ass.empregador = ant.empregador
                 JOIN sind.empregador emp ON emp.id = ant.empregador
                 WHERE ant.matricula = :matricula
                 AND ant.empregador = :empregador
@@ -43,6 +43,8 @@ if(isset($_POST["cod_associado"])){
         $std->data_aprovacao   = $row["data_aprovacao"];
         $std->celular          = $row["celular"];
         $std->chave_pix        = $row["chave_pix"];
+        $std->associado_id     = $row["id_associado"];
+        $std->associado_id_divisao = $row["id_divisao"];
     }
     echo json_encode($std);
 }

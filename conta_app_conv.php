@@ -17,7 +17,7 @@ if(isset($_POST['mes'])) {
     $std = new stdClass();
     $someArray = array();
 
-    $query = $pdo->query("SELECT associado.codigo AS associado,associado.nome, 
+    $stmt = $pdo->prepare("SELECT associado.codigo AS associado,associado.nome, 
                                  convenio.razaosocial,convenio.nomefantasia,conta.valor,conta.mes, 
                                  conta.parcela,conta.data as dia,conta.hora,convenio.cnpj,
                                  empregador.id AS id_empregador,empregador.nome AS nome_empregador, 
@@ -34,7 +34,11 @@ if(isset($_POST['mes'])) {
                               ON (conta.empregador = empregador.id) 
                              AND (empregador.id = associado.empregador)) 
                               ON divisao.id_divisao = empregador.id_divisao
-                           WHERE conta.convenio = ".$codconvenio." AND conta.mes = '".$mes."' ORDER BY conta.lancamento ASC");
+                           WHERE conta.convenio = :codconvenio AND conta.mes = :mes ORDER BY conta.lancamento ASC");
+    $stmt->bindParam(':codconvenio', $codconvenio, PDO::PARAM_INT);
+    $stmt->bindParam(':mes', $mes, PDO::PARAM_STR);
+    $stmt->execute();
+    $query = $stmt;
     while($row = $query->fetch()) {
         $someArray[] = array_map(function($value) {
             return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;

@@ -25,26 +25,37 @@ if(isset($_POST['empregador'])) {
 if(isset($_POST['cod_empregador'])) {
     $cod_empregador = $_POST['cod_empregador'];
 }
+function cleanCurrencyBR($value) {
+    // Remove R$, &nbsp; HTML entity, non-breaking space, spaces; keep digits, comma, dot, minus
+    $clean = preg_replace('/R\$\s*/u', '', $value);
+    $clean = str_replace(['&nbsp;', "\u{00A0}"], '', $clean);
+    $clean = trim($clean);
+    // Convert BR format (1.234,56) to float string (1234.56)
+    $clean = str_replace('.', '', $clean);
+    $clean = str_replace(',', '.', $clean);
+    return $clean;
+}
 if(isset($_POST['limite'])) {
-    if ($_POST['limite'] != 'NaN') {
-        $limite = $_POST['limite'];
-        $limite = str_replace(',', '.', $limite);
+    if ($_POST['limite'] != 'NaN' && $_POST['limite'] !== '') {
+        $limite = cleanCurrencyBR($_POST['limite']);
     } else {
         $limite = 0;
     }
+} else {
+    $limite = 0;
 }
 if(isset($_POST['adiantamento'])) {
-    $adiantamento = str_replace(',', '.', str_replace('.', '', $_POST['adiantamento']));
+    $adiantamento = cleanCurrencyBR($_POST['adiantamento']);
 }else{
     $adiantamento = 0;
 }
 if(isset($_POST['taxa_cartao'])) {
-    $taxa_cartao = str_replace(',','.',str_replace('.','',$_POST['taxa_cartao']));
+    $taxa_cartao = cleanCurrencyBR($_POST['taxa_cartao']);
 }else{
     $taxa_cartao = 0;
 }
 if(isset($_POST['cartao'])) {
-    $cartao = str_replace(',', '.', str_replace('.', '', $_POST['cartao']));
+    $cartao = cleanCurrencyBR($_POST['cartao']);
 }else{
     $cartao = 0;
 }

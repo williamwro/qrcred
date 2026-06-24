@@ -16,13 +16,15 @@ $std->existe_convenio = false;
 if(isset($_POST['usuario']))
 {
     $usuario = $_POST['usuario'];
-    $stmt = $pdo->query("SELECT s.id, s.cod_convenio, s.nome_funcionario, s.perfil,
+    $stmt = $pdo->prepare("SELECT s.id, s.cod_convenio, s.nome_funcionario, s.perfil,
                                 s.usuario, s.senha, s.usuario_texto, s.password,
                                 c.razaosocial, c.cnpj, c.cpf, c.email	
                            FROM sind.c_senhaconvenio s
                            JOIN sind.convenio c 
                              ON c.codigo = s.cod_convenio 
-                          WHERE s.usuario_texto = '".$usuario."'");
+                          WHERE s.usuario_texto = :usuario");
+    $stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
+    $stmt->execute();
                         
     while ($row = $stmt->fetch()) {
 

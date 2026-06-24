@@ -15,16 +15,21 @@ if (isset($_POST['userconv']) && isset($_POST['passconv'])){
 	$std = new stdClass();
 
 	// VERIFICA SENHA ******************************************************************************************************************************************************
-    $sql_conv_senha = $pdo->query("SELECT usuario, senha, cod_convenio FROM sind.c_senhaconvenio WHERE usuario='".$userconv."' AND senha='".$passconv."'");
-    while($row_senha = $sql_conv_senha->fetch()) {
+    $stmt_conv_senha = $pdo->prepare("SELECT usuario, senha, cod_convenio FROM sind.c_senhaconvenio WHERE usuario = :usuario AND senha = :senha");
+    $stmt_conv_senha->bindParam(':usuario', $userconv, PDO::PARAM_STR);
+    $stmt_conv_senha->bindParam(':senha', $passconv, PDO::PARAM_STR);
+    $stmt_conv_senha->execute();
+    while($row_senha = $stmt_conv_senha->fetch()) {
         $cod_convenio = $row_senha["cod_convenio"];
     }
     if( $cod_convenio != 0 ){
 
 		// VERIFICA SE TA ATIVO ********************************************************************************************************************************************
         $ativo = false;
-        $sql_conv = $pdo->query("SELECT * FROM sind.convenio WHERE codigo=".$cod_convenio." AND divulga = 'S'");
-        while($row_conv = $sql_conv->fetch()) {
+        $stmt_conv = $pdo->prepare("SELECT * FROM sind.convenio WHERE codigo = :codigo AND divulga = 'S'");
+        $stmt_conv->bindParam(':codigo', $cod_convenio, PDO::PARAM_INT);
+        $stmt_conv->execute();
+        while($row_conv = $stmt_conv->fetch()) {
             $ativo = true;
             $std->tipo_login    = "login sucesso";
             $std->cod_convenio  = $cod_convenio;
@@ -58,8 +63,10 @@ if (isset($_POST['userconv']) && isset($_POST['passconv'])){
             $std->pede_senha   = "";
             $std->aceita_parce_individ = false;
         }else{
-            $sql_divisao = $pdo->query("SELECT nome, cidade, id_divisao, descricao FROM sind.divisao WHERE id_divisao = ".$cod_divisao);
-            while($row_senha = $sql_divisao->fetch()) {
+            $stmt_divisao = $pdo->prepare("SELECT nome, cidade, id_divisao, descricao FROM sind.divisao WHERE id_divisao = :id_divisao");
+            $stmt_divisao->bindParam(':id_divisao', $cod_divisao, PDO::PARAM_INT);
+            $stmt_divisao->execute();
+            while($row_senha = $stmt_divisao->fetch()) {
                 $std->divisao = $row_senha["nome"];
             }
         }
@@ -144,7 +151,11 @@ if (isset($_POST['userconv']) && isset($_POST['passconv'])){
     $horaagora = date("H:i:s");
     // now try it
     $ua=getBrowser();
-    $sql_log = "UPDATE sind.convenio SET browser='".$ua['name']."', data_ultimo_acesso='".$dataagora."', hora_ultimo_acesso='".$horaagora."' WHERE codigo=".$cod_convenio;
-    $sql_acrescenta = $pdo->exec($sql_log);
+    $stmt_log = $pdo->prepare("UPDATE sind.convenio SET browser = :browser, data_ultimo_acesso = :data_acesso, hora_ultimo_acesso = :hora_acesso WHERE codigo = :codigo");
+    $stmt_log->bindParam(':browser', $ua['name'], PDO::PARAM_STR);
+    $stmt_log->bindParam(':data_acesso', $dataagora, PDO::PARAM_STR);
+    $stmt_log->bindParam(':hora_acesso', $horaagora, PDO::PARAM_STR);
+    $stmt_log->bindParam(':codigo', $cod_convenio, PDO::PARAM_INT);
+    $stmt_log->execute();
 
     echo json_encode($std);

@@ -53,25 +53,26 @@ try {
     );
 
     $tipo_sql = "";
+    $search_value = null;
     if (isset($_POST["search"]["value"]) && $_POST["search"]["value"] != '') {
-        $tipo_sql = " AND (associado.codigo ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.nome ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.cpf ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.rg ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.endereco ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.bairro ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.cidade ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.cep ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.telres ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.cel ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.email ILIKE '%" . $_POST["search"]["value"] . "%')";
+        $search_value = '%' . $_POST["search"]["value"] . '%';
+        $tipo_sql = " AND (associado.codigo ILIKE :search 
+                         OR associado.nome ILIKE :search 
+                         OR associado.cpf ILIKE :search 
+                         OR associado.rg ILIKE :search 
+                         OR associado.endereco ILIKE :search 
+                         OR associado.bairro ILIKE :search 
+                         OR associado.cidade ILIKE :search 
+                         OR associado.cep ILIKE :search 
+                         OR associado.telres ILIKE :search 
+                         OR associado.cel ILIKE :search 
+                         OR associado.email ILIKE :search
+                         OR empregador.abreviacao ILIKE :search
+                         OR empregador.nome ILIKE :search)";
     }
 
-    if (isset($_POST["order"])) {
-        $tipo_sql .= ' ORDER BY ' . $columns[$_POST['order']['0']['column']] . ' ' . $_POST['order']['0']['dir'] . ' ';
-    } else {
-        $tipo_sql .= ' ORDER BY associado.id DESC ';
-    }
+    // Forçar ordenação por NOME sempre
+    $tipo_sql .= ' ORDER BY associado.nome ASC ';
 
     // Implementar paginação server-side
     if (isset($_POST["start"]) && $_POST["length"] != -1) {
@@ -81,7 +82,7 @@ try {
     $query = "SELECT associado.codigo, associado.nome, associado.endereco, associado.bairro, 
                      associado.nascimento, associado.empregador, associado.id, associado.salario, 
                      associado.limite, associado.cep, associado.telres, associado.telcom, associado.cel,
-                     associado.complemento, empregador.nome AS empregador_nome, empregador.abreviacao,
+                     associado.complemento, associado.cpf, empregador.nome AS empregador_nome, empregador.abreviacao,
                      situacao_associado.nome as nome_situacao,
                      associado.id_divisao
               FROM sind.associado 
@@ -98,6 +99,9 @@ try {
     if ($cod_situacao !== '0') {
         $statment->bindParam(':cod_situacao', $cod_situacao, PDO::PARAM_INT);
     }
+    if ($search_value !== null) {
+        $statment->bindParam(':search', $search_value, PDO::PARAM_STR);
+    }
     $statment->execute();
     $result = $statment->fetchAll();
     
@@ -109,24 +113,29 @@ try {
               WHERE associado.id_divisao = :divisao" . ($cod_situacao === '0' ? '' : " AND associado.id_situacao = :cod_situacao");
     
     // Adicionar condições de busca se existirem
-    if (isset($_POST["search"]["value"]) && $_POST["search"]["value"] != '') {
-        $count_query .= " AND (associado.codigo ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.nome ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.cpf ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.rg ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.endereco ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.bairro ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.cidade ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.cep ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.telres ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.cel ILIKE '%" . $_POST["search"]["value"] . "%' 
-                         OR associado.email ILIKE '%" . $_POST["search"]["value"] . "%')";
+    if ($search_value !== null) {
+        $count_query .= " AND (associado.codigo ILIKE :search 
+                         OR associado.nome ILIKE :search 
+                         OR associado.cpf ILIKE :search 
+                         OR associado.rg ILIKE :search 
+                         OR associado.endereco ILIKE :search 
+                         OR associado.bairro ILIKE :search 
+                         OR associado.cidade ILIKE :search 
+                         OR associado.cep ILIKE :search 
+                         OR associado.telres ILIKE :search 
+                         OR associado.cel ILIKE :search 
+                         OR associado.email ILIKE :search
+                         OR empregador.abreviacao ILIKE :search
+                         OR empregador.nome ILIKE :search)";
     }
     
     $count_statment = $pdo->prepare($count_query);
     $count_statment->bindParam(':divisao', $divisao, PDO::PARAM_INT);
     if ($cod_situacao !== '0') {
         $count_statment->bindParam(':cod_situacao', $cod_situacao, PDO::PARAM_INT);
+    }
+    if ($search_value !== null) {
+        $count_statment->bindParam(':search', $search_value, PDO::PARAM_STR);
     }
     $count_statment->execute();
     $count_result = $count_statment->fetch();
@@ -151,6 +160,15 @@ try {
         $sub_array["nascimento"] = $row["nascimento"] ? date('d/m/Y', strtotime($row["nascimento"])) : '';
         $sub_array["abreviacao"] = $row["abreviacao"];
         $sub_array["id_empregador"] = $row["empregador"];
+        
+        // Formatar CPF no padrão brasileiro (999.999.999-99)
+        $cpf = preg_replace('/\D/', '', $row["cpf"]); // Remove caracteres não numéricos
+        if (strlen($cpf) == 11) {
+            $sub_array["cpf"] = substr($cpf, 0, 3) . '.' . substr($cpf, 3, 3) . '.' . substr($cpf, 6, 3) . '-' . substr($cpf, 9, 2);
+        } else {
+            $sub_array["cpf"] = $row["cpf"]; // Se não tiver 11 dígitos, exibe como está
+        }
+        
         $sub_array["nome_situacao"] = $row["nome_situacao"];
         $sub_array["salario"] = $row["salario"];
         $sub_array["limite"] = $row["limite"];

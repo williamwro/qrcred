@@ -38,7 +38,7 @@ if (!isset($_POST['cartaodigitado'])){
 }else{			
 	$cartaodigitado  = $_POST['cartaodigitado'];
 	
-    $sql_conv_senha = $pdo->query("SELECT associado.id,associado.codigo,associado.nome,
+    $sql_conv_senha = $pdo->prepare("SELECT associado.id,associado.codigo,associado.nome,
                                             associado.empregador,associado.limite,
                                             associado.salario,associado.parcelas_permitidas,
                                             c_cartaoassociado.cod_situacaocartao,
@@ -55,7 +55,9 @@ if (!isset($_POST['cartaodigitado'])){
                                          ON associado.empregador = empregador.id
                                  INNER JOIN sind.divisao
                                          ON associado.id_divisao = divisao.id_divisao
-                                      WHERE c_cartaoassociado.cod_verificacao='".$cartaodigitado."'");
+                                      WHERE c_cartaoassociado.cod_verificacao = :cartaodigitado");
+    $sql_conv_senha->bindParam(':cartaodigitado', $cartaodigitado, PDO::PARAM_STR);
+    $sql_conv_senha->execute();
     while($row_senha = $sql_conv_senha->fetch()) {
         $cod_convenio = 1;
 		$std->id                  = $row_senha['id']; // CAMPO ADICIONADO

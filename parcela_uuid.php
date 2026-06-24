@@ -4,15 +4,16 @@ require 'Adm/php/banco.php';
 include "Adm/php/funcoes.php";
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$lancamento = $_POST['lancamento'];
+$lancamento = (int)$_POST['lancamento'];
 $someArray = array();
 $someArray2 = array();
 $i=0;
 $i2=0;
-$sql = "SELECT * FROM sind.conta WHERE lancamento = ".$lancamento;
-$sql = $pdo->query($sql);
+$stmt_first = $pdo->prepare("SELECT * FROM sind.conta WHERE lancamento = :lancamento");
+$stmt_first->bindParam(':lancamento', $lancamento, PDO::PARAM_INT);
+$stmt_first->execute();
 $i++;
-while($row = $sql->fetch()) {
+while($row = $stmt_first->fetch()) {
         $someArray[$i] = array_map(function($value) {
             return is_string($value) ? mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1') : $value;
         }, $row);

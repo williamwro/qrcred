@@ -25,7 +25,7 @@ $std = new stdClass();                              //  5 = segunda via
 $contador=0;
 $l_c=0;
 
-$sql_associado = $pdo->query("SELECT associado.codigo, 
+$sql_associado = $pdo->prepare("SELECT associado.codigo, 
                                      associado.nome, 
                                      associado.empregador, 
                                      associado.limite, 
@@ -42,7 +42,9 @@ $sql_associado = $pdo->query("SELECT associado.codigo,
                         INNER JOIN sind.empregador 
                                 ON associado.empregador = empregador.id
                                 AND associado.empregador = c_cartaoassociado.empregador
-                            WHERE c_cartaoassociado.cod_verificacao='".$cod_cartao."'");
+                            WHERE c_cartaoassociado.cod_verificacao = :cod_cartao");
+$sql_associado->bindParam(':cod_cartao', $cod_cartao, PDO::PARAM_STR);
+$sql_associado->execute();
 while($row_assoc = $sql_associado->fetch()) {
     $contador=1;
     $parcelas_permitidas = $row_assoc["parcelas_permitidas"];
@@ -67,7 +69,11 @@ while($row_assoc = $sql_associado->fetch()) {
         $std->mes_desconto        = $m_p;
         $l_c = 0;
 
-        $sql_debito_associado = $pdo->query("SELECT SUM(valor) AS valor1, mes FROM sind.conta WHERE mes='" . $m_p . "' AND associado='" . $row_assoc['codigo'] . "' AND empregador = " . $empregador . " GROUP BY mes");
+        $sql_debito_associado = $pdo->prepare("SELECT SUM(valor) AS valor1, mes FROM sind.conta WHERE mes = :mes AND associado = :associado AND empregador = :empregador GROUP BY mes");
+        $sql_debito_associado->bindParam(':mes', $m_p, PDO::PARAM_STR);
+        $sql_debito_associado->bindParam(':associado', $row_assoc['codigo'], PDO::PARAM_STR);
+        $sql_debito_associado->bindValue(':empregador', (int)$empregador, PDO::PARAM_INT);
+        $sql_debito_associado->execute();
         while ($row_debito = $sql_debito_associado->fetch()) {
             $l_c    = floatval($row_debito["valor1"]);
         }
@@ -94,7 +100,11 @@ while($row_assoc = $sql_associado->fetch()) {
         $std->razaosocial = $razao_social;
         $std->mes_desconto = $m_p;
         $l_c = 0;
-        $sql_debito_associado = $pdo->query("SELECT SUM(valor) AS valor1, mes FROM sind.conta WHERE mes='" . $m_p . "' AND associado='" . $row_assoc['codigo'] . "' AND empregador = " . $empregador . " GROUP BY mes");
+        $sql_debito_associado = $pdo->prepare("SELECT SUM(valor) AS valor1, mes FROM sind.conta WHERE mes = :mes AND associado = :associado AND empregador = :empregador GROUP BY mes");
+        $sql_debito_associado->bindParam(':mes', $m_p, PDO::PARAM_STR);
+        $sql_debito_associado->bindParam(':associado', $row_assoc['codigo'], PDO::PARAM_STR);
+        $sql_debito_associado->bindValue(':empregador', (int)$empregador, PDO::PARAM_INT);
+        $sql_debito_associado->execute();
         while ($row_debito = $sql_debito_associado->fetch()) {
             $l_c = floatval($row_debito["valor1"]);
         }
@@ -137,8 +147,9 @@ if ($contador == 0) {
     $std->limite_credito_     = 0;
 }
 //ATUALIZA O CAMPO MES_CORRENTE COM O MES ATUAL SEMPRE QUE CLICAR EM LOCALIZAR
-$sql = "UPDATE sind.mes_corrente SET abreviacao = '". $m_p . "'";
-$count = $pdo->exec($sql);
+$stmt_update = $pdo->prepare("UPDATE sind.mes_corrente SET abreviacao = :m_p");
+$stmt_update->bindParam(':m_p', $m_p, PDO::PARAM_STR);
+$stmt_update->execute();
 if ($contador == 0) {
 
     $std->situacao            = 2; //2 = nao encontrado,

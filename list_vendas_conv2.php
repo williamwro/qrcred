@@ -57,9 +57,12 @@ header("Content-type: application/json");
           ON convenio.codigo = conta.convenio) 
           ON empregador.id = conta.empregador) 
           ON associado.codigo = conta.associado AND associado.empregador = conta.empregador 
-          WHERE convenio.codigo = " . $cod_convenio . " AND conta.mes = '" . $mes_atual . "' AND convenio.desativado = false ORDER BY conta.lancamento DESC";
+          WHERE convenio.codigo = :cod_convenio AND conta.mes = :mes_atual AND convenio.desativado = false ORDER BY conta.lancamento DESC";
 
-    $sql_conv_vendas = $pdo->query($query);
+    $sql_conv_vendas = $pdo->prepare($query);
+    $sql_conv_vendas->bindParam(':cod_convenio', $cod_convenio, PDO::PARAM_INT);
+    $sql_conv_vendas->bindParam(':mes_atual', $mes_atual, PDO::PARAM_STR);
+    $sql_conv_vendas->execute();
 
     while($row_vendas = $sql_conv_vendas->fetch()) {
 

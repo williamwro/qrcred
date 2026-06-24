@@ -33,8 +33,10 @@ if (isset($_POST['valor_pedido']) && isset($_POST['txtSaldoCard'])) {
     } else {
         $nparcelas = 0;
     }
-    $sql_pede_senha = $pdo->query("SELECT * FROM sind.convenio WHERE codigo = " . $_POST['cod_convenio']);
-    while ($row_senha = $sql_pede_senha->fetch()) {
+    $stmt_convenio = $pdo->prepare("SELECT * FROM sind.convenio WHERE codigo = :codigo");
+    $stmt_convenio->bindParam(':codigo', $codigo_convenio, PDO::PARAM_INT);
+    $stmt_convenio->execute();
+    while ($row_senha = $stmt_convenio->fetch()) {
         $nomefantasia = $row_senha["nomefantasia"];
         $pede_senha = $row_senha["pede_senha"];
         $cidade = $row_senha["cidade"];
@@ -53,8 +55,12 @@ if (isset($_POST['valor_pedido']) && isset($_POST['txtSaldoCard'])) {
         $evetivar   = false;
         $datafatura = data_fatura($mes_pedido[0]);
         if ($pede_senha == 1) {
-            $sql_pede_senha = $pdo->query("SELECT * FROM sind.c_senhaassociado WHERE cod_associado = '" . $_POST['matricula'] . "' AND id_empregador = " . $_POST['e_p'] . " AND senha = '" . $_POST['pass'] . "'");
-            while ($row_senha = $sql_pede_senha->fetch()) {
+            $stmt_senha = $pdo->prepare("SELECT * FROM sind.c_senhaassociado WHERE cod_associado = :matricula AND id_empregador = :empregador AND senha = :senha");
+            $stmt_senha->bindParam(':matricula', $_POST['matricula'], PDO::PARAM_STR);
+            $stmt_senha->bindParam(':empregador', $_POST['e_p'], PDO::PARAM_INT);
+            $stmt_senha->bindParam(':senha', $_POST['pass'], PDO::PARAM_STR);
+            $stmt_senha->execute();
+            while ($row_senha = $stmt_senha->fetch()) {
                 $contador_senha_associado = 1;
             }
             if ($contador_senha_associado == 0) {
@@ -245,4 +251,7 @@ function getBrowser()
 }
 // now try it
 $ua = getBrowser();
-$sql_acrescenta = $pdo->exec("UPDATE sind.convenio SET browser='".$ua['name']."' WHERE codigo=".$codigo_convenio);
+$stmt_browser = $pdo->prepare("UPDATE sind.convenio SET browser = :browser WHERE codigo = :codigo");
+$stmt_browser->bindParam(':browser', $ua['name'], PDO::PARAM_STR);
+$stmt_browser->bindParam(':codigo', $codigo_convenio, PDO::PARAM_INT);
+$stmt_browser->execute();

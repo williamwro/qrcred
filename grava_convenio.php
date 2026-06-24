@@ -48,18 +48,20 @@ $_existe_cnpj     = false;
 
 
 if($_tipoempresa === 1) {
-    $row_conv = $pdo->query("SELECT codigo, cpf
-                                       FROM sind.convenio 
-                                      WHERE cpf='" . $_cpf . "'")->fetch();
+    $stmt_chk = $pdo->prepare("SELECT codigo, cpf FROM sind.convenio WHERE cpf = :cpf");
+    $stmt_chk->bindParam(':cpf', $_cpf, PDO::PARAM_STR);
+    $stmt_chk->execute();
+    $row_conv = $stmt_chk->fetch();
     if($row_conv){
         $_existe_cpf = true;
     }else{
         $_existe_cpf = false;
     }
 }else if($_tipoempresa === 2) {
-    $row_conv = $pdo->query("SELECT codigo, cnpj
-                                       FROM sind.convenio 
-                                      WHERE cnpj='" . $_cnpj . "'")->fetch();
+    $stmt_chk = $pdo->prepare("SELECT codigo, cnpj FROM sind.convenio WHERE cnpj = :cnpj");
+    $stmt_chk->bindParam(':cnpj', $_cnpj, PDO::PARAM_STR);
+    $stmt_chk->execute();
+    $row_conv = $stmt_chk->fetch();
     if($row_conv) {
         $_existe_cnpj = true;
     }else{

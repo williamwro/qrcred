@@ -1,0 +1,42 @@
+// Opção 3: Ofício JPEG (gera imagem JPEG do ofício)
+$('#relatorio_oficio_jpeg').click(function (e) {
+    e.preventDefault();
+    var mes_atual  = $('#C_mes').val();
+    var empregador = $('#C_empregador').val();
+    var tipo = $('#C_tipo').val();
+    var data_vencimento = $('#C_data_vencimento').val();
+    
+    if (!mes_atual) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um mês.'
+        });
+        return;
+    }
+    
+    if (!empregador) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um empregador.'
+        });
+        return;
+    }
+    
+    if (!data_vencimento) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, informe a data de vencimento para o ofício.'
+        });
+        return;
+    }
+    
+    var params = { mes_atual: mes_atual, empregador: empregador, divisao: divisao, divisao_nome: divisao_nome, data_vencimento: data_vencimento };
+    if (tipo && tipo !== '') {
+        params.tipo = tipo;
+    }
+    $.redirect('../Adm/pages/arquivos/relatorio_oficio_jpeg.php', params, "POST", "_blank");
+});
+

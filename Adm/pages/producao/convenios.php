@@ -2,11 +2,14 @@
 header("Content-type: application/json");
 include "../../php/banco.php";
 include "../../php/funcoes.php";
-$mes = $_POST['mes'];
+
+$mes          = $_POST['mes'];
+$divisao      = $_POST['divisao'];
+$cod_convenio = isset($_POST['cod_convenio']) && $_POST['cod_convenio'] !== '' ? $_POST['cod_convenio'] : null;
+
 $someArray = array();
 $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$divisao = $_POST['divisao'];
 $query = "SELECT E.codigo,
                  E.razaosocial, 
                  E.nomefantasia,
@@ -30,9 +33,13 @@ $query = "SELECT E.codigo,
            WHERE C.mes = '".$mes."'
              AND D.id_divisao = ".$divisao."
              AND (C.aprovado = true OR C.aprovado IS NULL)
+             ".($cod_convenio !== null ? "AND E.codigo = :cod_convenio " : "")."
         GROUP BY E.razaosocial, E.nomefantasia, C.mes, E.codigo, E.cobranca, E.desativado
         ORDER BY E.razaosocial";
 $statment = $pdo->prepare($query);
+if ($cod_convenio !== null) {
+    $statment->bindParam(':cod_convenio', $cod_convenio);
+}
 $statment->execute();
 $result = $statment->fetchAll();
 $data = array();

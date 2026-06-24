@@ -11,7 +11,8 @@ try {
 
     if($lote == "aberto") {
         $query = "SELECT c_cartaoassociado.cod_verificacao, associado.nome,
-                         associado.codigo, divisao.id_divisao, empregador.abreviacao,associado.id
+                         associado.codigo, divisao.id_divisao, empregador.abreviacao, associado.id,
+                         cs.senha
                     FROM sind.associado
                   INNER JOIN sind.empregador 
                               ON associado.empregador = empregador.id 
@@ -20,13 +21,17 @@ try {
                               AND associado.empregador = c_cartaoassociado.empregador
                   INNER JOIN sind.divisao 
                               ON associado.id_divisao = divisao.id_divisao
+                   LEFT JOIN sind.c_senhaassociado cs
+                              ON cs.cod_associado = associado.codigo
+                             AND cs.id_empregador = associado.empregador
                    WHERE associado.id_divisao = :divisao 
                      AND (c_cartaoassociado.cod_situacaocartao = 4 OR c_cartaoassociado.cod_situacaocartao = 1)
                      AND lote IS NULL 
                 ORDER BY nome";
     } else {
         $query = "SELECT c_cartaoassociado.cod_verificacao, associado.nome,
-                         associado.codigo, divisao.id_divisao, empregador.abreviacao,associado.id
+                         associado.codigo, divisao.id_divisao, empregador.abreviacao, associado.id,
+                         cs.senha
                     FROM sind.associado
                   INNER JOIN sind.empregador 
                               ON associado.empregador = empregador.id 
@@ -34,7 +39,10 @@ try {
                               ON associado.codigo = c_cartaoassociado.cod_associado 
                               AND associado.empregador = c_cartaoassociado.empregador
                   INNER JOIN sind.divisao 
-                              ON associado.id_divisao = divisao.id_divisao  
+                              ON associado.id_divisao = divisao.id_divisao
+                   LEFT JOIN sind.c_senhaassociado cs
+                              ON cs.cod_associado = associado.codigo
+                             AND cs.id_empregador = associado.empregador
                    WHERE associado.id_divisao = :divisao 
                      AND lote = :lote 
                 ORDER BY nome";
@@ -67,6 +75,7 @@ try {
         $sub_array["codigo"]       = $row['codigo'] ?? '';
         $sub_array["abreviacao"]   = $row['abreviacao'] ?? '';
         $sub_array["nome"]         = $row['nome'] ?? '';
+        $sub_array["senha"]        = $row['senha'] ?? '';
         $sub_array["id"]           = $row['id'] ?? '';
         $sub_array["botaoexcluir"] = '<button type="button" name="btnexcluirCartao" id="'.($row["cod_verificacao"] ?? '').'" class="btn btn-danger btn-xs btnexcluirCartao" disabled>Excluir</button>';
 

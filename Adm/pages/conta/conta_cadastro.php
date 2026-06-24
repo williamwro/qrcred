@@ -1,4 +1,7 @@
 <?PHP
+if (function_exists('opcache_invalidate')) {
+    opcache_invalidate(__FILE__, true);
+}
 header("Content-type: application/json");
 require '../../php/banco.php';
 include "../../php/funcoes.php";
@@ -26,6 +29,7 @@ $_obs           = isset($_POST['obsCad']) ? $_POST['obsCad'] : "";
 $_nome_convenio = isset($_POST['nome_convenio']) ? $_POST['nome_convenio'] : "";
 $_qtde_parcelas = 0;
 $_parcela1      = 0;
+$_aprovado      = 'true';
 $someArray = array();
 
 $query = "SELECT * FROM sind.empregador WHERE abreviacao = '".$_empregador."' AND id_divisao = ".$_divisao;
@@ -71,7 +75,8 @@ if(isset($_POST["operation"])) {
             $sql .= "empregador = :empregador, ";
             $sql .= "parcela = :parcela, ";
             $sql .= "tipo = :tipo, ";
-            $sql .= "id_situacao = :id_situacao ";
+            $sql .= "id_situacao = :id_situacao, ";
+            $sql .= "aprovado = :aprovado ";
             $sql .= "WHERE lancamento = " . $_lancamento;
             $msg_grava_cad = "aualizado";
 
@@ -90,6 +95,7 @@ if(isset($_POST["operation"])) {
             $stmt->bindParam(':parcela', $_parcela, PDO::PARAM_STR);
             $stmt->bindParam(':tipo', $_tipo, PDO::PARAM_STR);
             $stmt->bindParam(':id_situacao', $_situacao, PDO::PARAM_INT);
+            $stmt->bindValue(':aprovado', $_aprovado, PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -97,7 +103,7 @@ if(isset($_POST["operation"])) {
             if($_optarcela == 'unica') {
 
                 $sql = "INSERT INTO sind.conta(";
-                $sql .= "associado, id_associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao, divisao) VALUES( ";
+                $sql .= "associado, id_associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao, divisao, aprovado) VALUES( ";
                 $sql .= ":associado, ";
                 $sql .= ":id_associado, ";
                 $sql .= ":convenio, ";
@@ -111,7 +117,8 @@ if(isset($_POST["operation"])) {
                 $sql .= ":parcela, ";
                 $sql .= ":tipo, ";
                 $sql .= ":id_situacao, ";
-                $sql .= ":divisao)";
+                $sql .= ":divisao, ";
+                $sql .= ":aprovado)";
 
                 $stmt = $pdo->prepare($sql);
 
@@ -129,8 +136,17 @@ if(isset($_POST["operation"])) {
                 $stmt->bindParam(':tipo', $_tipo, PDO::PARAM_STR);
                 $stmt->bindParam(':id_situacao', $_situacao, PDO::PARAM_INT);
                 $stmt->bindParam(':divisao', $_divisao, PDO::PARAM_INT);
+                $stmt->bindValue(':aprovado', $_aprovado, PDO::PARAM_STR);
 
                 $stmt->execute();
+
+                // Corrige aprovado = true no registro de taxa (convenio 249) criado pelo trigger
+                $sql_fix = "UPDATE sind.conta SET aprovado = 'true' WHERE convenio = 249 AND associado = :assoc AND mes = :mes AND empregador = :emp AND aprovado = false";
+                $stmt_fix = $pdo->prepare($sql_fix);
+                $stmt_fix->bindValue(':assoc', $_matricula, PDO::PARAM_STR);
+                $stmt_fix->bindValue(':mes',   $_mes,       PDO::PARAM_STR);
+                $stmt_fix->bindValue(':emp',   $Cod_empregador, PDO::PARAM_INT);
+                $stmt_fix->execute();
 
                 $someArray["Resultado"] = "cadastrado";
                 $arr = array('associado' =>$_matricula,'id_associado'=>$Id_associado,'convenio'=>$_convenio,'valor'=> $_valor,'data'=> $_data,'hora'=> $_hora,'descricao'=> $_obs,'mes'=> $_mes,'empregador'=> $Cod_empregador,'parcela'=> $_parcela,'tipo'=> $_tipo,'nome_convenio'=> $_nome_convenio);
@@ -148,7 +164,7 @@ if(isset($_POST["operation"])) {
                 $someArray["Resultado"] = "cadastrado";
                 for($i = $_parcela1;$i <= $_qtde_parcelas;$i++){
                     $sql = "INSERT INTO sind.conta(";
-                    $sql .= "associado, id_associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao, divisao) VALUES( ";
+                    $sql .= "associado, id_associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao, divisao, aprovado) VALUES( ";
                     $sql .= ":associado, ";
                     $sql .= ":id_associado, ";
                     $sql .= ":convenio, ";
@@ -162,7 +178,8 @@ if(isset($_POST["operation"])) {
                     $sql .= ":parcela, ";
                     $sql .= ":tipo, ";
                     $sql .= ":id_situacao, ";
-                    $sql .= ":divisao)";
+                    $sql .= ":divisao, ";
+                    $sql .= ":aprovado)";
 
                     $stmt = $pdo->prepare($sql);
                     if ($i > 1){
@@ -188,8 +205,18 @@ if(isset($_POST["operation"])) {
                     $stmt->bindParam(':tipo', $_tipo, PDO::PARAM_STR);
                     $stmt->bindParam(':id_situacao', $_situacao, PDO::PARAM_INT);
                     $stmt->bindParam(':divisao', $_divisao, PDO::PARAM_INT);
+                    $stmt->bindValue(':aprovado', $_aprovado, PDO::PARAM_STR);
 
                     $stmt->execute();
+
+                    // Corrige aprovado = true no registro de taxa (convenio 249) criado pelo trigger
+                    $_mes_insert = $_mes; // captura antes de avançar para o próximo mês
+                    $sql_fix = "UPDATE sind.conta SET aprovado = 'true' WHERE convenio = 249 AND associado = :assoc AND mes = :mes AND empregador = :emp AND aprovado = false";
+                    $stmt_fix = $pdo->prepare($sql_fix);
+                    $stmt_fix->bindValue(':assoc', $_matricula,      PDO::PARAM_STR);
+                    $stmt_fix->bindValue(':mes',   $_mes_insert,     PDO::PARAM_STR);
+                    $stmt_fix->bindValue(':emp',   $Cod_empregador,  PDO::PARAM_INT);
+                    $stmt_fix->execute();
 
                     $arr = array('associado' =>$_matricula,'id_associado'=>$Id_associado,'convenio'=>$_convenio,'valor'=> $_valor,'data'=> $_data,'hora'=> $_hora,'descricao'=> $_obs,'mes'=> $_mes,'empregador'=> $Cod_empregador,'parcela'=> $_result,'tipo'=> $_tipo,'nome_convenio'=> $_nome_convenio);
                     $someArray["data"][$i] = array_map(function($value) {

@@ -85,7 +85,7 @@ if($size === 1) {
         }
 
         $sql = "INSERT INTO sind.conta(";
-        $sql .= "associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao) VALUES( ";
+        $sql .= "associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao, aprovado) VALUES( ";
         $sql .= ":associado, ";
         $sql .= ":convenio, ";
         $sql .= ":valor, ";
@@ -97,7 +97,8 @@ if($size === 1) {
         $sql .= ":empregador, ";
         $sql .= ":parcela, ";
         $sql .= ":tipo, ";
-        $sql .= ":id_situacao)";
+        $sql .= ":id_situacao, ";
+        $sql .= "TRUE)";
 
         $stmt = $pdo->prepare($sql);
 
@@ -176,7 +177,7 @@ if($size === 1) {
         }
 
         $sql = "INSERT INTO sind.conta(";
-        $sql .= "associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao) VALUES( ";
+        $sql .= "associado, convenio, valor, data, hora, descricao, mes, funcionario, empregador, parcela, tipo, id_situacao, aprovado) VALUES( ";
         $sql .= ":associado, ";
         $sql .= ":convenio, ";
         $sql .= ":valor, ";
@@ -188,7 +189,8 @@ if($size === 1) {
         $sql .= ":empregador, ";
         $sql .= ":parcela, ";
         $sql .= ":tipo, ";
-        $sql .= ":id_situacao)";
+        $sql .= ":id_situacao, ";
+        $sql .= "TRUE)";
 
         $stmt = $pdo->prepare($sql);
 

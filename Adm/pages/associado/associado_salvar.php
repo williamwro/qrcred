@@ -281,18 +281,30 @@ if(isset($_POST["operation"])) {
 
         $data2      = new DateTime();
         $data       = $data2->format('Y-m-d h:i:s');
+
+        // Busca o id do associado em sind.associado para uso no log
+        $_codigo_busca = ($_POST['operation'] == 'Add') ? $_matricula : $_matriculax;
+        $sql_id_assoc = "SELECT id FROM sind.associado WHERE codigo = :codigo AND empregador = :empregador AND id_divisao = :divisao LIMIT 1";
+        $stmt_id_assoc = $pdo->prepare($sql_id_assoc);
+        $stmt_id_assoc->bindParam(':codigo', $_codigo_busca, PDO::PARAM_STR);
+        $stmt_id_assoc->bindParam(':empregador', $_empregador, PDO::PARAM_INT);
+        $stmt_id_assoc->bindParam(':divisao', $_divisao, PDO::PARAM_INT);
+        $stmt_id_assoc->execute();
+        $_id_associado = (int)$stmt_id_assoc->fetchColumn();
+
         // REGISTRA LOG ALTERAÇOES DE LIMITE INICIO ******************************
         if($_limite != $_limite_hidden || $_limite_hidden === "") {
             if ( $_limite_hidden === ""){ $_limite_hidden = 0 ; }
             $sql6 = "INSERT INTO sind.associado_log_limites(";
-            $sql6 .= "associado,limite_old,limite_new,usuario,datahora,id_divisao,empregador) VALUES (";
+            $sql6 .= "associado,limite_old,limite_new,usuario,datahora,id_divisao,empregador,id_associado) VALUES (";
             $sql6 .= ":associado, ";
             $sql6 .= ":limite_old, ";
             $sql6 .= ":limite_new, ";
             $sql6 .= ":usuario, ";
             $sql6 .= ":datahora, ";
             $sql6 .= ":id_divisao, ";
-            $sql6 .= ":empregador) ";
+            $sql6 .= ":empregador, ";
+            $sql6 .= ":id_associado) ";
 
             $stmt6 = $pdo->prepare($sql6);
             $stmt6->bindParam(':associado', $_matricula, PDO::PARAM_STR);
@@ -302,6 +314,7 @@ if(isset($_POST["operation"])) {
             $stmt6->bindParam(':datahora', $data, PDO::PARAM_STR);
             $stmt6->bindParam(':id_divisao', $_divisao, PDO::PARAM_INT);
             $stmt6->bindParam(':empregador', $_empregador, PDO::PARAM_INT);
+            $stmt6->bindParam(':id_associado', $_id_associado, PDO::PARAM_INT);
 
             $stmt6->execute();
 

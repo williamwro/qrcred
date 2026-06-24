@@ -1162,11 +1162,11 @@ $(document).ready(function(){
                     if (total === 0) {
                         total = '';
                     }
-                    $("#empgasto").html(emprestimo.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
-                    $("#taxagasto").html(taxa_cartao.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
-                    $("#cartgasto").html(cartao.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
+                    $("#empgasto").html(emprestimo.toLocaleString("pt-BR", {style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                    $("#taxagasto").html(taxa_cartao.toLocaleString("pt-BR", {style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2}));
+                    $("#cartgasto").html(cartao.toLocaleString("pt-BR", {style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2}));
                     
-                    $("#totalgasto").html(total.toLocaleString("pt-BR", {style: "decimal", currency: "BRL"}));
+                    $("#totalgasto").html(total.toLocaleString("pt-BR", {style: "currency", currency: "BRL", minimumFractionDigits: 2, maximumFractionDigits: 2}));
                     if (datab["naodescontado"] !== undefined) {
                         var fnd = parseFloat(datab["naodescontado"].FND);
                         var cnd = parseFloat(datab["naodescontado"].CND);
@@ -1729,15 +1729,19 @@ $(document).ready(function(){
         var mes            = $('#C_mes').val();
         var cod_empregador = $('#C_id_empregador_origem').val();
         var empregador     = $('#C_empregador_origem').val();
-        var adiantamento   = $('#empgasto').html();
-        var taxa_cartao    = $('#taxagasto').html();
-        var cartao         = $('#cartgasto').html();
+        function parseCurrencyBR(str) {
+            // Remove R$, &nbsp;, non-breaking spaces and other non-numeric chars except comma and dot
+            return str.replace(/R\$\s*/g, '').replace(/\u00a0/g, '').replace(/&nbsp;/g, '').trim();
+        }
+        var adiantamento   = parseCurrencyBR($('#empgasto').text());
+        var taxa_cartao    = parseCurrencyBR($('#taxagasto').text());
+        var cartao         = parseCurrencyBR($('#cartgasto').text());
+        var limite         = $('#limite').val();
         /*var unimed         = $('#unigasto').html();
-        /*var fnd            = $('#farndesc').html();
+        var fnd            = $('#farndesc').html();
         var cnd            = $('#comndesc').html();
         var endes          = $('#finndesc').html();
-        var dnd            = $('#unindesc').html();
-        var limite         = $('#limite').val();*/
+        var dnd            = $('#unindesc').html();*/
         if( table_origem.data().count() > 0 ) {
             $.redirect('../Adm/pages/conta/conta_imprimir_pdf.php',
                 {

@@ -19,8 +19,11 @@ if (isset($_POST['userconv']) && isset($_POST['passconv'])){
 	//$passconv = md5($_POST['passconv']);
    
 	// VERIFICA SENHA ******************************************************************************************************************************************************
-    $sql_conv_senha = $pdo->query("SELECT usuario_texto, password, cod_convenio FROM sind.c_senhaconvenio WHERE usuario_texto='".$usuario_x."' AND password='".$password_x."'");
-    while($row_senha = $sql_conv_senha->fetch()) {
+    $stmt_conv_senha = $pdo->prepare("SELECT usuario_texto, password, cod_convenio FROM sind.c_senhaconvenio WHERE usuario_texto = :usuario AND password = :password");
+    $stmt_conv_senha->bindParam(':usuario', $usuario_x, PDO::PARAM_STR);
+    $stmt_conv_senha->bindParam(':password', $password_x, PDO::PARAM_STR);
+    $stmt_conv_senha->execute();
+    while($row_senha = $stmt_conv_senha->fetch()) {
         $cod_convenio = $row_senha["cod_convenio"];
     }
     if( $cod_convenio != 0 ){
@@ -30,7 +33,10 @@ if (isset($_POST['userconv']) && isset($_POST['passconv'])){
             $std->mes_corrente  = $row_mes["abreviacao"];
         }
 		// VERIFICA SE TA ATIVO ********************************************************************************************************************************************
-        $sql_conv = $pdo->query("SELECT * FROM sind.convenio WHERE codigo=".$cod_convenio." AND divulga = 'S'");
+        $stmt_conv = $pdo->prepare("SELECT * FROM sind.convenio WHERE codigo = :codigo AND divulga = 'S'");
+        $stmt_conv->bindParam(':codigo', $cod_convenio, PDO::PARAM_INT);
+        $stmt_conv->execute();
+        $sql_conv = $stmt_conv;
         while($row_conv = $sql_conv->fetch()) {
 
             $std->tipo_login    = "login sucesso";

@@ -3,6 +3,7 @@ var usuario_cod;
 var divisao;
 var divisao_nome;
 var tabela_assinaturas_digitais;
+var detailRows = [];
 var d = new Date();
 var curr_date = d.getDate();
 var curr_month = d.getMonth()+1;
@@ -496,6 +497,24 @@ $(document).ready(function(){
    
     console.log('🎯 QRCRED detectado - iniciando sistema...');
     filtra_assinaturas_digitais("signed",divisao);// filtra padrão assinados (has_signed = true)
+
+    $('#tabela_assinaturas_digitais tbody').on('click', 'tr td.details-control', function() {
+        var tr = $(this).closest('tr');
+        var row = tabela_assinaturas_digitais.row(tr);
+        var idx = $.inArray(tr.attr('id'), detailRows);
+
+        if (row.child.isShown()) {
+            tr.removeClass('details');
+            row.child.hide();
+            detailRows.splice(idx, 1);
+        } else {
+            tr.addClass('details');
+            row.child(formatAssinaturaDigital(row.data())).show();
+            if (idx === -1) {
+                detailRows.push(tr.attr('id'));
+            }
+        }
+    });
     
     // Configurar e iniciar atualização automática
     console.log('🚀 Iniciando sistema de auto-atualização...');
@@ -1144,6 +1163,25 @@ $('#RadioTodos').change(function(){
 });
 
 // Função para filtrar e configurar o DataTable
+function formatAssinaturaDigital(d) {
+    var tipoLabel = d.tipo == 1 ? 'adesao' : (d.tipo == 2 ? 'antecipação' : 'indefinido');
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+        '<tr><td><strong>ID:</strong></td><td>' + (d.id || '') + '</td></tr>' +
+        '<tr><td><strong>Tipo:</strong></td><td>' + tipoLabel + '</td></tr>' +
+        '<tr><td><strong>Autorizado:</strong></td><td>' + (d.autorizado || '') + '</td></tr>' +
+        '<tr><td><strong>Aceitou Termo:</strong></td><td>' + (d.aceitou_termo || '') + '</td></tr>' +
+        '<tr><td><strong>Event:</strong></td><td>' + (d.event || '') + '</td></tr>' +
+        '<tr><td><strong>Doc Token:</strong></td><td>' + (d.doc_token || '') + '</td></tr>' +
+        '<tr><td><strong>Doc Name:</strong></td><td>' + (d.doc_name || '') + '</td></tr>' +
+        '<tr><td><strong>Signed At:</strong></td><td>' + (d.signed_at || '') + '</td></tr>' +
+        '<tr><td><strong>Name:</strong></td><td>' + (d.name || '') + '</td></tr>' +
+        '<tr><td><strong>Email:</strong></td><td>' + (d.email || '') + '</td></tr>' +
+        '<tr><td><strong>CPF:</strong></td><td>' + (d.cpf || '') + '</td></tr>' +
+        '<tr><td><strong>Has Signed:</strong></td><td>' + (d.has_signed || '') + '</td></tr>' +
+        '<tr><td><strong>Cel Informado:</strong></td><td>' + (d.cel_informado || '') + '</td></tr>' +
+        '</table>';
+}
+
 function filtra_assinaturas_digitais(codigo,divisao){
     console.log('🔧 Filtrando assinaturas digitais - Código:', codigo, 'Divisão:', divisao);
     debugger;
@@ -1182,7 +1220,6 @@ function filtra_assinaturas_digitais(codigo,divisao){
                 "serverSide": false,
                 "paging": true,
                 "deferRender": true,
-                "fixedColumns": true,
                 "autoWidth": false,
                 "responsive": false,
                     "ajax": {
@@ -1238,8 +1275,14 @@ function filtra_assinaturas_digitais(codigo,divisao){
                         }
                     }
                 },
-            "order": [[ 1, "desc" ]],
+            "order": [[ 2, "desc" ]],
             "columns": [
+                {
+                    "class": "details-control",
+                    "orderable": false,
+                    "data": null,
+                    "defaultContent": ""
+                },
                 { 
                     "data": "tipo",
                     "render": function(data, type, row) {
@@ -1276,7 +1319,7 @@ function filtra_assinaturas_digitais(codigo,divisao){
             ],
             "columnDefs": [
                 {
-                    "targets": [ 1, 6, 7, 8, 9, 10, 11, 12, 13 ],
+                    "targets": [ 2, 7, 8, 9, 10, 11, 12, 13, 14 ],
                     "visible": false,
                     "searchable": true,
                 },

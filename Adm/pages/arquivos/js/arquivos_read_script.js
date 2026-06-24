@@ -422,6 +422,48 @@ $('#relatorio_oficio').click(function (e) {
     $.redirect('../Adm/pages/arquivos/relatorio_oficio.php', params, "POST", "_blank");
 });
 
+// Opção 3: Ofício JPEG (gera imagem JPEG do ofício)
+$('#relatorio_oficio_jpeg').click(function (e) {
+    e.preventDefault();
+    var mes_atual  = $('#C_mes').val();
+    var empregador = $('#C_empregador').val();
+    var tipo = $('#C_tipo').val();
+    var data_vencimento = $('#C_data_vencimento').val();
+    
+    if (!mes_atual) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um mês.'
+        });
+        return;
+    }
+    
+    if (!empregador) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, selecione um empregador.'
+        });
+        return;
+    }
+    
+    if (!data_vencimento) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Atenção!',
+            text: 'Por favor, informe a data de vencimento para o ofício.'
+        });
+        return;
+    }
+    
+    var params = { mes_atual: mes_atual, empregador: empregador, divisao: divisao, divisao_nome: divisao_nome, data_vencimento: data_vencimento };
+    if (tipo && tipo !== '') {
+        params.tipo = tipo;
+    }
+    $.redirect('../Adm/pages/arquivos/relatorio_oficio_jpeg_v3.php', params, "POST", "_blank");
+});
+
 // Novo botão para gerar todos os relatórios em um único PDF
 $('#relatorio_todos').click(function () {
     var mes_atual = $('#C_mes').val();
@@ -623,6 +665,176 @@ $('#relatorio_individuais').click(function () {
         }
     });
 });
+// ── Todos em 1 PDF → Ofício pdf ──────────────────────────────────────────────
+$('#relatorio_todos_oficio').click(function () {
+    var mes_atual       = $('#C_mes').val();
+    var tipo            = $('#C_tipo').val();
+    var data_vencimento = $('#C_data_vencimento').val();
+
+    if (!mes_atual) {
+        Swal.fire({ icon: 'warning', title: 'Atenção!', text: 'Por favor, selecione um mês.' });
+        return;
+    }
+    if (!data_vencimento) {
+        Swal.fire({ icon: 'warning', title: 'Atenção!', text: 'Por favor, informe a data de vencimento para o ofício.' });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Confirmar Geração',
+        text: 'Deseja gerar o ofício consolidado (PDF) com todos os empregadores? Este processo pode levar alguns minutos.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#f57c00',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Sim, gerar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({ title: 'Gerando Ofícios...', text: 'Aguarde enquanto todos os ofícios são compilados.', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+            var params = { mes_atual: mes_atual, divisao: divisao, divisao_nome: divisao_nome, data_vencimento: data_vencimento };
+            if (tipo && tipo !== '') { params.tipo = tipo; }
+            $.redirect('../Adm/pages/arquivos/relatorio_todos_oficio.php', params, "POST", "_blank");
+            setTimeout(() => { Swal.close(); }, 3000);
+        }
+    });
+});
+
+// ── Todos em 1 PDF → Ofício jpeg ─────────────────────────────────────────────
+$('#relatorio_todos_oficio_jpeg').click(function () {
+    var mes_atual       = $('#C_mes').val();
+    var tipo            = $('#C_tipo').val();
+    var data_vencimento = $('#C_data_vencimento').val();
+
+    if (!mes_atual) {
+        Swal.fire({ icon: 'warning', title: 'Atenção!', text: 'Por favor, selecione um mês.' });
+        return;
+    }
+    if (!data_vencimento) {
+        Swal.fire({ icon: 'warning', title: 'Atenção!', text: 'Por favor, informe a data de vencimento para o ofício.' });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Confirmar Geração',
+        text: 'Deseja gerar o ofício consolidado (JPEG) com todos os empregadores? Este processo pode levar alguns minutos.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#388e3c',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Sim, gerar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({ title: 'Gerando Ofícios JPEG...', text: 'Aguarde enquanto todos os ofícios são compilados.', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+            var params = { mes_atual: mes_atual, divisao: divisao, divisao_nome: divisao_nome, data_vencimento: data_vencimento };
+            if (tipo && tipo !== '') { params.tipo = tipo; }
+            $.redirect('../Adm/pages/arquivos/relatorio_todos_oficio_jpeg.php', params, "POST", "_blank");
+            setTimeout(() => { Swal.close(); }, 3000);
+        }
+    });
+});
+
+// Helper: gera ofícios individuais para cada empregador usando o PHP informado
+function gerarOficiosIndividuais(phpFile, labelTipo) {
+    var mes_atual       = $('#C_mes').val();
+    var tipo            = $('#C_tipo').val();
+    var data_vencimento = $('#C_data_vencimento').val();
+    var divisao         = sessionStorage.getItem("divisao");
+
+    if (!mes_atual) {
+        Swal.fire({ icon: 'warning', title: 'Atenção!', text: 'Por favor, selecione um mês.' });
+        return;
+    }
+    if (!data_vencimento) {
+        Swal.fire({ icon: 'warning', title: 'Atenção!', text: 'Por favor, informe a data de vencimento para o ofício.' });
+        return;
+    }
+    if (!divisao) {
+        Swal.fire({ icon: 'warning', title: 'Erro de Sessão!', text: 'Divisão não encontrada. Por favor, recarregue a página.' });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Confirmar Geração de Ofícios Individuais',
+        html: 'Deseja gerar um ofício <strong>' + labelTipo + '</strong> separado para cada empregador?<br><br>' +
+              '<small>Este processo pode levar alguns minutos e irá baixar múltiplos arquivos.</small>',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#17a2b8',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Sim, gerar!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (!result.isConfirmed) { return; }
+
+        var ajaxData = { mes_atual: mes_atual, divisao: divisao };
+        if (tipo && tipo !== '') { ajaxData.tipo = tipo; }
+
+        $.ajax({
+            url: '../Adm/pages/arquivos/buscar_empregadores_mes.php',
+            method: 'POST',
+            data: ajaxData,
+            dataType: 'json',
+            success: function(empregadores) {
+                if (!empregadores || empregadores.length === 0) {
+                    Swal.fire({ icon: 'info', title: 'Nenhum Empregador', text: 'Não foram encontrados empregadores com dados para o mês selecionado.' });
+                    return;
+                }
+
+                let currentIndex = 0;
+                const totalEmpregadores = empregadores.length;
+
+                Swal.fire({
+                    title: 'Gerando Ofícios Individuais...',
+                    html: 'Progresso: <strong>0 de ' + totalEmpregadores + '</strong> empregadores',
+                    allowOutsideClick: false,
+                    didOpen: () => { Swal.showLoading(); }
+                });
+
+                function gerarProximo() {
+                    if (currentIndex >= totalEmpregadores) {
+                        Swal.fire({ icon: 'success', title: 'Concluído!', text: totalEmpregadores + ' ofícios foram gerados e baixados com sucesso.', timer: 3000 });
+                        return;
+                    }
+
+                    const emp = empregadores[currentIndex];
+                    Swal.update({ html: 'Progresso: <strong>' + (currentIndex + 1) + ' de ' + totalEmpregadores + '</strong> empregadores<br>Gerando: <em>' + emp.nome + '</em>' });
+
+                    const form = $('<form>', { method: 'POST', action: '../Adm/pages/arquivos/' + phpFile, target: '_blank' });
+                    form.append($('<input>', { type: 'hidden', name: 'mes_atual',        value: mes_atual }));
+                    form.append($('<input>', { type: 'hidden', name: 'empregador',       value: emp.id }));
+                    form.append($('<input>', { type: 'hidden', name: 'divisao',          value: divisao }));
+                    form.append($('<input>', { type: 'hidden', name: 'divisao_nome',     value: divisao_nome }));
+                    form.append($('<input>', { type: 'hidden', name: 'data_vencimento',  value: data_vencimento }));
+                    if (tipo && tipo !== '') { form.append($('<input>', { type: 'hidden', name: 'tipo', value: tipo })); }
+
+                    $('body').append(form);
+                    form.submit();
+                    form.remove();
+                    currentIndex++;
+                    setTimeout(gerarProximo, 2500);
+                }
+
+                gerarProximo();
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({ icon: 'error', title: 'Erro', text: 'Erro ao buscar lista de empregadores. Tente novamente.' });
+            }
+        });
+    });
+}
+
+// ── PDFs Separados → Ofício pdf ───────────────────────────────────────────────
+$('#relatorio_individuais_oficio').click(function () {
+    gerarOficiosIndividuais('relatorio_oficio.php', 'PDF');
+});
+
+// ── PDFs Separados → Ofício jpeg ──────────────────────────────────────────────
+$('#relatorio_individuais_oficio_jpeg').click(function () {
+    gerarOficiosIndividuais('relatorio_oficio_jpeg_v3.php', 'JPEG');
+});
+
 $('#btnImprimirTodosExtratos').click(function () {
     var mes_atual  = $('#C_mes').val();
     var empregador = $('#C_empregador').val();

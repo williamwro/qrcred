@@ -73,7 +73,7 @@ if(isset($_POST["cod_associado"])){
         $std->nome            = htmlspecialchars($row["nome"] ?? '');
         $std->endereco        = htmlspecialchars($row["endereco"] ?? '');
         $std->numero          = $row["numero"];
-        $std->nascimento      = date('d/m/Y', strtotime($row["nascimento"]));
+        $std->nascimento      = $row["nascimento"] ? date('d/m/Y', strtotime($row["nascimento"])) : '';
         $std->salario         = (float)str_replace('.', ',', (string)($row["salario"] ?? '0'));
         $std->limite          = (float)str_replace('.', ',', (string)($row["limite"] ?? '0'));
         $std->empregador      = (int)$row["id_empregador"];

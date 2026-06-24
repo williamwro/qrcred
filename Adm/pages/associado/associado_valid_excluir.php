@@ -42,23 +42,13 @@ if(isset($_POST["cod_associado"])){
     $result_antecipacao = $stmt_antecipacao->fetch(PDO::FETCH_ASSOC);
     $tem_antecipacao = $result_antecipacao['total'] > 0;
 
-    // Verificar tabela c_senha_associado
-    $sql_senha = "SELECT COUNT(*) as total FROM sind.c_senhaassociado 
-                  WHERE id_associado = :id_associado";
-    $stmt_senha = $pdo->prepare($sql_senha);
-    $stmt_senha->bindParam(':id_associado', $id_associado, PDO::PARAM_INT);
-    $stmt_senha->execute();
-    $result_senha = $stmt_senha->fetch(PDO::FETCH_ASSOC);
-    $tem_senha = $result_senha['total'] > 0;
-
-    // Verificar se existe algum impedimento
-    if ($tem_conta || $tem_cartao || $tem_antecipacao || $tem_senha) {
+    // Verificar se existe algum impedimento (conta e antecipacao bloqueiam; senha e log_limites serão deletados junto)
+    if ($tem_conta || $tem_cartao || $tem_antecipacao) {
         $motivos = array();
         if ($tem_conta) $motivos[] = "lançamentos na conta";
         if ($tem_cartao) $motivos[] = "cartões associados";
         if ($tem_antecipacao) $motivos[] = "antecipações";
-        if ($tem_senha) $motivos[] = "senha cadastrada";
-        
+
         $msg = "existe impedimento";
         $arr = array('Resultado' => $msg, 'Motivos' => implode(", ", $motivos));
     } else {

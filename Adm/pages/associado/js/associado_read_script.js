@@ -17,6 +17,20 @@ var card4;
 var card5;
 var card6;
 
+function atualizarEstadoEmpregador() {
+    var val = $('#C_empregador_assoc').val();
+    var $group = $('#grupo_C_empregador');
+    var $icon = $group.find('.form-control-feedback');
+
+    if (!val || val === '' || val === '0') {
+        $group.removeClass('has-success').addClass('has-error');
+        $icon.removeClass('glyphicon-ok').addClass('glyphicon-remove');
+    } else {
+        $group.removeClass('has-error').addClass('has-success');
+        $icon.removeClass('glyphicon-remove').addClass('glyphicon-ok');
+    }
+}
+
 $(document).ready(function(){
 
     // Obter dados do sessionStorage
@@ -31,6 +45,33 @@ $(document).ready(function(){
     $('#C_cel_assoc').mask('(99)99999-9999');
     C_cep_assoc.mask("99.999-999");
     $('#C_cpf_assoc').mask('999.999.999-99');
+
+    // Copiar CPF digitado para o campo Matrícula RH
+    $('#C_cpf_assoc').on('input keyup', function() {
+        $('#C_matricula_assoc').val($(this).val());
+    });
+
+    // Validação visual do empregador (Select2 + hidden original)
+    $('#C_empregador_assoc').on('change select2:select select2:clear', atualizarEstadoEmpregador);
+    $('#C_empregador_original').on('change input', atualizarEstadoEmpregador);
+
+    $('#ModalEdita').on('shown.bs.modal', function() {
+        setTimeout(atualizarEstadoEmpregador, 150);
+    });
+
+    // Validação visual do celular ao perder foco (máscara pode enganar o validator)
+    $('#C_cel_assoc').on('blur', function() {
+        var digits = $(this).val().replace(/\D/g, '');
+        var group  = $(this).closest('.form-group');
+        var icon   = group.find('.form-control-feedback');
+        if (!digits || digits.length < 10) {
+            group.removeClass('has-success').addClass('has-error');
+            icon.removeClass('glyphicon-ok').addClass('glyphicon-remove');
+        } else {
+            group.removeClass('has-error').addClass('has-success');
+            icon.removeClass('glyphicon-remove').addClass('glyphicon-ok');
+        }
+    });
     
     // Habilitar colar (Ctrl+V) no campo CPF
     $('#C_cpf_assoc').on('paste', function(e) {
@@ -159,6 +200,7 @@ $(document).ready(function(){
                     allowClear: true,
                     width: '100%'
                 });
+                $('#C_empregador_assoc').on('select2:select select2:clear change', atualizarEstadoEmpregador);
             }
         }, 50);
     });
@@ -198,6 +240,7 @@ $(document).ready(function(){
             "paging": true,
             "deferRender": true,
             "data": [], // Vazio inicialmente
+            "order": [[ 2, "asc" ]], // Ordenar por NOME (coluna 2) em ordem ascendente
             "columns": [
                 { "class":"details-control", "orderable":false, "data":null, "defaultContent": "" },
                 { "data": "codigo" },
@@ -207,7 +250,7 @@ $(document).ready(function(){
                 { "data": "nascimento" },
                 { "data": "abreviacao" },
                 { "data": "id_empregador" },
-                { "data": "nome_situacao" },
+                { "data": "cpf" },
                 { "data": "botao" },
                 { "data": "botaosenha" },
                 { "data": "botaoexcluir" }
@@ -396,7 +439,9 @@ $(document).on('click','.update_assoc',function () {
    
     var cod_associado = $(this).attr("id");
     var tdobj = $(this).closest('tr').find('td');
-    var empregador = table_associados.row($(this).parents('tr')).data()["id_empregador"];
+    var row_data = table_associados.row($(this).parents('tr')).data();
+    var empregador = row_data["id_empregador"];
+    var id_assoc = row_data["id"];
 
     $("#rotulo_associado").html("Alterando");
     $.ajax({
@@ -449,14 +494,14 @@ $(document).on('click','.update_assoc',function () {
             
             // Se Select2 estiver ativo, usar método específico
             if ($("#C_empregador_assoc").hasClass('select2-hidden-accessible')) {
-                $("#C_empregador_assoc").val(data.empregador).trigger('change');
+                $("#C_empregador_assoc").val(String(data.empregador)).trigger('change');
                 console.log('✅ Empregador definido via Select2:', data.empregador);
             } else {
-                $("#C_empregador_assoc").val(data.empregador);
+                $("#C_empregador_assoc").val(String(data.empregador));
                 console.log('✅ Empregador definido via select normal:', data.empregador);
             }
-            
-            $("#C_empregador_original").val(data.empregador);
+
+            $("#C_empregador_original").val(data.empregador).trigger('change');
             $("#C_funcao").val(data.codfuncao);
             $("#C_funcao_original").val(data.codfuncao);
             $("#C_Email_assoc").val(data.email);
@@ -475,14 +520,14 @@ $(document).on('click','.update_assoc',function () {
             //}
             $("#C_matricula_assoc").val(data.codigo);
             $('#C_matricula_original').val(data.codigo);
-           
+            $('#id_associado_log').val(id_assoc);
        
             $("#C_ultimo_mes").val(data.ultimo_mes);
    
             $('#operation').val("Update");
 
-
             $('#frmassociado').validator('validate');
+            setTimeout(atualizarEstadoEmpregador, 200);
         }
     });
 });
@@ -490,7 +535,7 @@ $("#btnInserir").click(function(){
     $("#frmassociado")[0].reset();
     $("#rotulo_associado").html("Cadastrando");
     $("#C_empregador_assoc").val(0);
-    $("#C_empregador_original").val("0");
+    $("#C_empregador_original").val("0").trigger('change');
     $.fn.modal.Constructor.prototype.enforceFocus = function() {};
     $("#ModalEdita").modal("show");
     $('#operation').val("Add");
@@ -501,7 +546,78 @@ $("#btnInserir").click(function(){
     $('#C_cidade_assoc').val($('#C_cidade_assoc option').eq(835).val());
     // Tornar Matrícula RH somente leitura ao cadastrar
     $("#C_matricula_assoc").prop('readonly', true);
+    if ($("#C_empregador_assoc").hasClass('select2-hidden-accessible')) {
+        $("#C_empregador_assoc").val('').trigger('change');
+    }
+    atualizarEstadoEmpregador();
 });
+$(document).on('click', '#btnHistoricoLimite', function () {
+    var id_associado = $('#id_associado_log').val();
+    if (!id_associado || id_associado === '' || id_associado === '0') {
+        Swal.fire({
+            title: 'Atenção',
+            text: 'Salve o associado antes de consultar o histórico, ou abra um associado existente.',
+            icon: 'info',
+            timer: 2500,
+            showConfirmButton: false
+        });
+        return;
+    }
+
+    var nome_assoc = $('#C_nome_assoc').val();
+    $('#historico_limite_nome').text('Associado: ' + nome_assoc);
+    $('#historico_limite_tbody').empty();
+    $('#historico_limite_tabela_wrapper').hide();
+    $('#historico_limite_vazio').hide();
+    $('#historico_limite_loading').show();
+
+    $.fn.modal.Constructor.prototype.enforceFocus = function() {};
+    $('#ModalHistoricoLimites').modal('show');
+
+    $.ajax({
+        url: 'pages/associado/associado_log_limites_listar.php',
+        method: 'POST',
+        dataType: 'json',
+        data: { id_associado: id_associado },
+        success: function (resp) {
+            $('#historico_limite_loading').hide();
+            if (!resp.success || !resp.data || resp.data.length === 0) {
+                $('#historico_limite_vazio').show();
+                return;
+            }
+            $.each(resp.data, function (i, row) {
+                var old_val = parseFloat(row.limite_old) || 0;
+                var new_val = parseFloat(row.limite_new) || 0;
+                var diff = new_val - old_val;
+                var diff_str, diff_color;
+                if (diff > 0) {
+                    diff_str = '+ ' + numeroParaMoeda(diff);
+                    diff_color = '#28a745';
+                } else if (diff < 0) {
+                    diff_str = '- ' + numeroParaMoeda(Math.abs(diff));
+                    diff_color = '#dc3545';
+                } else {
+                    diff_str = '0,00';
+                    diff_color = '#555';
+                }
+                var tr = '<tr>' +
+                    '<td style="text-align:center;white-space:nowrap;">' + row.datahora + '</td>' +
+                    '<td style="text-align:right;">R$ ' + numeroParaMoeda(old_val) + '</td>' +
+                    '<td style="text-align:right;font-weight:bold;">R$ ' + numeroParaMoeda(new_val) + '</td>' +
+                    '<td style="text-align:right;font-weight:bold;color:' + diff_color + ';">' + diff_str + '</td>' +
+                    '<td style="text-align:center;">' + (row.nome_usuario || '') + '</td>' +
+                    '</tr>';
+                $('#historico_limite_tbody').append(tr);
+            });
+            $('#historico_limite_tabela_wrapper').show();
+        },
+        error: function () {
+            $('#historico_limite_loading').hide();
+            $('#historico_limite_vazio').show();
+        }
+    });
+});
+
 $("#btnSalvar").click(function(event){
    waitingDialog.show('Gravando, aguarde ...');
    
@@ -672,36 +788,17 @@ $("#btnSalvar").click(function(event){
            case 'C_nome_assoc':
                nome_campo = "Nome";
                break;
-           case 'C_matricula_assoc':
-               nome_campo = "Matricula";
-               break;
-           case 'C_nome_assoc':
-               nome_campo = "Endereço";
-               break;
-           case 'C_numero_assoc':
-               nome_campo = "Numero";
-               break;
-           case 'C_bairro_assoc':
-               nome_campo = "Bairro";
-               break;
-           case 'C_cidade_assoc':
-               nome_campo = "Cidade";
-               break;
-           case 'C_uf_assoc':
-               nome_campo = "uf";
-               break;
-           case 'C_nascimento':
-               nome_campo = "Data de Nascimento";
-               break;
-           case 'C_salario':
-               nome_campo = "Salário";
-               break;
-           case 'C_limite_assoc':
-               nome_campo = "Limite";
-               break;
            case 'C_cpf_assoc':
                nome_campo = "CPF";
                break;
+           case 'C_cel_assoc':
+               nome_campo = "Celular";
+               break;
+           case 'C_empregador_assoc':
+               nome_campo = "Empregador";
+               break;
+           default:
+               nome_campo = campo_vazio;
        }
        BootstrapDialog.show({
            closable: false,
@@ -1272,41 +1369,19 @@ function format ( d ) {
            '</div>';
 }
 function validar(){
-
     var nome       = $('#C_nome_assoc').val();
-    var matricula  = $('#C_matricula_assoc').val();
-    var endereco   = $('#C_nome_assoc').val();
-    var numero     = $('#C_numero_assoc').val();
-    var bairro     = $('#C_bairro_assoc').val();
-    var cidade     = $('#C_cidade_assoc').val();
-    var uf         = $('#C_uf_assoc').val();
-    var nascimento = $('#C_nascimento').val();
-    var salario    = $('#C_salario').val();
-    var limite     = $('#C_limite_assoc').val();
     var cpf        = $('#C_cpf_assoc').val();
-    if (nome === ""){
+    var cel        = $('#C_cel_assoc').val();
+    var empregador = $('#C_empregador_assoc').val();
+    if (nome === "") {
         return $('#C_nome_assoc').attr('name');
-    }else if (matricula === "") {
-        return $('#C_matricula_assoc').attr('name');
-    }else if (endereco === "") {
-        return $('#C_nome_assoc').attr('name');
-    }else if (numero === "") {
-        return $('#C_numero_assoc').attr('name');
-    }else if (bairro === "") {
-        return $('#C_bairro_assoc').attr('name');
-    }else if (cidade === "") {
-        return $('#C_cidade_assoc').attr('name');
-    }else if (uf === "") {
-        return $('#C_uf_assoc').attr('name');
-    }else if (nascimento === "") {
-        return $('#C_nascimento').attr('name');
-    }else if (salario === "") {
-        return $('#C_salario').attr('name');
-    }else if (limite === "") {
-        return $('#C_limite_assoc').attr('name');
-    }else if (cpf === "") {
+    } else if (cpf === "") {
         return $('#C_cpf_assoc').attr('name');
-    }else{
+    } else if (cel === "") {
+        return $('#C_cel_assoc').attr('name');
+    } else if (!empregador || empregador === "" || empregador === "0") {
+        return $('#C_empregador_assoc').attr('name');
+    } else {
         return "validou";
     }
 }
@@ -1371,7 +1446,7 @@ function filtra_associado(codigo,divisao){
             { "data": "nascimento" },
             { "data": "abreviacao" },
             { "data": "id_empregador" },
-            { "data": "nome_situacao" },
+            { "data": "cpf" },
             { "data": "botao" },
             { "data": "botaosenha" },
             { "data": "botaoexcluir" },

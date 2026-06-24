@@ -231,6 +231,13 @@ $(document).ready(function(){
             $('#pagina_conteudo').load('pages/antecipacao/antecipacao_read.html',{divisao: divisao,divisao_nome:divisao_nome,usuario_global:usuario_global,usuario_cod:usuario_cod},function () {
             });
         });
+        $('#link_seguro_beneficiarios').click(function(){
+            $.ajaxSetup({
+                cache:true
+            });
+            $('#pagina_conteudo').load('pages/seguro-beneficiarios/seguro_beneficiarios_read.html',{divisao: divisao,divisao_nome:divisao_nome,usuario_global:usuario_global,usuario_cod:usuario_cod},function () {
+            });
+        });
         $('#link_email_app').click(function(){
             $.ajaxSetup({
                 cache:true

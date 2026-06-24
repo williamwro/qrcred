@@ -359,7 +359,7 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
                       AND empregador.id =" . $_POST["empregador"] . " 
                       AND left(conta.parcela,2) ='" . $_POST["parcela"] . "'
                       AND empregador.id_divisao = " . $divisao . " 
-                   
+                      AND (conta.aprovado = true)
                       ORDER BY convenio.razaosocial, " . $ordem . ";";
         }else{
             $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, empregador.id AS codigo_empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
@@ -371,7 +371,8 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
                       ON empregador.id = conta.empregador) 
                       ON associado.codigo = conta.associado AND associado.empregador = conta.empregador
                       WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes_atual"] . "'
-                      AND empregador.id =" . $_POST["empregador"] . " AND empregador.id_divisao = " . $divisao . " ORDER BY convenio.razaosocial, " . $ordem . ";";
+                      AND empregador.id =" . $_POST["empregador"] . " AND empregador.id_divisao = " . $divisao . "
+                      AND (conta.aprovado = true) ORDER BY convenio.razaosocial, " . $ordem . ";";
         }
     } else {
         if (isset($_POST["parcela"]) and $_POST["parcela"] != "") {
@@ -387,7 +388,7 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
             AND conta.mes = '" . $_POST["mes_atual"] . "' 
             AND left(conta.parcela,2) ='" . $_POST["parcela"] . "'
             AND empregador.id_divisao = " . $divisao . " 
-           
+            AND (conta.aprovado = true)
             ORDER BY convenio.razaosocial, " . $ordem . ";";
         }else{
             $query = "SELECT conta.lancamento, conta.associado AS matricula, conta.valor, conta.data, conta.hora, conta.mes, empregador.nome AS empregador, empregador.id AS codigo_empregador, convenio.razaosocial AS convenio, convenio.codigo AS cod_convenio, associado.nome AS associado, conta.funcionario, conta.parcela, conta.descricao
@@ -398,8 +399,8 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
             ON convenio.codigo = conta.convenio) 
             ON empregador.id = conta.empregador) 
             ON associado.codigo = conta.associado AND associado.empregador = conta.empregador
-            WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.id_divisao = " . $divisao . " 
-         
+            WHERE convenio.codigo = " . $_POST["cod_convenio"] . " AND conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.id_divisao = " . $divisao . "
+            AND (conta.aprovado = true)
             ORDER BY convenio.razaosocial, " . $ordem . ";";
         }
     }
@@ -415,8 +416,8 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
         ON convenio.codigo = conta.convenio) 
         ON empregador.id = conta.empregador) 
         ON associado.codigo = conta.associado AND associado.empregador = conta.empregador
-        WHERE empregador.id =" . $_POST["empregador"] . " AND conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.id_divisao = ".$divisao."  
-        
+        WHERE empregador.id =" . $_POST["empregador"] . " AND conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.id_divisao = ".$divisao."
+        AND (conta.aprovado = true)
         ORDER BY convenio.razaosocial, ".$ordem.";";
 
     } else {
@@ -429,7 +430,7 @@ if (isset($_POST["cod_convenio"]) and $_POST["cod_convenio"] != "") {
         ON empregador.id = conta.empregador) 
         ON associado.codigo = conta.associado AND associado.empregador = conta.empregador
         WHERE conta.mes = '" . $_POST["mes_atual"] . "' AND empregador.id_divisao = ".$divisao."
-         
+        AND (conta.aprovado = true)
         ORDER BY convenio.razaosocial ASC, ".$ordem." ASC;";
     }
 }
@@ -443,7 +444,8 @@ $grupo_todos_convenios = "SELECT empregador.nome, sum(conta.valor) as total
                       RIGHT JOIN sind.empregador
                               ON empregador.id = conta.empregador 
                            WHERE (((conta.mes)='" . $mes_atual . "') 
-                             AND empregador.id_divisao = ".$divisao.")
+                             AND empregador.id_divisao = ".$divisao."
+                             AND (conta.aprovado = true))
                         GROUP BY empregador.id;";
 
 PDF::setMS($mes_atual);
@@ -478,7 +480,8 @@ while($row = $sql_conv_vendas->fetch()) {
                                       ON empregador.id = conta.empregador 
                                    WHERE (((conta.mes)='" . $mes_atual . "') 
                                      AND empregador.id_divisao = " . $divisao . " 
-                                     AND convenio.codigo = " . $cod_convenio . ")
+                                     AND convenio.codigo = " . $cod_convenio . "
+                                     AND (conta.aprovado = true))
                                 GROUP BY empregador.id;";
         $convenio_aux = $row['convenio'];
         $cod_convenio = $row['cod_convenio'];

@@ -69,8 +69,10 @@ if ( isset($_POST['valor_pedido']) ) {
     
     try {
         // -----------------------------------------------------------
-        $sql_pede_senha = $pdo->query("SELECT * FROM sind.convenio WHERE codigo = " .  $codigo_convenio);
-        while ($row_convenio = $sql_pede_senha->fetch()) {
+        $stmt_convenio = $pdo->prepare("SELECT * FROM sind.convenio WHERE codigo = :codigo");
+        $stmt_convenio->bindParam(':codigo', $codigo_convenio, PDO::PARAM_INT);
+        $stmt_convenio->execute();
+        while ($row_convenio = $stmt_convenio->fetch()) {
             $nomefantasia   = $row_convenio["nomefantasia"];
             $razaosocial    = $row_convenio["razaosocial"];
             $endereco       = $row_convenio["endereco"];
@@ -80,8 +82,12 @@ if ( isset($_POST['valor_pedido']) ) {
             $id_categoria   = $row_convenio['id_categoria'];
 
             if ($pede_senha == 1) {
-                $sql_pede_senha = $pdo->query("SELECT * FROM sind.c_senhaassociado WHERE cod_associado = '" . $matricula . "' AND id_empregador = ".$empregador." AND senha = '" . $senha . "'");
-                while ($row_senha = $sql_pede_senha->fetch()) {
+                $stmt_senha = $pdo->prepare("SELECT * FROM sind.c_senhaassociado WHERE cod_associado = :matricula AND id_empregador = :empregador AND senha = :senha");
+                $stmt_senha->bindParam(':matricula', $matricula, PDO::PARAM_STR);
+                $stmt_senha->bindParam(':empregador', $empregador, PDO::PARAM_INT);
+                $stmt_senha->bindParam(':senha', $senha, PDO::PARAM_STR);
+                $stmt_senha->execute();
+                while ($row_senha = $stmt_senha->fetch()) {
                     $cont_senha_assoc = 1;
                 }
                 if ($cont_senha_assoc == 0) {

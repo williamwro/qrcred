@@ -51,6 +51,11 @@
             display: block !important;
             visibility: visible !important;
         }
+        .box-body .dataTables_wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 </style>
     <body>
         
@@ -172,33 +177,31 @@
                             <div class="box-body">
 
                                 
-                                <!-- Container responsivo para a tabela -->
-                                <div class="table-responsive-custom">
-                                    <table id="tabela_assinaturas_digitais" class="table display table-striped table-hover compact" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th data-priority="1">TIPO</th>
-                                                <th data-priority="2">ID</th>
-                                                <th data-priority="3">CÓDIGO</th>
-                                                <th data-priority="4">NOME</th>
-                                                <th data-priority="5">CELULAR</th>
-                                                <th data-priority="6">DATA/HORA</th>
-                                                <th data-priority="7">AUTORIZADO</th>
-                                                <th data-priority="8">ACEITOU TERMO</th>
-                                                <th data-priority="9">EVENT</th>
-                                                <th data-priority="10">DOC TOKEN</th>
-                                                <th data-priority="11">DOC NAME</th>
-                                                <th data-priority="12">SIGNED AT</th>
-                                                <th data-priority="13">NAME</th>
-                                                <th data-priority="14">EMAIL</th>
-                                                <th data-priority="15">CPF</th>
-                                                <th data-priority="16">HAS SIGNED</th>
-                                                <th data-priority="17">CEL INFORMADO</th>
-                                                <th data-priority="18">AÇÕES</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
+                                <table id="tabela_assinaturas_digitais" class="table display table-striped table-hover compact" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>TIPO</th>
+                                            <th>ID</th>
+                                            <th>CÓDIGO</th>
+                                            <th>NOME</th>
+                                            <th>CELULAR</th>
+                                            <th>DATA/HORA</th>
+                                            <th>AUTORIZADO</th>
+                                            <th>ACEITOU TERMO</th>
+                                            <th>EVENT</th>
+                                            <th>DOC TOKEN</th>
+                                            <th>DOC NAME</th>
+                                            <th>SIGNED AT</th>
+                                            <th>NAME</th>
+                                            <th>EMAIL</th>
+                                            <th>CPF</th>
+                                            <th>HAS SIGNED</th>
+                                            <th>CEL INFORMADO</th>
+                                            <th>AÇÕES</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                     </div>

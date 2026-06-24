@@ -35,6 +35,14 @@ $(document).ready(function() {
             $('#C_lotes').append('<option value="' + value.lote + '">(' + lote_aux + ") - " + value.lote + '</option>');
         });
     });
+
+    // Carregar empregadores para o seletor de geração por empregador
+    $.getJSON("pages/associado/associado_empregador.php", { "divisaox": divisao }, function(data) {
+        $.each(data, function(index, value) {
+            $('#C_empregador_cartao').append('<option value="' + value.id + '">' + value.nome + '</option>');
+        });
+    });
+
     waitingDialog.hide();
     table.ajax.reload();
     // Garantir que os botões de exclusão estejam habilitados após carregamento inicial
@@ -87,6 +95,7 @@ function listar_cartoes() {
                     "class": "noExl"
                 },
                 {data: "nome"},
+                {data: "senha"},
                 {data: "botaoexcluir",
                     orderable: false,
                     "class": "noExl"
@@ -149,6 +158,7 @@ function listar_cartoes() {
                        "class": "noExl"
                 },
                 {data: "nome"},
+                {data: "senha"},
                 {data: "botaoexcluir",
                     orderable: false,
                     "class": "noExl"
@@ -426,6 +436,7 @@ $("#C_lotes").change(function () {
                         "class": "noExl"
                     },
                     {data: "nome"},
+                    {data: "senha"},
                     {data: "botaoexcluir",
                         orderable: false,
                         "class": "noExl"
@@ -486,6 +497,7 @@ $("#C_lotes").change(function () {
                         "class": "noExl"
                     },
                     {data: "nome"},
+                    {data: "senha"},
                     {data: "botaoexcluir",
                         orderable: false,
                         "class": "noExl"
@@ -553,6 +565,7 @@ $("#C_lotes").change(function () {
                            "class": "noExl"
                     },
                     {data: "nome"},
+                    {data: "senha"},
                     {data: "botaoexcluir",
                         orderable: false,
                         "class": "noExl"
@@ -613,6 +626,7 @@ $("#C_lotes").change(function () {
                         "class": "noExl"
                     },
                     {data: "nome"},
+                    {data: "senha"},
                     {data: "botaoexcluir",
                         orderable: false,
                         "class": "noExl"
@@ -782,6 +796,156 @@ $("#gerarTodosCartoes").click(function() {
                                 action: function(dialogItself) {
                                     dialogItself.close();
                                 }
+                            }]
+                        });
+                    }
+                });
+            }
+        }
+    });
+});
+
+// Handler: Relatório PDF de cartões e senhas por empregador
+$("#btnRelatorioCartaoSenha").click(function() {
+    var empregador = $("#C_empregador_cartao").val();
+    if (!empregador) {
+        BootstrapDialog.show({
+            title: 'Atenção',
+            type: BootstrapDialog.TYPE_WARNING,
+            message: 'Selecione um empregador antes de gerar o relatório.',
+            closable: true,
+            buttons: [{ label: 'Ok', cssClass: 'btn-warning', action: function(d){ d.close(); } }]
+        });
+        return;
+    }
+    $.redirect("pages/cartoes/relatorio_cartoes_senha_pdf.php", {
+        empregador:      empregador,
+        divisao:         divisao,
+        nome_empregador: $("#C_empregador_cartao option:selected").text(),
+        nome_divisao:    nome_divisao
+    }, "POST", "_blank");
+});
+
+// Handler: Pré-visualizar associados sem cartão para o empregador selecionado
+var _totalSemCartao = 0;
+$("#btnPreviewCartoes").click(function() {
+    var empregador = $("#C_empregador_cartao").val();
+    if (!empregador) {
+        BootstrapDialog.show({
+            title: 'Atenção',
+            type: BootstrapDialog.TYPE_WARNING,
+            message: 'Selecione um empregador antes de pré-visualizar.',
+            closable: true,
+            buttons: [{ label: 'Ok', cssClass: 'btn-warning', action: function(d){ d.close(); } }]
+        });
+        return;
+    }
+    $('#preview_sem_cartao').text('Consultando...');
+    $('#btnGerarCartoesPorEmpregador').prop('disabled', true);
+    $.ajax({
+        url: "pages/cartoes/gerar_cartoes_empregador.php",
+        method: "POST",
+        dataType: "json",
+        data: { divisao: divisao, empregador: empregador, preview: 1 },
+        success: function(data) {
+            _totalSemCartao = data.total_sem_cartao;
+            if (_totalSemCartao > 0) {
+                $('#preview_sem_cartao').html('<span style="color:#276f1b;font-weight:bold;">' + _totalSemCartao + ' associado(s) sem cartão encontrado(s).</span>');
+                $('#btnGerarCartoesPorEmpregador').prop('disabled', false);
+            } else {
+                $('#preview_sem_cartao').html('<span style="color:#888;">Nenhum associado sem cartão para este empregador.</span>');
+                $('#btnGerarCartoesPorEmpregador').prop('disabled', true);
+            }
+        },
+        error: function() {
+            $('#preview_sem_cartao').html('<span style="color:red;">Erro ao consultar. Tente novamente.</span>');
+        }
+    });
+});
+
+// Limpa prévia ao trocar empregador
+$("#C_empregador_cartao").change(function() {
+    $('#preview_sem_cartao').text('');
+    $('#btnGerarCartoesPorEmpregador').prop('disabled', true);
+    _totalSemCartao = 0;
+});
+
+// Handler: Gerar cartões para o empregador selecionado
+$("#btnGerarCartoesPorEmpregador").click(function() {
+    var empregador     = $("#C_empregador_cartao").val();
+    var empregadorNome = $("#C_empregador_cartao option:selected").text();
+    if (!empregador || _totalSemCartao <= 0) return;
+
+    BootstrapDialog.confirm({
+        title: 'Confirmar Geração de Cartões',
+        type: BootstrapDialog.TYPE_PRIMARY,
+        message: '<table style="width:100%;">' +
+                 '<tr><th style="text-align:center;padding:8px;background-color:#ddd;">Atenção</th></tr>' +
+                 '<tr><td style="padding:8px;">Serão gerados <strong>' + _totalSemCartao + '</strong> cartão(s) para associados sem cartão do empregador:<br><strong>' + empregadorNome + '</strong></td></tr>' +
+                 '<tr><td style="padding:8px;">Deseja continuar?</td></tr>' +
+                 '</table>',
+        closable: true,
+        draggable: true,
+        btnCancelLabel: 'Não',
+        btnOKLabel: 'Sim, Gerar',
+        btnOKClass: 'btn btn-success',
+        btnCancelClass: 'btn btn-warning',
+        callback: function(result) {
+            if (result) {
+                waitingDialog.show('Gerando cartões, aguarde...');
+                $.ajax({
+                    url: "pages/cartoes/gerar_cartoes_empregador.php",
+                    method: "POST",
+                    dataType: "json",
+                    data: { divisao: divisao, empregador: empregador, preview: 0 },
+                    success: function(data) {
+                        waitingDialog.hide();
+                        if (data.status === "success") {
+                            BootstrapDialog.show({
+                                closable: false,
+                                title: 'Sucesso',
+                                type: BootstrapDialog.TYPE_SUCCESS,
+                                message: '<strong>' + data.mensagem + '</strong><br><br>' +
+                                         'Associados processados: ' + data.total_associados + '<br>' +
+                                         'Cartões gerados: ' + data.cartoes_gerados + '<br>' +
+                                         (data.erros > 0 ? '<span style="color:red;">Erros: ' + data.erros + '</span>' : ''),
+                                buttons: [{
+                                    cssClass: 'btn-success',
+                                    label: 'Ok',
+                                    action: function(d) {
+                                        d.close();
+                                        table.ajax.reload();
+                                        $('#preview_sem_cartao').text('');
+                                        $('#btnGerarCartoesPorEmpregador').prop('disabled', true);
+                                        _totalSemCartao = 0;
+                                    }
+                                }]
+                            });
+                        } else {
+                            BootstrapDialog.show({
+                                closable: false,
+                                title: 'Erro',
+                                type: BootstrapDialog.TYPE_DANGER,
+                                message: 'Erro: ' + data.mensagem,
+                                buttons: [{
+                                    cssClass: 'btn-danger',
+                                    label: 'Ok',
+                                    action: function(d){ d.close(); }
+                                }]
+                            });
+                        }
+                    },
+                    error: function() {
+                        waitingDialog.hide();
+                        BootstrapDialog.show({
+                            closable: false,
+                            title: 'Erro',
+                            type: BootstrapDialog.TYPE_DANGER,
+                            message: 'Erro na requisição. Tente novamente.',
+                            buttons: [{
+                                cssClass: 'btn-danger',
+                                label: 'Ok',
+                                action: function(d){ d.close(); }
                             }]
                         });
                     }
