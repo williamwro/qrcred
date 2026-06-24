@@ -22,7 +22,7 @@ if(isset($_POST["operation"])) {
         $sql .= "telefone = :telefone, ";
         $sql .= "responsavel = :responsavel, ";
         $sql .= "abreviacao = :abreviacao, ";
-        $sql .= "divisao = :divisao, ";
+        $sql .= "id_divisao = :divisao, ";
         $sql .= "bloqueio = :bloqueio, ";
         $sql .= "usuario = :usuario, ";
         $sql .= "senha = :senha ";
@@ -33,7 +33,7 @@ if(isset($_POST["operation"])) {
     }elseif($_POST["operation"] == "Add") {
 
         $sql = "INSERT INTO sind.empregador(";
-        $sql .= "nome,telefone,responsavel,abreviacao,divisao,bloqueio,usuario,senha) ";
+        $sql .= "nome,telefone,responsavel,abreviacao,id_divisao,bloqueio,usuario,senha) ";
         $sql .= "VALUES(";
         $sql .= ":nome, ";
         $sql .= ":telefone, ";

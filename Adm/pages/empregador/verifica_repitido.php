@@ -6,9 +6,9 @@ $pdo = Banco::conectar_postgres();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $msg_grava_cad = "nao repitido";
 try{
-    $select = $pdo ->query("SELECT id,nome,responsavel,telefone,abreviacao,divisao 
+    $select = $pdo ->query("SELECT id,nome,responsavel,telefone,abreviacao,id_divisao 
                                       FROM sind.empregador 
-                                     WHERE nome = '".$_nome."' AND divisao = ".$_divisao);
+                                     WHERE nome = '".$_nome."' AND id_divisao = ".$_divisao);
     $select->execute();
 
     foreach ($select as $row) {
