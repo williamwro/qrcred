@@ -433,12 +433,29 @@ $msg_grava_cad="";
         
         error_log("DEBUG CONTA: ========== FIM DA ATUALIZAÇÃO DO CAMPO APROVADO ==========");
 
-        // Não insere mais na tabela conta quando aprovado pela primeira vez, pois isso já é feito automaticamente
-        // quando o registro de antecipação é criado
-        
-        // ✅ IMPORTANTE: Quando a antecipação é reprovada (C_aprovado = "3"), NÃO remove o registro da tabela conta
-        // Apenas atualiza o campo aprovado = false via UPDATE acima (linhas 182-226)
-        // O registro permanece na tabela conta para histórico e controle
+        // ✅ QUANDO REPROVADO (C_aprovado = "3"), EXCLUIR OS REGISTROS DA TABELA CONTA (convenio 221 e 249)
+        if ($_POST['C_aprovado'] == "3") {
+            debug_log("DEBUG CONTA: ========== EXCLUINDO REGISTROS (REPROVADO) ==========");
+            $sql_delete_conta = "DELETE FROM sind.conta 
+                                 WHERE mes = :mes 
+                                 AND empregador = :empregador 
+                                 AND id_associado = :id_associado 
+                                 AND divisao = :divisao 
+                                 AND (convenio = 221 OR convenio = 249)";
+            try {
+                $stmt_delete = $pdo->prepare($sql_delete_conta);
+                $stmt_delete->bindParam(':mes',          $_mes,          PDO::PARAM_STR);
+                $stmt_delete->bindParam(':empregador',   $_empregador,   PDO::PARAM_INT);
+                $stmt_delete->bindParam(':id_associado', $_associado_id, PDO::PARAM_INT);
+                $stmt_delete->bindParam(':divisao',      $_divisao,      PDO::PARAM_INT);
+                $stmt_delete->execute();
+                $linhas_deletadas = $stmt_delete->rowCount();
+                debug_log("DEBUG CONTA: ✅ DELETE executado - Linhas removidas: {$linhas_deletadas}");
+            } catch (PDOException $erro_delete) {
+                debug_log("DEBUG CONTA: ❌ ERRO ao excluir registros: " . $erro_delete->getMessage());
+            }
+            debug_log("DEBUG CONTA: ========== FIM DA EXCLUSÃO (REPROVADO) ==========");
+        }
 
         $data2      = new DateTime();
         $data       = $data2->format('Y-m-d h:i:s');
