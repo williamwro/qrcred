@@ -1128,11 +1128,10 @@ $(document).ready(function(){
             });
         }
     });
-    function carrega_origem() {
-        $.ajax({
+    async function carrega_origem() {
+        await $.ajax({
             url:"pages/conta/conta_list_mes.php",
             method: "POST",
-            async: false,
             data: {'matricula': matricula, 'mes': mes_escolhido, 'codempregador': Codempregador_origem, 'id_associado': id_associado_origem, 'id_divisao': id_divisao_origem },
             dataType: "json",
             success:function (datab) {
@@ -1701,7 +1700,7 @@ $(document).ready(function(){
                     }
                 }
             }
-        });
+        }).catch(function (e) { console.error('Erro ao carregar conta:', e); });
         waitingDialog.hide();
     }
     function format ( d ) {

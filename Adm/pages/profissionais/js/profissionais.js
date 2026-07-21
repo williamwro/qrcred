@@ -380,12 +380,11 @@ $(document).ready(function(){
             return;
         }
 
-        $.ajax({
+        return $.ajax({
             url: "pages/profissionais/profissionais_especialidades_listar.php",
             method: "POST",
             data: { id_profissional: id_profissional },
             dataType: "json",
-            async: false, // Forçar execução síncrona para garantir ordem
             success: function(data) {
                 console.log("=== RESPOSTA do carregamento de especialidades ===");
                 console.log("Dados recebidos do servidor:", data);
@@ -427,7 +426,7 @@ $(document).ready(function(){
                 especialidadesTemporarias = [];
                 atualizarListaEspecialidadesTemporarias();
             }
-        });
+        }).catch(function () {});
     }
 
     // Atualizar lista visual de especialidades
@@ -472,7 +471,7 @@ $(document).ready(function(){
     configurarDragAndDrop();
 
     // Adicionar especialidade
-    $('#btn_adicionar_especialidade').click(function() {
+    $('#btn_adicionar_especialidade').click(async function() {
         var id_especialidade = $('#C_especialidade_select').val();
         var nome_especialidade = $('#C_especialidade_select option:selected').text();
         var operation = $('#operation').val();
@@ -494,12 +493,11 @@ $(document).ready(function(){
             console.log("Especialidades atuais no array:", especialidadesTemporarias);
             
             // Recarregar especialidades do banco para garantir sincronização
-            $.ajax({
+            await $.ajax({
                 url: "pages/profissionais/profissionais_especialidades_listar.php",
                 method: "POST",
                 data: { id_profissional: id_profissional },
                 dataType: "json",
-                async: false, // Síncrono para garantir ordem
                 success: function(especialidadesDoServidor) {
                     console.log("Especialidades do servidor:", especialidadesDoServidor);
                     
@@ -520,7 +518,7 @@ $(document).ready(function(){
                     alert_msg('danger', 'Erro ao verificar especialidades existentes');
                     return;
                 }
-            });
+            }).catch(function () {});
         }
 
         // Verificar se já foi adicionada
@@ -557,7 +555,7 @@ $(document).ready(function(){
     });
 
     // Remover especialidade
-    $(document).on('click', '.tag-remove', function() {
+    $(document).on('click', '.tag-remove', async function() {
         var id_especialidade = $(this).data('id');
         var operation = $('#operation').val();
         var id_profissional = $('#C_idx').val();
@@ -570,12 +568,11 @@ $(document).ready(function(){
             console.log(">>> VERIFICAÇÃO DE SINCRONIZAÇÃO ANTES DA REMOÇÃO <<<");
             
             // Recarregar especialidades do banco para garantir sincronização
-            $.ajax({
+            await $.ajax({
                 url: "pages/profissionais/profissionais_especialidades_listar.php",
                 method: "POST",
                 data: { id_profissional: id_profissional },
                 dataType: "json",
-                async: false, // Síncrono para garantir ordem
                 success: function(especialidadesDoServidor) {
                     console.log("Especialidades do servidor antes da remoção:", especialidadesDoServidor);
                     
@@ -595,7 +592,7 @@ $(document).ready(function(){
                     alert_msg('danger', 'Erro ao verificar especialidades existentes');
                     return;
                 }
-            });
+            }).catch(function () {});
         }
         
         especialidadesTemporarias = especialidadesTemporarias.filter(function(esp) {
@@ -990,10 +987,10 @@ $(document).ready(function(){
                 carregarEspecialidadesDisponiveis();
                 
                 // Usar setTimeout para garantir que a limpeza ocorra antes do carregamento
-                setTimeout(function() {
+                setTimeout(async function() {
                     // Limpeza adicional antes de carregar especialidades
                     limparEspecialidadesTemporarias();
-                    carregarEspecialidadesVinculadas(data.id_profissional);
+                    await carregarEspecialidadesVinculadas(data.id_profissional);
                     $('#ModalEditaProfissional').modal('show');
                 }, 100);
             },

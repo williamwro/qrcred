@@ -53,7 +53,6 @@ $('#tabela_cheques').on('change', 'tbody input.editor-active-pg', function () {
         url: "pages/cheques/update_linha.php",
         method: "POST",
         dataType: "json",
-        async:false,
         data: {"id": idlinha,"controle": controle},
         success: function (data) {
 
@@ -95,7 +94,6 @@ $('#btnAtualizar').click(function () {
         url: "pages/cobranca/update_residuo.php",
         method: "POST",
         dataType: "json",
-        async:false,
         data: {"id": cod_convenio,"valor": valor_residuo,"valor_porcentagem":valor_porcentagem,"acrescimo":acrescimo},
         success: function (data) {
 
@@ -151,7 +149,6 @@ $('#tabela_cheques').on('change', 'tbody input.editor-active', function () {
         url: "pages/cheques/update_linha.php",
         method: "POST",
         dataType: "json",
-        async:false,
         data: {"id": id,"controle": controle},
         success: function (data) {
 
@@ -162,17 +159,20 @@ $('#tabela_cheques').on('change', 'tbody input.editor-active', function () {
         }
     });
 });
-$('#btnExibir').click(function () {
+$('#btnExibir').click(async function () {
 
-    $.ajax({
-        url: "pages/cheques/grava_taxas.php",
-        method: "POST",
-        dataType: "json",
-        data: {"mes": $('#C_mes').val()},
-        async: false,
-        success: function (data) {
-        }
-    });
+    try {
+        await $.ajax({
+            url: "pages/cheques/grava_taxas.php",
+            method: "POST",
+            dataType: "json",
+            data: {"mes": $('#C_mes').val()},
+            success: function (data) {
+            }
+        });
+    } catch (e) {
+        console.error("Erro ao gravar taxas:", e);
+    }
     filtra_associado();
 });
 $('#tabela_cheques tbody').on('click', 'tr.dtrg-group', function () {
@@ -205,7 +205,6 @@ $('#excluir').click(function () {
                     method: "POST",
                     dataType: "json",
                     data: {"mes": mes},
-                    async: false,
                     success: function (data) {
 
                         waitingDialog.hide();
@@ -246,7 +245,6 @@ $('#btnExecutar').click(function () {
         method: "POST",
         dataType: "json",
         data: {"mes": mes,"divisao": divisao},
-        async: false,
         success: function (data) {
 
             if(data.resultado === "importado") {
@@ -313,7 +311,6 @@ $('#btnMarcarTodos').click(function () {
             method: "POST",
             dataType: "json",
             data: {"mes": mes, "marcar": marcar, "categoria": categoria},
-            async: false,
             success: function (data) {
 
                 if (data.resultado === "marcado") {
@@ -373,7 +370,6 @@ $('#printtx').click(function () {
         method: "POST",
         dataType: "json",
         data: {"mes": mes},
-        async: false,
         success: function (data) {
 
         }

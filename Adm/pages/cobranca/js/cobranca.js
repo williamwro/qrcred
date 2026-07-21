@@ -172,7 +172,6 @@ $('#btnAtualizar').click(function () {
         url: "pages/cobranca/update_residuo.php",
         method: "POST",
         dataType: "json",
-        async:false,
         data: {"id": cod_convenio,"valor": valor_residuo,"valor_porcentagem":valor_porcentagem,"acrescimo":acrescimo},
         success: function (data) {
 
@@ -213,7 +212,6 @@ $('#tabela_producao').on('change', 'tbody input.editor-active-pg', function () {
         url: "pages/cobranca/update_pg.php",
         method: "POST",
         dataType: "json",
-        async:false,
         data: {"id": id,"controle": controle},
         success: function (data) {
 
@@ -245,7 +243,6 @@ $('#tabela_producao').on('change', 'tbody input.editor-active', function () {
         url: "pages/cobranca/update_envio.php",
         method: "POST",
         dataType: "json",
-        async:false,
         data: {"id": id,"controle": controle},
         success: function (data) {
 

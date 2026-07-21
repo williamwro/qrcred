@@ -413,7 +413,6 @@ $(document).ready(function(){
         $.ajax({
             url: "pages/consultar/consultar_conta_list.php",
             method: "POST",
-            async: false,
             data: {
                 'matricula': matricula,
                 'mes': mes_escolhido,

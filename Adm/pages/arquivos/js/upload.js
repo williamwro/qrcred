@@ -112,7 +112,6 @@ function carrega_mes(){
                                 type: 'post',
                                 data: {caminho: path_arquivo, mes: mes, empregador: empregador},
                                 dataType: 'json',
-                                async: false,
                                 success: function (data) {
 
                                     $.each(data, function (index) {
@@ -166,8 +165,10 @@ function cria_pasta(){
         });
     }
 }
-$("#but_upload").click(function(){
+$("#but_upload").click(async function(){
 
+    var botao_upload = $(this);
+    botao_upload.attr('disabled', true);
     var mes2 = $('#C_mes').val();
     var empregador2 = C_empregador.children("option:selected").text();
 
@@ -178,13 +179,12 @@ $("#but_upload").click(function(){
     data_upload_x.append("mescorrente", mescorrente);
     data_upload_x.append("pasta",pasta);
 
-    $.ajax({
+    await $.ajax({
         url: '../Adm/pages/arquivos/upload.php',
         type: 'post',
         data: data_upload_x,
         contentType: false,
         processData: false,
-        async: false,
         success: function(response){
             if(response !== 0){
 
@@ -205,8 +205,9 @@ $("#but_upload").click(function(){
                 alert('file not uploaded');
             }
         },
-    });
+    }).catch(function (e) { console.error('Erro no upload:', e); });
     carrega_mes();
+    botao_upload.attr('disabled', false);
 });
 $('#btnExcluirArquivo').click(function(){
 
@@ -254,7 +255,7 @@ C_empregador.change(function () {
         $('#default_file').attr('disabled', true);
     }
 });
-$('#gerararquivo').click(function(){
+$('#gerararquivo').click(async function(){
     //$('#ModalCarregando').modal('show');
 
     $(this).html('<span class="fa fa-refresh fa-spin" role="status" aria-hidden="true"></span>&nbsp&nbspCarregando...').addClass('disabled');
@@ -272,22 +273,20 @@ $('#gerararquivo').click(function(){
     mes = $('#C_mes').val();
     empregador = C_empregador.val();
     tipo = C_tipo.val();
-    $.ajax({
+    await $.ajax({
         url: '../Adm/pages/arquivos/selecionar_dados2.php',
         type: 'post',
         data: {mes: mes,empregador: empregador, tipo: tipo, divisao: divisao, 'card1': card1, 'card2': card2, 'card3': card3, 'card4': card4, 'card5': card5, 'card6': card6},
         dataType: 'json',
-        async:false,
         success: function(data){
             arr = data;
         }
-    });
-    $.ajax({
+    }).catch(function (e) { console.error('Erro ao selecionar dados:', e); });
+    await $.ajax({
         url: '../Adm/pages/arquivos/conferencia.php',
         type: 'post',
         data: {caminho: path_arquivo,mes: mes,empregador: empregador},
         dataType: 'json',
-        async:false,
         success: function(data2){
 
             const findAssoc = function(data2, associado, tipo, total){
@@ -370,7 +369,7 @@ $('#gerararquivo').click(function(){
                 }
             });
         }
-    });
+    }).catch(function (e) { console.error('Erro na conferência:', e); });
     table = $('#tabela_dados').DataTable({
         dom: 'Bfrtip',
         destroy: true,
@@ -576,7 +575,6 @@ $('#btnGravar').click(function () {
         type: 'post',
         data: {'data':linhas},
         dataType: 'json',
-        async:false,
         success: function(data){
             arr = data;
             BootstrapDialog.show({

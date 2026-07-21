@@ -211,7 +211,6 @@ function carrega_origem() {
     $.ajax({
         url:"pages/conta/transferencia.php",
         method: "POST",
-        async: false,
         data: {matricula : matricula, empregador: abreviacao},
         dataType: "json",
         success:function (datab) {

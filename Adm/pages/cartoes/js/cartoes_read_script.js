@@ -226,7 +226,6 @@ function atualiar_cartao(opcao){
         $.ajax({
             url: "pages/cartoes/atualiza_cartao.php",
             method: "POST",
-            async: false,
             data: {'cartao': cartao, 'opcao': opcao, 'obs': obs, 'matricula': matricula, 'usuario': usuario_global, 'empregador':Codempregador_origem},
             dataType: "json",
             success: function (data) {

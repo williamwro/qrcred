@@ -31,7 +31,7 @@ function atualizarEstadoEmpregador() {
     }
 }
 
-$(document).ready(function(){
+$(document).ready(async function(){
 
     // Obter dados do sessionStorage
     divisao = sessionStorage.getItem("divisao");
@@ -128,7 +128,7 @@ $(document).ready(function(){
 
     // SEGURANÇA: Menu Associado deve usar SEMPRE a divisão do usuário logado
     // Busca a divisão real do usuário na base de dados, ignorando filtros de outros menus
-    $.ajax({
+    await $.ajax({
         url: "pages/associado/get_usuario_divisao.php",
         method: "POST",
         dataType: "json",
@@ -136,7 +136,6 @@ $(document).ready(function(){
             'usuario_cod': usuario_cod,
             'divisao': divisao
         },
-        async: false, // Síncrono para garantir que divisao seja definida antes de continuar
         success: function(data) {
             if(data.success) {
                 divisao = data.divisao.toString();
@@ -150,7 +149,7 @@ $(document).ready(function(){
             divisao = divisao || "2"; // Usa divisão do sessionStorage ou padrão 2
             console.error("Erro na requisição para obter divisão do usuário");
         }
-    });
+    }).catch(function () {});
     divisao_nome = sessionStorage.getItem("divisao_nome");
   
 
@@ -632,7 +631,6 @@ $("#btnSalvar").click(function(event){
                method: "POST",
                data: $('#frmassociado').serialize()+'&divisao='+divisao,
                dataType: "json",
-               async: false,
                success: function (data) {
                     
                    if (data.resultado === "nao repitido") {

@@ -346,7 +346,6 @@ $(document).ready(function(){
                     session_id: session_id
                 },
                 dataType: 'json',
-                async: false, // Importante: síncrono para garantir execução
                 success: function(response) {
                     console.log('Sessão finalizada com sucesso');
                 },

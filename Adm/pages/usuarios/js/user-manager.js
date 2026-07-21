@@ -246,7 +246,6 @@ class UserManager {
                 session_id: this.user.session_id
             },
             dataType: 'json',
-            async: false, // Importante: síncrono para garantir execução
             complete: () => {
                 this.clearSession();
                 this.redirectToLogin();

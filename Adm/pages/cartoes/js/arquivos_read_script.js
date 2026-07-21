@@ -231,7 +231,6 @@ $("#gerararquivo").click(function () {
                        url: "pages/cartoes/lote_cadastro.php",
                        method: "POST",
                        dataType: "json",
-                       async:false,
                        data: {"divisao": divisao},
                        success: function (data) {
                            $("#tabela_dados").table2excel({
