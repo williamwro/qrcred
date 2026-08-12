@@ -162,107 +162,47 @@ $("#btnInserir").click(function(){
     $('#C_cidade_assoc').val($('#C_cidade_assoc option').eq(835).val());
     $("#C_matricula_assoc").removeAttr('disabled');
 });
-/* =====================================================================================
- * SALVAR (modal "ANTECIPAÇÃO Alterando")
- * -------------------------------------------------------------------------------------
- * REGRA CRÍTICA: ao mudar o status para APROVADO, o servidor (antecipacao_salvar.php)
- * grava a antecipação E o lançamento na tabela CONTA dentro de UMA transação, e só
- * responde "atualizado" depois de CONFERIR no banco que o lançamento existe.
- *
- * Por isso, este handler foi reescrito para NUNCA esconder uma falha:
- *   - "atualizado"  -> sucesso confirmado: fecha o modal e recarrega a tabela;
- *   - qualquer outra resposta ("ERRO: ...", permissão etc.) -> mostra a mensagem,
- *     MANTÉM O MODAL ABERTO e não reseta o formulário (nada foi gravado no servidor);
- *   - falha de comunicação (handler error:) -> avisa o usuário e mantém o modal aberto.
- * Antes, o modal fechava e mostrava sucesso mesmo quando a conta não era gravada.
- * ===================================================================================== */
 $("#btnSalvar").click(function(event){
-   var statusSelecionado = $('#C_aprovado').val(); // 1=Analisando, 2=Aprovado, 3=Reprovado
-
    waitingDialog.show('Gravando, aguarde ...');
-
+   
    $("#btnSalvar").attr("disabled", true);
-
+   
    // Debug dos dados do formulário
    var formData = $('#frmantecipado').serialize()+'&divisao='+divisao+'&usuario_cod='+usuario_cod;
    console.log('DEBUG FORM: Dados enviados:', formData);
-   console.log('DEBUG FORM: C_aprovado valor:', statusSelecionado);
-
+   console.log('DEBUG FORM: C_aprovado valor:', $('#C_aprovado').val());
+      
     $.ajax({
         url: "pages/antecipacao/antecipacao_salvar.php",
         method: "POST",
         data: formData,
-        dataType: "text", // resposta é texto puro; evita parse automático
         success: function (data) {
-            var resposta = (typeof data === 'string') ? data.trim() : '';
-
-            waitingDialog.hide();
-            $("#btnSalvar").attr("disabled", false);
-
-            if (resposta === "atualizado") {
-                // ✅ Sucesso CONFIRMADO pelo servidor (lançamento na conta verificado no banco)
-                $("#frmantecipado")[0].reset();
-                $("#ModalEditaAntecipado").modal('hide');
+            $("#frmantecipado")[0].reset();
+            if (data === "atualizado") {
                 Swal.fire({
                     title: "Parabens!",
-                    text: (statusSelecionado === "2")
-                        ? "Antecipação APROVADA e gravada na conta com sucesso!"
-                        : "Antecipação atualizada com sucesso !",
+                    text: "Antecipação atualizada com sucesso !",
                     icon: "success",
                     showConfirmButton: false,
-                    timer: 1800
+                    timer: 1500
                 });
-                tabela_antecipacao.ajax.reload();
-            } else if (resposta === "cadastrado") {
-                $("#frmantecipado")[0].reset();
-                $("#ModalEditaAntecipado").modal('hide');
+            } else if (data === "cadastrado") {
                 Swal.fire({
                     title: "Parabens!",
                     text: "Associado cadastrado com sucesso !",
                     icon: "success",
                 });
-                tabela_antecipacao.ajax.reload();
-            } else if (resposta === "Seu usuario não tem permissão!") {
-                // ❌ Nada foi gravado — modal permanece aberto
+            } else if (data === "Seu usuario não tem permissão!") {
                 Swal.fire({
                     title: "Atenção!",
-                    text: "Seu usuário não tem permissão. Nenhuma alteração foi gravada.",
+                    text: "Seu usuário não tem permissão.",
                     icon: "error",
                 });
-            } else {
-                // ❌ ERRO devolvido pelo servidor: houve ROLLBACK, nada foi gravado.
-                //    O modal permanece aberto para o usuário corrigir/tentar de novo.
-                var detalhe = (resposta !== '')
-                    ? $('<div>').text(resposta).html() // escapa HTML por segurança
-                    : 'O servidor não retornou resposta.';
-                console.error('❌ Falha ao salvar antecipação:', resposta);
-                Swal.fire({
-                    title: "Falha ao gravar!",
-                    html: '<div style="text-align:left">' +
-                          '<p><strong>A alteração NÃO foi concluída e foi desfeita no servidor.</strong></p>' +
-                          '<p style="font-size:12px;color:#666">' + detalhe + '</p>' +
-                          '<p>Confira os dados e clique em <strong>Salvar</strong> novamente.</p>' +
-                          '</div>',
-                    icon: "error"
-                });
-                tabela_antecipacao.ajax.reload(); // mostra o estado REAL do banco na listagem
             }
-        },
-        error: function (xhr, status, error) {
-            // ❌ Falha de comunicação/erro HTTP: não dá para confirmar a gravação.
-            //    Mantém o modal aberto e orienta o usuário (antes: travava em "Gravando...").
-            waitingDialog.hide();
+            $("#frmantecipado")[0].reset();
             $("#btnSalvar").attr("disabled", false);
-            console.error('❌ Erro AJAX ao salvar antecipação:', status, error, xhr.responseText);
-            Swal.fire({
-                title: "Erro de comunicação!",
-                html: '<div style="text-align:left">' +
-                      '<p><strong>Não foi possível confirmar a gravação.</strong></p>' +
-                      '<p>Verifique sua conexão e clique em <strong>Salvar</strong> novamente.</p>' +
-                      '<p style="font-size:12px;color:#666">Se o problema persistir, atualize a listagem e confira o status do registro antes de repetir.</p>' +
-                      '</div>',
-                icon: "error"
-            });
+            waitingDialog.hide();
+            $("#ModalEditaAntecipado").modal('hide');
             tabela_antecipacao.ajax.reload();
         }
     });
