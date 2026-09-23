@@ -56,10 +56,11 @@
  *    - Status 1 (Analisando): antecipacao.aprovado = NULL, data_aprovacao = NULL;
  *      lançamentos 221/249 são EXCLUÍDOS da conta (recriados ao aprovar de novo).
  *    - Status 2 (Aprovado): antecipacao.aprovado = true, data_aprovacao = hoje;
- *      marca aprovado = true em TODOS os lançamentos da antecipação já existentes
- *      (inclusive antigos que estejam com false); se não existir o lançamento
- *      principal, INSERE convênio 221 (valor a descontar) e, se houver taxa > 0 e
- *      ainda não existir, convênio 249 (taxa). Anti-duplicação mantida.
+ *      se NÃO existir lançamento na sind.conta, INSERE convênio 221 (valor a
+ *      descontar) e, se houver taxa > 0 e ainda não existir, convênio 249 (taxa).
+ *      Em seguida marca aprovado = true (o trigger BEFORE INSERT
+ *      fn_insere_taxa_cartao_automatica força aprovado=false em 221/249 na inserção;
+ *      por isso o UPDATE depois do INSERT é obrigatório). Anti-duplicação mantida.
  *    - Status 3 (Reprovado): antecipacao.aprovado = false, data_aprovacao = hoje;
  *      EXCLUI da conta os lançamentos convênio 221 e 249 do associado/mês.
  * =====================================================================================
@@ -310,103 +311,115 @@ try {
         // ==========================================================
         debug_log("DEBUG CONTA: ========== APROVANDO — SINCRONIZANDO TABELA CONTA ==========");
 
-        // (a) ⭐ REGRA "aprovado sempre true": marca aprovado = true em TODOS os
-        //     lançamentos ligados à antecipação (tipo ANTECIPACAO e/ou convênios
-        //     221/249) — inclusive registros antigos que tenham ficado com false
-        //     pelo comportamento anterior do sistema (autocorreção do legado).
-        $stmt1 = $pdo->prepare("UPDATE sind.conta SET aprovado = true WHERE {$where_chaves} AND (tipo = 'ANTECIPACAO' OR convenio = 221 OR convenio = 249)");
-        $bind_chaves($stmt1);
-        $stmt1->execute();
-        debug_log("DEBUG CONTA: UPDATE aprovado=true (tipo ANTECIPACAO / convênios 221 e 249) -> " . $stmt1->rowCount() . " linha(s) afetada(s)");
+        // (a) Já existe lançamento 221? (independente de aprovado — o app grava com false)
+        $sql_existe_221 = "SELECT COUNT(*) AS n FROM sind.conta
+                            WHERE {$where_chaves}
+                              AND convenio = 221
+                              AND (tipo = 'ANTECIPACAO' OR tipo IS NULL)";
+        $stmt_existe221 = $pdo->prepare($sql_existe_221);
+        $bind_chaves($stmt_existe221);
+        $stmt_existe221->execute();
+        $tem_221 = ((int)$stmt_existe221->fetch(PDO::FETCH_ASSOC)['n']) > 0;
 
-        // (b) Conta quantos lançamentos de taxa (convênio 249) já existem —
-        //     usado na anti-duplicação do INSERT da taxa logo abaixo.
         $stmt_c249 = $pdo->prepare("SELECT COUNT(*) AS n FROM sind.conta WHERE {$where_chaves} AND convenio = 249");
         $bind_chaves($stmt_c249);
         $stmt_c249->execute();
         $qtd_249 = (int)$stmt_c249->fetch(PDO::FETCH_ASSOC)['n'];
-        debug_log("DEBUG CONTA: lançamento(s) de taxa (convenio=249) já existente(s): {$qtd_249}");
+        debug_log("DEBUG CONTA: existentes antes do INSERT -> 221=" . ($tem_221 ? 'sim' : 'não') . " | 249={$qtd_249}");
 
-        // (c) ANTI-DUPLICAÇÃO: só insere se ainda NÃO existe o lançamento principal aprovado (convênio 221)
-        $sql_tem_221 = "SELECT COUNT(*) AS n FROM sind.conta WHERE {$where_chaves} AND tipo = 'ANTECIPACAO' AND convenio = 221 AND aprovado = true";
-        $stmt_tem221 = $pdo->prepare($sql_tem_221);
-        $bind_chaves($stmt_tem221);
-        $stmt_tem221->execute();
-        $tem_221 = ((int)$stmt_tem221->fetch(PDO::FETCH_ASSOC)['n']) > 0;
+        $sql_insert_base = "INSERT INTO sind.conta
+                            (associado, mes, empregador, divisao, id_associado, valor, tipo, aprovado, convenio, data, hora, descricao)
+                            VALUES
+                            (:associado, :mes, :empregador, :divisao, :id_associado, :valor, 'ANTECIPACAO', true, :convenio, :data, :hora, :descricao)
+                            RETURNING lancamento";
 
-        if (!$tem_221) {
-            debug_log("DEBUG CONTA: lançamento principal (221) não existe — será INSERIDO");
-
-            // Serializa a geração do número de lançamento entre processos concorrentes.
-            // O lock é liberado automaticamente no COMMIT/ROLLBACK desta transação.
-            $pdo->query("SELECT pg_advisory_xact_lock(hashtext('sind.conta.lancamento'))");
-
+        $insere_conta = function ($convenio, $valor, $descricao) use ($pdo, $sql_insert_base, $bind_chaves, $ant) {
             $data_lancamento = (!empty($ant['data_solicitacao'])) ? $ant['data_solicitacao'] : date('Y-m-d');
             $hora_lancamento = date('H:i:s');
+            $stmt_ins = $pdo->prepare($sql_insert_base);
+            $bind_chaves($stmt_ins);
+            $stmt_ins->bindValue(':valor',    $valor,           PDO::PARAM_STR);
+            $stmt_ins->bindValue(':convenio', $convenio,        PDO::PARAM_INT);
+            $stmt_ins->bindValue(':data',     $data_lancamento, PDO::PARAM_STR);
+            $stmt_ins->bindValue(':hora',     $hora_lancamento, PDO::PARAM_STR);
+            $stmt_ins->bindValue(':descricao',$descricao,       PDO::PARAM_STR);
+            $stmt_ins->execute();
+            $novo = $stmt_ins->fetch(PDO::FETCH_ASSOC);
+            if (!$novo || empty($novo['lancamento'])) {
+                throw new RuntimeException(
+                    "Falha ao gravar o lançamento (convênio {$convenio}) na tabela CONTA: o INSERT não retornou o número de lançamento."
+                );
+            }
+            return (int)$novo['lancamento'];
+        };
 
-            $sql_insert_base = "INSERT INTO sind.conta
-                                (lancamento, associado, mes, empregador, divisao, id_associado, valor, tipo, aprovado, convenio, data, hora)
-                                VALUES
-                                (:lancamento, :associado, :mes, :empregador, :divisao, :id_associado, :valor, 'ANTECIPACAO', true, :convenio, :data, :hora)";
+        if (!$tem_221) {
+            debug_log("DEBUG CONTA: lançamento principal (221) NÃO existe — será INSERIDO");
+            $pdo->query("SELECT pg_advisory_xact_lock(hashtext('sind.conta.lancamento'))");
 
-            // Retry com SAVEPOINT: se outro módulo (fora deste lock) gerar o mesmo número
-            // de lançamento no mesmo instante, recalcula e tenta de novo (até 3 vezes).
             $tentativa = 0;
             while (true) {
                 $tentativa++;
                 $pdo->exec("SAVEPOINT sp_insere_conta");
                 try {
-                    // Próximo número de lançamento (mesma regra do código anterior)
-                    $stmt_max = $pdo->query("SELECT COALESCE(MAX(CAST(lancamento AS INTEGER)), 0) + 1 AS proximo FROM sind.conta WHERE CAST(lancamento AS text) ~ '^[0-9]+$'");
-                    $proximo_lanc = (int)$stmt_max->fetch(PDO::FETCH_ASSOC)['proximo'];
+                    $lanc_221 = $insere_conta(221, $_valor, 'Antecipação salarial');
+                    debug_log("DEBUG CONTA: ✅ INSERT antecipação — lançamento {$lanc_221}, valor {$_valor}, convênio 221");
 
-                    // INSERT 1 — Antecipação (convênio 221, valor = valor a descontar)
-                    $stmt_ins = $pdo->prepare($sql_insert_base);
-                    $bind_chaves($stmt_ins);
-                    $stmt_ins->bindValue(':lancamento', $proximo_lanc, PDO::PARAM_INT);
-                    $stmt_ins->bindValue(':valor',      $_valor,       PDO::PARAM_STR);
-                    $stmt_ins->bindValue(':convenio',   221,           PDO::PARAM_INT);
-                    $stmt_ins->bindValue(':data',       $data_lancamento, PDO::PARAM_STR);
-                    $stmt_ins->bindValue(':hora',       $hora_lancamento, PDO::PARAM_STR);
-                    $stmt_ins->execute();
-                    debug_log("DEBUG CONTA: ✅ INSERT antecipação — lançamento {$proximo_lanc}, valor {$_valor}, convênio 221");
-
-                    // INSERT 2 — Taxa (convênio 249) somente se taxa > 0 e ainda não existir lançamento 249
-                    if ((float)$_valor_taxa > 0) {
-                        if ($qtd_249 === 0) {
-                            $lanc_taxa = $proximo_lanc + 1;
-                            $stmt_ins_taxa = $pdo->prepare($sql_insert_base);
-                            $bind_chaves($stmt_ins_taxa);
-                            $stmt_ins_taxa->bindValue(':lancamento', $lanc_taxa,   PDO::PARAM_INT);
-                            $stmt_ins_taxa->bindValue(':valor',      $_valor_taxa, PDO::PARAM_STR);
-                            $stmt_ins_taxa->bindValue(':convenio',   249,          PDO::PARAM_INT);
-                            $stmt_ins_taxa->bindValue(':data',       $data_lancamento, PDO::PARAM_STR);
-                            $stmt_ins_taxa->bindValue(':hora',       $hora_lancamento, PDO::PARAM_STR);
-                            $stmt_ins_taxa->execute();
-                            debug_log("DEBUG CONTA: ✅ INSERT taxa — lançamento {$lanc_taxa}, valor {$_valor_taxa}, convênio 249");
-                        } else {
-                            debug_log("DEBUG CONTA: taxa NÃO inserida — já existe(m) {$qtd_249} lançamento(s) 249 (anti-duplicação)");
-                        }
-                    }
+                    // O trigger BEFORE INSERT pode ter criado a taxa de cartão (249) junto com o 221.
+                    $stmt_c249->execute();
+                    $qtd_249 = (int)$stmt_c249->fetch(PDO::FETCH_ASSOC)['n'];
+                    debug_log("DEBUG CONTA: após INSERT 221, lançamento(s) 249 existente(s): {$qtd_249}");
 
                     $pdo->exec("RELEASE SAVEPOINT sp_insere_conta");
-                    break; // inserções concluídas
+                    break;
                 } catch (PDOException $e_ins) {
                     $pdo->exec("ROLLBACK TO SAVEPOINT sp_insere_conta");
-                    // 23505 = violação de chave única (lançamento duplicado por concorrência)
-                    if ($e_ins->getCode() === '23505' && $tentativa < 3) {
-                        debug_log("DEBUG CONTA: ⚠️ lançamento duplicado na tentativa {$tentativa} — recalculando e tentando de novo...");
+                    $sqlstate = (string)$e_ins->getCode();
+                    if ($sqlstate === '23505' && $tentativa < 3) {
+                        debug_log("DEBUG CONTA: ⚠️ lançamento duplicado na tentativa {$tentativa} — tentando de novo...");
+                        usleep(50000);
                         continue;
                     }
-                    throw $e_ins; // outras falhas (ou 3ª tentativa): sobe para o catch geral -> ROLLBACK total
+                    throw $e_ins;
                 }
             }
         } else {
-            debug_log("DEBUG CONTA: ✅ lançamento principal (221) aprovado já existe — não será duplicado");
+            debug_log("DEBUG CONTA: ✅ lançamento principal (221) já existe — não será duplicado");
         }
 
-        // (d) ✅✅ VERIFICAÇÃO FINAL OBRIGATÓRIA — a etapa que NÃO PODE FALHAR ✅✅
-        //     Confere no banco, ainda dentro da transação, que o lançamento aprovado existe.
+        // Taxa (249): insere só se ainda não houver (o trigger pode já ter gravado)
+        if ((float)$_valor_taxa > 0) {
+            $stmt_c249->execute();
+            $qtd_249 = (int)$stmt_c249->fetch(PDO::FETCH_ASSOC)['n'];
+            if ($qtd_249 === 0) {
+                debug_log("DEBUG CONTA: lançamento de taxa (249) NÃO existe — será INSERIDO");
+                $lanc_249 = $insere_conta(249, $_valor_taxa, 'Taxa de antecipação');
+                debug_log("DEBUG CONTA: ✅ INSERT taxa — lançamento {$lanc_249}, valor {$_valor_taxa}, convênio 249");
+            } else {
+                debug_log("DEBUG CONTA: taxa NÃO inserida — já existe(m) {$qtd_249} lançamento(s) 249 (anti-duplicação)");
+            }
+        }
+
+        // (b) ⭐ OBRIGATÓRIO DEPOIS DO INSERT: o trigger BEFORE INSERT
+        //     fn_insere_taxa_cartao_automatica força aprovado=FALSE em convênios 221 e 249.
+        //     Sem este UPDATE a verificação final não encontra o lançamento aprovado
+        //     e a transação inteira é desfeita (ROLLBACK).
+        $stmt1 = $pdo->prepare(
+            "UPDATE sind.conta
+                SET aprovado = true
+              WHERE {$where_chaves}
+                AND (tipo = 'ANTECIPACAO' OR convenio = 221 OR convenio = 249)"
+        );
+        $bind_chaves($stmt1);
+        $stmt1->execute();
+        debug_log("DEBUG CONTA: UPDATE aprovado=true (após INSERT/existência) -> " . $stmt1->rowCount() . " linha(s) afetada(s)");
+
+        // (c) ✅✅ VERIFICAÇÃO FINAL OBRIGATÓRIA — a etapa que NÃO PODE FALHAR ✅✅
+        $sql_tem_221 = "SELECT COUNT(*) AS n FROM sind.conta
+                         WHERE {$where_chaves}
+                           AND convenio = 221
+                           AND (tipo = 'ANTECIPACAO' OR tipo IS NULL)
+                           AND aprovado IS TRUE";
         $stmt_verifica = $pdo->prepare($sql_tem_221);
         $bind_chaves($stmt_verifica);
         $stmt_verifica->execute();
