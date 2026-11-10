@@ -517,7 +517,8 @@ $('#relatorio_todos').click(function () {
 });
 
 // Novo botão para gerar PDFs individuais separados para cada empregador
-$('#relatorio_individuais').click(function () {
+$('#relatorio_individuais').click(function (e) {
+    e.preventDefault();
     var mes_atual = $('#C_mes').val();
     var tipo = $('#C_tipo').val();
     var divisao = sessionStorage.getItem("divisao");
@@ -607,47 +608,44 @@ $('#relatorio_individuais').click(function () {
                         }
                         
                         const empregador = empregadores[currentIndex];
-                        console.log(`DEBUG: Gerando PDF ${currentIndex + 1}/${totalEmpregadores} para empregador:`, empregador);
-                        
-                        // Atualizar progresso
+
                         Swal.update({
                             html: `Progresso: <strong>${currentIndex + 1} de ${totalEmpregadores}</strong> empregadores<br>
                                    Gerando: <em>${empregador.nome}</em>`
                         });
-                        
-                        // Gerar PDF para este empregador
+
+                        var iframeName = 'pdf_folha_' + empregador.id + '_' + currentIndex;
+                        $('#iframe_' + iframeName).remove();
+                        var iframe = $('<iframe>', {
+                            id: 'iframe_' + iframeName,
+                            name: iframeName,
+                            css: { position: 'absolute', width: 0, height: 0, border: 0 }
+                        });
+                        $('body').append(iframe);
+
                         const form = $('<form>', {
-                            'method': 'POST',
-                            'action': '../Adm/pages/arquivos/relatorio_individual_download.php',
-                            'target': '_blank'
+                            method: 'POST',
+                            action: '../Adm/pages/arquivos/relatorio_individual_download.php',
+                            target: iframeName
                         });
-                        
-                        form.append($('<input>', {'type': 'hidden', 'name': 'mes_atual', 'value': mes_atual}));
-                        form.append($('<input>', {'type': 'hidden', 'name': 'empregador', 'value': empregador.id}));
+
+                        form.append($('<input>', { type: 'hidden', name: 'mes_atual', value: mes_atual }));
+                        form.append($('<input>', { type: 'hidden', name: 'empregador', value: empregador.id }));
                         if (tipo && tipo !== '') {
-                            form.append($('<input>', {'type': 'hidden', 'name': 'tipo', 'value': tipo}));
+                            form.append($('<input>', { type: 'hidden', name: 'tipo', value: tipo }));
                         }
-                        form.append($('<input>', {'type': 'hidden', 'name': 'divisao', 'value': divisao}));
-                        form.append($('<input>', {'type': 'hidden', 'name': 'divisao_nome', 'value': divisao_nome}));
-                        
-                        console.log(`DEBUG: Submetendo form para empregador ${empregador.nome} (${empregador.id})`);
-                        console.log('DEBUG: Dados do form:', {
-                            mes_atual: mes_atual,
-                            empregador: empregador.id,
-                            tipo: tipo,
-                            divisao: divisao,
-                            divisao_nome: divisao_nome
-                        });
-                        
+                        form.append($('<input>', { type: 'hidden', name: 'divisao', value: divisao }));
+                        form.append($('<input>', { type: 'hidden', name: 'divisao_nome', value: divisao_nome || '' }));
+
                         $('body').append(form);
                         form.submit();
                         form.remove();
-                        
-                        // Incrementar apenas após submissão
+
                         currentIndex++;
-                        
-                        // Aguardar mais tempo para garantir que o download anterior foi iniciado
-                        setTimeout(gerarProximoPDF, 2500);
+                        setTimeout(function() {
+                            iframe.remove();
+                            gerarProximoPDF();
+                        }, 3000);
                     }
                     
                     // Iniciar geração
@@ -801,19 +799,80 @@ function gerarOficiosIndividuais(phpFile, labelTipo) {
                     const emp = empregadores[currentIndex];
                     Swal.update({ html: 'Progresso: <strong>' + (currentIndex + 1) + ' de ' + totalEmpregadores + '</strong> empregadores<br>Gerando: <em>' + emp.nome + '</em>' });
 
-                    const form = $('<form>', { method: 'POST', action: '../Adm/pages/arquivos/' + phpFile, target: '_blank' });
-                    form.append($('<input>', { type: 'hidden', name: 'mes_atual',        value: mes_atual }));
-                    form.append($('<input>', { type: 'hidden', name: 'empregador',       value: emp.id }));
-                    form.append($('<input>', { type: 'hidden', name: 'divisao',          value: divisao }));
-                    form.append($('<input>', { type: 'hidden', name: 'divisao_nome',     value: divisao_nome }));
-                    form.append($('<input>', { type: 'hidden', name: 'data_vencimento',  value: data_vencimento }));
-                    if (tipo && tipo !== '') { form.append($('<input>', { type: 'hidden', name: 'tipo', value: tipo })); }
+                    var campos = {
+                        mes_atual: mes_atual,
+                        empregador: emp.id,
+                        divisao: divisao,
+                        divisao_nome: divisao_nome || '',
+                        data_vencimento: data_vencimento,
+                        baixar: '1'
+                    };
+                    if (tipo && tipo !== '') {
+                        campos.tipo = tipo;
+                    }
 
+                    if (phpFile.indexOf('jpeg') !== -1) {
+                        var formData = new FormData();
+                        Object.keys(campos).forEach(function(chave) {
+                            formData.append(chave, campos[chave]);
+                        });
+                        fetch('../Adm/pages/arquivos/' + phpFile, { method: 'POST', body: formData, credentials: 'same-origin' })
+                            .then(function(res) {
+                                if (!res.ok) {
+                                    throw new Error('Falha ao gerar o JPEG de ' + emp.nome);
+                                }
+                                var tipoResposta = res.headers.get('Content-Type') || '';
+                                if (tipoResposta.indexOf('image/jpeg') === -1) {
+                                    return res.text().then(function(texto) {
+                                        throw new Error(texto || ('Falha ao gerar o JPEG de ' + emp.nome));
+                                    });
+                                }
+                                var disposition = res.headers.get('Content-Disposition') || '';
+                                var match = /filename="?([^";]+)"?/i.exec(disposition);
+                                var filename = match ? match[1] : ('Oficio_' + emp.id + '.jpg');
+                                return res.blob().then(function(blob) {
+                                    return { blob: blob, filename: filename };
+                                });
+                            })
+                            .then(function(arquivo) {
+                                var url = window.URL.createObjectURL(arquivo.blob);
+                                var link = document.createElement('a');
+                                link.href = url;
+                                link.download = arquivo.filename;
+                                document.body.appendChild(link);
+                                link.click();
+                                link.remove();
+                                setTimeout(function() { window.URL.revokeObjectURL(url); }, 2000);
+                                currentIndex++;
+                                setTimeout(gerarProximo, 600);
+                            })
+                            .catch(function(err) {
+                                Swal.fire({ icon: 'error', title: 'Erro!', text: err.message || 'Erro ao gerar o JPEG.' });
+                            });
+                        return;
+                    }
+
+                    var iframeName = 'pdf_oficio_' + emp.id + '_' + currentIndex;
+                    $('#iframe_' + iframeName).remove();
+                    var iframe = $('<iframe>', {
+                        id: 'iframe_' + iframeName,
+                        name: iframeName,
+                        css: { position: 'absolute', width: 0, height: 0, border: 0 }
+                    });
+                    $('body').append(iframe);
+
+                    const form = $('<form>', { method: 'POST', action: '../Adm/pages/arquivos/' + phpFile, target: iframeName });
+                    Object.keys(campos).forEach(function(chave) {
+                        form.append($('<input>', { type: 'hidden', name: chave, value: campos[chave] }));
+                    });
                     $('body').append(form);
                     form.submit();
                     form.remove();
-                    currentIndex++;
-                    setTimeout(gerarProximo, 2500);
+                    setTimeout(function() {
+                        iframe.remove();
+                        currentIndex++;
+                        gerarProximo();
+                    }, 4000);
                 }
 
                 gerarProximo();
@@ -826,12 +885,14 @@ function gerarOficiosIndividuais(phpFile, labelTipo) {
 }
 
 // ── PDFs Separados → Ofício pdf ───────────────────────────────────────────────
-$('#relatorio_individuais_oficio').click(function () {
+$('#relatorio_individuais_oficio').click(function (e) {
+    e.preventDefault();
     gerarOficiosIndividuais('relatorio_oficio.php', 'PDF');
 });
 
 // ── PDFs Separados → Ofício jpeg ──────────────────────────────────────────────
-$('#relatorio_individuais_oficio_jpeg').click(function () {
+$('#relatorio_individuais_oficio_jpeg').click(function (e) {
+    e.preventDefault();
     gerarOficiosIndividuais('relatorio_oficio_jpeg_v3.php', 'JPEG');
 });
 

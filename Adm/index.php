@@ -329,7 +329,7 @@ if (isset($_POST['passuser'])){
 <script src="dist/js/adminlte.min.js"></script>
 <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.12/js/dataTables.checkboxes.min.js"></script>
 <script src="pages/usuarios/js/user-manager.js"></script>
-<script src="index.js"></script>
+<script src="index.js?v=<?php echo filemtime(__DIR__ . '/index.js'); ?>"></script>
 
 </body>
 </html>

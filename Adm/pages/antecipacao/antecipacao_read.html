@@ -293,7 +293,14 @@
             </div>
         </div>
         
-        <script src="../Adm/pages/antecipacao/js/antecipacao_read_script.js"></script>
+        <script>
+            $.ajax({
+                url: '../Adm/pages/antecipacao/js/antecipacao_read_script.js?v=' + new Date().getTime(),
+                dataType: 'script',
+                cache: true,
+                async: false
+            });
+        </script>
         
         <!-- jsPDF CDN -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

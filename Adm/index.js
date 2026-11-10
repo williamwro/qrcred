@@ -226,7 +226,7 @@ $(document).ready(function(){
         });
         $('#link_antecipacao').click(function(){
             $.ajaxSetup({
-                cache:true
+                cache:false
             });
             $('#pagina_conteudo').load('pages/antecipacao/antecipacao_read.html',{divisao: divisao,divisao_nome:divisao_nome,usuario_global:usuario_global,usuario_cod:usuario_cod},function () {
             });

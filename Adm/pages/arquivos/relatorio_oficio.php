@@ -434,4 +434,13 @@ $emprestimo_tot  = 0;
 $total_assoc  = 0;
 $registros    = 0;
 
-$pdf->Output('I',"oficio-".$mes_atual."-".$divisao_nome.".pdf");
+$nome_empregador_arquivo = isset($result['nome']) ? $result['nome'] : 'empregador';
+$nome_empregador_arquivo = preg_replace('/[^A-Za-z0-9_\-]/', '_', $nome_empregador_arquivo);
+$mes_arquivo = preg_replace('/[^A-Za-z0-9_\-]/', '_', $mes_atual);
+$nome_arquivo_oficio = 'Oficio_' . $nome_empregador_arquivo . '_' . $mes_arquivo . '.pdf';
+
+if (isset($_POST['baixar']) && $_POST['baixar'] == '1') {
+    $pdf->Output('D', $nome_arquivo_oficio);
+} else {
+    $pdf->Output('I', $nome_arquivo_oficio);
+}

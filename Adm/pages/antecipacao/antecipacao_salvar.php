@@ -477,41 +477,91 @@ try {
         // (Antes, "Analisando" gravava aprovado = false — abolido.)
         // ==========================================================
         $rotulo_status = ($_status === "3") ? "REPROVADO" : "ANALISANDO";
-        debug_log("DEBUG CONTA: ========== {$rotulo_status} — EXCLUINDO LANÇAMENTOS DA CONTA (regra: aprovado é sempre true; nunca se grava false) ==========");
-        $stmt_del = $pdo->prepare(
-            "DELETE FROM sind.conta
-              WHERE mes = :mes
-                AND empregador = :empregador
-                AND id_associado = :id_associado
-                AND divisao = :divisao
-                AND (convenio = 221 OR convenio = 249)"
-        );
-        $stmt_del->bindValue(':mes',          $_mes,          PDO::PARAM_STR);
-        $stmt_del->bindValue(':empregador',   $_empregador,   PDO::PARAM_INT);
-        $stmt_del->bindValue(':id_associado', $_associado_id, PDO::PARAM_INT);
-        $stmt_del->bindValue(':divisao',      $_divisao,      PDO::PARAM_INT);
-        $stmt_del->execute();
-        debug_log("DEBUG CONTA: ✅ DELETE executado — " . $stmt_del->rowCount() . " linha(s) removida(s)");
+        debug_log("DEBUG CONTA: ========== {$rotulo_status} — AVALIANDO EXCLUSÃO NA CONTA ==========");
 
-        // Verificação: nenhum lançamento 221/249 pode ter restado para estas chaves
-        $stmt_vdel = $pdo->prepare(
-            "SELECT COUNT(*) AS n FROM sind.conta
-              WHERE mes = :mes
+        // Lançamentos 221/249 não guardam o id da antecipação. Eles pertencem
+        // à antecipação que estava Aprovada. Reprovar (ou voltar para Analisando)
+        // um registro que estava só em análise não pode apagar a conta da outra.
+        $stmt_outras = $pdo->prepare(
+            "SELECT COUNT(*) AS n
+               FROM sind.antecipacao
+              WHERE id <> :id
+                AND matricula = :matricula
+                AND mes = :mes
+                AND empregador = :empregador
+                AND id_associado = :id_associado
+                AND id_divisao = :divisao
+                AND aprovado IS TRUE"
+        );
+        $stmt_outras->bindValue(':id',           $_id_antecipacao, PDO::PARAM_INT);
+        $stmt_outras->bindValue(':matricula',    $_matricula,      PDO::PARAM_STR);
+        $stmt_outras->bindValue(':mes',          $_mes,            PDO::PARAM_STR);
+        $stmt_outras->bindValue(':empregador',   $_empregador,     PDO::PARAM_INT);
+        $stmt_outras->bindValue(':id_associado', $_associado_id,   PDO::PARAM_INT);
+        $stmt_outras->bindValue(':divisao',      $_divisao,        PDO::PARAM_INT);
+        $stmt_outras->execute();
+        $outras_aprovadas = (int)$stmt_outras->fetch(PDO::FETCH_ASSOC)['n'];
+
+        debug_log("DEBUG CONTA: status anterior={$status_anterior}; antecipações que continuam aprovadas={$outras_aprovadas}. A conta deve conservar essa quantidade de lançamentos por convênio.");
+
+        $stmt_qtd = $pdo->prepare(
+            "SELECT COUNT(*) AS n
+               FROM sind.conta
+              WHERE associado = :associado
+                AND mes = :mes
                 AND empregador = :empregador
                 AND id_associado = :id_associado
                 AND divisao = :divisao
-                AND (convenio = 221 OR convenio = 249)"
+                AND convenio = :convenio"
         );
-        $stmt_vdel->bindValue(':mes',          $_mes,          PDO::PARAM_STR);
-        $stmt_vdel->bindValue(':empregador',   $_empregador,   PDO::PARAM_INT);
-        $stmt_vdel->bindValue(':id_associado', $_associado_id, PDO::PARAM_INT);
-        $stmt_vdel->bindValue(':divisao',      $_divisao,      PDO::PARAM_INT);
-        $stmt_vdel->execute();
-        if ((int)$stmt_vdel->fetch(PDO::FETCH_ASSOC)['n'] > 0) {
-            throw new RuntimeException(
-                "VERIFICAÇÃO FALHOU: ainda restaram lançamentos da antecipação na CONTA após a exclusão. "
-                . "A operação foi CANCELADA e nada foi gravado."
+        foreach (array(221, 249) as $convenio_excluir) {
+            $stmt_qtd->bindValue(':associado',    $_matricula,       PDO::PARAM_STR);
+            $stmt_qtd->bindValue(':mes',          $_mes,             PDO::PARAM_STR);
+            $stmt_qtd->bindValue(':empregador',   $_empregador,      PDO::PARAM_INT);
+            $stmt_qtd->bindValue(':id_associado', $_associado_id,    PDO::PARAM_INT);
+            $stmt_qtd->bindValue(':divisao',      $_divisao,         PDO::PARAM_INT);
+            $stmt_qtd->bindValue(':convenio',     $convenio_excluir, PDO::PARAM_INT);
+            $stmt_qtd->execute();
+            $qtd_conta = (int)$stmt_qtd->fetch(PDO::FETCH_ASSOC)['n'];
+            $excesso = $qtd_conta - $outras_aprovadas;
+            if ($excesso <= 0) {
+                debug_log("DEBUG CONTA: convênio {$convenio_excluir} — {$qtd_conta} lançamento(s), nada a excluir.");
+                continue;
+            }
+
+            debug_log("DEBUG CONTA: convênio {$convenio_excluir} — excluindo {$excesso} lançamento(s) excedente(s) de {$qtd_conta}.");
+            $stmt_del = $pdo->prepare(
+                "DELETE FROM sind.conta
+                  WHERE lancamento IN (
+                        SELECT lancamento
+                          FROM sind.conta
+                         WHERE associado = :associado
+                           AND mes = :mes
+                           AND empregador = :empregador
+                           AND id_associado = :id_associado
+                           AND divisao = :divisao
+                           AND convenio = :convenio
+                         ORDER BY lancamento DESC
+                         LIMIT {$excesso}
+                  )"
             );
+            $stmt_del->bindValue(':associado',    $_matricula,       PDO::PARAM_STR);
+            $stmt_del->bindValue(':mes',          $_mes,             PDO::PARAM_STR);
+            $stmt_del->bindValue(':empregador',   $_empregador,      PDO::PARAM_INT);
+            $stmt_del->bindValue(':id_associado', $_associado_id,    PDO::PARAM_INT);
+            $stmt_del->bindValue(':divisao',      $_divisao,         PDO::PARAM_INT);
+            $stmt_del->bindValue(':convenio',     $convenio_excluir, PDO::PARAM_INT);
+            $stmt_del->execute();
+            debug_log("DEBUG CONTA: ✅ DELETE convênio {$convenio_excluir} — " . $stmt_del->rowCount() . " linha(s) removida(s)");
+
+            $stmt_qtd->execute();
+            $qtd_restante = (int)$stmt_qtd->fetch(PDO::FETCH_ASSOC)['n'];
+            if ($qtd_restante > $outras_aprovadas) {
+                throw new RuntimeException(
+                    "VERIFICAÇÃO FALHOU: ainda restaram {$qtd_restante} lançamentos do convênio {$convenio_excluir} na CONTA, "
+                    . "e só {$outras_aprovadas} antecipação(ões) continua(m) aprovada(s). A operação foi CANCELADA e nada foi gravado."
+                );
+            }
         }
     }
 

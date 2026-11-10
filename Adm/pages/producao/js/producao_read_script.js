@@ -773,13 +773,17 @@ $('#relatorio_producao_todos_oficio').click(function () {
     });
 });
 
-// Botão para gerar PDFs individuais separados para cada convênio (Somente Relatório)
-$('#relatorio_producao_individuais').click(function () {
+function gerarPdfsSeparadosPorConvenio(opcoes) {
     var mes_atual = $('#C_mes').val();
-    var empregador = $('#C_empregador').val();
     var parcela = $('#C_parcela').val();
-    
-    // Validações
+    var acaoPdf = opcoes.acao;
+    var tituloConfirmacao = opcoes.tituloConfirmacao;
+    var textoConfirmacao = opcoes.textoConfirmacao;
+    var nomeArquivo = opcoes.nomeArquivo;
+    var tituloProgresso = opcoes.tituloProgresso;
+    var rotuloConcluido = opcoes.rotuloConcluido;
+    var corConfirmar = opcoes.corConfirmar;
+
     if (!mes_atual) {
         Swal.fire({
             icon: 'warning',
@@ -788,7 +792,7 @@ $('#relatorio_producao_individuais').click(function () {
         });
         return;
     }
-    
+
     if (!divisao) {
         Swal.fire({
             icon: 'warning',
@@ -797,279 +801,158 @@ $('#relatorio_producao_individuais').click(function () {
         });
         return;
     }
-    
-    // Confirmação antes de gerar
+
     Swal.fire({
-        title: 'Confirmar Geração de PDFs por Convênio',
-        html: 'Deseja gerar um PDF separado para cada convênio?<br><br>' +
-              '<strong>Cada arquivo terá o nome:</strong><br>' +
-              '<em>Convenio_Mês.pdf</em><br><br>' +
-              '<small>Este processo pode levar alguns minutos e irá baixar múltiplos arquivos.</small>',
+        title: tituloConfirmacao,
+        html: textoConfirmacao,
         icon: 'question',
         showCancelButton: true,
-        confirmButtonColor: '#17a2b8',
+        confirmButtonColor: corConfirmar,
         cancelButtonColor: '#dc3545',
         confirmButtonText: 'Sim, gerar PDFs!',
         cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Buscar lista de convênios com produção no mês
-            var ajaxData = {
-                mes: mes_atual,
-                divisao: divisao
-            };
-            if (empregador && empregador !== '') {
-                ajaxData.empregador = empregador;
-            }
-            if (parcela && parcela !== '') {
-                ajaxData.parcela = parcela;
-            }
-            
-            $.ajax({
-                url: '../Adm/pages/producao/convenios.php',
-                method: 'POST',
-                data: ajaxData,
-                dataType: 'json',
-                success: function(response) {
-                    var convenios = response.data || [];
-                    if (!convenios || convenios.length === 0) {
+    }).then(function(result) {
+        if (!result.isConfirmed) {
+            return;
+        }
+
+        var ajaxData = {
+            mes: mes_atual,
+            divisao: divisao
+        };
+        if (parcela && parcela !== '') {
+            ajaxData.parcela = parcela;
+        }
+
+        $.ajax({
+            url: 'pages/producao/convenios.php',
+            method: 'POST',
+            data: ajaxData,
+            dataType: 'json',
+            success: function(response) {
+                var convenios = (response && $.isArray(response.data)) ? response.data : [];
+                if (!convenios.length) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Nenhum Convênio',
+                        text: 'Não foram encontrados convênios com dados para o mês selecionado.'
+                    });
+                    return;
+                }
+
+                var currentIndex = 0;
+                var totalConvenios = convenios.length;
+
+                Swal.fire({
+                    title: tituloProgresso,
+                    html: 'Progresso: <strong>0 de ' + totalConvenios + '</strong> convênios',
+                    allowOutsideClick: false,
+                    didOpen: function() {
+                        Swal.showLoading();
+                    }
+                });
+
+                function gerarProximoPDF() {
+                    if (currentIndex >= totalConvenios) {
                         Swal.fire({
-                            icon: 'info',
-                            title: 'Nenhum Convênio',
-                            text: 'Não foram encontrados convênios com dados para o mês selecionado.'
+                            icon: 'success',
+                            title: 'Concluído!',
+                            html: '<strong>' + totalConvenios + ' PDFs foram gerados!</strong><br><br>' +
+                                  '<small>✅ Arquivos baixados automaticamente na pasta Downloads<br>' +
+                                  '📁 Nome: ' + nomeArquivo + '</small>',
+                            timer: 5000
                         });
                         return;
                     }
-                    
-                    // Mostrar progresso
-                    let currentIndex = 0;
-                    const totalConvenios = convenios.length;
-                    
-                    Swal.fire({
-                        title: 'Gerando PDFs por Convênio...',
-                        html: `Progresso: <strong>0 de ${totalConvenios}</strong> convênios`,
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
+
+                    var convenio = convenios[currentIndex];
+                    Swal.update({
+                        html: 'Progresso: <strong>' + (currentIndex + 1) + ' de ' + totalConvenios + '</strong> convênios<br>' +
+                              'Gerando: <em>' + (convenio.razaosocial || convenio.codigo) + '</em>'
                     });
-                    
-                    // Gerar PDFs sequencialmente, um por vez
-                    function gerarProximoPDF() {
-                        if (currentIndex >= totalConvenios) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Concluído!',
-                                html: `<strong>${totalConvenios} PDFs foram gerados!</strong><br><br>` +
-                                      `<small>✅ Arquivos baixados automaticamente na pasta Downloads<br>` +
-                                      `📁 Nome: NomeEmpresa-Mês-Data.pdf</small>`,
-                                timer: 5000
-                            });
-                            return;
-                        }
-                        
-                        const convenio = convenios[currentIndex];
-                        
-                        Swal.update({
-                            html: `Progresso: <strong>${currentIndex + 1} de ${totalConvenios}</strong> convênios<br>
-                                   Gerando: <em>${convenio.razaosocial}</em>`
-                        });
-                        
-                        // Criar nome único para a janela
-                        const windowName = 'pdf_' + convenio.codigo + '_' + currentIndex;
-                        
-                        const form = $('<form>', {
-                            'method': 'POST',
-                            'action': '../Adm/pages/producao/producao_gerador_pdf.php',
-                            'target': windowName
-                        });
-                        
-                        form.append($('<input>', {'type': 'hidden', 'name': 'mes_atual', 'value': mes_atual}));
-                        form.append($('<input>', {'type': 'hidden', 'name': 'cod_convenio', 'value': convenio.codigo}));
-                        if (empregador && empregador !== '') {
-                            form.append($('<input>', {'type': 'hidden', 'name': 'empregador', 'value': empregador}));
-                        }
-                        if (parcela && parcela !== '') {
-                            form.append($('<input>', {'type': 'hidden', 'name': 'parcela', 'value': parcela}));
-                        }
-                        form.append($('<input>', {'type': 'hidden', 'name': 'divisao', 'value': divisao}));
-                        form.append($('<input>', {'type': 'hidden', 'name': 'divisao_nome', 'value': divisao_nome}));
-                        
-                        // Abrir janela antes de submeter
-                        window.open('', windowName);
-                        
-                        $('body').append(form);
-                        form.submit();
-                        form.remove();
-                        
-                        currentIndex++;
-                        setTimeout(gerarProximoPDF, 2500);
+
+                    var iframeName = 'pdf_sep_' + convenio.codigo + '_' + currentIndex;
+                    $('#iframe_' + iframeName).remove();
+                    var iframe = $('<iframe>', {
+                        id: 'iframe_' + iframeName,
+                        name: iframeName,
+                        css: { position: 'absolute', width: 0, height: 0, border: 0 }
+                    });
+                    $('body').append(iframe);
+
+                    var form = $('<form>', {
+                        method: 'POST',
+                        action: acaoPdf,
+                        target: iframeName
+                    });
+                    form.append($('<input>', { type: 'hidden', name: 'mes_atual', value: mes_atual }));
+                    form.append($('<input>', { type: 'hidden', name: 'cod_convenio', value: convenio.codigo }));
+                    if (parcela && parcela !== '') {
+                        form.append($('<input>', { type: 'hidden', name: 'parcela', value: parcela }));
                     }
-                    
-                    gerarProximoPDF();
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro!',
-                        text: 'Erro ao buscar lista de convênios: ' + error
-                    });
+                    form.append($('<input>', { type: 'hidden', name: 'divisao', value: divisao }));
+                    form.append($('<input>', { type: 'hidden', name: 'divisao_nome', value: divisao_nome || '' }));
+                    $('body').append(form);
+                    form.submit();
+                    form.remove();
+
+                    currentIndex++;
+                    setTimeout(function() {
+                        iframe.remove();
+                        gerarProximoPDF();
+                    }, 3000);
                 }
-            });
-        }
+
+                gerarProximoPDF();
+            },
+            error: function(xhr, status, error) {
+                var detalhe = error || status || '';
+                if (xhr && xhr.responseJSON && xhr.responseJSON.error) {
+                    detalhe = xhr.responseJSON.error;
+                } else if (xhr && xhr.status) {
+                    detalhe = xhr.status + ' ' + (error || status || '');
+                }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro!',
+                    text: 'Erro ao buscar lista de convênios: ' + detalhe
+                });
+            }
+        });
+    });
+}
+
+// Botão para gerar PDFs individuais separados para cada convênio (Somente Relatório)
+$('#relatorio_producao_individuais').click(function (e) {
+    e.preventDefault();
+    gerarPdfsSeparadosPorConvenio({
+        acao: 'pages/producao/producao_gerador_pdf.php',
+        tituloConfirmacao: 'Confirmar Geração de PDFs por Convênio',
+        textoConfirmacao: 'Deseja gerar um PDF separado para cada convênio?<br><br>' +
+                          '<strong>Cada arquivo terá o nome:</strong><br>' +
+                          '<em>Convenio_Mês.pdf</em><br><br>' +
+                          '<small>Este processo pode levar alguns minutos e irá baixar múltiplos arquivos.</small>',
+        nomeArquivo: 'Convenio_Mês.pdf',
+        tituloProgresso: 'Gerando PDFs por Convênio...',
+        rotuloConcluido: 'PDFs',
+        corConfirmar: '#17a2b8'
     });
 });
 
 // Botão para gerar PDFs individuais separados em formato Ofício para cada convênio
-$('#relatorio_producao_individuais_oficio').click(function () {
-    var mes_atual = $('#C_mes').val();
-    var empregador = $('#C_empregador').val();
-    var parcela = $('#C_parcela').val();
-    
-    // Validações
-    if (!mes_atual) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Atenção!',
-            text: 'Por favor, selecione um mês.'
-        });
-        return;
-    }
-    
-    if (!divisao) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Erro de Sessão!',
-            text: 'Divisão não encontrada. Por favor, recarregue a página e tente novamente.'
-        });
-        return;
-    }
-    
-    // Confirmação antes de gerar
-    Swal.fire({
-        title: 'Confirmar Geração de Ofícios por Convênio',
-        html: 'Deseja gerar um ofício em PDF separado para cada convênio?<br><br>' +
-              '<strong>Cada arquivo terá o nome:</strong><br>' +
-              '<em>Oficio_Convenio_Mês.pdf</em><br><br>' +
-              '<small>Este processo pode levar alguns minutos e irá baixar múltiplos arquivos.</small>',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#f57c00',
-        cancelButtonColor: '#dc3545',
-        confirmButtonText: 'Sim, gerar ofícios!',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Buscar lista de convênios com produção no mês
-            var ajaxData = {
-                mes: mes_atual,
-                divisao: divisao
-            };
-            if (empregador && empregador !== '') {
-                ajaxData.empregador = empregador;
-            }
-            if (parcela && parcela !== '') {
-                ajaxData.parcela = parcela;
-            }
-            
-            $.ajax({
-                url: '../Adm/pages/producao/convenios.php',
-                method: 'POST',
-                data: ajaxData,
-                dataType: 'json',
-                success: function(response) {
-                    var convenios = response.data || [];
-                    if (!convenios || convenios.length === 0) {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Nenhum Convênio',
-                            text: 'Não foram encontrados convênios com dados para o mês selecionado.'
-                        });
-                        return;
-                    }
-                    
-                    // Mostrar progresso
-                    let currentIndex = 0;
-                    const totalConvenios = convenios.length;
-                    
-                    Swal.fire({
-                        title: 'Gerando Ofícios por Convênio...',
-                        html: `Progresso: <strong>0 de ${totalConvenios}</strong> convênios`,
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                    
-                    // Função para gerar ofício de cada convênio sequencialmente
-                    function gerarProximoOficio() {
-                        if (currentIndex >= totalConvenios) {
-                            // Todos os ofícios foram gerados
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Concluído!',
-                                html: `<strong>${totalConvenios} ofícios foram gerados!</strong><br><br>` +
-                                      `<small>✅ Arquivos baixados automaticamente na pasta Downloads<br>` +
-                                      `📁 Nome: Oficio-NomeEmpresa-Mês-Data.pdf</small>`,
-                                timer: 5000
-                            });
-                            return;
-                        }
-                        
-                        const convenio = convenios[currentIndex];
-                        
-                        // Atualizar progresso
-                        Swal.update({
-                            html: `Progresso: <strong>${currentIndex + 1} de ${totalConvenios}</strong> convênios<br>
-                                   Gerando ofício: <em>${convenio.razaosocial}</em>`
-                        });
-                        
-                        // Criar um nome único para a janela
-                        const windowName = 'oficio_' + convenio.codigo + '_' + Date.now();
-                        
-                        // Gerar ofício para este convênio
-                        const form = $('<form>', {
-                            'method': 'POST',
-                            'action': '../Adm/pages/producao/relatorio_producao_oficio.php',
-                            'target': windowName
-                        });
-                        
-                        form.append($('<input>', {'type': 'hidden', 'name': 'mes_atual', 'value': mes_atual}));
-                        form.append($('<input>', {'type': 'hidden', 'name': 'cod_convenio', 'value': convenio.codigo}));
-                        if (empregador && empregador !== '') {
-                            form.append($('<input>', {'type': 'hidden', 'name': 'empregador', 'value': empregador}));
-                        }
-                        if (parcela && parcela !== '') {
-                            form.append($('<input>', {'type': 'hidden', 'name': 'parcela', 'value': parcela}));
-                        }
-                        form.append($('<input>', {'type': 'hidden', 'name': 'divisao', 'value': divisao}));
-                        form.append($('<input>', {'type': 'hidden', 'name': 'divisao_nome', 'value': divisao_nome}));
-                        
-                        // Abrir nova janela/aba
-                        window.open('', windowName);
-                        
-                        // Submeter formulário
-                        $('body').append(form);
-                        form.submit();
-                        form.remove();
-                        
-                        // Próximo convênio após 2.5 segundos
-                        currentIndex++;
-                        setTimeout(gerarProximoOficio, 2500);
-                    }
-                    
-                    // Iniciar geração
-                    gerarProximoOficio();
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro!',
-                        text: 'Erro ao buscar lista de convênios: ' + error
-                    });
-                }
-            });
-        }
+$('#relatorio_producao_individuais_oficio').click(function (e) {
+    e.preventDefault();
+    gerarPdfsSeparadosPorConvenio({
+        acao: 'pages/producao/relatorio_producao_oficio.php',
+        tituloConfirmacao: 'Confirmar Geração de Ofícios por Convênio',
+        textoConfirmacao: 'Deseja gerar um ofício em PDF separado para cada convênio?<br><br>' +
+                          '<strong>Cada arquivo terá o nome:</strong><br>' +
+                          '<em>Oficio_Convenio_Mês.pdf</em><br><br>' +
+                          '<small>Este processo pode levar alguns minutos e irá baixar múltiplos arquivos.</small>',
+        nomeArquivo: 'Oficio_Convenio_Mês.pdf',
+        tituloProgresso: 'Gerando Ofícios por Convênio...',
+        rotuloConcluido: 'ofícios',
+        corConfirmar: '#f57c00'
     });
 });
 

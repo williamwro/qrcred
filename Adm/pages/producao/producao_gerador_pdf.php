@@ -453,75 +453,36 @@ $convenio_aux="";
 $aux = 0;
 $total_paginas=0;
 $sql_conv_vendas = $pdo->query($query);
-//$xxx = count($sql_conv_vendas->fetchAll()); //QUANTIDADE DE REGISTROS
 $linhas_filtradas = $sql_conv_vendas->rowCount();
 $count_ana = 0;
 $count_marcia = 0;
 $count_marcio = 0;
 $count_william = 0;
-$datax = "";
-$horax = "";
-//*******************     EXCLUIR TABELA TEMPORARIA INICIO     *******************/
-$sql_limpa_temp = "DELETE FROM sind.temp_vendas_convenio";
-$stmt = $pdo->prepare($sql_limpa_temp);
-$stmt->execute();
-//*******************      EXCLUIR TABELA TEMPORARIA FIM       ********************/
-//*******************      LISTA OS VALORES E GRAVA TAB TEMP INICIO      ********************/
+$linhas_pdf = array();
 while($row = $sql_conv_vendas->fetch()) {
     if ($convenio_aux == "") {
         $convenio_aux = $row['convenio'];
     }
-    if ($convenio_aux != $row['convenio']) {
-        $grupo_por_convenio = "SELECT empregador.nome, sum(conta.valor) as total
-                                    FROM sind.convenio 
-                              RIGHT JOIN sind.conta 
-                                      ON convenio.codigo = conta.convenio 
-                              RIGHT JOIN sind.empregador
-                                      ON empregador.id = conta.empregador 
-                                   WHERE (((conta.mes)='" . $mes_atual . "') 
-                                     AND empregador.id_divisao = " . $divisao . " 
-                                     AND convenio.codigo = " . $cod_convenio . "
-                                     AND (conta.aprovado = true))
-                                GROUP BY empregador.id;";
-        $convenio_aux = $row['convenio'];
-        $cod_convenio = $row['cod_convenio'];
-        //$total = 0;
-        $item = 0;
-    }
     $item++;
     $valor = floatval($row['valor']);
     $total = $total + $valor;
-    //$valor = number_format($valor, 2, ',', '.');
-    $datax = date('d/m/Y', strtotime($row['data']));
-    $horax = substr($row['hora'], 0, 5);
-    $sql_inser = "INSERT INTO sind.temp_vendas_convenio(";
-    $sql_inser .= "registro, matricula, nome, data, hora, valor, parcela) VALUES(";
-    $sql_inser .= ":registro,:matricula,:nome,:data,:hora,:valor,:parcela)";
-   
-    $stmt = $pdo->prepare($sql_inser);
-
-    //  AQUI NAO APARECE OS LANÇAMENTOS MAS SOMA TODOS
-    $stmt->bindParam(':registro', $row['lancamento'], PDO::PARAM_STR);
-    $stmt->bindParam(':matricula', $row['matricula'], PDO::PARAM_STR);
-    $stmt->bindParam(':nome', $row['associado'], PDO::PARAM_STR);
-    $stmt->bindParam(':data', $datax, PDO::PARAM_STR);
-    $stmt->bindParam(':hora', $horax, PDO::PARAM_STR);
-    $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);
-    $stmt->bindParam(':parcela', $row['parcela'], PDO::PARAM_STR);
-
-    $stmt->execute();
- 
+    $linhas_pdf[] = array(
+        'registro' => $row['lancamento'],
+        'matricula' => $row['matricula'],
+        'nome' => $row['associado'],
+        'data' => date('d/m/Y', strtotime($row['data'])),
+        'hora' => substr($row['hora'], 0, 5),
+        'valor' => $valor,
+        'parcela' => $row['parcela']
+    );
     $convenio_aux = $row['convenio'];
     $cod_convenio = $row['cod_convenio'];
 }
 
-   
-$sql_result = "SELECT registro, matricula, nome, data, hora, valor, parcela
-                 FROM sind.temp_vendas_convenio          
-             ORDER BY nome ASC";
+usort($linhas_pdf, function($a, $b) {
+    return strcasecmp($a['nome'] ?? '', $b['nome'] ?? '');
+});
 
-$sql_tab_temp_vendas = $pdo->query($sql_result);
-$linhas_filtradas_temp = $sql_tab_temp_vendas->rowCount();
 $pagina = 1;
 PDF::setPG($pagina);
 PDF::setRS($convenio_aux);
@@ -531,7 +492,7 @@ $pdf->AddPage();
 $pdf->SetFont('Arial', 'B', 8);
 $item_pagina = 0;
 
-while($row = $sql_tab_temp_vendas->fetch()) {
+foreach ($linhas_pdf as $row) {
 
     $item++;
     $item_pagina++;
@@ -541,12 +502,9 @@ while($row = $sql_tab_temp_vendas->fetch()) {
         PDF::setPG($pagina);
         $pdf->AddPage();
     }
-    
 
-    $valor = floatval($row['valor']);
-    //$total = $total + $valor;
-    $valor = number_format($valor, 2, ',', '.');
-   
+    $valor = number_format(floatval($row['valor']), 2, ',', '.');
+
     $pdf->Cell(15, 4, $row['registro']);
     $pdf->Cell(20, 4, $row['matricula']);
     $pdf->Cell(90, 4, $row['nome']);
